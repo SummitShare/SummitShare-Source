@@ -5,14 +5,14 @@ const ethers = require('ethers')
 const provider = new ethers.JsonRpcProvider(`https://sepolia.infura.io/v3/${process.env.INFURA_ID}`)
 
 //sender
-const rs1 ='0x9F95C1bc9F4e4A2d738F02d81Fc2A618334Aa81c'
+const rs1 =''
 
 //recievers
-const rs2 = '0x3c622F22345EaB4f9e189e090Dee1Fb9EFF74f65' 
-const rs3 = '0xa9190D166Ca80A78Ef3da660c9dE996dA7477B85' 
+const rs2 = '' 
+const rs3 = '' 
 
 //contract depolyed on sepolia testnet
-const rvs="0x2F864185376b9AcFdd67483E5E6952F381d7bAC0"
+const rvs=""
 
 // contract funder Private key of account 1
 const rs1privateKey = process.env.CONTRACT_FUNDER_PRIVATE_KEY 
