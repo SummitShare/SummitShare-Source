@@ -27,5 +27,5 @@ Before running the scripts, make sure you have the following:
 4. Ensure you have the update the contract address and ABI with new the contract you have deployed on the sepolia test net
 5. update all wallets involved rs1 ,rs2 ,rs3 as well as the contract CONTRACT_OWNER_PRIVATE_KEY
 6. run node fundContract.js
-7. run distributeFunds.js
+7. run node distributeFunds.js
 
