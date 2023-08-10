@@ -17,8 +17,8 @@ Before running the scripts, make sure you have the following:
 1. Clone this repository to your local machine:
 
    ```bash
-   git clone https://github.com/your-username/ethereum-interaction-scripts.git
-   cd ethereum-interaction-scripts
+   git clone https://github.com/bicos-io01/Revenue-Sharing-Source.git
+   
 2. npm install
 3. Set up dotenv 
   INFURA_ID=your_infura_api_key
