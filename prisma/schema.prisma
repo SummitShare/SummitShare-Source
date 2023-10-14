@@ -1,0 +1,149 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model contracts {
+  contractaddress String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  hardhatdeployid String? @unique @db.Uuid
+  eventid         String? @db.Uuid
+  events          events? @relation(fields: [eventid], references: [eventid], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model eventimages {
+  eventimageid String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  s3_url       String? @unique @db.VarChar
+  eventid      String? @db.Uuid
+  events       events? @relation(fields: [eventid], references: [eventid], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model events {
+  eventid      String         @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  eventtypeid  Int?
+  contractid   String?        @db.Uuid
+  userid       String?        @db.Uuid
+  description  String?        @db.VarChar
+  contracts    contracts[]
+  eventimages  eventimages[]
+  eventtypes   eventtypes?    @relation(fields: [eventtypeid], references: [eventtypeid], onDelete: NoAction, onUpdate: NoAction)
+  users        users?         @relation(fields: [userid], references: [userid], onDelete: NoAction, onUpdate: NoAction)
+  proposals    proposals[]
+  requests     requests[]
+  stakeholders stakeholders[]
+}
+
+model eventtypes {
+  eventtypeid Int       @id @default(0)
+  typename    typename?
+  events      events[]
+}
+
+model proposals {
+  proposalid String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  eventid    String? @db.Uuid
+  userid     String? @db.Uuid
+  content    String?
+  events     events? @relation(fields: [eventid], references: [eventid], onDelete: NoAction, onUpdate: NoAction)
+  users      users?  @relation(fields: [userid], references: [userid], onDelete: NoAction, onUpdate: NoAction)
+  votes      votes[]
+}
+
+model requests {
+  requestid String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  userid    String? @db.Uuid
+  eventid   String? @db.Uuid
+  status    status?
+  events    events? @relation(fields: [eventid], references: [eventid], onDelete: NoAction, onUpdate: NoAction)
+  users     users?  @relation(fields: [userid], references: [userid], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model roles {
+  roleid   Int       @id @default(0)
+  roletype roletype?
+  users    users[]
+}
+
+model socialmedialinks {
+  linkid        String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  userid        String? @db.Uuid
+  linkedin_url  String? @db.VarChar
+  facebook_url  String? @db.VarChar
+  twitter_url   String? @db.VarChar
+  instagram_url String? @db.VarChar
+  users         users?  @relation(fields: [userid], references: [userid], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model stakeholders {
+  stakeholderid String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  userid        String? @db.Uuid
+  eventid       String? @db.Uuid
+  stake         String? @db.VarChar
+  events        events? @relation(fields: [eventid], references: [eventid], onDelete: NoAction, onUpdate: NoAction)
+  users         users?  @relation(fields: [userid], references: [userid], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model userimages {
+  userimageid  String     @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  s3_url       String?    @unique @db.VarChar
+  userid       String?    @db.Uuid
+  imagetype    imagetype?
+  galleryindex Int?
+  users        users?     @relation(fields: [userid], references: [userid], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model users {
+  userid           String             @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  email            String             @unique @db.VarChar
+  password         String             @db.VarChar
+  walletaddress    String?            @unique @db.VarChar
+  bio              String?            @db.VarChar
+  roleid           Int?
+  events           events[]
+  proposals        proposals[]
+  requests         requests[]
+  socialmedialinks socialmedialinks[]
+  stakeholders     stakeholders[]
+  userimages       userimages[]
+  roles            roles?             @relation(fields: [roleid], references: [roleid], onDelete: NoAction, onUpdate: NoAction)
+  votes            votes[]
+}
+
+model votes {
+  voteid     String     @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  proposalid String?    @db.Uuid
+  userid     String?    @db.Uuid
+  decision   decision?
+  proposals  proposals? @relation(fields: [proposalid], references: [proposalid], onDelete: NoAction, onUpdate: NoAction)
+  users      users?     @relation(fields: [userid], references: [userid], onDelete: NoAction, onUpdate: NoAction)
+}
+
+enum decision {
+  Agree
+  Disagree
+}
+
+enum imagetype {
+  Profile
+  Cover
+  Gallery
+}
+
+enum roletype {
+  Admin
+  User
+}
+
+enum status {
+  Pending
+  Accepted
+  Declined
+}
+
+enum typename {
+  Physical
+  Virtual
+}
