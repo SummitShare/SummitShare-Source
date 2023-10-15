@@ -1,40 +1,74 @@
-# Revenue-Sharing-Source
-This repository hosts the proof-of-concept version of the revenue-sharing platform. It includes the source files and provides an overview of the core functionality.
+#**SummitShare Platform**
+This repository contains the source code and documentation for SummitShare, a platform designed to address the socio-economic and cultural gaps created by the displacement and decontextualization of cultural artifacts. SummitShare employs blockchain technology, smart contracts, and web3 interfaces to enable two primary modules: 1) Revenue-Sharing Based Event Management and Ticketing, and 2) Virtual Museum. This document provides an overview of the architecture, components, and functionalities of the system, which is still under active development.
 
-# Overview
+Table of Contents
+System Overview
+Modules
+Revenue Sharing Based Event Management
+Virtual Museum
+Technologies
+Interconnections
+Security and Validation
+Social Implications
+System Overview
 
-# 1. Wallet Integration and Event Creation Form:
-The user interface provides an entry point for the participants to interact with the Revenue Sharing Contract (RVS). Here's how it functions:
+The SummitShare platform operates on an Ethereum-based blockchain and consists of multiple smart contracts written in Solidity. It features a robust event-logging system capturing event parameters and transactions, facilitating interactions via Hardhat scripts and web3 interfaces. Here's a brief layout:
 
- a. Wallet Connection:
-- The user is prompted to connect their wallet (e.g., MetaMask) to the platform.
-- Upon successful connection, the user's wallet address (rs1) is extracted and logged into a JSON file as an event.
-- This address will represent the contract owner (rs1) in the Revenue Sharing Contract.
+Smart Contracts: Handles core business logic for revenue sharing and event management.
+Hardhat Scripts: Responsible for smart contract deployments and interactions.
+Web3 Interface: The front-end layer for users to interact with the blockchain.
 
- b. Event Creation Form:
-- The form collects additional parameters: `rs2`, `rs3`, and `ps`, which represent the addresses of other participants and the percentage share for `rs2`.
-- Once the form is submitted, these parameters are logged into the same JSON file.
+#**Modules**
 
-# 2. Hardhat Script:
-A Hardhat script plays a crucial role in interacting with the Ethereum blockchain and the Revenue Sharing Contract. Here's how it operates:
+**Module 1: Revenue Sharing Based Event Management**
 
- a. Importing Parameters:
-- The Hardhat script reads the JSON file to import the parameters: `rs1`, `rs2`, `rs3`, and `ps`.
-- These parameters are used to deploy or interact with the Revenue Sharing Contract (RVS).
+Features
+Event Creation Form:
+General Info: Collects event details such as name, description, location, ticket types, and pricing.
+Revenue Split: Allows specifying wallet addresses and corresponding revenue share percentages.
+NFT-based Ticketing System:
+Utilizes an event logger that captures the public address of the purchaser to create a UUID.
+Contract addresses of minted artifacts generate QR codes for verification.
+Event Dashboard and Analytics:
+Displays various KPIs, logs, and revenue distribution analytics.
+Messaging and Consensus System:
+A forum for stakeholders to discuss and vote on revenue-sharing proposals.
 
- b. Contract Interaction:
-- The script initiates the `RVS` contract by filling out the constructor parameters.
-- The contract owner (rs1) funds the contract by calling the `fundContract` function.
-- The `distributeFunds` function is called to distribute the funds between `rs2` and `rs3`, based on the specified percentage share.
+**Module 2: Virtual Museum**
 
- c. Logging Events:
-- Events emitted by the contract are captured and logged into a secondary JSON file.
-- This can include details such as the amounts distributed, transaction hashes, and timestamps.
+Features
+Offchain Hosted Environment:
+Users can purchase tickets to specific exhibitions or entire levels.
+Digital Artifacts:
+Hosted offchain but linked to their onchain descriptions, complete with metadata.
+Technologies
+Smart Contracts: Solidity (EVM-based)
+Backend: Hardhat for script execution
+Frontend: Web3.js for blockchain interactions
+Data Serialization: JSON for event and parameter logging
 
-# 3. Revenue Sharing Contract (RVS):
-- This is the provided Solidity contract that manages the revenue sharing among the participants.
-- It includes functions to fund the contract, distribute the funds, and handle security considerations.
+#Interconnections
+The two modules are interconnected through:
 
-# 4. Security and Validation:
-- Proper validation and security measures must be implemented at every step, including input validation, authentication, and authorization.
+Revenue Distribution Mesh: A series of smart contracts that facilitate revenue distribution.
+Consensus Mechanism: Shared between the two modules to facilitate voting and data validation.
+
+#Security and Validation
+
+Due diligence is exercised at every step for security, including:
+Input validation for front-end forms
+Authentication and authorization for sensitive contract functions
+
+
+#Social Implications
+**The Problem of Displacement and Decontextualization**
+
+Cultural artifacts hold immense socio-economic and spiritual value to their countries of origin. However, a significant number of these items reside in foreign museums or private collections, depriving native populations of economic benefits and cultural enrichment.
+
+**Leveraging Digital Information for Socio-economic Gains**
+The SummitShare Platform aims to counter this gap by providing a digital space where artifacts regain their contextual settings. It uses immutable metadata tags recorded on a blockchain to preserve each artifact's cultural and historical significance.
+
+
+
+Note: This is a work in progress, and the functionalities might be subject to changes.
 
