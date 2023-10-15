@@ -1,5 +1,6 @@
-# Current Contract Breakdown
+# First Revenue Sharing Contract Breakdown
 
+This is the first version of the revenue sharing contract that acted as the base for design of RVS-m (Revenue Sharing Mesh)
 # 1. Variables:
 - rs1, rs2, rs3: Addresses representing three participants, with rs1 being the contract owner.
 - ps: A percentage share for rs2. The remaining share goes to rs3.
