@@ -1,6 +1,6 @@
 import { revalidateTag } from "next/cache";
 import React from "react";
-
+// this was a test currently updating the form
 export const addEventToDatabase = async (e: FormData) => {
   "use server";
   const eventName = e.get("eventName")?.toString();

@@ -1,8 +1,8 @@
 import React from "react";
 import SelectorCountry from "./SelectorCountry";
+import VirtualSelector from "./VirtualSelectorTypes";
 
 import VirtualEventsCard from "./VirtualEventsCard";
-import VirtualSelector from "./VirtualSelectorTypes";
 
 export default function VirtualMuseum() {
   return (
