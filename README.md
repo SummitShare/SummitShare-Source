@@ -1,4 +1,5 @@
-#**SummitShare Platform**
+#SummitShare Platform
+
 This repository contains the source code and documentation for SummitShare, a platform designed to address the socio-economic and cultural gaps created by the displacement and decontextualization of cultural artifacts. SummitShare employs blockchain technology, smart contracts, and web3 interfaces to enable two primary modules: 1) Revenue-Sharing Based Event Management and Ticketing, and 2) Virtual Museum. This document provides an overview of the architecture, components, and functionalities of the system, which is still under active development.
 
 Table of Contents
@@ -18,7 +19,7 @@ Smart Contracts: Handles core business logic for revenue sharing and event manag
 Hardhat Scripts: Responsible for smart contract deployments and interactions.
 Web3 Interface: The front-end layer for users to interact with the blockchain.
 
-#**Modules**
+#Modules
 
 **Module 1: Revenue Sharing Based Event Management**
 
