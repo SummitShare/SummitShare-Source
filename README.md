@@ -1,17 +1,17 @@
-#SummitShare Platform
+# SummitShare Platform
 
 This repository contains the source code and documentation for SummitShare, a platform designed to address the socio-economic and cultural gaps created by the displacement and decontextualization of cultural artifacts. SummitShare employs blockchain technology, smart contracts, and web3 interfaces to enable two primary modules: 1) Revenue-Sharing Based Event Management and Ticketing, and 2) Virtual Museum. This document provides an overview of the architecture, components, and functionalities of the system, which is still under active development.
 
-Table of Contents
-System Overview
-Modules
-Revenue Sharing Based Event Management
-Virtual Museum
-Technologies
-Interconnections
-Security and Validation
-Social Implications
-System Overview
+## Table of Contents
+
+1. [System Overview](#system-overview)
+    1. [Modules](#modules)
+        1. [Revenue Sharing Based Event Management](#revenue-sharing-based-event-management)
+        2. [Virtual Museum](#virtual-museum)
+    2. [Technologies](#technologies)
+    3. [Interconnections](#interconnections)
+2. [Security and Validation](#security-and-validation)
+3. [Social Implications](#social-implications)
 
 The SummitShare platform operates on an Ethereum-based blockchain and consists of multiple smart contracts written in Solidity. It features a robust event-logging system capturing event parameters and transactions, facilitating interactions via Hardhat scripts and web3 interfaces. Here's a brief layout:
 
@@ -19,7 +19,7 @@ Smart Contracts: Handles core business logic for revenue sharing and event manag
 Hardhat Scripts: Responsible for smart contract deployments and interactions.
 Web3 Interface: The front-end layer for users to interact with the blockchain.
 
-#Modules
+# Modules
 
 **Module 1: Revenue Sharing Based Event Management**
 
@@ -48,20 +48,20 @@ Backend: Hardhat for script execution
 Frontend: Web3.js for blockchain interactions
 Data Serialization: JSON for event and parameter logging
 
-#Interconnections
+# Interconnections
 The two modules are interconnected through:
 
 Revenue Distribution Mesh: A series of smart contracts that facilitate revenue distribution.
 Consensus Mechanism: Shared between the two modules to facilitate voting and data validation.
 
-#Security and Validation
+# Security and Validation
 
 Due diligence is exercised at every step for security, including:
 Input validation for front-end forms
 Authentication and authorization for sensitive contract functions
 
 
-#Social Implications
+# Social Implications
 **The Problem of Displacement and Decontextualization**
 
 Cultural artifacts hold immense socio-economic and spiritual value to their countries of origin. However, a significant number of these items reside in foreign museums or private collections, depriving native populations of economic benefits and cultural enrichment.
