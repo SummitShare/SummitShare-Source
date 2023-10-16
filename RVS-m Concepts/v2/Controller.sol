@@ -39,7 +39,21 @@ contract Controller {
         ps = _ps;
     }
 
-    function deployContracts() public {
+    event ContractFunded(address indexed sender, uin256 amount);
+
+    //Function to fund the contract 
+
+    function fundContract() external payable{
+        require(msg.value > 0, "Invalid amount. Value must be more than 0");
+        emit ContractFunded(msg.sender, msg.value);
+    }
+
+    event Debug(String message);
+
+    function deployContracts() public payable {
+
+        emit Debug("Deploying TicketPurchaseContract");
+
         // Deploy TicketPurchaseContract
         TicketPurchaseContract _ticketContract = new TicketPurchaseContract(uniswapRouter, usdt, usdc);
 
