@@ -17,6 +17,14 @@ contract RevenueSharingContract is ReentrancyGuard {
         _;
     }
 
+    constructor(
+    address _rs2, 
+    address _rs3, 
+    uint128 _ps
+){}
+
+
+
     function initialize(address _controller, address _rs2, address _rs3, uint128 _ps, address _usdc) external {
         require(controller == address(0), "Controller has already been set.");
         require(_rs2 != address(0) && _rs3 != address(0), "Invalid participant addresses.");

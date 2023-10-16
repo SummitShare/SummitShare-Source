@@ -7,13 +7,20 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-contract Ticketing is ERC721Enumerable, ReentrancyGuard, Ownable {
+contract TicketPurchaseContract is ERC721Enumerable, ReentrancyGuard, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
 
+     address public controller;
+
+    function initializeController(address _controller) external {
+        require(controller == address(0), "Controller already set");
+        controller = _controller;
+    }
+
     address public usdt;
     address public usdc;
-    address public controller;
+
 
     mapping(uint256 => string) private _tokenURIs;
     mapping(uint256 => string) private _eventNames;
@@ -34,6 +41,25 @@ contract Ticketing is ERC721Enumerable, ReentrancyGuard, Ownable {
         _;
     }
 
+     function uintToString(uint256 value) internal pure returns (string memory) {
+    if (value == 0) {
+        return "0";
+    }
+    uint256 tempValue = value;
+    uint256 digits;
+    while (tempValue != 0) {
+        digits++;
+        tempValue /= 10;
+    }
+    bytes memory buffer = new bytes(digits);
+    while (value != 0) {
+        digits -= 1;
+        buffer[digits] = bytes1(uint8(48 + uint256(value % 10)));
+        value /= 10;
+    }
+    return string(buffer);
+}
+
     function setEventPrice(string memory eventName, uint256 price) public onlyOwner {
         _eventPrices[eventName] = price;
     }
@@ -42,12 +68,12 @@ contract Ticketing is ERC721Enumerable, ReentrancyGuard, Ownable {
         return _eventPrices[eventName];
     }
 
-    function fetchEventDetails(uint256 tokenId) public view returns (string memory eventName, string memory tokenURI, uint256 eventPrice) {
-        eventName = _eventNames[tokenId];
-        tokenURI = _tokenURIs[tokenId];
-        eventPrice = _eventPrices[eventName];
-        return (eventName, tokenURI, eventPrice);
-    }
+    function fetchEventDetails(uint256 tokenId) public view returns (string memory fetchedEventName, string memory fetchedTokenURI, uint256 fetchedEventPrice) {
+    fetchedEventName = _eventNames[tokenId];
+    fetchedTokenURI = _tokenURIs[tokenId];
+    fetchedEventPrice = _eventPrices[fetchedEventName];
+    return (fetchedEventName, fetchedTokenURI, fetchedEventPrice);
+}
 
     function purchaseTicket(string memory eventName, address token) public payable nonReentrant onlyController returns (uint256) {
         uint256 eventPrice = getEventPrice(eventName);
@@ -64,11 +90,13 @@ contract Ticketing is ERC721Enumerable, ReentrancyGuard, Ownable {
             return 0;  // Zero means failure in this context
         }
 
+       
+
         uint256 tokenId = _tokenIdCounter.current();
         _mint(msg.sender, tokenId);
         _tokenIdCounter.increment();
 
-        _tokenURIs[tokenId] = string(abi.encodePacked("https://example.com/", tokenId.toString()));
+        _tokenURIs[tokenId] = string(abi.encodePacked("https://example.com/", uintToString(tokenId)));
         _eventNames[tokenId] = eventName;
 
         emit TicketPurchased(msg.sender, tokenId, eventName);

@@ -7,37 +7,62 @@ import "./StorageContract.sol";
 import "./RevenueSharingContract.sol";
 
 contract Controller {
+
+    
+    // State variables to store deployed contract addresses
     address public ticketPurchaseContract;
     address public conversionContract;
     address public storageContract;
     address public revenueSharingContract;
 
+    // Parameters for constructors of other contracts
+    address uniswapRouter;
+    address usdt;
+    address usdc;
+    address rs2;
+    address rs3;
+    uint128 ps;
+
     constructor(
         address _uniswapRouter,
         address _usdt,
         address _usdc,
-        address payable _rs2,
-        address payable _rs3
+        address _rs2,
+        address _rs3,
+        uint128 _ps
     ) {
-        // Deploy other contracts and set addresses
-        TicketPurchaseContract _ticketContract = new TicketPurchaseContract();
-        ConversionContract _conversionContract = new ConversionContract(_uniswapRouter, address(this), _usdt, _usdc, address(0));
-        StorageContract _storageContract = new StorageContract();
-        RevenueSharingContract _revenueContract = new RevenueSharingContract(_rs2, _rs3, 50);
+        uniswapRouter = _uniswapRouter;
+        usdt = _usdt;
+        usdc = _usdc;
+        rs2 = _rs2;
+        rs3 = _rs3;
+        ps = _ps;
+    }
 
-        // Assign the deployed contracts to varaibles
+    function deployContracts() public {
+        // Deploy TicketPurchaseContract
+        TicketPurchaseContract _ticketContract = new TicketPurchaseContract(uniswapRouter, usdt, usdc);
+
+        // Deploy ConversionContract
+        ConversionContract _conversionContract = new ConversionContract(uniswapRouter, address(this), usdt, usdc, storageContract);
+
+        // Deploy StorageContract
+        StorageContract _storageContract = new StorageContract();
+
+        // Deploy RevenueSharingContract
+        RevenueSharingContract _revenueContract = new RevenueSharingContract(rs2, rs3, ps);
+
+        // Assign the deployed contracts to variables
         ticketPurchaseContract = address(_ticketContract);
         conversionContract = address(_conversionContract);
         storageContract = address(_storageContract);
         revenueSharingContract = address(_revenueContract);
 
-        //  dynamic settings for contract init
+        // Dynamic settings for contract init
         _ticketContract.initializeController(address(this));
         _conversionContract.setStorageContract(storageContract);
-        _storageContract.initializeController(address(this), revenueSharingContract);
+        _storageContract.initializeController(address(this));
 
-        //  logic to handle any ownership transfers can be added here
+        // Logic to handle any ownership transfers can be added here
     }
-    
-    //  functions for the complete flow can go here.
 }

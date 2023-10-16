@@ -2,7 +2,7 @@
 pragma solidity ^0.8.21;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-
+import "./RevenueSharingContract.sol";
 contract StorageContract {
     address public controller;
     address public revenueSharingContract;
@@ -11,6 +11,7 @@ contract StorageContract {
     event ContractFunded(address indexed funder, uint256 amount);
     event FundsSentToRevenueSharing(uint256 amount);
 
+    
     modifier onlyController() {
         require(msg.sender == controller, "Only the controller can perform this action.");
         _;
