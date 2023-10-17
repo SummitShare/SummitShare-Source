@@ -10,3 +10,32 @@ interface EventsData {
   price: string;
   ticketNumber: string;
 }
+
+export interface inputProps {
+  text?: string;
+  length: string;
+  label?: string;
+  name?: string;
+  value?: any;
+  type?: string;
+  id?: any;
+  onChange?: any;
+  onClick?: any;
+}
+
+import NextAuth from "next-auth";
+
+declare module "next-auth" {
+  interface User {
+    Email: string;
+  }
+
+  interface Session {
+    user: User & {
+      Email: string;
+    };
+    token: {
+      Email: string;
+    };
+  }
+}
