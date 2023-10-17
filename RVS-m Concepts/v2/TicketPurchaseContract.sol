@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.21;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
@@ -30,7 +30,7 @@ contract TicketPurchaseContract is ERC721Enumerable, ReentrancyGuard, Ownable {
     event TransactionStatus(uint256 status, address indexed buyer, uint256 indexed tokenId);
     event TransactionFailed(address indexed buyer, string reason);
 
-    constructor(address _usdt, address _usdc, address _controller) ERC721("EventTicket", "ETKT") {
+    constructor(address _usdt, address _usdc, address _controller) ERC721("EventTicket", "ETKT")  {
         usdt = _usdt;
         usdc = _usdc;
         controller = _controller;

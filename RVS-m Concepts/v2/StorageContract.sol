@@ -3,7 +3,9 @@ pragma solidity ^0.8.21;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./RevenueSharingContract.sol";
+
 contract StorageContract {
+
     address public controller;
     address public revenueSharingContract;
     address public usdc;

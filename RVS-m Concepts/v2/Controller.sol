@@ -8,15 +8,17 @@ import "./RevenueSharingContract.sol";
 
 contract Controller {
 
+    //Event to log deployment of Contracts 
+    event ContractDeployed(string contractName, address contractAddress);
     
     // State variables to store deployed contract addresses
     address public ticketPurchaseContract;
     address public conversionContract;
     address public storageContract;
     address public revenueSharingContract;
+    ISwapRouter public swapRouter;
 
     // Parameters for constructors of other contracts
-    address uniswapRouter;
     address usdt;
     address usdc;
     address rs2;
@@ -24,14 +26,14 @@ contract Controller {
     uint128 ps;
 
     constructor(
-        address _uniswapRouter,
+        ISwapRouter _swapRouter,
         address _usdt,
         address _usdc,
         address _rs2,
         address _rs3,
         uint128 _ps
     ) {
-        uniswapRouter = _uniswapRouter;
+        swapRouter = ISwapRouter(_swapRouter);
         usdt = _usdt;
         usdc = _usdc;
         rs2 = _rs2;
@@ -39,38 +41,43 @@ contract Controller {
         ps = _ps;
     }
 
-    event ContractFunded(address indexed sender, uin256 amount);
+        // Event to log the funding of the contract
+    event ContractFunded(address indexed sender, uint256 amount);
 
-    //Function to fund the contract 
+// Function to fund the contract
+    function fundContract() external payable {
+    require(msg.value > 0, "Invalid amount. Must send more than 0 Ether.");
+    emit ContractFunded(msg.sender, msg.value); // Emitting event to track funding
+}
 
-    function fundContract() external payable{
-        require(msg.value > 0, "Invalid amount. Value must be more than 0");
-        emit ContractFunded(msg.sender, msg.value);
-    }
+    function deployContracts() public {
 
-    event Debug(String message);
-
-    function deployContracts() public payable {
-
-        emit Debug("Deploying TicketPurchaseContract");
-
+        
         // Deploy TicketPurchaseContract
-        TicketPurchaseContract _ticketContract = new TicketPurchaseContract(uniswapRouter, usdt, usdc);
+        TicketPurchaseContract _ticketContract = new TicketPurchaseContract(usdt, usdc, address(this));
+        ticketPurchaseContract = address(_ticketContract);
+        //Event For Deployment 
+        emit ContractDeployed("ticketPurchaseContract", address(_ticketContract));
 
         // Deploy ConversionContract
-        ConversionContract _conversionContract = new ConversionContract(uniswapRouter, address(this), usdt, usdc, storageContract);
+        ConversionContract _conversionContract = new ConversionContract(address(swapRouter), address(this), usdt, usdc, storageContract);
+        conversionContract = address(_conversionContract);
+        //Event For Deployment
+        emit ContractDeployed("ConversionContract", address(_conversionContract));
 
         // Deploy StorageContract
         StorageContract _storageContract = new StorageContract();
+        storageContract = address(_storageContract);
+        //Event For depoloyment
+        emit ContractDeployed("storageContract", address(_storageContract));
+
 
         // Deploy RevenueSharingContract
         RevenueSharingContract _revenueContract = new RevenueSharingContract(rs2, rs3, ps);
-
-        // Assign the deployed contracts to variables
-        ticketPurchaseContract = address(_ticketContract);
-        conversionContract = address(_conversionContract);
-        storageContract = address(_storageContract);
         revenueSharingContract = address(_revenueContract);
+        // Emit event for contract deployment
+        emit ContractDeployed("RevenueSharingContract", address(_revenueContract));
+
 
         // Dynamic settings for contract init
         _ticketContract.initializeController(address(this));

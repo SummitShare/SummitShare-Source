@@ -4,6 +4,7 @@ pragma solidity ^0.8.21;
 import '@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol';
 import '@uniswap/v3-periphery/contracts/libraries/TransferHelper.sol';
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "./StorageContract.sol";
 
 
 contract ConversionContract {
@@ -28,8 +29,9 @@ contract ConversionContract {
     address _uniswapRouter, 
     address _controller, 
     address _usdt, 
-    address _usdc, 
-    address _zeroAddress
+    address _usdc,
+    address _storageContract
+    
 ){}
 
     function initialize(
