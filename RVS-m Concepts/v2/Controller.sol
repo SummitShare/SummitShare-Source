@@ -51,9 +51,7 @@ contract Controller {
 }
 
     function deployContracts() public {
-
-        
-        // Deploy TicketPurchaseContract
+           // Deploy TicketPurchaseContract
         TicketPurchaseContract _ticketContract = new TicketPurchaseContract(usdt, usdc, address(this));
         ticketPurchaseContract = address(_ticketContract);
         //Event For Deployment 
