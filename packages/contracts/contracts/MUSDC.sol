@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 // import "hardhat/console.sol";
 
 contract MUSDC is ERC20 {
-    constructor(uint256 initialSupply) ERC20("USDC Mock", "USDCM") {
-        _mint(msg.sender, initialSupply);
+    constructor(uint256 _initialSupply) ERC20("USDC Mock", "USDCM") {
+        _mint(msg.sender, _initialSupply);
     }
 }

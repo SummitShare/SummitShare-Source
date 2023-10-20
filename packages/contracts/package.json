@@ -3,8 +3,9 @@
   "version": "0.0.1",
   "description": "",
   "scripts": {
-    "test": "hardhat test",
-    "build":"hardhat compile" 
+    "test": "REPORT_GAS=true hardhat test",
+    "test:coverage": "hardhat coverage --solcoverjs ./.solcover.js --temp build/contracts --testfiles \"./test/*.ts\"",
+    "build": "hardhat compile"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +20,8 @@
     "chai": "^4.3.10",
     "ethers": "^6.8.0",
     "hardhat": "^2.18.1",
+    "hardhat-contract-sizer": "^2.10.0",
+    "solidity-coverage": "^0.8.5",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
   },
