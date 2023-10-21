@@ -14,6 +14,7 @@ export async function GET(req: Request , res : NextResponse) {
       try {
         //@ts-ignore
         const verificationRecord = await prisma.userverification.findUnique({
+          //@ts-ignore
           where: { token: token },  // Assuming token is a field in your userverification model
         });
         
