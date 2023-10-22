@@ -102,6 +102,7 @@ model users {
   walletaddress    String?            @unique @db.VarChar
   bio              String?            @db.VarChar
   roleid           Int?
+  isemailverified  Boolean?           @default(false)
   events           events[]
   proposals        proposals[]
   requests         requests[]
@@ -109,6 +110,7 @@ model users {
   stakeholders     stakeholders[]
   userimages       userimages[]
   roles            roles?             @relation(fields: [roleid], references: [roleid], onDelete: NoAction, onUpdate: NoAction)
+  userverification userverification?
   votes            votes[]
 }
 
@@ -119,6 +121,15 @@ model votes {
   decision   decision?
   proposals  proposals? @relation(fields: [proposalid], references: [proposalid], onDelete: NoAction, onUpdate: NoAction)
   users      users?     @relation(fields: [userid], references: [userid], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model userverification {
+  id        String    @id @db.Uuid
+  userid    String    @unique @db.Uuid
+  token     String
+  expires   DateTime? @db.Timestamptz(6)
+  createdat DateTime? @default(now()) @db.Timestamptz(6)
+  users     users     @relation(fields: [userid], references: [userid], onDelete: Cascade, onUpdate: NoAction)
 }
 
 enum decision {

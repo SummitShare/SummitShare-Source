@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import { NextResponse } from 'next/server'
-import { transporter, email } from '../../../../config/nodemailer'
+import { transporter, emailServer } from '../../../../config/nodemailer'
 const prisma = new PrismaClient()
 
 export async function POST(request: Request , response : NextResponse) {
@@ -8,7 +8,7 @@ export async function POST(request: Request , response : NextResponse) {
     try {
 
         const mailOptions = {
-            from: email,
+            from: emailServer,
             to: receiver,
         }
         await transporter.sendMail({

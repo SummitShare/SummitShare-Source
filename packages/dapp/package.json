@@ -36,7 +36,9 @@
     "dotenv": "^16.3.1",
     "ethers": "^5.7.2",
     "framer-motion": "^10.16.4",
+    "jsonwebtoken": "^9.0.2",
     "next": "^13.5.4",
+    "next-auth": "^4.24.3",
     "nodemailer": "^6.9.6",
     "react": "latest",
     "react-day-picker": "^8.8.2",
@@ -45,6 +47,7 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.4",
     "@types/node": "latest",
     "@types/nodemailer": "^6.4.11",
     "@types/react": "latest",
