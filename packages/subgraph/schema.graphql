@@ -1,23 +1,7 @@
-type ContractFunded @entity(immutable: true) {
+type PaymentDistributed @entity(immutable: true) {
   id: Bytes!
-  funder: Bytes! # address
+  beneficiary: Bytes! # address
   amount: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type FundsSentToRevenueSharing @entity(immutable: true) {
-  id: Bytes!
-  amount: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-type FundsDistributed @entity(immutable: true) {
-  id: Bytes!
-  rs2Share: BigInt! # uint256
-  rs3Share: BigInt! # uint256
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!

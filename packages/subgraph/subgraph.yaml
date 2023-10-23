@@ -3,45 +3,22 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum
-    name: Storage
+    name: EventEscrow
     network: mainnet
     source:
       address: "0x690B9A9E9aa1C9dB991C7721a92d351Db4FaC990"
-      abi: Storage
+      abi: EventEscrow
       startBlock: 0
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
-        - ContractFunded
-        - FundsSentToRevenueSharing
+        - PaymentDistributed
       abis:
-        - name: Storage
-          file: ./abis/Storage.json
+        - name: EventEscrow
+          file: ./abis/EventEscrow.json
       eventHandlers:
-        - event: ContractFunded(indexed address,uint256)
-          handler: handleContractFunded
-        - event: FundsSentToRevenueSharing(uint256)
-          handler: handleFundsSentToRevenueSharing
-      file: ./src/storage.ts
-  - kind: ethereum
-    name: RevenueSharing
-    network: mainnet
-    source:
-      address: "0x690B9A9E9aa1C9dB991C7721a92d351Db4FaC990"
-      abi: RevenueSharing
-      startBlock: 0
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.7
-      language: wasm/assemblyscript
-      entities:
-        - FundsDistributed
-      abis:
-        - name: RevenueSharing
-          file: ./abis/RevenueSharing.json
-      eventHandlers:
-        - event: FundsDistributed(uint256,uint256)
-          handler: handleFundsDistributed
-      file: ./src/revenue-sharing.ts
+        - event: PaymentDistributed(address,uint256)
+          handler: handlePaymentDistributed
+      file: ./src/event-escrow.ts
