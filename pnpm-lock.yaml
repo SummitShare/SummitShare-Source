@@ -63,9 +63,6 @@ importers:
       hardhat-contract-sizer:
         specifier: ^2.10.0
         version: 2.10.0(hardhat@2.18.1)
-      hardhat-gas-reporter:
-        specifier: ^1.0.9
-        version: 1.0.9(hardhat@2.18.1)
       solidity-coverage:
         specifier: ^0.8.5
         version: 0.8.5(hardhat@2.18.1)
@@ -125,7 +122,7 @@ importers:
         version: 1.0.3(@types/react-dom@18.2.7)(@types/react@18.2.30)(react-dom@18.2.0)(react@18.2.0)
       '@thirdweb-dev/react':
         specifier: ^4.0.2
-        version: 4.0.2(@ethersproject/abstract-provider@5.7.0)(@ethersproject/abstract-signer@5.7.0)(@ethersproject/bignumber@5.7.0)(@ethersproject/properties@5.7.0)(@thirdweb-dev/sdk@4.0.6)(@types/react-dom@18.2.7)(@types/react@18.2.29)(ethers-gcp-kms-signer@1.1.6)(ethers@5.7.2)(localforage@1.10.0)(next-auth@4.24.3)(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)
+        version: 4.0.2(@ethersproject/abstract-provider@5.7.0)(@ethersproject/abstract-signer@5.7.0)(@ethersproject/bignumber@5.7.0)(@ethersproject/properties@5.7.0)(@thirdweb-dev/sdk@4.0.6)(@types/react-dom@18.2.7)(@types/react@18.2.30)(ethers-gcp-kms-signer@1.1.6)(ethers@5.7.2)(localforage@1.10.0)(next-auth@4.24.3)(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)
       '@uniswap/v3-core':
         specifier: ^1.0.1
         version: 1.0.1
@@ -4692,7 +4689,8 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
       use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false
-  /@thirdweb-dev/auth@4.0.2(@ethersproject/abstract-provider@5.7.0)(@ethersproject/abstract-signer@5.7.0)(@ethersproject/bignumber@5.7.0)(@ethersproject/properties@5.7.0)(@types/react@18.2.29)(ethers-gcp-kms-signer@1.1.6)(ethers@5.7.2)(localforage@1.10.0)(next-auth@4.24.3)(next@13.5.4)(react@18.2.0)(typescript@5.2.2):
+
+  /@thirdweb-dev/auth@4.0.2(@ethersproject/abstract-provider@5.7.0)(@ethersproject/abstract-signer@5.7.0)(@ethersproject/bignumber@5.7.0)(@ethersproject/properties@5.7.0)(@types/react@18.2.30)(ethers-gcp-kms-signer@1.1.6)(ethers@5.7.2)(localforage@1.10.0)(next-auth@4.24.3)(next@13.5.4)(react@18.2.0)(typescript@5.2.2):
     resolution: {integrity: sha512-3zwtsmfatRSowwG+dOBJ+IFW90VsPFT2UifAY9UHU0cSk4CsU+3GksZynb/aAhcBGqVAuiF/GNQ1xIVRweSEEg==}
     peerDependencies:
       cookie-parser: ^1.4.6
@@ -4815,14 +4813,14 @@ packages:
     resolution: {integrity: sha512-vO9/3lSLO8smyyH1QVeYravSTzFwV1nf1C/Im1NBDPdH8//YvcbhtETGGiNfHWpyCvSi0vRYwvf+/7FKdwpDGQ==}
     dev: false
 
-  /@thirdweb-dev/react-core@4.0.2(@ethersproject/abstract-provider@5.7.0)(@ethersproject/abstract-signer@5.7.0)(@ethersproject/bignumber@5.7.0)(@ethersproject/properties@5.7.0)(@types/react@18.2.29)(ethers-gcp-kms-signer@1.1.6)(ethers@5.7.2)(localforage@1.10.0)(next-auth@4.24.3)(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2):
+  /@thirdweb-dev/react-core@4.0.2(@ethersproject/abstract-provider@5.7.0)(@ethersproject/abstract-signer@5.7.0)(@ethersproject/bignumber@5.7.0)(@ethersproject/properties@5.7.0)(@types/react@18.2.30)(ethers-gcp-kms-signer@1.1.6)(ethers@5.7.2)(localforage@1.10.0)(next-auth@4.24.3)(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2):
     resolution: {integrity: sha512-AFIvNQztSEzkY1GFezUkcSlNX1caT6iKK/Q5HXGB/5wV99q5OIDNJHUaSDWOeqbcBAXdf43qGxq9h2PVa59gbA==}
     peerDependencies:
       ethers: '>=5.5.1'
       react: '>=18.0.0'
     dependencies:
       '@tanstack/react-query': 4.36.1(react-dom@18.2.0)(react@18.2.0)
-      '@thirdweb-dev/auth': 4.0.2(@ethersproject/abstract-provider@5.7.0)(@ethersproject/abstract-signer@5.7.0)(@ethersproject/bignumber@5.7.0)(@ethersproject/properties@5.7.0)(@types/react@18.2.29)(ethers-gcp-kms-signer@1.1.6)(ethers@5.7.2)(localforage@1.10.0)(next-auth@4.24.3)(next@13.5.4)(react@18.2.0)(typescript@5.2.2)
+      '@thirdweb-dev/auth': 4.0.2(@ethersproject/abstract-provider@5.7.0)(@ethersproject/abstract-signer@5.7.0)(@ethersproject/bignumber@5.7.0)(@ethersproject/properties@5.7.0)(@types/react@18.2.30)(ethers-gcp-kms-signer@1.1.6)(ethers@5.7.2)(localforage@1.10.0)(next-auth@4.24.3)(next@13.5.4)(react@18.2.0)(typescript@5.2.2)
       '@thirdweb-dev/chains': 0.1.54
       '@thirdweb-dev/generated-abis': 0.0.1
       '@thirdweb-dev/sdk': 4.0.1(ethers@5.7.2)(typescript@5.2.2)
@@ -4863,7 +4861,8 @@ packages:
       - utf-8-validate
       - zksync-web3
     dev: false
-  /@thirdweb-dev/react@4.0.2(@ethersproject/abstract-provider@5.7.0)(@ethersproject/abstract-signer@5.7.0)(@ethersproject/bignumber@5.7.0)(@ethersproject/properties@5.7.0)(@thirdweb-dev/sdk@4.0.6)(@types/react-dom@18.2.7)(@types/react@18.2.29)(ethers-gcp-kms-signer@1.1.6)(ethers@5.7.2)(localforage@1.10.0)(next-auth@4.24.3)(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2):
+
+  /@thirdweb-dev/react@4.0.2(@ethersproject/abstract-provider@5.7.0)(@ethersproject/abstract-signer@5.7.0)(@ethersproject/bignumber@5.7.0)(@ethersproject/properties@5.7.0)(@thirdweb-dev/sdk@4.0.6)(@types/react-dom@18.2.7)(@types/react@18.2.30)(ethers-gcp-kms-signer@1.1.6)(ethers@5.7.2)(localforage@1.10.0)(next-auth@4.24.3)(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2):
     resolution: {integrity: sha512-1p3E2okZio/qpYNdoZn/RPNpmQJ214tlCikUykX5Gr0EihbQx65SEc+SOXuvKwFSRNyL9TyGs9oAMqykXOj88w==}
     peerDependencies:
       '@thirdweb-dev/sdk': ^4.0.1
@@ -4884,7 +4883,7 @@ packages:
       '@react-icons/all-files': 4.1.0(react@18.2.0)
       '@tanstack/react-query': 4.36.1(react-dom@18.2.0)(react@18.2.0)
       '@thirdweb-dev/chains': 0.1.54
-      '@thirdweb-dev/react-core': 4.0.2(@ethersproject/abstract-provider@5.7.0)(@ethersproject/abstract-signer@5.7.0)(@ethersproject/bignumber@5.7.0)(@ethersproject/properties@5.7.0)(@types/react@18.2.29)(ethers-gcp-kms-signer@1.1.6)(ethers@5.7.2)(localforage@1.10.0)(next-auth@4.24.3)(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)
+      '@thirdweb-dev/react-core': 4.0.2(@ethersproject/abstract-provider@5.7.0)(@ethersproject/abstract-signer@5.7.0)(@ethersproject/bignumber@5.7.0)(@ethersproject/properties@5.7.0)(@types/react@18.2.30)(ethers-gcp-kms-signer@1.1.6)(ethers@5.7.2)(localforage@1.10.0)(next-auth@4.24.3)(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)
       '@thirdweb-dev/sdk': 4.0.6(ethers@5.7.2)(typescript@5.2.2)
       '@thirdweb-dev/wallets': 2.0.2(@ethersproject/abstract-provider@5.7.0)(@ethersproject/abstract-signer@5.7.0)(@ethersproject/bignumber@5.7.0)(@ethersproject/properties@5.7.0)(@types/react@18.2.30)(ethers-gcp-kms-signer@1.1.6)(ethers@5.7.2)(localforage@1.10.0)(react@18.2.0)(typescript@5.2.2)
       buffer: 6.0.3
