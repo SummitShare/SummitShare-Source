@@ -21,6 +21,7 @@ export interface inputProps {
   id?: any;
   onChange?: any;
   onClick?: any;
+  reg: any;
 }
 
 import NextAuth from "next-auth";

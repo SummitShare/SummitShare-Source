@@ -22,7 +22,7 @@
     "@radix-ui/react-switch": "^1.0.3",
     "@radix-ui/react-tabs": "^1.0.4",
     "@radix-ui/react-toggle": "^1.0.3",
-    "@thirdweb-dev/react": "^4.0.2",
+    "@thirdweb-dev/react": "^3.14.35",
     "axios": "^1.5.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
@@ -34,10 +34,12 @@
     "react": "latest",
     "react-day-picker": "^8.8.2",
     "react-dom": "latest",
+    "react-hook-form": "^7.47.0",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@hookform/devtools": "^4.3.1",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",

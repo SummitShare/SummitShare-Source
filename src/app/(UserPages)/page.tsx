@@ -1,7 +1,7 @@
-import Events from "../UserPagesComponents/Events";
-import Hero from "../UserPagesComponents/Hero";
-import Tourism from "../UserPagesComponents/TourismSection";
-import VirtualMuseum from "../UserPagesComponents/VirtualEvents";
+import Events from "./UserPagecomponents/Events";
+import Hero from "./UserPagecomponents/Hero";
+import Tourism from "./UserPagecomponents/TourismSection";
+import VirtualMuseum from "./UserPagecomponents/VirtualEvents";
 
 export default function Home() {
   return (

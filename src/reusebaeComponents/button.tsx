@@ -4,9 +4,8 @@ import React from "react";
 interface buttonProps {
   text: string;
   type: "button" | "submit" | "reset";
-  click?: ((formData: FormData) => void) | undefined;
+  click?: any;
   backGroundColor?: string;
-
   hoverColor?: string;
   focusColor?: string;
   textColor?: string;
