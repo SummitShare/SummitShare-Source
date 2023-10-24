@@ -3,3 +3,4 @@ lerna-debug.log
 pnpm-debug.log
 .idea
 .vscode/
+packages/dapp/generate.js

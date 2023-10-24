@@ -119,7 +119,6 @@ CREATE TABLE "users" (
     "walletaddress" VARCHAR,
     "bio" VARCHAR,
     "roleid" INTEGER,
-    "isemailverified" BOOLEAN DEFAULT false,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("userid")
 );
@@ -132,17 +131,6 @@ CREATE TABLE "votes" (
     "decision" "decision",
 
     CONSTRAINT "votes_pkey" PRIMARY KEY ("voteid")
-);
-
--- CreateTable
-CREATE TABLE "UserVerification" (
-    "ID" UUID NOT NULL,
-    "userid" UUID NOT NULL,
-    "Token" TEXT NOT NULL,
-    "Expires" TIMESTAMPTZ(6) NOT NULL,
-    "CreatedAt" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT "UserVerification_pkey" PRIMARY KEY ("ID")
 );
 
 -- CreateIndex
@@ -159,12 +147,6 @@ CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_walletaddress_key" ON "users"("walletaddress");
-
--- CreateIndex
-CREATE UNIQUE INDEX "UserVerification_userid_key" ON "UserVerification"("userid");
-
--- CreateIndex
-CREATE INDEX "idx_expires" ON "UserVerification"("Expires");
 
 -- AddForeignKey
 ALTER TABLE "contracts" ADD CONSTRAINT "contracts_eventid_fkey" FOREIGN KEY ("eventid") REFERENCES "events"("eventid") ON DELETE NO ACTION ON UPDATE NO ACTION;
@@ -210,7 +192,4 @@ ALTER TABLE "votes" ADD CONSTRAINT "votes_proposalid_fkey" FOREIGN KEY ("proposa
 
 -- AddForeignKey
 ALTER TABLE "votes" ADD CONSTRAINT "votes_userid_fkey" FOREIGN KEY ("userid") REFERENCES "users"("userid") ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- AddForeignKey
-ALTER TABLE "UserVerification" ADD CONSTRAINT "UserVerification_userid_fkey" FOREIGN KEY ("userid") REFERENCES "users"("userid") ON DELETE CASCADE ON UPDATE NO ACTION;
 
