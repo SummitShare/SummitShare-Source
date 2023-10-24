@@ -5,24 +5,25 @@ import {
   clearStore,
   beforeAll,
   afterAll
-} from "matchstick-as"
+} from "matchstick-as/assembly/index"
 import { Address, BigInt } from "@graphprotocol/graph-ts"
-import { ContractFunded } from "../generated/schema"
-import { ContractFunded as ContractFundedEvent } from "../generated/Storage/Storage"
-import { handleContractFunded } from "../src/storage"
-import { createContractFundedEvent } from "./storage-utils"
+import { Approval } from "../generated/schema"
+import { Approval as ApprovalEvent } from "../generated/ExhibitNFT/ExhibitNFT"
+import { handleApproval } from "../src/exhibit-nft"
+import { createApprovalEvent } from "./exhibit-nft-utils"
 
 // Tests structure (matchstick-as >=0.5.0)
 // https://thegraph.com/docs/en/developer/matchstick/#tests-structure-0-5-0
 
 describe("Describe entity assertions", () => {
   beforeAll(() => {
-    let funder = Address.fromString(
+    let owner = Address.fromString("0x0000000000000000000000000000000000000001")
+    let approved = Address.fromString(
       "0x0000000000000000000000000000000000000001"
     )
-    let amount = BigInt.fromI32(234)
-    let newContractFundedEvent = createContractFundedEvent(funder, amount)
-    handleContractFunded(newContractFundedEvent)
+    let tokenId = BigInt.fromI32(234)
+    let newApprovalEvent = createApprovalEvent(owner, approved, tokenId)
+    handleApproval(newApprovalEvent)
   })
 
   afterAll(() => {
@@ -32,20 +33,26 @@ describe("Describe entity assertions", () => {
   // For more test scenarios, see:
   // https://thegraph.com/docs/en/developer/matchstick/#write-a-unit-test
 
-  test("ContractFunded created and stored", () => {
-    assert.entityCount("ContractFunded", 1)
+  test("Approval created and stored", () => {
+    assert.entityCount("Approval", 1)
 
     // 0xa16081f360e3847006db660bae1c6d1b2e17ec2a is the default address used in newMockEvent() function
     assert.fieldEquals(
-      "ContractFunded",
+      "Approval",
       "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
-      "funder",
+      "owner",
       "0x0000000000000000000000000000000000000001"
     )
     assert.fieldEquals(
-      "ContractFunded",
+      "Approval",
       "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
-      "amount",
+      "approved",
+      "0x0000000000000000000000000000000000000001"
+    )
+    assert.fieldEquals(
+      "Approval",
+      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
+      "tokenId",
       "234"
     )
 
