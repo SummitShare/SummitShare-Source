@@ -1,6 +1,6 @@
 specVersion: 0.0.5
 schema:
-  file: ./schema.graphql
+  file: schema.graphql
 dataSources:
   - kind: ethereum
     name: ExhibitNFT
@@ -21,7 +21,7 @@ dataSources:
         - Transfer
       abis:
         - name: ExhibitNFT
-          file: ./abis/ExhibitNFT.json
+          file: ExhibitNFT/abis/ExhibitNFT.json
       eventHandlers:
         - event: Approval(indexed address,indexed address,indexed uint256)
           handler: handleApproval
@@ -33,7 +33,7 @@ dataSources:
           handler: handleTicketMinted
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
-      file: ./src/exhibit-nft.ts
+      file: ExhibitNFT/ExhibitNFT.wasm
   - kind: ethereum
     name: EventEscrow
     network: sepolia
@@ -49,11 +49,11 @@ dataSources:
         - PaymentDistributed
       abis:
         - name: EventEscrow
-          file: ./abis/EventEscrow.json
+          file: EventEscrow/abis/EventEscrow.json
       eventHandlers:
         - event: PaymentDistributed(address,uint256)
           handler: handlePaymentDistributed
-      file: ./src/event-escrow.ts
+      file: EventEscrow/EventEscrow.wasm
   - kind: ethereum
     name: EventOrganizerService
     network: sepolia
@@ -70,13 +70,13 @@ dataSources:
         - EventOrganizerServiceOwnershipTransferred
       abis:
         - name: EventOrganizerService
-          file: ./abis/EventOrganizerService.json
+          file: EventOrganizerService/abis/EventOrganizerService.json
       eventHandlers:
         - event: ExhibitOrganized(string,address,address)
           handler: handleExhibitOrganized
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
-      file: ./src/event-organizer-service.ts
+      file: EventOrganizerService/EventOrganizerService.wasm
   - kind: ethereum
     name: Museum
     network: sepolia
@@ -94,7 +94,7 @@ dataSources:
         - TicketPurchased
       abis:
         - name: Museum
-          file: ./abis/Museum.json
+          file: Museum/abis/Museum.json
       eventHandlers:
         - event: ExhibitCurated(string)
           handler: handleExhibitCurated
@@ -102,4 +102,4 @@ dataSources:
           handler: handleOwnershipTransferred
         - event: TicketPurchased(address,string,uint256)
           handler: handleTicketPurchased
-      file: ./src/museum.ts
+      file: Museum/Museum.wasm
