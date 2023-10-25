@@ -1,0 +1,105 @@
+specVersion: 0.0.5
+schema:
+  file: schema.graphql
+dataSources:
+  - kind: ethereum
+    name: ExhibitNFT
+    network: sepolia
+    source:
+      address: "0x690B9A9E9aa1C9dB991C7721a92d351Db4FaC990"
+      abi: ExhibitNFT
+      startBlock: 0
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - ApprovalForAll
+        - OwnershipTransferred
+        - TicketMinted
+        - Transfer
+      abis:
+        - name: ExhibitNFT
+          file: ExhibitNFT/abis/ExhibitNFT.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,indexed uint256)
+          handler: handleApproval
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: TicketMinted(address,uint256)
+          handler: handleTicketMinted
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+      file: ExhibitNFT/ExhibitNFT.wasm
+  - kind: ethereum
+    name: EventEscrow
+    network: sepolia
+    source:
+      address: "0x690B9A9E9aa1C9dB991C7721a92d351Db4FaC990"
+      abi: EventEscrow
+      startBlock: 0
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - PaymentDistributed
+      abis:
+        - name: EventEscrow
+          file: EventEscrow/abis/EventEscrow.json
+      eventHandlers:
+        - event: PaymentDistributed(address,uint256)
+          handler: handlePaymentDistributed
+      file: EventEscrow/EventEscrow.wasm
+  - kind: ethereum
+    name: EventOrganizerService
+    network: sepolia
+    source:
+      address: "0x690B9A9E9aa1C9dB991C7721a92d351Db4FaC990"
+      abi: EventOrganizerService
+      startBlock: 0
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - ExhibitOrganized
+        - EventOrganizerServiceOwnershipTransferred
+      abis:
+        - name: EventOrganizerService
+          file: EventOrganizerService/abis/EventOrganizerService.json
+      eventHandlers:
+        - event: ExhibitOrganized(string,address,address)
+          handler: handleExhibitOrganized
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+      file: EventOrganizerService/EventOrganizerService.wasm
+  - kind: ethereum
+    name: Museum
+    network: sepolia
+    source:
+      address: "0x690B9A9E9aa1C9dB991C7721a92d351Db4FaC990"
+      abi: Museum
+      startBlock: 0
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - ExhibitCurated
+        - MuseumOwnershipTransferred
+        - TicketPurchased
+      abis:
+        - name: Museum
+          file: Museum/abis/Museum.json
+      eventHandlers:
+        - event: ExhibitCurated(string)
+          handler: handleExhibitCurated
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: TicketPurchased(address,string,uint256)
+          handler: handleTicketPurchased
+      file: Museum/Museum.wasm
