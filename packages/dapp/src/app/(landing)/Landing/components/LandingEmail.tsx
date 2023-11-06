@@ -1,27 +1,20 @@
 "use client";
-import { useEffect } from "react";
-// import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import Button from "@/reusebaeComponents/button";
-import Inputs from "@/reusebaeComponents/inputs";
 import Form from "@/reusebaeComponents/form";
-import { useForm } from "react-hook-form";
-import { DevTool } from "@hookform/devtools";
 import LineInputs from "@/reusebaeComponents/LineInput";
-import { useToggle } from "@/functonality/navBarController";
+import TextArea from "@/reusebaeComponents/textArea";
+import React from "react";
+import { useForm } from "react-hook-form";
+import Partners from "./LandingPartners";
+import { DevTool } from "@hookform/devtools";
 
 interface fromData {
   email: string;
-  password: string;
+  message: string;
+  subject: string;
 }
 
-function SignIn() {
-  const router = useRouter();
-
-  const handleCancel = () => {
-    router.push("/Landing");
-  };
-
+function ContactUs() {
   const form = useForm<fromData>();
   const { register, control, handleSubmit, formState } = form;
   const { errors } = formState;
@@ -30,15 +23,13 @@ function SignIn() {
   };
 
   return (
-    <div className=" ">
+    <div className="lg:grid lg:grid-cols-2  items-center justify-center w-screen h-screen py-20 px-10 ">
       <Form
-        bg="white"
-        shadow="md"
-        title="Hey welcome back!"
+        title="Contact Us"
         // @ts-ignore
         onSubmit={handleSubmit(onSubmit)}
         noValidate
-        description="SignIn to your SummitShare Account"
+        description="Email us if you have any inquires"
         inputs={
           <div className="space-y-5">
             <LineInputs
@@ -56,41 +47,49 @@ function SignIn() {
             </p>
             <LineInputs
               length="[350px]"
-              label="Password"
-              name="password"
-              type="password"
-              id="password"
-              message="Password name required!"
+              label="Subject"
+              name="subject"
+              type="text"
+              id="subject"
+              message="Subject name required!"
               register={register}
             />
             <p className="text-xs text-red-500 font-light">
-              {errors.password?.message}
+              {errors.subject?.message}
+            </p>
+            <TextArea
+              length="[350px]"
+              hight="h-40"
+              label="Message"
+              name="message"
+              id="message"
+              message="message name required!"
+              register={register}
+            />
+            <p className="text-xs text-red-500 font-light">
+              {errors.message?.message}
             </p>
           </div>
         }
         submit={
-          <div className="flex flex-row gap-2">
+          <div className="font-bold">
             <Button
-              text="Sign in"
+              text="Submit"
               type="submit"
               backGroundColor="bg-orange-500"
               textColor="text-white"
-              hover="hover:bg-orange-950/90"
-            />
-            <Button
-              // @ts-ignore
-              click={handleCancel}
-              text="Cancel"
-              type="button"
-              borderColor=" border border-stone-300"
-              textColor="text-stone-500"
-              hover=""
+              hover="hover:bg-orange-500/90"
             />
           </div>
         }
       />
+
+      <DevTool control={control} />
+      <div>
+        <Partners />
+      </div>
     </div>
   );
 }
 
-export default SignIn;
+export default ContactUs;

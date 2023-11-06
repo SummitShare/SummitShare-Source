@@ -4,10 +4,10 @@ import EventFormTwo from "./components/EventFormTwo";
 
 const EventsFormData = () => {
   return (
-    <div className="fixed inset-0 flex justify-center items-center bg-slate-950/10">
-      {/* <EventFormTwo /> */}
+    <div className="ml-[250px]">
       <EventFormOne />
-      {/* <FileUploadForm /> */}
+      <EventFormTwo />
+      <FileUploadForm />
     </div>
   );
 };

@@ -76,7 +76,13 @@ function FileUploadForm() {
                 control={control}
                 render={({ field }) => (
                   <>
-                    <div className="relative rounded-xl border-dashed border-2 w-[450px] h-[450px] flex justify-center items-center overflow-hidden">
+                    <div
+                      className={`relative rounded-xl w-[450px] h-[450px] flex justify-center items-center overflow-hidden ${
+                        coverPhotoPreview === null
+                          ? "border  border-dashed border-stone-500 "
+                          : "border  border-dashed border-amber-500 "
+                      }`}
+                    >
                       {coverPhotoPreview ? null : (
                         <p className="text-slate-500/50">Cover Photo</p>
                       )}
@@ -111,7 +117,13 @@ function FileUploadForm() {
                 control={control}
                 render={({ field }) => (
                   <>
-                    <div className="relative rounded-xl border-dashed border-2 w-[450px] h-[450px] flex justify-center items-center">
+                    <div
+                      className={`relative rounded-xl  w-[450px] h-[450px] flex justify-center items-center ${
+                        galleryImagesPreview.length === 0
+                          ? "border  border-dashed border-stone-500 "
+                          : "border  border-dashed border-amber-500 "
+                      }`}
+                    >
                       {galleryImagesPreview.length === 0 ? (
                         <p className="text-slate-500/50">Gallery Images</p>
                       ) : null}
@@ -152,16 +164,10 @@ function FileUploadForm() {
           <div className="flex flex-row gap-2">
             {/* Next and Cancel buttons */}
             <Button
-              text="Next"
+              text="Submit"
               type="submit"
-              backGroundColor="slate-950"
-              textColor="white"
-            />
-            <Button
-              text="Cancel"
-              type="button"
-              textColor="slate-500"
-              borderColor="slate-500"
+              backGroundColor="bg-amber-500"
+              textColor="text-white"
             />
           </div>
         }

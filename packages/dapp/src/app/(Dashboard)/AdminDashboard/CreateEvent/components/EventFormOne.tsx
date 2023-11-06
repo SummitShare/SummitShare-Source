@@ -3,13 +3,16 @@ import { addEventToDatabase } from "@/functonality/createEvent"; // Make sure th
 import Button from "@/reusebaeComponents/button";
 import Form from "@/reusebaeComponents/form";
 import Inputs from "@/reusebaeComponents/inputs";
+import LineInputs from "@/reusebaeComponents/LineInput";
+import TextArea from "@/reusebaeComponents/textArea";
 
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 
 interface fromData {
   eventName: string;
-  eventTime: string;
+  eventStartTime: string;
+  eventEndTime: string;
   eventLocation: string;
   ticketCost: string;
   ticketNo: string;
@@ -35,8 +38,8 @@ function EventFormOne() {
           description=" fill in the inputs below to create a new event!"
           inputs={
             <div className="flex flex-row gap-8 ">
-              <div className="space-y-2">
-                <Inputs
+              <div className="space-y-6">
+                <LineInputs
                   text="The world museum"
                   length="[350px]"
                   label="Event Name"
@@ -49,7 +52,7 @@ function EventFormOne() {
                 <p className="text-xs text-red-500 font-light">
                   {errors.eventName?.message}
                 </p>
-                <Inputs
+                <LineInputs
                   text="Lusaka,Zambia"
                   length="[350px]"
                   label="Event Location"
@@ -62,7 +65,7 @@ function EventFormOne() {
                 <p className="text-xs text-red-500 font-light">
                   {errors.eventLocation?.message}
                 </p>
-                <Inputs
+                <LineInputs
                   text="0000.000Eth"
                   length="[350px]"
                   label="Ticket Cost"
@@ -75,7 +78,7 @@ function EventFormOne() {
                 <p className="text-xs text-red-500 font-light">
                   {errors.ticketCost?.message}
                 </p>
-                <Inputs
+                <LineInputs
                   text="Number"
                   length="[350px]"
                   label="Ticket N.o"
@@ -88,21 +91,45 @@ function EventFormOne() {
                 <p className="text-xs text-red-500 font-light">
                   {errors.ticketNo?.message}
                 </p>
-              </div>
-              <div className="space-y-2">
-                <Inputs
-                  length="[350px]"
-                  label="Event Time"
-                  name="eventTime"
-                  type="time"
-                  id="eventTime"
-                  message="event time required!"
+                <TextArea
+                  text="Type..."
+                  length="full"
+                  label="Discretion"
+                  name="discretion"
+                  id="discretion"
+                  message="discretion required!"
                   register={register}
                 />
                 <p className="text-xs text-red-500 font-light">
-                  {errors.eventTime?.message}
+                  {errors.discretion?.message}
                 </p>
-                <Inputs
+              </div>
+              <div className="space-y-6">
+                <LineInputs
+                  length="[350px]"
+                  label="Event Start Time"
+                  name="eventStartTime"
+                  type="time"
+                  id="eventStartTime"
+                  message="time required!"
+                  register={register}
+                />
+                <p className="text-xs text-red-500 font-light">
+                  {errors.eventStartTime?.message}
+                </p>
+                <LineInputs
+                  length="[350px]"
+                  label="Event End Time"
+                  name="eventEndTime"
+                  type="time"
+                  id="eventEndTime"
+                  message="time required!"
+                  register={register}
+                />
+                <p className="text-xs text-red-500 font-light">
+                  {errors.eventEndTime?.message}
+                </p>
+                <LineInputs
                   length="[350px]"
                   label="Event Date"
                   name="eventDate"
@@ -114,35 +141,16 @@ function EventFormOne() {
                 <p className="text-xs text-red-500 font-light">
                   {errors.eventDate?.message}
                 </p>
-                <Inputs
-                  text="Type..."
-                  length="[350px]"
-                  label="Discretion"
-                  name="discretion"
-                  type="text"
-                  id="discretion"
-                  message="discretion required!"
-                  register={register}
-                />
-                <p className="text-xs text-red-500 font-light">
-                  {errors.discretion?.message}
-                </p>
               </div>
             </div>
           }
           submit={
             <div className="flex flex-row gap-2">
               <Button
-                text="Next"
+                text="Submit"
                 type="submit"
-                backGroundColor="slate-950"
-                textColor="white"
-              />
-              <Button
-                text="Cancel"
-                type="button"
-                textColor="slate-500"
-                borderColor="slate-500"
+                backGroundColor="bg-amber-500"
+                textColor="text-white"
               />
             </div>
           }

@@ -4,13 +4,14 @@ import React from "react";
 interface buttonProps {
   text: string;
   type: "button" | "submit" | "reset";
-  click?: any;
+  click?: () => void;
   backGroundColor?: string;
   hoverColor?: string;
   focusColor?: string;
   textColor?: string;
   icon?: React.ReactNode;
   borderColor?: string;
+  hover?: string;
 }
 
 function Button({
@@ -18,17 +19,18 @@ function Button({
   type,
   click,
   backGroundColor,
-
   hoverColor,
   focusColor,
   textColor,
   icon,
   borderColor,
+  hover,
 }: buttonProps) {
   return (
     <button
       type={type}
-      className={`hover:bg-${hoverColor} flex flex-row gap-2 items-center justify-center bg-${backGroundColor} text-${textColor} px-4 py-3 text-sm rounded-xl w-24 border border-${borderColor}`}
+      className={`hover:bg-${hoverColor} flex flex-row gap-2 items-center justify-center ${backGroundColor} ${textColor} px-4 py-3 rounded-xl w-24  text-sm font-medium ${borderColor} ${hover} transition-all `}
+      onClick={click}
     >
       <div> {text}</div>
     </button>

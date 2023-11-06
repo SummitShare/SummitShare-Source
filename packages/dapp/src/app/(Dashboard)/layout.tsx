@@ -18,7 +18,7 @@ export default function DashBoardLayout({
 }) {
   return (
     <html lang="en">
-      <body className=" overscroll-none bg-slate-100 {inter.className} relative">
+      <body className=" overscroll-none bg-white {inter.className} relative">
         <DashboardNavBar />
         {children}
       </body>

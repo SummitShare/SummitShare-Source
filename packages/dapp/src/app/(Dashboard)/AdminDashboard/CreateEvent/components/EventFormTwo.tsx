@@ -6,6 +6,7 @@ import RemovePartnerButton from "@/popUpComponents/removePartnerIcon";
 import Button from "@/reusebaeComponents/button";
 import Form from "@/reusebaeComponents/form";
 import Inputs from "@/reusebaeComponents/inputs";
+import LineInputs from "@/reusebaeComponents/LineInput";
 
 // Define initial data structure for a partner
 interface fromData {
@@ -47,22 +48,19 @@ function EventFormTwo() {
           inputs={
             <div className="space-y-5 ">
               {/* Add partner button */}
-              {fields.length >= 4 ? (
-                <div></div>
-              ) : (
-                <div
-                  className="w-fit h-fit"
-                  onClick={() =>
-                    append({
-                      email: "",
-                      walletAddress: "",
-                      split: "",
-                    })
-                  }
-                >
-                  <AddPartnerButton />
-                </div>
-              )}
+
+              <div
+                className="w-fit h-fit"
+                onClick={() =>
+                  append({
+                    email: "",
+                    walletAddress: "",
+                    split: "",
+                  })
+                }
+              >
+                <AddPartnerButton />
+              </div>
 
               {/* Partner input fields */}
               {fields.map((partners, index) => (
@@ -71,7 +69,7 @@ function EventFormTwo() {
                   className=" flex flex-row gap-2 items-end"
                 >
                   {/* Email input */}
-                  <Inputs
+                  <LineInputs
                     text="partner@mail.com"
                     length="[350px]"
                     label="Email"
@@ -83,7 +81,7 @@ function EventFormTwo() {
                   />
 
                   {/* Wallet Address input */}
-                  <Inputs
+                  <LineInputs
                     text="Wallet Address(ERC20)"
                     length="[400px]"
                     label="Wallet Address"
@@ -95,9 +93,9 @@ function EventFormTwo() {
                   />
 
                   {/* Split input */}
-                  <Inputs
+                  <LineInputs
                     text="0%"
-                    length="20"
+                    length="24"
                     label="Split"
                     name={`partners.${index}.split`}
                     type="text"
@@ -122,14 +120,8 @@ function EventFormTwo() {
               <Button
                 text="Submit"
                 type="submit"
-                backGroundColor="slate-950"
-                textColor="white"
-              />
-              <Button
-                text="Cancel"
-                type="button"
-                textColor="slate-500"
-                borderColor="slate-500"
+                backGroundColor="bg-amber-500"
+                textColor="text-white"
               />
             </div>
           }
