@@ -8,133 +8,238 @@ datasource db {
 }
 
 model contracts {
-  contractaddress String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  hardhatdeployid String? @unique @db.Uuid
-  eventid         String? @db.Uuid
-  events          events? @relation(fields: [eventid], references: [eventid], onDelete: NoAction, onUpdate: NoAction)
+  contract_address                          String   @id
+  contract_abi                              Json     @db.Json
+  deploy_id                                 String
+  event_id                                  String?  @db.Uuid
+  events_contracts_event_idToevents         events?  @relation("contracts_event_idToevents", fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  events_events_contract_addressTocontracts events[] @relation("events_contract_addressTocontracts")
 }
 
-model eventimages {
-  eventimageid String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  s3_url       String? @unique @db.VarChar
-  eventid      String? @db.Uuid
-  events       events? @relation(fields: [eventid], references: [eventid], onDelete: NoAction, onUpdate: NoAction)
+model email_verification {
+  id         String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  user_id    String?  @db.Uuid
+  token      String   @unique(map: "email_verification_token_unique")
+  expires    DateTime @db.Timestamp(6)
+  created_at DateTime @db.Timestamp(6)
+  users      users?   @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model event_images {
+  id       String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  s3_url   String
+  event_id String? @db.Uuid
+  events   events? @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model events {
-  eventid      String         @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  eventtypeid  Int?
-  contractid   String?        @db.Uuid
-  userid       String?        @db.Uuid
-  description  String?        @db.VarChar
-  contracts    contracts[]
-  eventimages  eventimages[]
-  eventtypes   eventtypes?    @relation(fields: [eventtypeid], references: [eventtypeid], onDelete: NoAction, onUpdate: NoAction)
-  users        users?         @relation(fields: [userid], references: [userid], onDelete: NoAction, onUpdate: NoAction)
-  proposals    proposals[]
-  requests     requests[]
-  stakeholders stakeholders[]
+  id                                           String                   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  event_type                                   event_type_enum?
+  event_name                                   String?
+  user_id                                      String?                  @db.Uuid
+  event_category                               event_category_enum?
+  event_start_time                             DateTime?                @db.Timestamp(6)
+  event_timezone                               String?
+  event_location                               String?
+  description                                  String?
+  contract_address                             String?
+  event_end_time                               DateTime?                @db.Timestamp(6)
+  cost                                         Decimal?                 @db.Decimal(10, 2)
+  total_number_tickets                         Int?
+  contracts_contracts_event_idToevents         contracts[]              @relation("contracts_event_idToevents")
+  event_images                                 event_images[]
+  users                                        users?                   @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  contracts_events_contract_addressTocontracts contracts?               @relation("events_contract_addressTocontracts", fields: [contract_address], references: [contract_address], onDelete: NoAction, onUpdate: NoAction, map: "fk_events_contracts")
+  latest_rejecters_queue                       latest_rejecters_queue[]
+  proposals                                    proposals[]
+  requests                                     requests[]
+  stakeholders                                 stakeholders[]
+  ticket_transaction                           ticket_transaction[]
+  tickets                                      tickets[]
 }
 
-model eventtypes {
-  eventtypeid Int       @id @default(0)
-  typename    typename?
-  events      events[]
+model exhibitor_account_users {
+  id                                                        String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  exhibitor_account_id                                      String? @db.Uuid
+  user_id                                                   String? @db.Uuid
+  role                                                      String
+  users_exhibitor_account_users_exhibitor_account_idTousers users?  @relation("exhibitor_account_users_exhibitor_account_idTousers", fields: [exhibitor_account_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users_exhibitor_account_users_user_idTousers              users?  @relation("exhibitor_account_users_user_idTousers", fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([exhibitor_account_id, user_id], map: "exhibitor_account_users_unique")
+}
+
+model fund_distributions {
+  id                       String        @id
+  stakeholder_id           String?       @db.Uuid
+  amount                   Decimal       @db.Decimal(10, 2)
+  transaction_time         DateTime      @default(now()) @db.Timestamp(6)
+  receiving_wallet_address String?
+  stakeholders             stakeholders? @relation(fields: [stakeholder_id], references: [stakeholder_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model latest_rejecters_queue {
+  id          String     @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  event_id    String?    @db.Uuid
+  proposal_id String?    @db.Uuid
+  user_id     String?    @db.Uuid
+  created_at  DateTime   @default(now()) @db.Timestamp(6)
+  events      events?    @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  proposals   proposals? @relation(fields: [proposal_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users       users?     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model proposals {
-  proposalid String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  eventid    String? @db.Uuid
-  userid     String? @db.Uuid
-  content    String?
-  events     events? @relation(fields: [eventid], references: [eventid], onDelete: NoAction, onUpdate: NoAction)
-  users      users?  @relation(fields: [userid], references: [userid], onDelete: NoAction, onUpdate: NoAction)
-  votes      votes[]
+  id                     String                   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  event_id               String?                  @db.Uuid
+  user_id                String?                  @db.Uuid
+  content                Json                     @db.Json
+  created_at             DateTime                 @default(now()) @db.Timestamp(6)
+  latest_rejecters_queue latest_rejecters_queue[]
+  events                 events?                  @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users                  users?                   @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  votes                  votes[]
 }
 
 model requests {
-  requestid String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  userid    String? @db.Uuid
-  eventid   String? @db.Uuid
-  status    status?
-  events    events? @relation(fields: [eventid], references: [eventid], onDelete: NoAction, onUpdate: NoAction)
-  users     users?  @relation(fields: [userid], references: [userid], onDelete: NoAction, onUpdate: NoAction)
+  id         String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  user_id    String?  @db.Uuid
+  event_id   String?  @db.Uuid
+  status     String   @default("Pending")
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  events     events?  @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users      users?   @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
-model roles {
-  roleid   Int       @id @default(0)
-  roletype roletype?
-  users    users[]
-}
-
-model socialmedialinks {
-  linkid        String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  userid        String? @db.Uuid
-  linkedin_url  String? @db.VarChar
-  facebook_url  String? @db.VarChar
-  twitter_url   String? @db.VarChar
-  instagram_url String? @db.VarChar
-  users         users?  @relation(fields: [userid], references: [userid], onDelete: NoAction, onUpdate: NoAction)
+model social_media_links {
+  id            String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  user_id       String? @db.Uuid
+  linkedin_url  String?
+  facebook_url  String?
+  twitter_url   String?
+  instagram_url String?
+  users         users?  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model stakeholders {
-  stakeholderid String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  userid        String? @db.Uuid
-  eventid       String? @db.Uuid
-  stake         String? @db.VarChar
-  events        events? @relation(fields: [eventid], references: [eventid], onDelete: NoAction, onUpdate: NoAction)
-  users         users?  @relation(fields: [userid], references: [userid], onDelete: NoAction, onUpdate: NoAction)
+  stakeholder_id     String               @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  user_id            String?              @db.Uuid
+  event_id           String?              @db.Uuid
+  stake              Int?
+  fund_distributions fund_distributions[]
+  events             events?              @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users              users?               @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
-model userimages {
-  userimageid  String     @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  s3_url       String?    @unique @db.VarChar
-  userid       String?    @db.Uuid
-  imagetype    imagetype?
-  galleryindex Int?
-  users        users?     @relation(fields: [userid], references: [userid], onDelete: NoAction, onUpdate: NoAction)
+model ticket_transaction {
+  id               String   @id(map: "tickets_transactions_pkey")
+  event_id         String?  @db.Uuid
+  price            Decimal  @db.Decimal(10, 2)
+  transaction_time DateTime @default(now()) @db.Timestamp(6)
+  events           events?  @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tickets_transactions_event_id_fkey")
+}
+
+model tickets {
+  id               String    @id
+  event_id         String?   @db.Uuid
+  wallet_address   String?
+  event_start_time DateTime? @db.Timestamp(6)
+  event_end_time   DateTime? @db.Timestamp(6)
+  event_timezone   String?
+  is_validated     Boolean   @default(false)
+  events           events?   @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model user_images {
+  id            String           @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  s3_url        String
+  user_id       String?          @db.Uuid
+  image_type    image_type_enum?
+  gallery_index Int?
+  users         users?           @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model user_sessions {
+  session_id    String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  user_id       String?  @db.Uuid
+  expires       DateTime @db.Timestamp(6)
+  session_token String
+  access_token  String
+  creation_time DateTime @db.Timestamp(6)
+  update_time   DateTime @db.Timestamp(6)
+  users         users?   @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model user_types {
+  id          Int     @id
+  type_name   String  @unique @db.VarChar(255)
+  description String?
+  users       users[]
+}
+
+model user_wallets {
+  id             String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  user_id        String? @db.Uuid
+  wallet_address String
+  users          users?  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model users {
-  userid           String             @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  email            String             @unique @db.VarChar
-  password         String             @db.VarChar
-  walletaddress    String?            @unique @db.VarChar
-  bio              String?            @db.VarChar
-  roleid           Int?
-  isemailverified  Boolean?           @default(false)
-  events           events[]
-  proposals        proposals[]
-  requests         requests[]
-  socialmedialinks socialmedialinks[]
-  stakeholders     stakeholders[]
-  userimages       userimages[]
-  roles            roles?             @relation(fields: [roleid], references: [roleid], onDelete: NoAction, onUpdate: NoAction)
-  userverification userverification?
-  votes            votes[]
+  id                                                                          String                    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  email                                                                       String                    @unique @db.VarChar(255)
+  username                                                                    String?                   @unique @db.VarChar(255)
+  password                                                                    String
+  wallet_address                                                              String?
+  bio                                                                         String?
+  email_verified                                                              Boolean?                  @default(false)
+  user_type_id                                                                Int?
+  email_verification                                                          email_verification[]
+  events                                                                      events[]
+  exhibitor_account_users_exhibitor_account_users_exhibitor_account_idTousers exhibitor_account_users[] @relation("exhibitor_account_users_exhibitor_account_idTousers")
+  exhibitor_account_users_exhibitor_account_users_user_idTousers              exhibitor_account_users[] @relation("exhibitor_account_users_user_idTousers")
+  latest_rejecters_queue                                                      latest_rejecters_queue[]
+  proposals                                                                   proposals[]
+  requests                                                                    requests[]
+  social_media_links                                                          social_media_links[]
+  stakeholders                                                                stakeholders[]
+  user_images                                                                 user_images[]
+  user_sessions                                                               user_sessions[]
+  user_wallets                                                                user_wallets[]
+  user_types                                                                  user_types?               @relation(fields: [user_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  votes                                                                       votes[]
 }
 
 model votes {
-  voteid     String     @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  proposalid String?    @db.Uuid
-  userid     String?    @db.Uuid
-  decision   decision?
-  proposals  proposals? @relation(fields: [proposalid], references: [proposalid], onDelete: NoAction, onUpdate: NoAction)
-  users      users?     @relation(fields: [userid], references: [userid], onDelete: NoAction, onUpdate: NoAction)
-}
-
-model userverification {
-  id        String    @id @db.Uuid
-  userid    String    @unique @db.Uuid
-  token     String
-  expires   DateTime? @db.Timestamptz(6)
-  createdat DateTime? @default(now()) @db.Timestamptz(6)
-  users     users     @relation(fields: [userid], references: [userid], onDelete: Cascade, onUpdate: NoAction)
+  id          String     @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  proposal_id String?    @db.Uuid
+  user_id     String?    @db.Uuid
+  decision    Boolean
+  created_at  DateTime   @default(now()) @db.Timestamp(6)
+  proposals   proposals? @relation(fields: [proposal_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users       users?     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 enum decision {
   Agree
   Disagree
+}
+
+enum event_category_enum {
+  solo_exhibitions
+  group_exhibitions
+  museum_exhibitions
+  art_event_exhibitions
+}
+
+enum event_type_enum {
+  Physical
+  Virtual
+}
+
+enum image_type_enum {
+  Profile
+  Cover
+  Gallery
 }
 
 enum imagetype {
