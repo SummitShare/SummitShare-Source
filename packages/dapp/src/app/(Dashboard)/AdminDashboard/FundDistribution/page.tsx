@@ -1,7 +1,7 @@
-import FundDistributionTable from "./components/FundDistributionTable";
+import { TableDemo } from "./components/data-table.tsx";
 
 const FundDistribution = () => {
-  return <FundDistributionTable />;
+  return <TableDemo />;
 };
 
 export default FundDistribution;

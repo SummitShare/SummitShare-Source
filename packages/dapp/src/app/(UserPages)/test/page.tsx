@@ -1,23 +1,25 @@
-import { testData } from "@/testData";
-import React, { useState } from "react";
+import {
+  columns,
+  FundDistribution,
+} from "@/app/(Dashboard)/AdminDashboard/FundDistribution/components/columns";
+import { DataTable } from "@/app/(Dashboard)/AdminDashboard/FundDistribution/components/data-table.tsx";
 
-function Test() {
-  const [selectedFilter, setSelectedFilter] = useState([]);
-  const [filteredItems, setfilteredItems] = useState(testData);
+async function getData(): Promise<FundDistribution[]> {
+  const res = await fetch(
+    "https://654a2cb1e182221f8d52a88e.mockapi.io/summitshare/eventdat"
+  );
+  const got = await res.json();
+  console.log(got);
 
-  const filters = ["museum", "art galleys"];
+  return [];
+}
+
+export default async function DemoPage() {
+  const data = await getData();
 
   return (
-    <div>
-      <div>
-        {filters.map((category) => (
-          <button className="bg-slate-950 text-slate-50 px-4 py-3">
-            {category}
-          </button>
-        ))}
-      </div>
+    <div className="container mx-auto py-10">
+      <DataTable columns={columns} data={data} />
     </div>
   );
 }
-
-export default Test;
