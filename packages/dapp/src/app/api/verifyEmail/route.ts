@@ -36,6 +36,7 @@ export async function GET(req: Request , res : NextResponse) {
         }
 
         // const id = verificationRecord.user_id
+        
     
         await prisma.$transaction([
           prisma.users.update({
