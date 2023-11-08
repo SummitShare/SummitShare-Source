@@ -1,146 +1,98 @@
-// // Required imports for NextAuth.js and database interaction
-// import NextAuth, { Account, Awaitable, Profile, Session, User } from "next-auth";
-// import Providers from "next-auth/providers";
-// import { PrismaClient } from '@prisma/client'; //  based on setup
-// import jwt from "jsonwebtoken";
-// import bcrypt from 'bcryptjs';
+import NextAuth from "next-auth";
+import Providers from "next-auth/providers";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { PrismaClient } from "@prisma/client";
+import bcrypt from 'bcryptjs';
+import jwt from "jsonwebtoken";
+import 'dotenv/config'
 
-// // Corrected import for JWT type
-// import type { JWT } from 'next-auth/jwt';
-// import dotenv from 'dotenv';
-// import { AdapterUser } from "next-auth/adapters";
+const prisma = new PrismaClient();
 
-// interface ExtendedSession extends Session {
-//   userId?: string;
-//   email?: string;
-//   walletaddress?: string;
-// }
+// Define a type that includes only the data we want to return from the authorize function.
+type AuthorizedUser = {
+  id: string;
+  email: string;
+};
+
+export default NextAuth({
+
+  providers: [
+
+    CredentialsProvider({
+        name: "Credentials",
+        //Sigin Callback goes here
+              credentials: {
+                email: { label: "Email", type: "text", placeholder: "gavin@hooli.com"},
+                password: {  label: "Password", type: "password" }
+              },
 
 
-// dotenv.config();
-
-// // Initialize the database client
-// const prisma = new PrismaClient();
-
-// //Temporary fix for credentials types not being found
-// declare module 'next-auth/providers' {
-//   var Credentials: any;
-// }
-
-// export default NextAuth({
-//   providers: [
-//     Providers.Credentials({
-//       name: 'Credentials',
-//       credentials: {
-//         email: { label: "Email", type: "text" },
-//         password: { label: "Password", type: "password" },
-//       },
-
-//       authorize: async (credentials: { email: string; password: string; name: string; id: string;}) => {
-//         // logic to validate credentials against prisma
-//         const user = await prisma.users.findUnique({
-//           where: { email: credentials.email },
-//         });
-
-//         if (user && await bcrypt.compare(credentials.password, user.password)) {//Bcrypt
-//           return { userid: user.userid, email: user.email, walletaddress: user.walletaddress };
-//       }
-      
-//         return null;
-//       },
-//     }),
-//   ],
-
-//   secret: process.env.SECRET, // Secret for signing JWT, .env var
-//   session: {
-//     maxAge: 30 * 60, // 30 minutes
-//   },
-
-//   jwt: {
-//     //encryption: true,
-//     encode: async ({ secret, token, maxAge = 3600 }) => { // default value for maxAge
-//       if (!token || !token.id || !secret) { // Check for undefined token or secret
-//         throw new Error("Bad Token or Secret");
-//       }
-//       const jwtClaims = {
-//         "sub": token.id.toString(),
-//         "name": token.name || "",
-//         "email": token.email || "",
-//         "iat": Date.now() / 1000,
-//         "exp": Math.floor(Date.now() / 1000) + maxAge,
-//       };
-
-//       if (!secret) {
-//         throw new Error("Secret is undefined");
-//       }
-
-//       const encodedToken = jwt.sign(jwtClaims, secret as string, { algorithm: 'HS256' });
-//       return encodedToken;
-//     },
-//     decode: async ({ secret, token }) => {
-//       if (!secret) {
-//         throw new Error("Secret is undefined");
-//       }
-      
-//       if (typeof secret !== 'string') {
-//         throw new Error('Secret must be a string');
-//       }
-      
-//       const decodedToken = jwt.verify(token, secret as string, { algorithms: ['HS256'] });
-      
-//       return decodedToken;
-//     }
-//   },
+          //@ts-expect-error
+         authorize: async (credentials: Record<string, string>) => {
+          // Connect to database and find user by email
+          const user = await prisma.users.findUnique({
+            where: { email: credentials.email },
+          });
   
+          // If no user is found or password doesn't match, return null
+          if (!user || !(await bcrypt.compare(credentials.password, user.password))) {
+            throw new Error('Invalid email or password');
+          }
+
+        // Return a user of type AuthorizedUser
+        return { id: user.id, email: user.email } as AuthorizedUser;
+      }
+    })
+  ],
+
+  session: {
+    // Use JWT for session handling
+    //@ts-expect-error
+    jwt: true,
+    // Set the session duration to 1 hour
+    maxAge: 60 * 60, // 1 hour in seconds
+  },
+//JWT here
+  jwt: {
+    // Set the secret for encoding the JWT. Use a secure, random string.
+    secret: process.env.JWT_SECRET,
+
+    encode: async ({ secret, token, maxAge }) => {
+      const jwtClaims = {
+           //@ts-ignore
+        sub: token.sub.toString(),
+           //@ts-ignore
+        name: token.name,
+           //@ts-ignore
+        email: token.email,
+        iat: Date.now() / 1000,
+           //@ts-ignore
+        exp: Math.floor(Date.now() / 1000) + maxAge,
+      };
+
+      //Encode
+      const encodedToken = jwt.sign(jwtClaims, secret, { algorithm: 'HS256' });
+      return encodedToken;
+    },
+    //Decode
+    //@ts-expect-error
+    decode: async ({ secret, token, maxAge }) => {
+         //@ts-ignore
+      const decodedToken = jwt.verify(token, secret, { algorithms: ['HS256'] });
+      return decodedToken;
+    },
+  },
+
+  pages: {
+    signIn: './api/signup', // The URL to the sign-in page
+   // signOut: '/auth/signout', // The URL to the sign-out page
+   // error: '/auth/error', // Error page
+    //verifyRequest: '/auth/verify-request', // Page where a user is directed to check their email
+  },
   
 
-//   callbacks: {
-//     jwt: async (params: {
-//       token: JWT;
-//       user: User | AdapterUser;
-//       account: Account | null;
-//       profile?: Profile | undefined;
-//       trigger?: "signIn" | "signUp" | "update" | undefined;
-//       isNewUser?: boolean | undefined;
-//       session?: any;
-//     }) => {
-//       let { token, user } = params;
-    
-//       if (user) {
-//         if (!token) {
-//           token = {};
-//         }
-//         // Assuming that 'user' has 'id', 'email', and 'walletAddress' properties.
-//         // Adjust this block according to actual 'user' type on data tables.
-//         token.id = user.id as string;
-//         token.email = user.email as string;
-//         token.walletAddress = (user as any).walletAddress as string;  // Changed 'name' to 'walletAddress'
-//       }
-      
-//       return token as JWT;
-//     },    
+  // Debug to console set to true for development set to false when pushed to production!!
+  debug: false,
+});
 
 
-//     session: async (params: { session: Session; token: JWT; user: any }) => {
-//       const { session, token } = params;
-//       const customSession = session as ExtendedSession; // Cast to the extended type
-      
-//       if (token) {
-//         // Check if each property is a string before assigning it to the session
-//         if (typeof token.id === 'string') {
-//           customSession.userId = token.id;
-//         }
-//         if (typeof token.email === 'string') {
-//           customSession.email = token.email;
-//         }
-//         if (typeof token.walletAddress === 'string') {
-//           customSession.walletaddress = token.walletAddress;
-//         }
-//       }
-      
-//       return customSession as Awaitable<Session>;
-//     },
-
-//     },
-//   },
-// );
