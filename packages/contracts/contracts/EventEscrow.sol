@@ -14,7 +14,7 @@ contract EventEscrow {
         _;
     }
 
-    event PaymentDistributed(address beneficiary, uint256 amount);
+    event PaymentDistributed(address beneficiary, uint256 amount, address indexedcaller); //distributepayment caller = indexedcaller
 
     constructor(IERC20 _usdcToken, address[] memory _beneficiaries, uint256[] memory shares) {
         require(_beneficiaries.length == shares.length, "Mismatched beneficiaries and shares.");
@@ -35,7 +35,7 @@ contract EventEscrow {
             address beneficiary = beneficiaries[i];
             uint256 payment = (totalAmount * payouts[beneficiary]) / totalShares;
             usdcToken.transfer(beneficiary, payment);
-            emit PaymentDistributed(beneficiary, payment);
+            emit PaymentDistributed(beneficiary, payment, msg.sender); //msg.sender for indexedcaller
         }
     }
 }

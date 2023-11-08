@@ -12,8 +12,6 @@ contract ExhibitNFT is ERC721, Ownable {
   
   event TicketMinted(address to, uint256 tokenId);
 
-
-
   constructor(
     string memory name,
     string memory symbol,

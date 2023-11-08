@@ -14,15 +14,15 @@ import type {
   TypedDeferredTopicFilter,
   TypedEventLog,
   TypedListener,
-} from "../../../common";
+} from "../../../../common";
 
-export interface ReentrancyGuardInterface extends Interface {}
+export interface IERC20ErrorsInterface extends Interface {}
 
-export interface ReentrancyGuard extends BaseContract {
-  connect(runner?: ContractRunner | null): ReentrancyGuard;
+export interface IERC20Errors extends BaseContract {
+  connect(runner?: ContractRunner | null): IERC20Errors;
   waitForDeployment(): Promise<this>;
 
-  interface: ReentrancyGuardInterface;
+  interface: IERC20ErrorsInterface;
 
   queryFilter<TCEvent extends TypedContractEvent>(
     event: TCEvent,
