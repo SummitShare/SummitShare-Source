@@ -1,17 +1,14 @@
+import TicketsList from "@/ComponentsToBeEdited/EventsSection";
+import VirtualEventCard from "@/ComponentsToBeEdited/Exhibition";
 
-import Events from "./UserPagecomponents/Events";
-import Hero from "./UserPagecomponents/Hero";
-import Tourism from "./UserPagecomponents/TourismSection";
-import VirtualMuseum from "./UserPagecomponents/VirtualEvents";
-
+import HeroTwo from "./UserPagecomponents/HeroTwo";
 
 export default function Home() {
   return (
     <main className="space-y-10">
-      <Hero />
-      <Events />
-      <Tourism />
-      <VirtualMuseum />
+      <HeroTwo />
+      <TicketsList />
+      <VirtualEventCard />
     </main>
   );
 }

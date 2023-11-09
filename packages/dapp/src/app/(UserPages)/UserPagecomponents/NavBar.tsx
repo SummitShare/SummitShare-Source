@@ -1,65 +1,67 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   Bars2Icon,
+  BellIcon,
   MagnifyingGlassIcon,
   ShoppingCartIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { useToggle } from "../../../functonality/navBarController";
+import logo from "/public/summitsharelogo.png";
+import Image from "next/image";
+import NotificationCard from "./NotificationCard";
+import Link from "next/link";
 
 function NavBar() {
-  const [isOpen, toggleOpen] = useToggle();
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+
+  const handleNotifications = () => {
+    setIsNotificationsOpen(!isNotificationsOpen);
+  };
+
   return (
     <div>
-      {isOpen ? (
-        <div className="bg-slate-50">
-          <nav className="fixed top-0 bottom-0 right-0 left-0 bg-slate-50 flex flex-col justify-between pt-20 px-5 z-10 pb-10">
-            <div className="absolute top-7 right-5 ">
-              <XMarkIcon className="w-6 h-6 " onClick={toggleOpen} />
+      <div className="bg-white"></div>
+
+      <div className=" fixed top-0 inset-x-0 w-full h-20 py-4 flex flex-row justify-between items-center backdrop-blur-md px-5 bg-white/80 z-50 ">
+        <div className="flex flex-row justify-between items-center w-full lg:w-fit gap-6">
+          <div className="text-xl font-bold flex flex-row gap-2 items-center text-amber-950 ">
+            <div>
+              {/* <Image className="w-14 h-14" src={logo} alt="Icon"></Image> */}
             </div>
-            <div className="space-y-3 text slate-500 text-lg font-semibold">
-              <p className="hover:text-slate-950">Notifications</p>
-              <p className="hover:text-slate-950">GitHub</p>
-            </div>
-            {/* <div className="w-full flex justify-center">
-              <Wallet />
-            </div> */}
-          </nav>
-        </div>
-      ) : (
-        <div className=" fixed top-0 inset-x-0 w-full h-20 py-4 flex flex-row justify-between items-center backdrop-blur-md px-5 ">
-          <div className="flex flex-row gap-6 items-center">
-            <p className="text-xl font-bold">Icon</p>
-            <MagnifyingGlassIcon className="w-6 h-6 lg:hidden " />
+            <Link href={"/"} className="title-h4-slate">
+              Summit<span className="title-h4-orange">Share</span>
+            </Link>
+
             <div className="relative w-fit sm:block hidden ">
               <input
                 type={"text"}
                 placeholder="Search Collections,Artifacts or Tickets"
-                className="rounded-xl w-[400px] h-[40px] bg-slate-100 px-10 py-2 placeholder:text-xs flex flex-row items-center"
+                className="rounded-xl w-[400px] h-[40px] bg-stone-100 px-10 py-2 placeholder:text-xs flex flex-row items-center"
               ></input>
-              <MagnifyingGlassIcon className="w-5 h-5 absolute top-[10px] left-3 text-gray-400 " />
-            </div>
-            <div className="sm:block hidden">
-              <div className="flex flex-row gap-5 text-slate-400 text-sm">
-                <p>Notifications</p>
-                <p>GitHub</p>
-              </div>
+              <MagnifyingGlassIcon className="w-5 h-5 absolute top-[10px] left-3 text-stone-400 " />
             </div>
           </div>
-          <div className="flex flex-row gap-6 items-center">
-            {/* <div className="sm:block hidden">
-              <Wallet />
-            </div> */}
-
+        </div>
+        {/* <div className="flex flex-row gap-6 items-center">
             <div className="rounded-full bg-slate-100 h-6 w-6 lg:w-8 lg:h-8"></div>
             <Bars2Icon
               className="w-6 h-6 lg:hidden md:hidden"
               onClick={toggleOpen}
             />
+          </div> */}
+        <div className="flex flex-row gap-6 items-center">
+          <MagnifyingGlassIcon className="w-6 h-6 lg:hidden " />
+          <div className="group transition-all">
+            <BellIcon
+              onClick={handleNotifications}
+              className="w-6 h-6 text-stone-950 group-hover:text-amber-500"
+            />
           </div>
         </div>
-      )}
+      </div>
+      <div className="">{isNotificationsOpen ? <NotificationCard /> : ""}</div>
     </div>
   );
 }

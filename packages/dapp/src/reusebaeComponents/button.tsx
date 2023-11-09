@@ -19,6 +19,7 @@ function Button({
   type,
   click,
   backGroundColor,
+
   hoverColor,
   focusColor,
   textColor,
@@ -29,7 +30,7 @@ function Button({
   return (
     <button
       type={type}
-      className={`hover:bg-${hoverColor} flex flex-row gap-2 items-center justify-center ${backGroundColor} ${textColor} px-4 py-3 rounded-xl w-24  text-sm font-medium ${borderColor} ${hover} transition-all `}
+      className={`hover:bg-${hoverColor} flex flex-row gap-2 items-center justify-center ${backGroundColor} ${textColor} px-4 py-3 rounded-xl w-24  text-sm font-medium border-${borderColor} ${hover} transition-all `}
       onClick={click}
     >
       <div> {text}</div>

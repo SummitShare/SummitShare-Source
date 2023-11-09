@@ -1,7 +1,4 @@
 import React from "react";
-import SelectorCountry from "../../../../../ComponentsToBeEdited/SelectorCountry";
-import SelectorEvents from "../../../../../ComponentsToBeEdited/SelectorEvent";
-import TabsMenu from "../../../../../ComponentsToBeEdited/TabsMenu";
 import TicketCard from "../../../../../ComponentsToBeEdited/TicketCard";
 
 function PreviousEvents() {
@@ -9,7 +6,7 @@ function PreviousEvents() {
     <div className="space-y-5">
       <div className="space-y-5 w-full  ">
         <div className="w-full flex-row  ">
-          <p className="text-xl font-semibold">Our Events</p>
+          <p className="title-h4-slate">Our Events</p>
         </div>
         <div>
           <TicketCard />

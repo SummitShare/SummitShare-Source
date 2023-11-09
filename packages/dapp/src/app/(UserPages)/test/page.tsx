@@ -1,25 +1,15 @@
-import {
-  columns,
-  FundDistribution,
-} from "@/app/(Dashboard)/AdminDashboard/FundDistribution/components/columns";
-import { DataTable } from "@/app/(Dashboard)/AdminDashboard/FundDistribution/components/data-table.tsx";
+import ExhibitLink from "@/reusebaeComponents/3DExhibitLink";
+import ObjectCards from "@/reusebaeComponents/3DObjectCards";
+import React from "react";
+import CountryFilter from "../UserPagecomponents/Filters/CountryFilter";
 
-async function getData(): Promise<FundDistribution[]> {
-  const res = await fetch(
-    "https://654a2cb1e182221f8d52a88e.mockapi.io/summitshare/eventdat"
-  );
-  const got = await res.json();
-  console.log(got);
-
-  return [];
-}
-
-export default async function DemoPage() {
-  const data = await getData();
-
+function page() {
   return (
-    <div className="container mx-auto py-10">
-      <DataTable columns={columns} data={data} />
+    <div>
+      <ObjectCards />
+      <ExhibitLink />
     </div>
   );
 }
+
+export default page;

@@ -1,14 +1,33 @@
 import { ClockIcon, MapIcon, MapPinIcon } from "@heroicons/react/24/outline";
+import Image from "next/image";
+import Link from "next/link";
+import { ExhibitionData } from "./Exhibition";
 
-export default function VirtualEventsCard() {
+interface VirtualEventCardProps {
+  event: ExhibitionData;
+}
+const VirtualEventsCard: React.FC<VirtualEventCardProps> = ({ event }) => {
   return (
-    <div className="flex flex-row gap-2">
-      <div className=" relative bg-slate-950/10 w-[200px] h-[200px] rounded-xl flex flex-col gap-2 shadow-md ">
-        <div className=" absolute inset-x-0 bottom-2 flex flex-col  justify-center text-sm text-slate-50 p-2 font-semibold">
-          <p>womens history museum</p>
-          <p>ETH:000.3234</p>
+    <Link
+      href={""}
+      className="relative w-[200px] h-[200px] rounded-xl flex flex-col gap-2 shadow-md cursor-pointer group"
+    >
+      {/* Black overlay */}
+      <div className="absolute inset-0 bg-black/20 rounded-xl"></div>
+      <Image
+        width={100}
+        height={100}
+        src={event.image}
+        alt=""
+        className="w-full h-full rounded-xl object-cover"
+      />
+      <div className="absolute inset-x-0 bottom-2 flex flex-col justify-center text-sm p-2 font-semibold space-y-2">
+        <p className="text-white">{event.name}</p>
+        <div className=" font-normal  text-xs  text-green-700 bg-green-50 rounded-full px-2 py-1 w-fit ">
+          {event.price}
         </div>
       </div>
-    </div>
+    </Link>
   );
-}
+};
+export default VirtualEventsCard;

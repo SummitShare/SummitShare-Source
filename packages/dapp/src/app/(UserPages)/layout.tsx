@@ -1,10 +1,12 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Poppins } from "next/font/google";
 import NavBar from "./UserPagecomponents/NavBar";
 
-
-const inter = Inter({ subsets: ["latin"] });
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+});
 
 export const metadata: Metadata = {
   title: "SummitShare",
@@ -19,11 +21,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={
-
-          " bg-gray-50 mx-[10px] lg:mx-[30px] mt-20 mb-20 md:mx-[20px] {inter.className"
-
-        }
+        className={` bg-white mx-[10px] lg:mx-[30px] mt-20 mb-20 md:mx-[20px] ${poppins.className}
+        `}
       >
         <NavBar />
         {children}
