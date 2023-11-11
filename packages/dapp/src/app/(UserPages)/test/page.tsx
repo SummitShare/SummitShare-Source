@@ -1,5 +1,5 @@
-import ExhibitLink from "@/reusebaeComponents/3DExhibitLink";
-import ObjectCards from "@/reusebaeComponents/3DObjectCards";
+import ExhibitLink from "@/components/reusebaeComponents/3DExhibitLink";
+import ObjectCards from "@/components/reusebaeComponents/3DObjectCards";
 import React from "react";
 import CountryFilter from "../UserPagecomponents/Filters/CountryFilter";
 

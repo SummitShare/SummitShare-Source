@@ -1,5 +1,5 @@
+import Table from "@/components/reusebaeComponents/Table";
 import React from "react";
-import Table from "../../../../../reusebaeComponents/Table";
 
 const tableData = {
   name: "Event List",

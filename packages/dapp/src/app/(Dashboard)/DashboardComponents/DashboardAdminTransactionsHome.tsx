@@ -19,7 +19,7 @@ function DashboardAdminTransactionsHome() {
         </div>
 
         {/* Transaction Details */}
-        <div className="flex flex-row gap-[90px] bg-gray-100 rounded-md  h-10 items-center justify-center shadow-sm">
+        <div className="flex flex-row gap-[90px] bg-gray-100 rounded-md  h-10 items-center justify-center shadow-sm px-3 py-2">
           {/* User Info (e.g., profile image and name) */}
           <div className="flex flex-row gap-2 text-base font-normal">
             {/* User profile image */}

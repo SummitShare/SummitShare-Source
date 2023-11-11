@@ -1,12 +1,10 @@
 "use client";
+import AddPartnerButton from "@/components/reusebaeComponents/addPartnerButton";
+import Button from "@/components/reusebaeComponents/button";
+import Form from "@/components/reusebaeComponents/form";
+import LineInputs from "@/components/reusebaeComponents/LineInput";
+import RemovePartnerButton from "@/components/reusebaeComponents/removePartnerIcon";
 import { useForm, SubmitHandler, useFieldArray } from "react-hook-form";
-import { addEventToDatabase } from "@/functonality/createEvent";
-import AddPartnerButton from "@/popUpComponents/addPartnerButton";
-import RemovePartnerButton from "@/popUpComponents/removePartnerIcon";
-import Button from "@/reusebaeComponents/button";
-import Form from "@/reusebaeComponents/form";
-import Inputs from "@/reusebaeComponents/inputs";
-import LineInputs from "@/reusebaeComponents/LineInput";
 
 // Define initial data structure for a partner
 interface fromData {

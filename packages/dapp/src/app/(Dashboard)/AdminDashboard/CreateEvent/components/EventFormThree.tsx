@@ -1,8 +1,8 @@
 "use client";
+import Button from "@/components/reusebaeComponents/button";
+import Form from "@/components/reusebaeComponents/form";
 import React, { useState } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import Form from "@/reusebaeComponents/form";
-import Button from "@/reusebaeComponents/button";
 
 interface FormData {
   coverPhoto: FileList;

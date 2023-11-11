@@ -1,14 +1,21 @@
-interface EventsData {
-  id?: number;
-  eventName: string;
+interface EventData {
+  coverPhoto: string;
+  accountName: string;
+  adminPhoto: string;
+  adminName: string;
+  bio: string;
+  galleyImages: string[];
+  pastEvents: {}[];
+  id: string;
+  name: string;
+  date: string;
+  country: string;
+  eventType: string;
   eventDescription: string;
-  eventTime: string;
-  eventDate: string;
-  walletOne: string;
-  walletTwo: string;
-  split: string;
+  image: string;
   price: string;
-  ticketNumber: string;
+  eventTimeStart: string;
+  eventTimeEnd: string;
 }
 
 export interface inputProps {
@@ -40,4 +47,3 @@ declare module "next-auth" {
     };
   }
 }
-

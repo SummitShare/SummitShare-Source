@@ -1,8 +1,8 @@
 import React from "react";
-import LogInTabs from "../../components/LoginTabs";
+import SignUpSignInTabs from "../../components/LoginTabs";
 
 function page() {
-  return <LogInTabs />;
+  return <SignUpSignInTabs />;
 }
 
 export default page;

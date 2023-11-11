@@ -23,8 +23,8 @@ function LandingNavBar() {
             <div>
               {/* <Image className="w-14 h-14" src={logo} alt="Icon"></Image> */}
             </div>
-            <div>
-              Summit<span className="">Share</span>
+            <div className="title-h4-slate">
+              Summit<span className="title-h4-orange">Share</span>
             </div>
           </div>
         </div>

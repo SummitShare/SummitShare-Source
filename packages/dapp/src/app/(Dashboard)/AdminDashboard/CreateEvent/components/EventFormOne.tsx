@@ -1,12 +1,8 @@
 "use client";
-import { addEventToDatabase } from "@/functonality/createEvent"; // Make sure the path is correct
-import Button from "@/reusebaeComponents/button";
-import Form from "@/reusebaeComponents/form";
-import Inputs from "@/reusebaeComponents/inputs";
-import LineInputs from "@/reusebaeComponents/LineInput";
-import TextArea from "@/reusebaeComponents/textArea";
-
-import Link from "next/link";
+import Button from "@/components/reusebaeComponents/button";
+import Form from "@/components/reusebaeComponents/form";
+import LineInputs from "@/components/reusebaeComponents/LineInput";
+import TextArea from "@/components/reusebaeComponents/textArea";
 import { useForm } from "react-hook-form";
 
 interface fromData {

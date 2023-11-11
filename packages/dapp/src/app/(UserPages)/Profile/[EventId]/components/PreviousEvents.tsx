@@ -1,5 +1,4 @@
 import React from "react";
-import TicketCard from "../../../../../ComponentsToBeEdited/TicketCard";
 
 function PreviousEvents() {
   return (
@@ -8,9 +7,7 @@ function PreviousEvents() {
         <div className="w-full flex-row  ">
           <p className="title-h4-slate">Our Events</p>
         </div>
-        <div>
-          <TicketCard />
-        </div>
+        <div></div>
       </div>
     </div>
   );

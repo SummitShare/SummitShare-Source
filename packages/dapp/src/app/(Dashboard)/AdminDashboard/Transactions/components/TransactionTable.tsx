@@ -1,5 +1,5 @@
+import Table from "@/components/reusebaeComponents/Table";
 import React from "react";
-import Table from "../../../../../reusebaeComponents/Table"; // Make sure to provide the correct path to your Table component
 
 function ParentComponent() {
   // Define your data

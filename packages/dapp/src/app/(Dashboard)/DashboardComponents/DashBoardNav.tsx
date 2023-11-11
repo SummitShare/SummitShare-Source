@@ -13,9 +13,10 @@ import {
   Squares2X2Icon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import NavBarIconText from "@/reusebaeComponents/navBarIconText";
-import NavBarIconTextDropDown from "@/reusebaeComponents/navBarIconTextDropDown";
+
 import AddAdminForm from "./AddAdminEmail";
+import NavBarIconText from "@/components/reusebaeComponents/navBarIconText";
+import NavBarIconTextDropDown from "@/components/reusebaeComponents/navBarIconTextDropDown";
 
 export default function DashBoardNav() {
   const [isOpen, setIsOpen] = useState<boolean>(false);

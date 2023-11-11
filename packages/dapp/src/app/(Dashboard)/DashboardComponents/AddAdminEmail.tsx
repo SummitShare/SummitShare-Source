@@ -1,11 +1,10 @@
 "use client";
+import AddPartnerButton from "@/components/reusebaeComponents/addPartnerButton";
+import Button from "@/components/reusebaeComponents/button";
+import Form from "@/components/reusebaeComponents/form";
+import Inputs from "@/components/reusebaeComponents/inputs";
+import RemovePartnerButton from "@/components/reusebaeComponents/removePartnerIcon";
 import { useForm, SubmitHandler, useFieldArray } from "react-hook-form";
-
-import AddPartnerButton from "@/popUpComponents/addPartnerButton";
-import RemovePartnerButton from "@/popUpComponents/removePartnerIcon";
-import Button from "@/reusebaeComponents/button";
-import Form from "@/reusebaeComponents/form";
-import Inputs from "@/reusebaeComponents/inputs";
 
 // Define initial data structure for a partner
 interface fromData {
@@ -40,6 +39,8 @@ function AddAdminForm() {
           title="Add Admin"
           // @ts-ignore
           onSubmit={handleSubmit(onSubmit)}
+          bg="bg-white"
+          shadow="md"
           noValidate
           description="Add new admins email to give them access ro this account"
           inputs={

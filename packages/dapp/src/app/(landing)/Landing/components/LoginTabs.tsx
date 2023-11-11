@@ -1,12 +1,13 @@
 "use client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import SignIn from "@/MainComponents/signIn";
-import SignUp from "@/MainComponents/signUp";
+
 import { usePathname, useRouter } from "next/navigation";
 
 import React from "react";
+import SignIn from "./signIn";
+import SignUp from "./signUp";
 
-function LogInTabs() {
+function SignUpSignInTabs() {
   const router = useRouter();
   const path = usePathname();
 
@@ -48,4 +49,4 @@ function LogInTabs() {
   );
 }
 
-export default LogInTabs;
+export default SignUpSignInTabs;

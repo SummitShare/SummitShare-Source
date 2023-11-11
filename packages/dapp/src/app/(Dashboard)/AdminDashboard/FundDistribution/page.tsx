@@ -1,7 +1,7 @@
-import { TableDemo } from "./components/data-table.tsx";
+import { DataTable } from "./components/data-table.tsx";
 
 const FundDistribution = () => {
-  return <TableDemo />;
+  return;
 };
 
 export default FundDistribution;

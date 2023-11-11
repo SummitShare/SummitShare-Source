@@ -1,4 +1,4 @@
-import Button from "@/reusebaeComponents/button";
+import Button from "@/components/reusebaeComponents/button";
 import { MapIcon, MapPinIcon } from "@heroicons/react/24/outline";
 import { ClockIcon } from "@radix-ui/react-icons";
 import Image from "next/image";

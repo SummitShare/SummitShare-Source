@@ -1,5 +1,4 @@
-import Button from "@/reusebaeComponents/button";
-import { Content } from "next/font/google";
+import Button from "@/components/reusebaeComponents/button";
 import Image from "next/image";
 import React from "react";
 import heroImage from "/public/scrollerhero.avif";
