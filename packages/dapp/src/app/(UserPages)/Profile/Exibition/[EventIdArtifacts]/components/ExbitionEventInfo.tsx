@@ -1,5 +1,10 @@
 import Button from "@/components/reusebaeComponents/button";
-import { MapIcon, MapPinIcon } from "@heroicons/react/24/outline";
+import {
+  CloudArrowUpIcon,
+  CurrencyDollarIcon,
+  MapIcon,
+  MapPinIcon,
+} from "@heroicons/react/24/outline";
 import { ClockIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
 import React from "react";
@@ -22,13 +27,14 @@ function EventInfo() {
               <MapPinIcon className="w-[14px] h-[14px] text-orange-500" />{" "}
               Lusaka,Zambia
             </div>
+
             <div className="flex flex-row gap-2 items-center">
-              <MapIcon className="w-[14px] h-[14px] text-orange-500" />{" "}
-              13.11.2023
+              <CloudArrowUpIcon className="w-[14px] h-[14px] text-orange-500" />{" "}
+              5 Artifacts
             </div>
             <div className="flex flex-row gap-2 items-center">
-              <ClockIcon className="w-[14px] h-[14px] text-orange-500" />{" "}
-              13:00PM
+              <CurrencyDollarIcon className="w-[14px] h-[14px] text-orange-500" />{" "}
+              100
             </div>
           </div>
           <div className="space-x-[-5px] flex flex-row hover:space-x-1 w-fit transition-all duration-100">

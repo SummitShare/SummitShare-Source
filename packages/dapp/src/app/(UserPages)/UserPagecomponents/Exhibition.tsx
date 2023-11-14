@@ -10,92 +10,37 @@ export interface ExhibitionData {
   name: string;
   country: string;
   eventType: string;
-  eventDescription: string;
+
   image: string;
   price: string;
 }
 
 const dummyData: ExhibitionData[] = [
   {
-    name: "women's history Museum",
-    country: "South Korea",
-    eventType: "Conference",
-    eventDescription: "Korean tech conference.",
+    name: "Greenery",
+    country: "Location 1",
+    price: "$100",
+    eventType: "Type 1",
     image:
-      "https://images.unsplash.com/photo-1696508367494-8c68daee9a0f?auto=format&fit=crop&q=80&w=2580&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    price: "$120",
+      "https://images.unsplash.com/photo-1677070542698-164b6126d0de?q=80&w=2160&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
-    name: "Event 13",
-    country: "Brazil",
-    eventType: "Workshop",
-    eventDescription: "Software development workshop.",
+    name: "Spectrums Galley",
+
+    country: "Location 2",
+    price: "$200",
+    eventType: "Type 2",
     image:
-      "https://images.unsplash.com/photo-1699009435420-756b3649564f?auto=format&fit=crop&q=80&w=2670&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    price: "$80",
+      "https://images.unsplash.com/photo-1678834907853-509ffb92a047?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
-    name: "Event 13",
-    country: "Brazil",
-    eventType: "Workshop",
-    eventDescription: "Software development workshop.",
+    name: "Crystals Museum",
+
+    country: "Location 3",
+    price: "$300",
+    eventType: "Type 3",
     image:
-      "https://images.unsplash.com/photo-1699009435420-756b3649564f?auto=format&fit=crop&q=80&w=2670&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    price: "$80",
-  },
-  {
-    name: "Event 13",
-    country: "Brazil",
-    eventType: "Workshop",
-    eventDescription: "Software development workshop.",
-    image:
-      "https://images.unsplash.com/photo-1699009435420-756b3649564f?auto=format&fit=crop&q=80&w=2670&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    price: "$80",
-  },
-  {
-    name: "Event 13",
-    country: "Brazil",
-    eventType: "Workshop",
-    eventDescription: "Software development workshop.",
-    image:
-      "https://images.unsplash.com/photo-1699009435420-756b3649564f?auto=format&fit=crop&q=80&w=2670&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    price: "$80",
-  },
-  {
-    name: "Event 13",
-    country: "Brazil",
-    eventType: "Workshop",
-    eventDescription: "Software development workshop.",
-    image:
-      "https://images.unsplash.com/photo-1699009435420-756b3649564f?auto=format&fit=crop&q=80&w=2670&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    price: "$80",
-  },
-  {
-    name: "Event 13",
-    country: "Brazil",
-    eventType: "Workshop",
-    eventDescription: "Software development workshop.",
-    image:
-      "https://images.unsplash.com/photo-1699009435420-756b3649564f?auto=format&fit=crop&q=80&w=2670&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    price: "$80",
-  },
-  {
-    name: "Event 14",
-    country: "Mexico",
-    eventType: "Seminar",
-    eventDescription: "Mexican tech seminar.",
-    image:
-      "https://images.unsplash.com/photo-1515405295579-ba7b45403062?auto.format&fit=crop&q=80&w=2160&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    price: "$70",
-  },
-  {
-    name: "Event 15",
-    country: "Argentina",
-    eventType: "Conference",
-    eventDescription: "Argentinian tech conference.",
-    image:
-      "https://images.unsplash.com/photo-1515405295579-ba7b45403062?auto=format&fit=crop&q=80&w=2160&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    price: "$130",
+      "https://images.unsplash.com/photo-1697885938464-a4ddcb0238e4?q=80&w=2532&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
 ];
 
@@ -131,18 +76,24 @@ const VirtualEventCard = () => {
   const totalPages = Math.ceil(filteredEvents.length / recordsPerPage);
 
   return (
-    <div className="container mx-auto p-4 space-y-10">
-      <div className="flex flex-row justify-between">
-        <div className="flex flex-row gap-2">
-          <CountryFilter
-            onCountryChange={setSelectedCountry}
-            uniqueCountries={getUniqueCountries(dummyData)}
-          />
-          <EventTypeFilter
-            onEventTypeChange={setSelectedEventType}
-            uniqueEventTypes={getUniqueEventTypes(dummyData)}
-          />
-        </div>
+    <div className="container mx-auto p-4 space-y-5">
+      <div className="space-y-2">
+        <p className="title-h4-slate">Virtual Exhibitions</p>
+        <p className="body-text-h4">
+          Explore virtual exhibitions with ease! Filter by country and type{" "}
+          <br />
+          below to find exactly what you're looking for
+        </p>
+      </div>
+      <div className="flex flex-row justify-between ">
+        <CountryFilter
+          onCountryChange={setSelectedCountry}
+          uniqueCountries={getUniqueCountries(dummyData)}
+        />
+        <EventTypeFilter
+          onEventTypeChange={setSelectedEventType}
+          uniqueEventTypes={getUniqueEventTypes(dummyData)}
+        />
       </div>
 
       <div className="relative flex flex-row gap-3 w-full group mt-6">

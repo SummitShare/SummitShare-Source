@@ -3,10 +3,10 @@ import React from "react";
 
 const ObjectCards = () => {
   return (
-    <div className="flex flex-row gap-5 h-fit w-fit">
+    <div className="flex flex-row gap-5 h-fit w-fit items-center">
       <div className="space-y-5">
         <div className="rounded-xl bg-gradient-to-tr from-orange-500 to-orange-300 w-[500px] h-[500px]"></div>
-        <div className="flex flex-row gap-6 w-full ">
+        {/* <div className="flex flex-row gap-6 w-full ">
           <div className="flex flex-row gap-2 body-text-h3 items-center  ">
             <EyeIcon className="w-6 h-6 text-green-500 " />
             <p className="text-green-950 ">100 Views</p>
@@ -27,14 +27,14 @@ const ObjectCards = () => {
               Share Exhibit
             </p>
           </div>
-        </div>
+        </div> */}
       </div>
 
-      <div className="space-y-5 overflow-auto h-[550px]">
+      <div className="relative space-y-5 overflow-auto h-[550px]">
         <div className="  w-[700px] h-fit space-y-5 px-3 py-5">
-          <div className="flex flex-row items-center justify-center w-fit gap-2">
+          <div className="sticky top-0 flex flex-row items-center justify-start w-fit gap-2 w-full bg-white ">
             <div className="w-6 h-6 rounded-full bg-orange-500"></div>
-            <p className="title-h6-slate ">Womens history museum</p>
+            <p className="title-h2-orange ">Womens history museum</p>
           </div>
           <div className="space-y-2">
             <p className="title-h3-orange  ">The Headrest</p>

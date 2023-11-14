@@ -28,8 +28,8 @@ function Form({
       {/*  @ts-ignore */}
       <form onSubmit={onSubmit} className="space-y-10">
         <div className="text-left space-y-2">
-          <p className="font-semibold text-2xl text-slate-950">{title}</p>
-          <p className="text-sm text-slate-500">{description}</p>
+          <p className="title-h3-slate">{title}</p>
+          <p className="body-text-h4">{description}</p>
         </div>
         <div>{inputs}</div>
         <div>{submit}</div>

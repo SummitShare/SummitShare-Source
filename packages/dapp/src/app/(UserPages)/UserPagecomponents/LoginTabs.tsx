@@ -2,8 +2,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { usePathname, useRouter } from "next/navigation";
-
-import React from "react";
 import SignIn from "./signIn";
 import SignUp from "./signUp";
 
@@ -12,11 +10,11 @@ function SignUpSignInTabs() {
   const path = usePathname();
 
   const handleClickSignIn = () => {
-    router.push("/Landing/auth/signIn");
+    router.push("/auth/signIn");
     console.log(path);
   };
   const handleClickSignUp = () => {
-    router.push("/Landing/auth/signUp");
+    router.push("/auth/signUp");
     console.log(path);
   };
   return (
@@ -25,23 +23,23 @@ function SignUpSignInTabs() {
         <TabsList className=" w-full  ">
           <TabsTrigger
             onClick={handleClickSignUp}
-            value="/Landing/auth/signUp"
+            value="/auth/signUp"
             className="w-full"
           >
             SignUp
           </TabsTrigger>
           <TabsTrigger
             onClick={handleClickSignIn}
-            value="/Landing/auth/signIn"
+            value="/auth/signIn"
             className="w-full"
           >
             SignIn
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="/Landing/auth/signUp">
+        <TabsContent value="/auth/signUp">
           <SignUp />
         </TabsContent>
-        <TabsContent value="/Landing/auth/signIn">
+        <TabsContent value="/auth/signIn">
           <SignIn />
         </TabsContent>
       </Tabs>

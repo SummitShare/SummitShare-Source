@@ -33,33 +33,33 @@ function HeroTwo() {
       <div className="relative duration-500 pb-10 ">
         {Components[currentIndex]()}
       </div>
-      {/* <div
+      <div
         onClick={pervIndex}
-        className="absolute top-[50%] left-2 w-10 h-10 bg-stone-950/80  rounded-full flex justify-center items-center cursor-pointer opacity-0 group-hover:opacity-100 transition-all "
+        className="absolute top-[50%] left-2 w-10 h-10 bg-slate-950/80  rounded-full flex justify-center items-center cursor-pointer opacity-0 group-hover:opacity-100 transition-all "
       >
         <ChevronLeftIcon className="w-5 h-5 text-white" />
-      </div> */}
-      {/* <div
+      </div>
+      <div
         onClick={nextIndex}
-        className="absolute top-[50%] right-2  w-10 h-10 bg-stone-950/80  rounded-full flex justify-center items-center cursor-pointer opacity-0 group-hover:opacity-100 transition-all"
+        className="absolute top-[50%] right-2  w-10 h-10 bg-slate-950/80  rounded-full flex justify-center items-center cursor-pointer opacity-0 group-hover:opacity-100 transition-all"
       >
         <ChevronRightIcon className="w-5 h-5 text-white" />
-      </div> */}
-      {/* <div className="w-full flex flex-row justify-center">
-        <div className=" absolute bottom-3 flex-row flex bg-stone-100 px-3 py-2 rounded-full opacity-0 group-hover:opacity-100 transition-all">
+      </div>
+      <div className="w-full flex flex-row justify-center">
+        <div className=" absolute bottom-3 flex-row flex bg-slate-100 px-3 py-2 rounded-full opacity-0 group-hover:opacity-100 transition-all">
           {Components.map((slide, slideIndex) => (
             <div onClick={() => setCurrentIndex(slideIndex)} key={slideIndex}>
               <DotFilledIcon
                 className={` cursor-pointer ${
                   currentIndex === slideIndex
-                    ? `text-amber-500`
-                    : `text-stone-500`
+                    ? `text-orange-500`
+                    : `text-slate-500`
                 }`}
               />
             </div>
           ))}
         </div>
-      </div> */}
+      </div>
     </div>
   );
 }

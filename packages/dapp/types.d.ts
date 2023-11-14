@@ -1,21 +1,10 @@
 interface EventData {
-  coverPhoto: string;
-  accountName: string;
-  adminPhoto: string;
-  adminName: string;
-  bio: string;
-  galleyImages: string[];
-  pastEvents: {}[];
-  id: string;
   name: string;
   date: string;
   country: string;
-  eventType: string;
-  eventDescription: string;
-  image: string;
   price: string;
-  eventTimeStart: string;
-  eventTimeEnd: string;
+  eventType: string;
+  image: string;
 }
 
 export interface inputProps {

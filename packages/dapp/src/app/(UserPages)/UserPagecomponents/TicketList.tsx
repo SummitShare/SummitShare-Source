@@ -16,709 +16,58 @@ import { EventData } from "../../../../types";
 
 const dummyData: EventData[] = [
   {
-    coverPhoto: "event-cover-1.jpg",
-    accountName: "John Doe",
-    adminPhoto: "admin-photo-1.jpg",
-    adminName: "Admin 1",
-    bio: "John Doe's bio",
-    galleyImages: ["gallery-image-1.jpg", "gallery-image-2.jpg"],
-    pastEvents: [
-      {
-        name: "Past Event 1",
-        eventType: "Conference",
-        eventDescription: "A previous conference by John Doe.",
-        image: "past-event-image-1.jpg",
-        price: "$80",
-        eventTimeStart: "10:00 AM",
-        eventTimeEnd: "04:00 PM",
-      },
-      {
-        name: "Past Event 2",
-        eventType: "Workshop",
-        eventDescription: "A past workshop organized by John Doe.",
-        image: "past-event-image-2.jpg",
-        price: "$60",
-        eventTimeStart: "11:30 AM",
-        eventTimeEnd: "03:30 PM",
-      },
-    ],
-    id: "1",
-    name: "Lusaka museum",
-    date: "2023-10-29",
-    country: "USA",
-    eventType: "Conference",
-    eventDescription: "A conference on technology advancements.",
+    name: "Mountain View",
+    date: "2023-05-15",
+    country: "Swiss Alps",
+    price: "Free",
+    eventType: "Nature Photography",
     image:
-      "https://images.unsplash.com/photo-1565876427310-0695a4ff03b7?q=80&w=2593&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    price: "$100",
-    eventTimeStart: "09:00 AM",
-    eventTimeEnd: "05:00 PM",
+      "https://images.unsplash.com/photo-1574367157590-3454fe866961?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
-    coverPhoto: "event-cover-1.jpg",
-    accountName: "John Doe",
-    adminPhoto: "admin-photo-1.jpg",
-    adminName: "Admin 1",
-    bio: "John Doe's bio",
-    galleyImages: ["gallery-image-1.jpg", "gallery-image-2.jpg"],
-    pastEvents: [
-      {
-        name: "Past Event 1",
-        eventType: "Conference",
-        eventDescription: "A previous conference by John Doe.",
-        image: "past-event-image-1.jpg",
-        price: "$80",
-        eventTimeStart: "10:00 AM",
-        eventTimeEnd: "04:00 PM",
-      },
-      {
-        name: "Past Event 2",
-        eventType: "Workshop",
-        eventDescription: "A past workshop organized by John Doe.",
-        image: "past-event-image-2.jpg",
-        price: "$60",
-        eventTimeStart: "11:30 AM",
-        eventTimeEnd: "03:30 PM",
-      },
-    ],
-    id: "1",
-    name: "Event 1",
-    date: "2023-10-29",
-    country: "USA",
-    eventType: "Conference",
-    eventDescription: "A conference on technology advancements.",
+    name: "City Lights",
+    date: "2023-03-20",
+    country: "New York City",
+    price: "$200",
+    eventType: "Urban Photography",
     image:
-      "https://images.unsplash.com/photo-1514195037031-83d60ed3b448?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGFydCUyMGdhbGxlcnl8ZW58MHx8MHx8fDA%3D",
-    price: "$100",
-    eventTimeStart: "09:00 AM",
-    eventTimeEnd: "05:00 PM",
+      "https://images.unsplash.com/photo-1637680298164-74342b63a61a?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
-    coverPhoto: "event-cover-1.jpg",
-    accountName: "John Doe",
-    adminPhoto: "admin-photo-1.jpg",
-    adminName: "Admin 1",
-    bio: "John Doe's bio",
-    galleyImages: ["gallery-image-1.jpg", "gallery-image-2.jpg"],
-    pastEvents: [
-      {
-        name: "Past Event 1",
-        eventType: "Conference",
-        eventDescription: "A previous conference by John Doe.",
-        image: "past-event-image-1.jpg",
-        price: "$80",
-        eventTimeStart: "10:00 AM",
-        eventTimeEnd: "04:00 PM",
-      },
-      {
-        name: "Past Event 2",
-        eventType: "Workshop",
-        eventDescription: "A past workshop organized by John Doe.",
-        image: "past-event-image-2.jpg",
-        price: "$60",
-        eventTimeStart: "11:30 AM",
-        eventTimeEnd: "03:30 PM",
-      },
-    ],
-    id: "1",
-    name: "Event 1",
-    date: "2023-10-29",
-    country: "USA",
-    eventType: "Conference",
-    eventDescription: "A conference on technology advancements.",
+    name: "Seaside Sunrise",
+    date: "2023-09-10",
+    country: "Maldives",
+    price: "$150",
+    eventType: "Landscape Photography",
     image:
-      "https://images.unsplash.com/photo-1698402926566-240a7adb1523?auto=format&fit=crop&q=80&w=2531&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    price: "$100",
-    eventTimeStart: "09:00 AM",
-    eventTimeEnd: "05:00 PM",
+      "https://images.unsplash.com/photo-1518998053901-5348d3961a04?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
-    coverPhoto: "event-cover-1.jpg",
-    accountName: "John Doe",
-    adminPhoto: "admin-photo-1.jpg",
-    adminName: "Admin 1",
-    bio: "John Doe's bio",
-    galleyImages: ["gallery-image-1.jpg", "gallery-image-2.jpg"],
-    pastEvents: [
-      {
-        name: "Past Event 1",
-        eventType: "Conference",
-        eventDescription: "A previous conference by John Doe.",
-        image: "past-event-image-1.jpg",
-        price: "$80",
-        eventTimeStart: "10:00 AM",
-        eventTimeEnd: "04:00 PM",
-      },
-      {
-        name: "Past Event 2",
-        eventType: "Workshop",
-        eventDescription: "A past workshop organized by John Doe.",
-        image: "past-event-image-2.jpg",
-        price: "$60",
-        eventTimeStart: "11:30 AM",
-        eventTimeEnd: "03:30 PM",
-      },
-    ],
-    id: "1",
-    name: "Event 1",
-    date: "2023-10-29",
-    country: "USA",
-    eventType: "Conference",
-    eventDescription: "A conference on technology advancements.",
+    name: "Forest Trail",
+    date: "2023-08-05",
+    country: "Amazon Rainforest",
+    price: "Free",
+    eventType: "Wildlife Photography",
     image:
-      "https://images.unsplash.com/photo-1513038630932-13873b1a7f29?q=80&w=2535&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    price: "$100",
-    eventTimeStart: "09:00 AM",
-    eventTimeEnd: "05:00 PM",
-  },
-
-  {
-    coverPhoto: "event-cover-1.jpg",
-    accountName: "John Doe",
-    adminPhoto: "admin-photo-1.jpg",
-    adminName: "Admin 1",
-    bio: "John Doe's bio",
-    galleyImages: ["gallery-image-1.jpg", "gallery-image-2.jpg"],
-    pastEvents: [
-      {
-        name: "Past Event 1",
-        eventType: "Conference",
-        eventDescription: "A previous conference by John Doe.",
-        image: "past-event-image-1.jpg",
-        price: "$80",
-        eventTimeStart: "10:00 AM",
-        eventTimeEnd: "04:00 PM",
-      },
-      {
-        name: "Past Event 2",
-        eventType: "Workshop",
-        eventDescription: "A past workshop organized by John Doe.",
-        image: "past-event-image-2.jpg",
-        price: "$60",
-        eventTimeStart: "11:30 AM",
-        eventTimeEnd: "03:30 PM",
-      },
-    ],
-    id: "1",
-    name: "Event 1",
-    date: "2023-10-29",
-    country: "USA",
-    eventType: "Conference",
-    eventDescription: "A conference on technology advancements.",
-    image:
-      "https://images.unsplash.com/photo-1698402926566-240a7adb1523?auto=format&fit=crop&q=80&w=2531&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    price: "$100",
-    eventTimeStart: "09:00 AM",
-    eventTimeEnd: "05:00 PM",
-  },
-
-  {
-    coverPhoto: "event-cover-1.jpg",
-    accountName: "John Doe",
-    adminPhoto: "admin-photo-1.jpg",
-    adminName: "Admin 1",
-    bio: "John Doe's bio",
-    galleyImages: ["gallery-image-1.jpg", "gallery-image-2.jpg"],
-    pastEvents: [
-      {
-        name: "Past Event 1",
-        eventType: "Conference",
-        eventDescription: "A previous conference by John Doe.",
-        image: "past-event-image-1.jpg",
-        price: "$80",
-        eventTimeStart: "10:00 AM",
-        eventTimeEnd: "04:00 PM",
-      },
-      {
-        name: "Past Event 2",
-        eventType: "Workshop",
-        eventDescription: "A past workshop organized by John Doe.",
-        image: "past-event-image-2.jpg",
-        price: "$60",
-        eventTimeStart: "11:30 AM",
-        eventTimeEnd: "03:30 PM",
-      },
-    ],
-    id: "1",
-    name: "Event 1",
-    date: "2023-10-29",
-    country: "USA",
-    eventType: "Conference",
-    eventDescription: "A conference on technology advancements.",
-    image:
-      "https://images.unsplash.com/photo-1698402926566-240a7adb1523?auto=format&fit=crop&q=80&w=2531&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    price: "$100",
-    eventTimeStart: "09:00 AM",
-    eventTimeEnd: "05:00 PM",
+      "https://images.unsplash.com/photo-1621886292650-520f76c747d6?q=80&w=2671&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
-    coverPhoto: "event-cover-1.jpg",
-    accountName: "John Doe",
-    adminPhoto: "admin-photo-1.jpg",
-    adminName: "Admin 1",
-    bio: "John Doe's bio",
-    galleyImages: ["gallery-image-1.jpg", "gallery-image-2.jpg"],
-    pastEvents: [
-      {
-        name: "Past Event 1",
-        eventType: "Conference",
-        eventDescription: "A previous conference by John Doe.",
-        image: "past-event-image-1.jpg",
-        price: "$80",
-        eventTimeStart: "10:00 AM",
-        eventTimeEnd: "04:00 PM",
-      },
-      {
-        name: "Past Event 2",
-        eventType: "Workshop",
-        eventDescription: "A past workshop organized by John Doe.",
-        image: "past-event-image-2.jpg",
-        price: "$60",
-        eventTimeStart: "11:30 AM",
-        eventTimeEnd: "03:30 PM",
-      },
-    ],
-    id: "1",
-    name: "Event 1",
-    date: "2023-10-29",
-    country: "USA",
-    eventType: "Conference",
-    eventDescription: "A conference on technology advancements.",
+    name: "Night Sky",
+    date: "2023-01-15",
+    country: "Sahara Desert",
+    price: "$300",
+    eventType: "Astrophotography",
     image:
-      "https://images.unsplash.com/photo-1698402926566-240a7adb1523?auto=format&fit=crop&q=80&w=2531&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    price: "$100",
-    eventTimeStart: "09:00 AM",
-    eventTimeEnd: "05:00 PM",
+      "https://images.unsplash.com/photo-1534235826754-0a3572d1d6d5?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
-    coverPhoto: "event-cover-1.jpg",
-    accountName: "John Doe",
-    adminPhoto: "admin-photo-1.jpg",
-    adminName: "Admin 1",
-    bio: "John Doe's bio",
-    galleyImages: ["gallery-image-1.jpg", "gallery-image-2.jpg"],
-    pastEvents: [
-      {
-        name: "Past Event 1",
-        eventType: "Conference",
-        eventDescription: "A previous conference by John Doe.",
-        image: "past-event-image-1.jpg",
-        price: "$80",
-        eventTimeStart: "10:00 AM",
-        eventTimeEnd: "04:00 PM",
-      },
-      {
-        name: "Past Event 2",
-        eventType: "Workshop",
-        eventDescription: "A past workshop organized by John Doe.",
-        image: "past-event-image-2.jpg",
-        price: "$60",
-        eventTimeStart: "11:30 AM",
-        eventTimeEnd: "03:30 PM",
-      },
-    ],
-    id: "1",
-    name: "Event 1",
-    date: "2023-10-29",
-    country: "USA",
-    eventType: "Conference",
-    eventDescription: "A conference on technology advancements.",
+    name: "Ancient Architecture",
+    date: "2023-12-30",
+    country: "Rome, Italy",
+    price: "Free",
+    eventType: "Cultural Photography",
     image:
-      "https://images.unsplash.com/photo-1698402926566-240a7adb1523?auto=format&fit=crop&q=80&w=2531&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    price: "$100",
-    eventTimeStart: "09:00 AM",
-    eventTimeEnd: "05:00 PM",
-  },
-  {
-    coverPhoto: "event-cover-1.jpg",
-    accountName: "John Doe",
-    adminPhoto: "admin-photo-1.jpg",
-    adminName: "Admin 1",
-    bio: "John Doe's bio",
-    galleyImages: ["gallery-image-1.jpg", "gallery-image-2.jpg"],
-    pastEvents: [
-      {
-        name: "Past Event 1",
-        eventType: "Conference",
-        eventDescription: "A previous conference by John Doe.",
-        image: "past-event-image-1.jpg",
-        price: "$80",
-        eventTimeStart: "10:00 AM",
-        eventTimeEnd: "04:00 PM",
-      },
-      {
-        name: "Past Event 2",
-        eventType: "Workshop",
-        eventDescription: "A past workshop organized by John Doe.",
-        image: "past-event-image-2.jpg",
-        price: "$60",
-        eventTimeStart: "11:30 AM",
-        eventTimeEnd: "03:30 PM",
-      },
-    ],
-    id: "1",
-    name: "Event 1",
-    date: "2023-10-29",
-    country: "USA",
-    eventType: "Conference",
-    eventDescription: "A conference on technology advancements.",
-    image:
-      "https://images.unsplash.com/photo-1698402926566-240a7adb1523?auto=format&fit=crop&q=80&w=2531&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    price: "$100",
-    eventTimeStart: "09:00 AM",
-    eventTimeEnd: "05:00 PM",
-  },
-  {
-    coverPhoto: "event-cover-1.jpg",
-    accountName: "John Doe",
-    adminPhoto: "admin-photo-1.jpg",
-    adminName: "Admin 1",
-    bio: "John Doe's bio",
-    galleyImages: ["gallery-image-1.jpg", "gallery-image-2.jpg"],
-    pastEvents: [
-      {
-        name: "Past Event 1",
-        eventType: "Conference",
-        eventDescription: "A previous conference by John Doe.",
-        image: "past-event-image-1.jpg",
-        price: "$80",
-        eventTimeStart: "10:00 AM",
-        eventTimeEnd: "04:00 PM",
-      },
-      {
-        name: "Past Event 2",
-        eventType: "Workshop",
-        eventDescription: "A past workshop organized by John Doe.",
-        image: "past-event-image-2.jpg",
-        price: "$60",
-        eventTimeStart: "11:30 AM",
-        eventTimeEnd: "03:30 PM",
-      },
-    ],
-    id: "1",
-    name: "Event 1",
-    date: "2023-10-29",
-    country: "USA",
-    eventType: "Conference",
-    eventDescription: "A conference on technology advancements.",
-    image:
-      "https://images.unsplash.com/photo-1698402926566-240a7adb1523?auto=format&fit=crop&q=80&w=2531&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    price: "$100",
-    eventTimeStart: "09:00 AM",
-    eventTimeEnd: "05:00 PM",
-  },
-  {
-    coverPhoto: "event-cover-1.jpg",
-    accountName: "John Doe",
-    adminPhoto: "admin-photo-1.jpg",
-    adminName: "Admin 1",
-    bio: "John Doe's bio",
-    galleyImages: ["gallery-image-1.jpg", "gallery-image-2.jpg"],
-    pastEvents: [
-      {
-        name: "Past Event 1",
-        eventType: "Conference",
-        eventDescription: "A previous conference by John Doe.",
-        image: "past-event-image-1.jpg",
-        price: "$80",
-        eventTimeStart: "10:00 AM",
-        eventTimeEnd: "04:00 PM",
-      },
-      {
-        name: "Past Event 2",
-        eventType: "Workshop",
-        eventDescription: "A past workshop organized by John Doe.",
-        image: "past-event-image-2.jpg",
-        price: "$60",
-        eventTimeStart: "11:30 AM",
-        eventTimeEnd: "03:30 PM",
-      },
-    ],
-    id: "1",
-    name: "Event 1",
-    date: "2023-10-29",
-    country: "USA",
-    eventType: "Conference",
-    eventDescription: "A conference on technology advancements.",
-    image:
-      "https://images.unsplash.com/photo-1698402926566-240a7adb1523?auto=format&fit=crop&q=80&w=2531&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    price: "$100",
-    eventTimeStart: "09:00 AM",
-    eventTimeEnd: "05:00 PM",
-  },
-  {
-    coverPhoto: "event-cover-1.jpg",
-    accountName: "John Doe",
-    adminPhoto: "admin-photo-1.jpg",
-    adminName: "Admin 1",
-    bio: "John Doe's bio",
-    galleyImages: ["gallery-image-1.jpg", "gallery-image-2.jpg"],
-    pastEvents: [
-      {
-        name: "Past Event 1",
-        eventType: "Conference",
-        eventDescription: "A previous conference by John Doe.",
-        image: "past-event-image-1.jpg",
-        price: "$80",
-        eventTimeStart: "10:00 AM",
-        eventTimeEnd: "04:00 PM",
-      },
-      {
-        name: "Past Event 2",
-        eventType: "Workshop",
-        eventDescription: "A past workshop organized by John Doe.",
-        image: "past-event-image-2.jpg",
-        price: "$60",
-        eventTimeStart: "11:30 AM",
-        eventTimeEnd: "03:30 PM",
-      },
-    ],
-    id: "1",
-    name: "Event 1",
-    date: "2023-10-29",
-    country: "USA",
-    eventType: "Conference",
-    eventDescription: "A conference on technology advancements.",
-    image:
-      "https://images.unsplash.com/photo-1698402926566-240a7adb1523?auto=format&fit=crop&q=80&w=2531&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    price: "$100",
-    eventTimeStart: "09:00 AM",
-    eventTimeEnd: "05:00 PM",
-  },
-  {
-    coverPhoto: "event-cover-1.jpg",
-    accountName: "John Doe",
-    adminPhoto: "admin-photo-1.jpg",
-    adminName: "Admin 1",
-    bio: "John Doe's bio",
-    galleyImages: ["gallery-image-1.jpg", "gallery-image-2.jpg"],
-    pastEvents: [
-      {
-        name: "Past Event 1",
-        eventType: "Conference",
-        eventDescription: "A previous conference by John Doe.",
-        image: "past-event-image-1.jpg",
-        price: "$80",
-        eventTimeStart: "10:00 AM",
-        eventTimeEnd: "04:00 PM",
-      },
-      {
-        name: "Past Event 2",
-        eventType: "Workshop",
-        eventDescription: "A past workshop organized by John Doe.",
-        image: "past-event-image-2.jpg",
-        price: "$60",
-        eventTimeStart: "11:30 AM",
-        eventTimeEnd: "03:30 PM",
-      },
-    ],
-    id: "1",
-    name: "Event 1",
-    date: "2023-10-29",
-    country: "USA",
-    eventType: "Conference",
-    eventDescription: "A conference on technology advancements.",
-    image:
-      "https://images.unsplash.com/photo-1698402926566-240a7adb1523?auto=format&fit=crop&q=80&w=2531&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    price: "$100",
-    eventTimeStart: "09:00 AM",
-    eventTimeEnd: "05:00 PM",
-  },
-  {
-    coverPhoto: "event-cover-1.jpg",
-    accountName: "John Doe",
-    adminPhoto: "admin-photo-1.jpg",
-    adminName: "Admin 1",
-    bio: "John Doe's bio",
-    galleyImages: ["gallery-image-1.jpg", "gallery-image-2.jpg"],
-    pastEvents: [
-      {
-        name: "Past Event 1",
-        eventType: "Conference",
-        eventDescription: "A previous conference by John Doe.",
-        image: "past-event-image-1.jpg",
-        price: "$80",
-        eventTimeStart: "10:00 AM",
-        eventTimeEnd: "04:00 PM",
-      },
-      {
-        name: "Past Event 2",
-        eventType: "Workshop",
-        eventDescription: "A past workshop organized by John Doe.",
-        image: "past-event-image-2.jpg",
-        price: "$60",
-        eventTimeStart: "11:30 AM",
-        eventTimeEnd: "03:30 PM",
-      },
-    ],
-    id: "1",
-    name: "Event 1",
-    date: "2023-10-29",
-    country: "USA",
-    eventType: "Conference",
-    eventDescription: "A conference on technology advancements.",
-    image:
-      "https://images.unsplash.com/photo-1698402926566-240a7adb1523?auto=format&fit=crop&q=80&w=2531&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    price: "$100",
-    eventTimeStart: "09:00 AM",
-    eventTimeEnd: "05:00 PM",
-  },
-  {
-    coverPhoto: "event-cover-1.jpg",
-    accountName: "John Doe",
-    adminPhoto: "admin-photo-1.jpg",
-    adminName: "Admin 1",
-    bio: "John Doe's bio",
-    galleyImages: ["gallery-image-1.jpg", "gallery-image-2.jpg"],
-    pastEvents: [
-      {
-        name: "Past Event 1",
-        eventType: "Conference",
-        eventDescription: "A previous conference by John Doe.",
-        image: "past-event-image-1.jpg",
-        price: "$80",
-        eventTimeStart: "10:00 AM",
-        eventTimeEnd: "04:00 PM",
-      },
-      {
-        name: "Past Event 2",
-        eventType: "Workshop",
-        eventDescription: "A past workshop organized by John Doe.",
-        image: "past-event-image-2.jpg",
-        price: "$60",
-        eventTimeStart: "11:30 AM",
-        eventTimeEnd: "03:30 PM",
-      },
-    ],
-    id: "1",
-    name: "Event 1",
-    date: "2023-10-29",
-    country: "jamaca",
-    eventType: "Conference",
-    eventDescription: "A conference on technology advancements.",
-    image:
-      "https://images.unsplash.com/photo-1698402926566-240a7adb1523?auto=format&fit=crop&q=80&w=2531&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    price: "$100",
-    eventTimeStart: "09:00 AM",
-    eventTimeEnd: "05:00 PM",
-  },
-
-  {
-    coverPhoto: "event-cover-1.jpg",
-    accountName: "John Doe",
-    adminPhoto: "admin-photo-1.jpg",
-    adminName: "Admin 1",
-    bio: "John Doe's bio",
-    galleyImages: ["gallery-image-1.jpg", "gallery-image-2.jpg"],
-    pastEvents: [
-      {
-        name: "Past Event 1",
-        eventType: "Conference",
-        eventDescription: "A previous conference by John Doe.",
-        image: "past-event-image-1.jpg",
-        price: "$80",
-        eventTimeStart: "10:00 AM",
-        eventTimeEnd: "04:00 PM",
-      },
-      {
-        name: "Past Event 2",
-        eventType: "Workshop",
-        eventDescription: "A past workshop organized by John Doe.",
-        image: "past-event-image-2.jpg",
-        price: "$60",
-        eventTimeStart: "11:30 AM",
-        eventTimeEnd: "03:30 PM",
-      },
-    ],
-    id: "1",
-    name: "Event 1",
-    date: "2023-10-29",
-    country: "USA",
-    eventType: "Conference",
-    eventDescription: "A conference on technology advancements.",
-    image:
-      "https://images.unsplash.com/photo-1698402926566-240a7adb1523?auto=format&fit=crop&q=80&w=2531&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    price: "$100",
-    eventTimeStart: "09:00 AM",
-    eventTimeEnd: "05:00 PM",
-  },
-  {
-    coverPhoto: "event-cover-1.jpg",
-    accountName: "John Doe",
-    adminPhoto: "admin-photo-1.jpg",
-    adminName: "Admin 1",
-    bio: "John Doe's bio",
-    galleyImages: ["gallery-image-1.jpg", "gallery-image-2.jpg"],
-    pastEvents: [
-      {
-        name: "Past Event 1",
-        eventType: "Conference",
-        eventDescription: "A previous conference by John Doe.",
-        image: "past-event-image-1.jpg",
-        price: "$80",
-        eventTimeStart: "10:00 AM",
-        eventTimeEnd: "04:00 PM",
-      },
-      {
-        name: "Past Event 2",
-        eventType: "Workshop",
-        eventDescription: "A past workshop organized by John Doe.",
-        image: "past-event-image-2.jpg",
-        price: "$60",
-        eventTimeStart: "11:30 AM",
-        eventTimeEnd: "03:30 PM",
-      },
-    ],
-    id: "1",
-    name: "Event 1",
-    date: "2023-10-29",
-    country: "USA",
-    eventType: "b",
-    eventDescription: "A conference on technology advancements.",
-    image:
-      "https://images.unsplash.com/photo-1698402926566-240a7adb1523?auto=format&fit=crop&q=80&w=2531&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    price: "$100",
-    eventTimeStart: "09:00 AM",
-    eventTimeEnd: "05:00 PM",
-  },
-  {
-    coverPhoto: "event-cover-1.jpg",
-    accountName: "John Doe",
-    adminPhoto: "admin-photo-1.jpg",
-    adminName: "Admin 1",
-    bio: "John Doe's bio",
-    galleyImages: ["gallery-image-1.jpg", "gallery-image-2.jpg"],
-    pastEvents: [
-      {
-        name: "Past Event 1",
-        eventType: "Conference",
-        eventDescription: "A previous conference by John Doe.",
-        image: "past-event-image-1.jpg",
-        price: "$80",
-        eventTimeStart: "10:00 AM",
-        eventTimeEnd: "04:00 PM",
-      },
-      {
-        name: "Past Event 2",
-        eventType: "Workshop",
-        eventDescription: "A past workshop organized by John Doe.",
-        image: "past-event-image-2.jpg",
-        price: "$60",
-        eventTimeStart: "11:30 AM",
-        eventTimeEnd: "03:30 PM",
-      },
-    ],
-    id: "1",
-    name: "Event 1",
-    date: "2023-10-29",
-    country: "USA",
-    eventType: "a",
-    eventDescription: "A conference on technology advancements.",
-    image:
-      "https://images.unsplash.com/photo-1698402926566-240a7adb1523?auto=format&fit=crop&q=80&w=2531&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    price: "$100",
-    eventTimeStart: "09:00 AM",
-    eventTimeEnd: "05:00 PM",
+      "https://images.unsplash.com/photo-1526285849717-482456cd7436?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
 ];
 
@@ -727,7 +76,9 @@ const TicketsList: React.FC = () => {
     "today" | "week" | "month" | "year"
   >("today");
   const [selectedCountry, setSelectedCountry] = useState<string>("");
-  const [selectedEventType, setSelectedEventType] = useState<string>("");
+  const [selectedEventeventType, setSelectedEventeventType] = useState<string>(
+    ""
+  );
   const [currentPage, setCurrentPage] = useState(0);
   const [filteredEvents, setFilteredEvents] = useState<EventData[]>(dummyData);
   const recordsPerPage = 6;
@@ -740,8 +91,11 @@ const TicketsList: React.FC = () => {
       if (selectedCountry && event.country !== selectedCountry) {
         return false;
       }
-      // Filtering by event type
-      if (selectedEventType && event.eventType !== selectedEventType) {
+      // Filtering by event eventType
+      if (
+        selectedEventeventType &&
+        event.eventType !== selectedEventeventType
+      ) {
         return false;
       }
       // Filtering by activeTab (date logic)
@@ -779,14 +133,23 @@ const TicketsList: React.FC = () => {
     });
 
     setFilteredEvents(filtered);
-  }, [selectedCountry, selectedEventType, activeTab]);
+  }, [selectedCountry, selectedEventeventType, activeTab]);
 
   const startIndex = currentPage * recordsPerPage;
   const endIndex = startIndex + recordsPerPage;
   const totalPages = Math.ceil(filteredEvents.length / recordsPerPage);
 
   return (
-    <div className="container mx-auto p-4 space-y-10">
+    <div className="container mx-auto p-4 space-y-5">
+      <div className="space-y-2">
+        <p className="title-h4-slate">Upcoming Exhibitions</p>
+        <p className="body-text-h4">
+          Explore upcoming exhibitions with ease! Filter by country, date, and{" "}
+          <br />
+          eventType below to find exactly what you're looking for
+        </p>
+      </div>
+
       <div className="flex flex-row justify-between">
         <DateFilter activeTab={activeTab} onTabChange={setActiveTab} />
         <div className="flex flex-row gap-2">
@@ -795,8 +158,8 @@ const TicketsList: React.FC = () => {
             uniqueCountries={getUniqueCountries(dummyData)}
           />
           <EventTypeFilter
-            onEventTypeChange={setSelectedEventType}
-            uniqueEventTypes={getUniqueEventTypes(dummyData)}
+            onEventTypeChange={setSelectedEventeventType}
+            uniqueEventTypes={getUniqueEventeventTypes(dummyData)}
           />
         </div>
       </div>
@@ -818,11 +181,11 @@ const TicketsList: React.FC = () => {
 
 export default TicketsList;
 
-// Helper functions to extract unique countries and event types
+// Helper functions to extract unique countries and event eventTypes
 function getUniqueCountries(events: EventData[]) {
   return Array.from(new Set(events.map((event) => event.country)));
 }
 
-function getUniqueEventTypes(events: EventData[]) {
+function getUniqueEventeventTypes(events: EventData[]) {
   return Array.from(new Set(events.map((event) => event.eventType)));
 }

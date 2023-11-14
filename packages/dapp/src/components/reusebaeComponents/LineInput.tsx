@@ -35,19 +35,18 @@ export default function LineInputs({
   return (
     <div className="space-y-2 relative">
       <input
-        className={`w-${length} ${
-          hight || `h-10`
-        } border focus:border-orange-500  cursor-text focus:outline-none  bg-white peer py-2 px-3 rounded-md ${
-          px || `px-3`
-        }  ${py || `py-2`} `}
+        className={`w-${length} ${hight ||
+          `h-10`} border focus:border-orange-500  cursor-text focus:outline-none  bg-white peer py-2 px-3 rounded-md ${px ||
+          `px-3`}  ${py || `py-2`} `}
         type={type}
         id={id}
         // @ts-ignore
         {...register(name, { required: message })}
       />
+
       <label
         htmlFor={id}
-        className=" absolute top-0 font-medium flex flex-col text-slate-600 peer-focus:-top-5 peer-focus:text-sm peer-focus:transition-all left-2 peer-focus:text-orange-500 bg-white px-2"
+        className=" absolute top-0 body-text-h3 flex flex-col text-slate-600 peer-focus:-top-5 peer-focus:text-sm peer-focus:transition-all left-2 peer-focus:text-orange-500 bg-white px-2"
       >
         {label}
       </label>

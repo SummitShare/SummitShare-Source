@@ -16,7 +16,7 @@ function SignUp() {
   const router = useRouter();
 
   const handleCancel = () => {
-    router.push("/Landing");
+    router.push("/");
   };
 
   const form = useForm<fromData>();
@@ -86,16 +86,17 @@ function SignUp() {
               type="submit"
               backGroundColor="bg-orange-500"
               textColor="text-white"
-              hover="hover:bg-orange-950/90"
+              hover="hover:shadow-lg  "
             />
             <Button
+              // @ts-ignore
               click={handleCancel}
               text="Cancel"
               type="button"
-              borderColor="border border-stone-300"
-              textColor="text-stone-500"
+              borderColor=" border border-slate-300"
+              textColor="text-slate-500"
               hover=""
-            />
+            ></Button>
           </div>
         }
       />

@@ -16,14 +16,14 @@ const DateFilter: React.FC<DateFilterProps> = ({ activeTab, onTabChange }) => {
   ];
 
   return (
-    <div className="flex flex-row bg-stone-100 body-text-h4  rounded-lg items-center justify-between px-1">
+    <div className="flex flex-row bg-slate-100 body-text-h4  rounded-lg items-center justify-between px-1">
       {timeframes.map((tab) => (
         <div
           key={tab}
           className={`cursor-pointer text-center px-1 py-1 w-20 h-full${
             tab === activeTab
-              ? "text-stone-700 bg-white rounded-md shadow-sm"
-              : "text-stone-200"
+              ? "text-slate-700 bg-white rounded-md shadow-sm"
+              : "text-slate-200"
           }`}
           onClick={() => onTabChange(tab)}
         >

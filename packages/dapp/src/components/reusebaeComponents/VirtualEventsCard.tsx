@@ -21,10 +21,18 @@ const VirtualEventsCard: React.FC<VirtualEventCardProps> = ({ event }) => {
         alt=""
         className="w-full h-full rounded-xl object-cover"
       />
-      <div className="absolute inset-x-0 bottom-2 flex flex-col justify-center text-sm p-2 font-semibold space-y-2">
-        <p className="text-white">{event.name}</p>
-        <div className=" font-normal  text-xs  text-green-700 bg-green-50 rounded-full px-2 py-1 w-fit ">
-          {event.price}
+      <div className="absolute inset-x-0 bottom-2 flex flex-col justify-center body-text-h5  p-2 space-y-2">
+        <p className="text-white text-sm font-semibold ">{event.name}</p>
+        <div className="flex flex-row gap-2">
+          <button
+            className="bg-gradient-to-r from-orange-500 to-orange-400 text-xs h-fit w-fit rounded-xl px-3 py-1 text-white font-normal "
+            type="button"
+          >
+            Buy
+          </button>
+          <div className=" flex items-center justify-center font-normal  text-xs  text-orange-950 bg-orange-50 rounded-full px-2 py-1 w-fit ">
+            {event.price}
+          </div>
         </div>
       </div>
     </Link>

@@ -9,6 +9,7 @@ const nextConfig = {
       "unsplash.com,",
       "plus.unsplash.com",
       "loremflickr.com",
+      "images.squarespace-cdn.com",
     ],
   },
 };
