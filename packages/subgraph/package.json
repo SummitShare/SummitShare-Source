@@ -5,7 +5,7 @@
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --node https://api.thegraph.com/deploy/  daodesigner/revenue-sharing-source",
+    "deploy:dev": "graph deploy --product hosted-service --network sepolia",
     "create-local": "graph create --node http://localhost:8020/  daodesigner/revenue-sharing-source",
     "remove-local": "graph remove --node http://localhost:8020/  daodesigner/revenue-sharing-source",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001  daodesigner/revenue-sharing-source",

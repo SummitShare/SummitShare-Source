@@ -6,7 +6,9 @@
     "test": "REPORT_GAS=true hardhat test",
     "test:coverage": "hardhat coverage --solcoverjs ./.solcover.js --temp build/contracts --testfiles \"./test/*.ts\"",
     "build": "hardhat compile",
-    "deploy": "hardhat run test"
+    "deploy:dev": "hardhat run --network sepolia scripts/deploy.ts",
+    "configure:dev": "hardhat run --network sepolia scripts/configure.ts",
+    "mock:dev": "hardhat run --network sepolia scripts/mock.ts"
   },
   "keywords": [],
   "author": "",
