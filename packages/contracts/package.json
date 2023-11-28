@@ -5,7 +5,8 @@
   "scripts": {
     "test": "REPORT_GAS=true hardhat test",
     "test:coverage": "hardhat coverage --solcoverjs ./.solcover.js --temp build/contracts --testfiles \"./test/*.ts\"",
-    "build": "hardhat compile"
+    "build": "hardhat compile",
+    "deploy": "hardhat run test"
   },
   "keywords": [],
   "author": "",
@@ -18,6 +19,8 @@
     "@types/mocha": "^10.0.3",
     "@types/node": "^20.8.7",
     "chai": "^4.3.10",
+    "dotenv": "^16.3.1",
+    "erc721a": "^4.2.3",
     "ethers": "^6.8.0",
     "hardhat": "^2.18.1",
     "hardhat-contract-sizer": "^2.10.0",

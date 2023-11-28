@@ -10,16 +10,50 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 
-export class ExhibitOrganized extends ethereum.Event {
-  get params(): ExhibitOrganized__Params {
-    return new ExhibitOrganized__Params(this);
+export class ArtifactNFTDeployed extends ethereum.Event {
+  get params(): ArtifactNFTDeployed__Params {
+    return new ArtifactNFTDeployed__Params(this);
   }
 }
 
-export class ExhibitOrganized__Params {
-  _event: ExhibitOrganized;
+export class ArtifactNFTDeployed__Params {
+  _event: ArtifactNFTDeployed;
 
-  constructor(event: ExhibitOrganized) {
+  constructor(event: ArtifactNFTDeployed) {
+    this._event = event;
+  }
+
+  get artifactNFTAddress(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get name(): string {
+    return this._event.parameters[1].value.toString();
+  }
+
+  get symbol(): string {
+    return this._event.parameters[2].value.toString();
+  }
+
+  get ownerAddress(): Address {
+    return this._event.parameters[3].value.toAddress();
+  }
+
+  get baseURI(): string {
+    return this._event.parameters[4].value.toString();
+  }
+}
+
+export class ExhibitNFTDeployed extends ethereum.Event {
+  get params(): ExhibitNFTDeployed__Params {
+    return new ExhibitNFTDeployed__Params(this);
+  }
+}
+
+export class ExhibitNFTDeployed__Params {
+  _event: ExhibitNFTDeployed;
+
+  constructor(event: ExhibitNFTDeployed) {
     this._event = event;
   }
 
@@ -27,12 +61,16 @@ export class ExhibitOrganized__Params {
     return this._event.parameters[0].value.toString();
   }
 
-  get exhibitAddress(): Address {
+  get exhibitNFTAddress(): Address {
     return this._event.parameters[1].value.toAddress();
   }
 
   get escrowAddress(): Address {
     return this._event.parameters[2].value.toAddress();
+  }
+
+  get museumAddress(): Address {
+    return this._event.parameters[3].value.toAddress();
   }
 }
 
@@ -75,6 +113,29 @@ export class EventOrganizerService extends ethereum.SmartContract {
     let result = super.tryCall("exhibits", "exhibits(string):(address)", [
       ethereum.Value.fromString(param0)
     ]);
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  getExhibitNFTAddress(_id: string): Address {
+    let result = super.call(
+      "getExhibitNFTAddress",
+      "getExhibitNFTAddress(string):(address)",
+      [ethereum.Value.fromString(_id)]
+    );
+
+    return result[0].toAddress();
+  }
+
+  try_getExhibitNFTAddress(_id: string): ethereum.CallResult<Address> {
+    let result = super.tryCall(
+      "getExhibitNFTAddress",
+      "getExhibitNFTAddress(string):(address)",
+      [ethereum.Value.fromString(_id)]
+    );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
@@ -162,6 +223,48 @@ export class ConstructorCall__Outputs {
   }
 }
 
+export class DeployArtifactNFTCall extends ethereum.Call {
+  get inputs(): DeployArtifactNFTCall__Inputs {
+    return new DeployArtifactNFTCall__Inputs(this);
+  }
+
+  get outputs(): DeployArtifactNFTCall__Outputs {
+    return new DeployArtifactNFTCall__Outputs(this);
+  }
+}
+
+export class DeployArtifactNFTCall__Inputs {
+  _call: DeployArtifactNFTCall;
+
+  constructor(call: DeployArtifactNFTCall) {
+    this._call = call;
+  }
+
+  get name(): string {
+    return this._call.inputValues[0].value.toString();
+  }
+
+  get symbol(): string {
+    return this._call.inputValues[1].value.toString();
+  }
+
+  get owner(): Address {
+    return this._call.inputValues[2].value.toAddress();
+  }
+
+  get baseURI(): string {
+    return this._call.inputValues[3].value.toString();
+  }
+}
+
+export class DeployArtifactNFTCall__Outputs {
+  _call: DeployArtifactNFTCall;
+
+  constructor(call: DeployArtifactNFTCall) {
+    this._call = call;
+  }
+}
+
 export class OrganizeExhibitCall extends ethereum.Call {
   get inputs(): OrganizeExhibitCall__Inputs {
     return new OrganizeExhibitCall__Inputs(this);
@@ -179,28 +282,44 @@ export class OrganizeExhibitCall__Inputs {
     this._call = call;
   }
 
-  get exhibitId(): string {
+  get name(): string {
     return this._call.inputValues[0].value.toString();
   }
 
-  get name(): string {
+  get symbol(): string {
     return this._call.inputValues[1].value.toString();
   }
 
-  get symbol(): string {
-    return this._call.inputValues[2].value.toString();
-  }
-
   get ticketPrice(): BigInt {
-    return this._call.inputValues[3].value.toBigInt();
+    return this._call.inputValues[2].value.toBigInt();
   }
 
   get beneficiaries(): Array<Address> {
-    return this._call.inputValues[4].value.toAddressArray();
+    return this._call.inputValues[3].value.toAddressArray();
   }
 
   get shares(): Array<BigInt> {
-    return this._call.inputValues[5].value.toBigIntArray();
+    return this._call.inputValues[4].value.toBigIntArray();
+  }
+
+  get baseURI(): string {
+    return this._call.inputValues[5].value.toString();
+  }
+
+  get location(): string {
+    return this._call.inputValues[6].value.toString();
+  }
+
+  get artifactNFTAddress(): Address {
+    return this._call.inputValues[7].value.toAddress();
+  }
+
+  get details(): string {
+    return this._call.inputValues[8].value.toString();
+  }
+
+  get exhibitId(): string {
+    return this._call.inputValues[9].value.toString();
   }
 }
 

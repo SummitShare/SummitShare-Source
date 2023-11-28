@@ -3,6 +3,7 @@ import { ethereum, Address, BigInt } from "@graphprotocol/graph-ts"
 import {
   Approval,
   ApprovalForAll,
+  ExhibitCreated,
   OwnershipTransferred,
   TicketMinted,
   Transfer
@@ -55,6 +56,58 @@ export function createApprovalForAllEvent(
   return approvalForAllEvent
 }
 
+export function createExhibitCreatedEvent(
+  name: string,
+  symbol: string,
+  ticketPrice: BigInt,
+  escrow: Address,
+  owner: Address,
+  baseURI: string,
+  location: string,
+  artifactNFTAddress: Address,
+  details: string
+): ExhibitCreated {
+  let exhibitCreatedEvent = changetype<ExhibitCreated>(newMockEvent())
+
+  exhibitCreatedEvent.parameters = new Array()
+
+  exhibitCreatedEvent.parameters.push(
+    new ethereum.EventParam("name", ethereum.Value.fromString(name))
+  )
+  exhibitCreatedEvent.parameters.push(
+    new ethereum.EventParam("symbol", ethereum.Value.fromString(symbol))
+  )
+  exhibitCreatedEvent.parameters.push(
+    new ethereum.EventParam(
+      "ticketPrice",
+      ethereum.Value.fromUnsignedBigInt(ticketPrice)
+    )
+  )
+  exhibitCreatedEvent.parameters.push(
+    new ethereum.EventParam("escrow", ethereum.Value.fromAddress(escrow))
+  )
+  exhibitCreatedEvent.parameters.push(
+    new ethereum.EventParam("owner", ethereum.Value.fromAddress(owner))
+  )
+  exhibitCreatedEvent.parameters.push(
+    new ethereum.EventParam("baseURI", ethereum.Value.fromString(baseURI))
+  )
+  exhibitCreatedEvent.parameters.push(
+    new ethereum.EventParam("location", ethereum.Value.fromString(location))
+  )
+  exhibitCreatedEvent.parameters.push(
+    new ethereum.EventParam(
+      "artifactNFTAddress",
+      ethereum.Value.fromAddress(artifactNFTAddress)
+    )
+  )
+  exhibitCreatedEvent.parameters.push(
+    new ethereum.EventParam("details", ethereum.Value.fromString(details))
+  )
+
+  return exhibitCreatedEvent
+}
+
 export function createOwnershipTransferredEvent(
   previousOwner: Address,
   newOwner: Address
@@ -79,6 +132,7 @@ export function createOwnershipTransferredEvent(
 }
 
 export function createTicketMintedEvent(
+  exhibit: Address,
   to: Address,
   tokenId: BigInt
 ): TicketMinted {
@@ -86,6 +140,9 @@ export function createTicketMintedEvent(
 
   ticketMintedEvent.parameters = new Array()
 
+  ticketMintedEvent.parameters.push(
+    new ethereum.EventParam("exhibit", ethereum.Value.fromAddress(exhibit))
+  )
   ticketMintedEvent.parameters.push(
     new ethereum.EventParam("to", ethereum.Value.fromAddress(to))
   )
