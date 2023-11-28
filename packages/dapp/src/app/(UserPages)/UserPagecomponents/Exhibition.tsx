@@ -97,8 +97,8 @@ const VirtualEventCard = () => {
       </div>
 
       <div className="relative flex flex-row gap-3 w-full group mt-6">
-        {filteredEvents.slice(startIndex, endIndex).map((event) => (
-          <VirtualEventsCard event={event} />
+        {filteredEvents.slice(startIndex, endIndex).map((event, index) => (
+          <VirtualEventsCard key ={index} event={event} />
         ))}
       </div>
 

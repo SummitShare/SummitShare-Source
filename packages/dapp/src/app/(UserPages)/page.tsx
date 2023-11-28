@@ -4,12 +4,40 @@ import AdminSignUpCard from "./UserPagecomponents/AdminSignUpCard";
 import ContactUs from "./UserPagecomponents/ContactUsEmail";
 import Footer from "./UserPagecomponents/Footer";
 import HelpCardList from "./UserPagecomponents/HelpCardList";
-import HeroTwo from "./UserPagecomponents/HeroTwo";
+
 import TicketsList from "./UserPagecomponents/TicketList";
 
-export default function Home() {
+
+import { getClient } from "@/lib/client";
+
+import { gql } from "@apollo/client";
+import HeroTwo from "./UserPagecomponents/HeroTwo";
+
+export const revalidate = 0;
+const query = gql`
+  query {
+    exhibitCreateds(where: { name_contains: "Women’s"}) {
+      name
+      location
+      details
+      collection {
+        id
+        baseURI
+        name
+        symbol
+        totalMinted
+      }
+    }
+  }
+`;
+
+export default async function Home() {
+  const client = getClient();
+  const { data } = await client.query({ query });
+
+
   return (
-    <main className="pt-10 space-y-20">
+    <main className="pt-4 space-y-20">
       <HeroTwo />
       <TicketsList />
       <HelpCardList />

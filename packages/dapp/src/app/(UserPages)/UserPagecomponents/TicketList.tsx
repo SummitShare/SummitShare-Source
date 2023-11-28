@@ -146,7 +146,7 @@ const TicketsList: React.FC = () => {
         <p className="body-text-h4">
           Explore upcoming exhibitions with ease! Filter by country, date, and{" "}
           <br />
-          eventType below to find exactly what you're looking for
+          eventType below to find exactly what youre looking for
         </p>
       </div>
 
@@ -165,8 +165,8 @@ const TicketsList: React.FC = () => {
       </div>
 
       <div className="relative flex flex-row gap-3 w-full group mt-6">
-        {filteredEvents.slice(startIndex, endIndex).map((event) => (
-          <EventCard event={event} />
+        {filteredEvents.slice(startIndex, endIndex).map((event, index) => (
+          <EventCard event={event} key ={index}/>
         ))}
       </div>
 

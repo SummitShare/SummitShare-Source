@@ -2,7 +2,7 @@ Arguments:
   /home/qb/.nvm/versions/node/v18.1.0/bin/node /home/qb/.nvm/versions/node/v18.1.0/bin/yarn
 
 PATH: 
-  /home/qb/.vscode-server/bin/6c3e3dba23e8fadc360aed75ce363ba185c49794/bin/remote-cli:/home/qb/.nvm/versions/node/v18.1.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files/WindowsApps/CanonicalGroupLimited.Ubuntu22.04LTS_2204.2.47.0_x64__79rhkp1fndgsc:/mnt/c/Program Files (x86)/Razer Chroma SDK/bin:/mnt/c/Program Files/Razer Chroma SDK/bin:/mnt/c/Program Files (x86)/Intel/Intel(R) Management Engine Components/iCLS/:/mnt/c/Program Files/Intel/Intel(R) Management Engine Components/iCLS/:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/mnt/c/Program Files (x86)/Intel/Intel(R) Management Engine Components/DAL:/mnt/c/Program Files/Intel/Intel(R) Management Engine Components/DAL:/mnt/c/Program Files (x86)/Intel/Intel(R) Management Engine Components/IPT:/mnt/c/Program Files/Intel/Intel(R) Management Engine Components/IPT:/mnt/c/Program Files/Intel/WiFi/bin/:/mnt/c/Program Files/Common Files/Intel/WirelessCommon/:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Users/Administrator/AppData/Local/Microsoft/WindowsApps:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/dotnet/:/mnt/c/Users/olk93/AppData/Roaming/nvm:/mnt/c/Program Files/nodejs:/mnt/c/Users/olk93/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/olk93/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/ffmpeg/bin:/mnt/c/Users/olk93/AppData/Local/Programs/oh-my-posh/bin:/mnt/c/Users/olk93/AppData/Local/Keybase/
+  /home/qb/.vscode-server/bin/1a5daa3a0231a0fbba4f14db7ec463cf99d7768e/bin/remote-cli:/home/qb/.nvm/versions/node/v18.1.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files (x86)/Razer Chroma SDK/bin:/mnt/c/Program Files/Razer Chroma SDK/bin:/mnt/c/Program Files (x86)/Intel/Intel(R) Management Engine Components/iCLS/:/mnt/c/Program Files/Intel/Intel(R) Management Engine Components/iCLS/:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/mnt/c/Program Files (x86)/Intel/Intel(R) Management Engine Components/DAL:/mnt/c/Program Files/Intel/Intel(R) Management Engine Components/DAL:/mnt/c/Program Files (x86)/Intel/Intel(R) Management Engine Components/IPT:/mnt/c/Program Files/Intel/Intel(R) Management Engine Components/IPT:/mnt/c/Program Files/Intel/WiFi/bin/:/mnt/c/Program Files/Common Files/Intel/WirelessCommon/:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Users/Administrator/AppData/Local/Microsoft/WindowsApps:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/dotnet/:/mnt/c/Users/olk93/AppData/Roaming/nvm:/mnt/c/Program Files/nodejs:/mnt/c/Users/olk93/AppData/Local/Programs/cursor/resources/app/bin:/mnt/c/Users/olk93/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/olk93/AppData/Roaming/nvm:/mnt/c/Program Files/nodejs:/mnt/c/Users/olk93/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/ffmpeg/bin:/mnt/c/Users/olk93/AppData/Local/Programs/oh-my-posh/bin:/mnt/c/Users/olk93/AppData/Local/Keybase/:/mnt/c/Program Files/Neovim/bin
 
 Yarn version: 
   1.22.19
@@ -14,29 +14,26 @@ Platform:
   linux x64
 
 Trace: 
-  Error: ENOENT: no such file or directory, copyfile '/home/qb/.cache/yarn/v6/npm-find-up-5.0.0-4c92819ecb7083561e4f4a240a86be5198f536fc-integrity/node_modules/find-up/index.d.ts' -> '/home/qb/git/daodesigner/Revenue-Sharing-Source/node_modules/eslint/node_modules/find-up/index.d.ts'
+  Error: EEXIST: file already exists, mkdir '/home/qb/git/bicos-io01/Revenue-Sharing-Source/node_modules/lerna/node_modules/@npmcli'
 
 npm manifest: 
   {
-    "name": "event-subgraph",
+    "name": "revenue-sharing-source",
     "license": "UNLICENSED",
     "scripts": {
       "codegen": "graph codegen",
       "build": "graph build",
-      "deploy": "graph deploy --node https://api.thegraph.com/deploy/ bicos-io01/event-subgraph",
-      "create-local": "graph create --node http://localhost:8020/ bicos-io01/event-subgraph",
-      "remove-local": "graph remove --node http://localhost:8020/ bicos-io01/event-subgraph",
-      "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 bicos-io01/event-subgraph",
+      "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ daodesigner/revenue-sharing-source",
+      "create-local": "graph create --node http://localhost:8020/ daodesigner/revenue-sharing-source",
+      "remove-local": "graph remove --node http://localhost:8020/ daodesigner/revenue-sharing-source",
+      "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 daodesigner/revenue-sharing-source",
       "test": "graph test"
     },
     "dependencies": {
       "@graphprotocol/graph-cli": "0.60.0",
       "@graphprotocol/graph-ts": "0.30.0"
     },
-    "devDependencies": {
-      "assemblyscript": "^0.27.14",
-      "matchstick-as": "0.5.0"
-    }
+    "devDependencies": { "matchstick-as": "0.5.0" }
   }
 
 yarn manifest: 

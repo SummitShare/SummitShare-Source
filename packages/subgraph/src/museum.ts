@@ -1,54 +1,66 @@
+import { BigInt, log } from '@graphprotocol/graph-ts'
 import {
   ExhibitCurated as ExhibitCuratedEvent,
   OwnershipTransferred as OwnershipTransferredEvent,
-  TicketPurchased as TicketPurchasedEvent
+  TicketPurchased as TicketPurchasedEvent,
+  MuseumCreated as MuseumCreatedEvent
 } from "../generated/Museum/Museum"
 import {
-  ExhibitCurated,
-  OwnershipTransferred,
-  TicketPurchased
+  Exhibit,
+  ExhibitCurated, Museum, Ticket,
 } from "../generated/schema"
 
+
+export function handleMuseumCreated(event: MuseumCreatedEvent): void {
+  log.debug("handleMuseumCreated", [])
+  let museumAddress = event.params.museumAddress
+  let tokenAddress = event.params.tokenAddress
+  let ownerAddress = event.params.ownerAddress
+  let museum = new Museum(museumAddress.toHexString())
+  museum.usdcAddress = tokenAddress
+  museum.owner = ownerAddress
+  museum.save()
+
+}
 export function handleExhibitCurated(event: ExhibitCuratedEvent): void {
-  let entity = new ExhibitCurated(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
+
+  let museumAddress = event.params.museumAddress
+  let exhibitId = event.params.exhibitId
+  let exhibitAddress = event.params.exhibitAddress
+  let exhibitCurated = new ExhibitCurated(
+    museumAddress.toHexString().concat("-").concat(exhibitId.toString())
   )
-  entity.exhibitId = event.params.exhibitId
+  let exhibit = Exhibit.load(exhibitAddress.toHexString())
+  if (exhibit) {
+    exhibit.museumId = exhibitId
+    exhibit.save()
+  }
+  exhibitCurated.exhibit = exhibitAddress.toHexString()
+  exhibitCurated.blockNumber = event.block.number
+  exhibitCurated.blockTimestamp = event.block.timestamp
+  exhibitCurated.transactionHash = event.transaction.hash
+  exhibitCurated.save()
 
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
 }
 
 export function handleOwnershipTransferred(
   event: OwnershipTransferredEvent
 ): void {
-  let entity = new OwnershipTransferred(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.previousOwner = event.params.previousOwner
-  entity.newOwner = event.params.newOwner
-
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
+  log.info("handleOwnershipTransferred", [event.params.newOwner.toHexString()])
 }
 
 export function handleTicketPurchased(event: TicketPurchasedEvent): void {
-  let entity = new TicketPurchased(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.buyer = event.params.buyer
-  entity.exhibitId = event.params.exhibitId
-  entity.tokenId = event.params.tokenId
+  // create a ticket from schema with ticketid
+  let ticket = new Ticket(event.params.exhibit.toHexString().concat("-").concat(event.params.tokenId.toString()))
+  ticket.exhibit = event.params.exhibit.toHexString()
+  ticket.buyer = event.params.buyer
+  ticket.transactionHash = event.transaction.hash
+  ticket.uri = event.params.tokenId.toString()
+  ticket.save()
 
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
+  let exhibit =  Exhibit.load(event.params.exhibit.toHexString())
+  if(exhibit){
+    exhibit.totalMinted = exhibit.totalMinted.plus(BigInt.fromI32(1))
+    exhibit.save()
+  }
 }

@@ -2,20 +2,68 @@ import { newMockEvent } from "matchstick-as"
 import { ethereum, Address, BigInt } from "@graphprotocol/graph-ts"
 import {
   ExhibitCurated,
+  MuseumCreated,
   OwnershipTransferred,
   TicketPurchased
 } from "../generated/Museum/Museum"
 
-export function createExhibitCuratedEvent(exhibitId: string): ExhibitCurated {
+export function createExhibitCuratedEvent(
+  museumAddress: Address,
+  exhibitId: string,
+  exhibitAddress: Address
+): ExhibitCurated {
   let exhibitCuratedEvent = changetype<ExhibitCurated>(newMockEvent())
 
   exhibitCuratedEvent.parameters = new Array()
 
   exhibitCuratedEvent.parameters.push(
+    new ethereum.EventParam(
+      "museumAddress",
+      ethereum.Value.fromAddress(museumAddress)
+    )
+  )
+  exhibitCuratedEvent.parameters.push(
     new ethereum.EventParam("exhibitId", ethereum.Value.fromString(exhibitId))
+  )
+  exhibitCuratedEvent.parameters.push(
+    new ethereum.EventParam(
+      "exhibitAddress",
+      ethereum.Value.fromAddress(exhibitAddress)
+    )
   )
 
   return exhibitCuratedEvent
+}
+
+export function createMuseumCreatedEvent(
+  museumAddress: Address,
+  tokenAddress: Address,
+  ownerAddress: Address
+): MuseumCreated {
+  let museumCreatedEvent = changetype<MuseumCreated>(newMockEvent())
+
+  museumCreatedEvent.parameters = new Array()
+
+  museumCreatedEvent.parameters.push(
+    new ethereum.EventParam(
+      "museumAddress",
+      ethereum.Value.fromAddress(museumAddress)
+    )
+  )
+  museumCreatedEvent.parameters.push(
+    new ethereum.EventParam(
+      "tokenAddress",
+      ethereum.Value.fromAddress(tokenAddress)
+    )
+  )
+  museumCreatedEvent.parameters.push(
+    new ethereum.EventParam(
+      "ownerAddress",
+      ethereum.Value.fromAddress(ownerAddress)
+    )
+  )
+
+  return museumCreatedEvent
 }
 
 export function createOwnershipTransferredEvent(

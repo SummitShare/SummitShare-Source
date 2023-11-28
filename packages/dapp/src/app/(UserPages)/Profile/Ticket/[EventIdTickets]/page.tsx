@@ -6,7 +6,9 @@ import PreviousEvents from "@/app/(UserPages)/Profile/Ticket/[EventIdTickets]/co
 
 import React from "react";
 
+
 function Event() {
+
   return (
     <div className="space-y-10">
       <EventHero />

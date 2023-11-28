@@ -10,6 +10,36 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 
+export class EventEscrowDeployed extends ethereum.Event {
+  get params(): EventEscrowDeployed__Params {
+    return new EventEscrowDeployed__Params(this);
+  }
+}
+
+export class EventEscrowDeployed__Params {
+  _event: EventEscrowDeployed;
+
+  constructor(event: EventEscrowDeployed) {
+    this._event = event;
+  }
+
+  get usdcToken(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get beneficiaries(): Array<Address> {
+    return this._event.parameters[1].value.toAddressArray();
+  }
+
+  get shares(): Array<BigInt> {
+    return this._event.parameters[2].value.toBigIntArray();
+  }
+
+  get numBeneficiaries(): BigInt {
+    return this._event.parameters[3].value.toBigInt();
+  }
+}
+
 export class PaymentDistributed extends ethereum.Event {
   get params(): PaymentDistributed__Params {
     return new PaymentDistributed__Params(this);
@@ -58,6 +88,29 @@ export class EventEscrow extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toAddress());
+  }
+
+  numBeneficiaries(): BigInt {
+    let result = super.call(
+      "numBeneficiaries",
+      "numBeneficiaries():(uint256)",
+      []
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_numBeneficiaries(): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "numBeneficiaries",
+      "numBeneficiaries():(uint256)",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   payouts(param0: Address): BigInt {
@@ -135,7 +188,7 @@ export class ConstructorCall__Inputs {
     return this._call.inputValues[1].value.toAddressArray();
   }
 
-  get shares(): Array<BigInt> {
+  get _shares(): Array<BigInt> {
     return this._call.inputValues[2].value.toBigIntArray();
   }
 }

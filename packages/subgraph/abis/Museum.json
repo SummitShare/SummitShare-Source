@@ -12,14 +12,22 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "owner", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      }
     ],
     "name": "OwnableInvalidOwner",
     "type": "error"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "account", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
     ],
     "name": "OwnableUnauthorizedAccount",
     "type": "error"
@@ -29,12 +37,49 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "address",
+        "name": "museumAddress",
+        "type": "address"
+      },
+      {
+        "indexed": false,
         "internalType": "string",
         "name": "exhibitId",
         "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "exhibitAddress",
+        "type": "address"
       }
     ],
     "name": "ExhibitCurated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "museumAddress",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "tokenAddress",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "ownerAddress",
+        "type": "address"
+      }
+    ],
+    "name": "MuseumCreated",
     "type": "event"
   },
   {
@@ -67,9 +112,9 @@
       },
       {
         "indexed": false,
-        "internalType": "string",
-        "name": "exhibitId",
-        "type": "string"
+        "internalType": "address",
+        "name": "exhibit",
+        "type": "address"
       },
       {
         "indexed": false,
@@ -83,7 +128,11 @@
   },
   {
     "inputs": [
-      { "internalType": "string", "name": "exhibitId", "type": "string" },
+      {
+        "internalType": "string",
+        "name": "exhibitId",
+        "type": "string"
+      },
       {
         "internalType": "contract ExhibitNFT",
         "name": "exhibit",
@@ -96,10 +145,20 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "string", "name": "", "type": "string" }],
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
     "name": "exhibits",
     "outputs": [
-      { "internalType": "contract ExhibitNFT", "name": "", "type": "address" }
+      {
+        "internalType": "contract ExhibitNFT",
+        "name": "",
+        "type": "address"
+      }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -107,14 +166,28 @@
   {
     "inputs": [],
     "name": "owner",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "string", "name": "exhibitId", "type": "string" },
-      { "internalType": "uint256", "name": "usdcAmount", "type": "uint256" }
+      {
+        "internalType": "string",
+        "name": "exhibitId",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "usdcAmount",
+        "type": "uint256"
+      }
     ],
     "name": "purchaseTicket",
     "outputs": [],
@@ -130,7 +203,11 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "newOwner", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
     ],
     "name": "transferOwnership",
     "outputs": [],
@@ -141,18 +218,36 @@
     "inputs": [],
     "name": "usdcToken",
     "outputs": [
-      { "internalType": "contract IERC20", "name": "", "type": "address" }
+      {
+        "internalType": "contract IERC20",
+        "name": "",
+        "type": "address"
+      }
     ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "string", "name": "exhibitId", "type": "string" },
-      { "internalType": "address", "name": "user", "type": "address" }
+      {
+        "internalType": "string",
+        "name": "exhibitId",
+        "type": "string"
+      },
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      }
     ],
     "name": "verifyTicketOwnership",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   }
