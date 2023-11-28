@@ -23,8 +23,42 @@ export class ExhibitCurated__Params {
     this._event = event;
   }
 
+  get museumAddress(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
   get exhibitId(): string {
-    return this._event.parameters[0].value.toString();
+    return this._event.parameters[1].value.toString();
+  }
+
+  get exhibitAddress(): Address {
+    return this._event.parameters[2].value.toAddress();
+  }
+}
+
+export class MuseumCreated extends ethereum.Event {
+  get params(): MuseumCreated__Params {
+    return new MuseumCreated__Params(this);
+  }
+}
+
+export class MuseumCreated__Params {
+  _event: MuseumCreated;
+
+  constructor(event: MuseumCreated) {
+    this._event = event;
+  }
+
+  get museumAddress(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get tokenAddress(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+
+  get ownerAddress(): Address {
+    return this._event.parameters[2].value.toAddress();
   }
 }
 
@@ -67,8 +101,8 @@ export class TicketPurchased__Params {
     return this._event.parameters[0].value.toAddress();
   }
 
-  get exhibitId(): string {
-    return this._event.parameters[1].value.toString();
+  get exhibit(): Address {
+    return this._event.parameters[1].value.toAddress();
   }
 
   get tokenId(): BigInt {

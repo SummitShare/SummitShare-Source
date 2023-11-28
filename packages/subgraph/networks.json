@@ -1,17 +1,12 @@
 {
   "sepolia": {
-    "ExhibitNFT": {
-      "address": "0x690B9A9E9aa1C9dB991C7721a92d351Db4FaC990",
-      "startBlock": 0
-    },
-    "EventEscrow": {
-      "address": "0x690B9A9E9aa1C9dB991C7721a92d351Db4FaC990"
-    },
     "EventOrganizerService": {
-      "address": "0x690B9A9E9aa1C9dB991C7721a92d351Db4FaC990"
+      "address": "0xdFB611127315848Fd0D53226eC886BbF6514B5D1",
+      "startBlock": 4751265
     },
     "Museum": {
-      "address": "0x690B9A9E9aa1C9dB991C7721a92d351Db4FaC990"
+      "address": "0xF4857Efc226Bb39C6851Aa137347CFf8F8e050F9",
+      "startBlock": 4751264
     }
   }
 }

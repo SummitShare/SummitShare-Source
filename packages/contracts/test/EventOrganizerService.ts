@@ -3,7 +3,7 @@ import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
 import { expect } from "chai";
 import { ethers } from "hardhat";
 
-describe("EventOrganizerService Contract Tests", function() {
+describe("EventOrganizerService Contract Tests", function () {
   // Function to deploy and set up the necessary contracts
   async function deployContracts() {
     // Deploying Museum contract
@@ -21,6 +21,10 @@ describe("EventOrganizerService Contract Tests", function() {
     const EventOrganizerService = await ethers.getContractFactory("EventOrganizerService");
     const organizerService = await EventOrganizerService.deploy(museum.target, usdcToken.target);
 
+    // Deploy ArtifactNFT contract (or another ERC721 token)
+    const ArtifactNFT = await ethers.getContractFactory("ArtifactNFT");
+    const artifactNFT = await ArtifactNFT.connect(owner).deploy("ArtifactNFT", "ANFT", owner, "https://api.example.com/nft/");
+
     return {
       museum,
       usdcToken,
@@ -29,110 +33,136 @@ describe("EventOrganizerService Contract Tests", function() {
       controller,
       beneficiary1,
       beneficiary2,
-      funder
+      funder,
+      artifactNFT
     };
   }
 
-  describe("Funding", function() {
-    it("Should correctly organize an exhibit and emit an event", async function() {
-      const { organizerService, beneficiary1, beneficiary2 } = await  loadFixture(deployContracts);
+  describe("Funding", function () {
+    it("Should correctly organize an exhibit and emit an event", async function () {
+      const { organizerService, beneficiary1, beneficiary2, artifactNFT } = await loadFixture(deployContracts);
 
       await expect(
         organizerService.organizeExhibit(
-          "Exhibit1",
+          
           "ExhibitName",
           "EXB",
           ethers.parseUnits("10", 18),
           [beneficiary1.address, beneficiary2.address],
-          [50, 50]
+          [50, 50],
+          "https://api.example.com/nft/",
+          "Lusaka,Zambia",
+          artifactNFT.target,
+          "Lusaka Art Gallery",
+          "Exhibit1"
         )
       )
-        .to.emit(organizerService, "ExhibitOrganized")
-        .withArgs("Exhibit1", anyValue, anyValue); // using sinon for argument matching
+        .to.emit(organizerService, "ExhibitNFTDeployed")
+        .withArgs("Exhibit1", anyValue, anyValue, anyValue); // using sinon for argument matching
     });
     it("Should revert if an exhibit with the same exhibitID that is already curated is organized again", async function () {
-      const { organizerService, beneficiary1, beneficiary2, museum, owner } = await  loadFixture(deployContracts);
+      const { organizerService, beneficiary1, beneficiary2, museum, owner , artifactNFT} = await loadFixture(deployContracts);
 
-    
+
       await organizerService.organizeExhibit(
-        "Exhibit1",
+        
         "ExhibitName",
         "EXB",
         ethers.parseUnits("10", 18),
         [beneficiary1.address, beneficiary2.address],
-        [50, 50]
-      );
+        [50, 50],
+        "https://api.example.com/nft/",
+        "Lusaka,Zambia",
+        artifactNFT.target,
+        "Lusaka Art Gallery",
+        "Exhibit1"
+      )
 
-      const exhibitNFT  = await organizerService.connect(owner).exhibits("Exhibit1")
-      await museum.connect(owner).curateExhibit("Exhibit1",exhibitNFT );
+      const exhibitNFT = await organizerService.connect(owner).exhibits("Exhibit1")
+      await museum.connect(owner).curateExhibit("Exhibit1", exhibitNFT);
       await expect(organizerService.organizeExhibit(
-        "Exhibit1",
-        "ExhibitName2",
-        "EXB2",
-        ethers.parseUnits("20", 18),
+        
+        "ExhibitName",
+        "EXB",
+        ethers.parseUnits("10", 18),
         [beneficiary1.address, beneficiary2.address],
-        [70, 30]
+        [50, 50],
+        "https://api.example.com/nft/",
+        "Lusaka,Zambia",
+        artifactNFT.target,
+        "Lusaka Art Gallery",
+        "Exhibit1"
       )).to.be.revertedWith("ExhibitID already taken.");
     });
     it("Should correctly read state variables of the deployed ExhibitNFT and EventEscrow contracts", async function () {
-      const { organizerService, beneficiary1, beneficiary2, museum, owner } = await  loadFixture(deployContracts);
+      const { organizerService, beneficiary1, beneficiary2, museum, owner , artifactNFT} = await loadFixture(deployContracts);
       const ticketPrice = ethers.parseUnits("10", 18);
-      
-     
-      
+
+
+
       // Triggering the event by organizing an exhibit
       await organizerService.organizeExhibit(
-        "Exhibit1",
+        
         "ExhibitName",
         "EXB",
-        ticketPrice,
+        ethers.parseUnits("10", 18),
         [beneficiary1.address, beneficiary2.address],
-        [50, 50]
+        [50, 50],
+        "https://api.example.com/nft/",
+        "Lusaka,Zambia",
+        artifactNFT.target,
+        "Lusaka Art Gallery",
+        "Exhibit1"
       );
-      const exhibitNFTAddress  = await organizerService.connect(owner).exhibits("Exhibit1")
+      const exhibitNFTAddress = await organizerService.connect(owner).exhibits("Exhibit1")
       const exhibitNFT = await ethers.getContractAt("ExhibitNFT", exhibitNFTAddress);
       const eventEscrow = await ethers.getContractAt("EventEscrow", await exhibitNFT.escrow());
       const address1 = await eventEscrow.beneficiaries(0);
       const address2 = await eventEscrow.beneficiaries(1);
-        const share1 = await eventEscrow.payouts(address1)
-        const share2 = await eventEscrow.payouts(address2)
-  
-        expect(share1).to.equal(50)
+      const share1 = await eventEscrow.payouts(address1)
+      const share2 = await eventEscrow.payouts(address2)
 
-        expect(share2).to.equal(50)
-     
-      
+      expect(share1).to.equal(50)
+
+      expect(share2).to.equal(50)
+
+
     });
     it("Should correctly set any revenue split", async function () {
-      const { organizerService, beneficiary1, beneficiary2, museum, owner } = await  loadFixture(deployContracts);
+      const { organizerService, beneficiary1, beneficiary2, museum, owner , artifactNFT} = await loadFixture(deployContracts);
       const ticketPrice = ethers.parseUnits("10", 18);
-      
-     
-      
+
+
+
       // Triggering the event by organizing an exhibit
       await organizerService.organizeExhibit(
-        "Exhibit1",
+       
         "ExhibitName",
         "EXB",
-        ticketPrice,
+        ethers.parseUnits("10", 18),
         [beneficiary1.address, beneficiary2.address],
-        [10, 9000]
+        [10, 9000],
+        "https://api.example.com/nft/",
+        "Lusaka,Zambia",
+        artifactNFT.target,
+        "Lusaka Art Gallery",
+        "Exhibit1"
       );
-      const exhibitNFTAddress  = await organizerService.connect(owner).exhibits("Exhibit1")
+      const exhibitNFTAddress = await organizerService.connect(owner).exhibits("Exhibit1")
       const exhibitNFT = await ethers.getContractAt("ExhibitNFT", exhibitNFTAddress);
       const eventEscrow = await ethers.getContractAt("EventEscrow", await exhibitNFT.escrow());
       const address1 = await eventEscrow.beneficiaries(0);
       const address2 = await eventEscrow.beneficiaries(1);
-        const share1 = await eventEscrow.payouts(address1)
-        const share2 = await eventEscrow.payouts(address2)
-  
-        expect(share1).to.equal(10)
+      const share1 = await eventEscrow.payouts(address1)
+      const share2 = await eventEscrow.payouts(address2)
 
-        expect(share2).to.equal(9000)
-     
-      
+      expect(share1).to.equal(10)
+
+      expect(share2).to.equal(9000)
+
+
     });
-    
-    
+
+
   });
 });

@@ -17,8 +17,18 @@ import { createExhibitCuratedEvent } from "./museum-utils"
 
 describe("Describe entity assertions", () => {
   beforeAll(() => {
+    let museumAddress = Address.fromString(
+      "0x0000000000000000000000000000000000000001"
+    )
     let exhibitId = "Example string value"
-    let newExhibitCuratedEvent = createExhibitCuratedEvent(exhibitId)
+    let exhibitAddress = Address.fromString(
+      "0x0000000000000000000000000000000000000001"
+    )
+    let newExhibitCuratedEvent = createExhibitCuratedEvent(
+      museumAddress,
+      exhibitId,
+      exhibitAddress
+    )
     handleExhibitCurated(newExhibitCuratedEvent)
   })
 
@@ -36,8 +46,20 @@ describe("Describe entity assertions", () => {
     assert.fieldEquals(
       "ExhibitCurated",
       "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
+      "museumAddress",
+      "0x0000000000000000000000000000000000000001"
+    )
+    assert.fieldEquals(
+      "ExhibitCurated",
+      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
       "exhibitId",
       "Example string value"
+    )
+    assert.fieldEquals(
+      "ExhibitCurated",
+      "0xa16081f360e3847006db660bae1c6d1b2e17ec2a-1",
+      "exhibitAddress",
+      "0x0000000000000000000000000000000000000001"
     )
 
     // More assert options:

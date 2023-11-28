@@ -20,26 +20,40 @@ describe("Museum Contract Tests", function() {
     const Museum = await ethers.getContractFactory("Museum");
     const museum = await Museum.connect(owner).deploy(usdcToken.target);
 
+     // Deploy ArtifactNFT contract (or another ERC721 token)
+     const ArtifactNFT = await ethers.getContractFactory("ArtifactNFT");
+     const artifactNFT = await ArtifactNFT.connect(owner).deploy("ArtifactNFT", "ANFT", owner, "https://api.example.com/nft/");
+ 
     // Deploy EventOrganizerService with the deployed Museum and USDC token addresses
     const EventOrganizerService = await ethers.getContractFactory("EventOrganizerService");
     const organizerService = await EventOrganizerService.deploy(museum.target, usdcToken.target);
 
     await organizerService.organizeExhibit(
-      "Exhibit1",
+     
       "ExhibitName",
       "EXB",
       ethers.parseUnits("50", 6),
       [beneficiary1.address, beneficiary2.address],
-      [50, 50]
+      [50, 50],
+      "https://api.example.com/nft/",
+      "Lusaka,Zambia",
+      artifactNFT.target,
+      "Lusaka Art Gallery",
+      "Exhibit1"
     );
 
     await organizerService.organizeExhibit(
-      "Exhibit2", //id
+      
       "ExhibitName2", //name
       "EX2", //symbol
       ethers.parseUnits("50", 6), //price
       [beneficiary1.address, beneficiary2.address, funder.address], //beneficiaries
-      [50, 50, 50] //shares
+      [50, 50, 50], //shares,
+      "https://api.example.com/nft/",
+      "Lusaka,Zambia",
+      artifactNFT.target,
+      "Lusaka Art Gallery2",
+      "Exhibit2"
     );
 
     const exhibit1NFTAddress = await organizerService.exhibits("Exhibit1");

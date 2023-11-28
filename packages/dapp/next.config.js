@@ -10,6 +10,7 @@ const nextConfig = {
       "plus.unsplash.com",
       "loremflickr.com",
       "images.squarespace-cdn.com",
+      'source.unsplash.com'
     ],
   },
 };

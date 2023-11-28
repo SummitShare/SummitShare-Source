@@ -30,10 +30,10 @@ function Button({
   return (
     <button
       type={type}
-      className={`hover:${hoverColor} body-title-h4 flex flex-row gap-2 items-center justify-center ${backGroundColor} ${textColor} px-4 py-3 rounded-xl w-fit  text-sm font-medium border-${borderColor} ${hover} transition-all `}
+      className={`px-4 py-2 flex items-center justify-center w-auto h-10 text-xs sm:text-sm font-medium rounded-xl whitespace-nowrap ${backGroundColor} ${textColor} border-${borderColor} hover:${hoverColor} ${hover} transition-all`}
       onClick={click}
     >
-      <div> {text}</div>
+      <div>{text}</div>
     </button>
   );
 }

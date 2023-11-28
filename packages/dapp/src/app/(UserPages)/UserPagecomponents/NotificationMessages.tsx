@@ -22,8 +22,8 @@ const data = [
 function NotificationMessages() {
   return (
     <div>
-      {data.map((messages) => (
-        <div className=" cursor-pointer">
+      {data.map((messages, index) => (
+        <div key ={index} className=" cursor-pointer">
           <div className="flex flex-row gap-5 py-5 items-center">
             <div>
               <DotFilledIcon className="text-blue-500 w-5 h-5" />

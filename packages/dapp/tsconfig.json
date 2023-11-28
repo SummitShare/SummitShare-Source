@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -12,9 +16,9 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-
-    "types": ["next-auth"],
-
+    "types": [
+      "next-auth"
+    ],
     "incremental": true,
     "plugins": [
       {
@@ -22,10 +26,12 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
-    }
+      "@/*": [
+        "./src/*"
+      ]
+    },
+    "forceConsistentCasingInFileNames": true
   },
-
   "include": [
     "next-env.d.ts",
     "**/*.ts",
@@ -33,6 +39,7 @@
     ".next/types/**/*.ts",
     "src/reusebaeComponents/navBarIconTextDropDowntsx"
   ],
-
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

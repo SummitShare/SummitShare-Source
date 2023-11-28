@@ -1,36 +1,54 @@
+import { BigInt } from "@graphprotocol/graph-ts"
 import {
-  ExhibitOrganized as ExhibitOrganizedEvent,
-  OwnershipTransferred as OwnershipTransferredEvent
+  EventOrganizerService,
+  ArtifactNFTDeployed,
+  ExhibitNFTDeployed,
+  OwnershipTransferred
 } from "../generated/EventOrganizerService/EventOrganizerService"
-import { ExhibitOrganized, OwnershipTransferred } from "../generated/schema"
+import { log } from '@graphprotocol/graph-ts'
+import { Artifact, Collection, Escrow, Exhibit } from "../generated/schema"
 
-export function handleExhibitOrganized(event: ExhibitOrganizedEvent): void {
-  let entity = new ExhibitOrganized(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.exhibitId = event.params.exhibitId
-  entity.exhibitAddress = event.params.exhibitAddress
-  entity.escrowAddress = event.params.escrowAddress
+import { ArtifactNFT, EventEscrow, ExhibitNFT } from '../generated/templates'
 
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
+export function handleArtifactNFTDeployed(event: ArtifactNFTDeployed): void {
+  let collectionId = event.params.artifactNFTAddress
+  let collection = new Collection(collectionId.toHexString())
+  collection.name = event.params.name
+  collection.symbol = event.params.symbol
+  collection.baseURI = event.params.baseURI
+  collection.totalMinted = BigInt.fromI32(0)
+  collection.save()
 
-  entity.save()
+  ArtifactNFT.create(event.params.artifactNFTAddress)
 }
 
-export function handleOwnershipTransferred(
-  event: OwnershipTransferredEvent
-): void {
-  let entity = new OwnershipTransferred(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.previousOwner = event.params.previousOwner
-  entity.newOwner = event.params.newOwner
+export function handleExhibitNFTDeployed(event: ExhibitNFTDeployed): void {
+  
+  let exhibitId = event.params.exhibitId
+  let exhibitNFTAddress = event.params.exhibitNFTAddress
+  let escrowAddress = event.params.escrowAddress
+  let museumAddress = event.params.museumAddress
 
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
+  //create the objects in the data base
+  let exhibit = new Exhibit(exhibitNFTAddress.toHexString())
+  exhibit.eventId = exhibitId
+  exhibit.escrow = escrowAddress.toHexString()
+  exhibit.museum = museumAddress.toHexString()
+  exhibit.totalMinted = BigInt.fromI32(0)
+  exhibit.save()
+  
+  let escrow = new Escrow(escrowAddress.toHexString())
+  escrow.exhibit = exhibitNFTAddress.toHexString()
+  escrow.save()
+  
+  EventEscrow.create(event.params.escrowAddress)
+  ExhibitNFT.create(event.params.exhibitNFTAddress)
+}
 
-  entity.save()
+export function handleOwnershipTransferred(event: OwnershipTransferred): void {
+  log.debug('Block number: {}, block hash: {}, transaction hash: {}', [
+    event.block.number.toString(), // "47596000"
+    event.block.hash.toHexString(), // "0x..."
+    event.transaction.hash.toHexString(), // "0x..."
+  ])
 }
