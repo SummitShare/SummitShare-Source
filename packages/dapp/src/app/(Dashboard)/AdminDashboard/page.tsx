@@ -16,7 +16,7 @@ const EventCreatorDashboard = async () => {
         <DashboardAdminActivity />
         <DashboardAdminUpComingEvents />
       </div>
-      <div className="lg:px-6 lg:space-y-6 lg:fixed lg:top-0 lg:right-0 space-y-6">
+      <div className="lg:px-6 lg:space-y-6 lg:fixed lg:top-0 lg:right-0 space-y-6   w-full lg:w-[400px] ">
         <DashboardAdminProfits />
         <DashboardAdminTransactionsHome />
       </div>
