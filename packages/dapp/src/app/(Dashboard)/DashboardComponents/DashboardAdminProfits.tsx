@@ -1,9 +1,12 @@
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
-import Image from "next/image";
-import React from "react";
-import barChart from "/public/barChart.png"; // Assuming this is the path to your barChart image
 import DashboardProfitBarchart from "./DashboardProfitBarchart";
-
+const data = [
+  ["Product", "Views", { role: "style" }],
+  ["Etherem", 3000, "#f97316"],
+  ["Dai", 2500, "#22c55e"],
+  ["Shiba Inu", 2000, "#030712"],
+  ["Arbitrum", 2800, "#0ea5e9"],
+];
 function DashboardAdminProfits() {
   return (
     <section>
@@ -20,7 +23,7 @@ function DashboardAdminProfits() {
           </p>
         </div>
 
-        <DashboardProfitBarchart />
+        <DashboardProfitBarchart data={data} />
       </div>
     </section>
   );

@@ -2,13 +2,6 @@
 
 import React from "react";
 import { Chart } from "react-google-charts";
-const data = [
-  ["Product", "Views", { role: "style" }],
-  ["Etherem", 3000, "#ef4444"],
-  ["Dai", 2500, "#22c55e"],
-  ["Shiba Inu", 2000, "#030712"],
-  ["Arbitrum", 2800, "#0ea5e9"],
-];
 
 const options = {
   title: "Product Sales Comparison",
@@ -27,7 +20,11 @@ const options = {
     trigger: "both",
   },
 };
-const DashboardProfitBarchart = () => {
+
+interface Props {
+  data?: any; // to be changed to the required type
+}
+const DashboardProfitBarchart: React.FC<Props> = ({ data }) => {
   return (
     <Chart
       chartType="ColumnChart"

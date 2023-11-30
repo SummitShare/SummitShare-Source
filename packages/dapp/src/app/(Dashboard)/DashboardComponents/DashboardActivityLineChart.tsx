@@ -31,7 +31,7 @@ export const options = {
 };
 
 interface Props {
-  data?: any;
+  data?: any; // to be changed to the required type
 }
 const DashboardActivityLineChart: React.FC<Props> = ({ data }) => {
   return (
