@@ -2,8 +2,6 @@ import { NextResponse } from 'next/server'
 import { transporter, emailServer } from '../../../../config/nodemailer'
 import { PrismaClient } from '@prisma/client'
 import crypto from 'node:crypto'
-import bcrypt from 'bcrypt';
-
 const prisma = new PrismaClient()
 
 
@@ -13,8 +11,8 @@ export async function POST(req: Request , res : NextResponse) {
 
         const { email, password } = await req.json();
         // Hash password (You can use bcrypt or similar libraries)
-       const saltRounds = 10;
-       const hashedPassword = await bcrypt.hash(password, saltRounds);
+        const hashedPassword = password; // Replace with hashed password
+        
         // Create user
         const user = await prisma.users.create({
         data: {
@@ -63,11 +61,9 @@ export async function POST(req: Request , res : NextResponse) {
         return NextResponse.json({ success: 'User created and email sent'}, { status: 201 })
         
     } catch (error) {
-        console.error(error);
-        //@ts-ignore
-        const errorMessage = process.env.NODE_ENV === 'development' ? error.message : 'An error occurred during signup.';
-        return NextResponse.json({ failure: errorMessage }, { status: 500 });
-      }
+        console.log(error)
+        return NextResponse.json({ faliure: error },{ status: 500 })
+        
     }
     
-    
+}
