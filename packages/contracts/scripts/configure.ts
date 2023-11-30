@@ -23,7 +23,7 @@ async function main() {
         artifactNFT: artifactNFT1,
         details: "Expressing the word with color",
         id: "exhibit3"
-    }
+    } 
     const exhibit2 ={
         name: "Chaminuka Art Gallery",
         symbol: "CAG",
