@@ -1,9 +1,15 @@
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
-import Image from "next/image";
-import React from "react";
-import lineChart from "/public/lineChart.png"; // Assuming this is the path to your lineChart image
-import ActivityLineChart from "./LineChart";
-import LineChart from "./LineChart";
+import DashboardActivityLineChart from "./DashboardActivityLineChart";
+
+//data to come from backend api
+const data = [
+  ["Day", "Sold Tickets", "Earnings"],
+  ["Monday", 1000, 500],
+  ["Tuesday", 1170, 600],
+  ["Wedesday", 660, 700],
+  ["Thursday", 1030, 900],
+  ["Friday", 1030, 900],
+];
 
 const DashboardAdminActivity = () => {
   return (
@@ -20,11 +26,8 @@ const DashboardAdminActivity = () => {
             {/* Dropdown icon for week selection */}
           </p>
         </div>
-        {/* Activity Line Chart */}
 
-        {/* Display the line chart */}
-
-        <LineChart />
+        <DashboardActivityLineChart data={data} />
       </div>
     </section>
   );

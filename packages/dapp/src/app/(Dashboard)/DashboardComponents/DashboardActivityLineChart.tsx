@@ -2,30 +2,28 @@
 
 import React from "react";
 import Chart from "react-google-charts";
-export const data = [
-  ["Day", "Sold Tickets", "Earnings"],
-  ["Monday", 1000, 500],
-  ["Tuesday", 1170, 600],
-  ["Wedesday", 660, 700],
-  ["Thursday", 1030, 900],
-  ["Friday", 1030, 900],
-];
 
 export const options = {
   title: "Company Performance",
   curveType: "function",
   legend: { position: "bottom" },
-
-  chartArea: { right: 4, width: "90%", height: "60%" },
+  chartArea: { right: 4, width: "90%", height: "70%" },
   colors: ["black", "#f97316"],
   tooltip: {
     backgroundColor: "black",
   },
 
   vAxis: {
-    title: "Total",
+    textStyle: { color: "#3f3f46" },
+    gridlines: { color: "#d4d4d8", count: -1 },
   },
 
+  hAxis: {
+    textStyle: { color: "#3f3f46" },
+    minorGridlines: { color: "" },
+
+    gridlines: { color: "red", count: -1 },
+  },
   lineWidth: 3,
   animation: {
     startup: true,
@@ -35,7 +33,10 @@ export const options = {
   },
 };
 
-const LineChart = () => {
+interface Props {
+  data?: any;
+}
+const DashboardActivityLineChart: React.FC<Props> = ({ data }) => {
   return (
     <Chart
       chartType="LineChart"
@@ -48,4 +49,4 @@ const LineChart = () => {
   );
 };
 
-export default LineChart;
+export default DashboardActivityLineChart;
