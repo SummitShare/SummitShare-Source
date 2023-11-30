@@ -13,8 +13,8 @@ async function main() {
 
   
     const exhibit1 ={
-        name: "Lusaka Art Gallery",
-        symbol: "LAG",
+        name: "Alliance Francaise Lusaka",
+        symbol: "AFL",
         ticketPrice: ethers.parseUnits("10", 18),
         beneficiaries: [beneficiary1.address, beneficiary2.address],
         shares: [50, 50],
@@ -22,11 +22,11 @@ async function main() {
         location: "Lusaka,Zambia",
         artifactNFT: artifactNFT1,
         details: "Expressing the word with color",
-        id: "exhibit1"
+        id: "exhibit3"
     }
     const exhibit2 ={
-        name: "Women’s History Museum",
-        symbol: "WHM",
+        name: "Chaminuka Art Gallery",
+        symbol: "CAG",
         ticketPrice: ethers.parseUnits("10", 18),
         beneficiaries: [beneficiary1.address, beneficiary2.address],
         shares: [50, 50],
@@ -34,7 +34,7 @@ async function main() {
         location: "New York,USA",
         artifactNFT: artifactNFT2,
         details: "Those who walked before us and those to come.",
-        id: "exhibit2"
+        id: "exhibit4"
     }
 
     // Connect to the contracts
@@ -63,6 +63,7 @@ async function main() {
         );
     const receipt1 = await tx1.wait(6);
     console.log("Organized Exhibit 1", receipt1.status)
+
     const tx2 = await organizerService.connect(owner).organizeExhibit(
             exhibit2.name,
             exhibit2.symbol,
@@ -77,8 +78,8 @@ async function main() {
         );
     const receipt2 = await tx2.wait(6);
     console.log("Organized Exhibit 2", receipt2.status)
- 
- 
+
+  
     // Read the contract state
     const exhibitNFTAddress = await organizerService.exhibits("exhibit1");
     const exhibit2NFTAddress = await organizerService.exhibits("exhibit2");

@@ -47,6 +47,7 @@ async function main() {
   );
   const receipt0 = await tx0.wait(6);
   console.log("Deployed ArtifactNFT 1", receipt0.status)
+
   const tx00 = await organizerService.connect(owner).deployArtifactNFT(
     artifact2.name,
     artifact2.symbol,
@@ -55,7 +56,6 @@ async function main() {
   );
   const receipt00 = await tx00.wait(6);
   console.log("Deployed ArtifactNFT 2", receipt00.status)
-
 
   // log addresses
   console.log("MUSDC deployed to:", usdcToken.target);
