@@ -2,10 +2,10 @@ import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import DashboardProfitBarchart from "./DashboardProfitBarchart";
 const data = [
   ["Product", "Views", { role: "style" }],
-  ["Etherem", 3000, "#f97316"],
-  ["Dai", 2500, "#22c55e"],
-  ["Shiba Inu", 2000, "#030712"],
-  ["Arbitrum", 2800, "#0ea5e9"],
+  ["Etherem", 3000, "#fdba74"],
+  ["Dai", 2500, "#4ade80"],
+  ["Shiba Inu", 2000, "#3f3f46"],
+  ["Arbitrum", 2800, "#2dd4bf"],
 ];
 function DashboardAdminProfits() {
   return (

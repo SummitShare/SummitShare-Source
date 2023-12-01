@@ -11,6 +11,14 @@ const data = [
   ["Thursday", 1030, 900],
   ["Friday", 1030, 900],
 ];
+const revenueData = [
+  ["stakeholders", "revenue"],
+  ["Zamtel", 300],
+  ["Airtel", 400],
+  ["Brown Tech", 900],
+  ["Zambia BOZ", 1000],
+];
+
 
 const DashboardAdminActivity = () => {
   return (
@@ -29,7 +37,7 @@ const DashboardAdminActivity = () => {
         </div>
 
         <DashboardActivityLineChart data={data} />
-        <StakeholderRevenuePiechart />
+        <StakeholderRevenuePiechart data={revenueData} />
 
       
 

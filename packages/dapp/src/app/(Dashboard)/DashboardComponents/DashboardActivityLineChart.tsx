@@ -8,7 +8,7 @@ export const options = {
   curveType: "function",
   legend: { position: "bottom" },
   chartArea: { right: 4, width: "90%", height: "70%" },
-  colors: ["black", "#f97316"],
+  colors: ["#3f3f46", "#fdba74"],
 
   vAxis: {
     textStyle: { color: "#3f3f46" },
