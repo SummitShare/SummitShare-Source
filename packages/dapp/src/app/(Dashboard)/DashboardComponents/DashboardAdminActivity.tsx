@@ -1,5 +1,6 @@
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import DashboardActivityLineChart from "./DashboardActivityLineChart";
+import StakeholderRevenuePiechart from "./StakeholderRevenuePiechart";
 
 //data to come from backend api
 const data = [
@@ -28,6 +29,10 @@ const DashboardAdminActivity = () => {
         </div>
 
         <DashboardActivityLineChart data={data} />
+        <StakeholderRevenuePiechart />
+
+      
+
       </div>
     </section>
   );
