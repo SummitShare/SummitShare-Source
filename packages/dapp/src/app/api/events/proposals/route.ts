@@ -31,18 +31,26 @@ export async function POST(req: Request, res: NextResponse) {
         // Parse the request body
         
         const requestBody = await req.json();
-        const { proposal , eventID , user_id }: { proposal: IPropsal, eventID: string , user_id:string } = requestBody;
+        const { proposal , event_id , user_id }: { proposal: IPropsal, event_id: string , user_id:string } = requestBody;
         const prop = JSON.stringify(proposal)
 
-        const newProposal = prisma.proposals.create({
+        const newProposal = await prisma.proposals.create({
             data:{
               user_id: user_id,
-              event_id: eventID,
+              event_id: event_id,
               content: prop
             }
         })
-        // Iterate over the array of emails
-        
+
+
+       
+        const newVote = await prisma.votes.create({
+          data: {
+              user_id: user_id,
+              proposal_id: newProposal.id, // Using the ID of the newly created proposal
+              decision: true
+          }
+      });
 
 
         // Return the status of all operations

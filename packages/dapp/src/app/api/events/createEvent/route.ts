@@ -1,6 +1,7 @@
 import { PrismaClient, proposals } from '@prisma/client'
 import { NextResponse } from 'next/server'
 import prisma from '../../../../../config/db'
+
 // const prisma = new PrismaClient()
 
 interface IPropsal {
@@ -17,12 +18,11 @@ interface IPropsal {
     total_number_tickets?: number;
     // Additional properties for relations can be added if needed
   }
-
 interface EmailStatus {
     exists: boolean;
     sent: boolean;
     status: number;
-    }
+  }
 interface EmailArray extends Array<string> {}
 
 
@@ -63,34 +63,44 @@ export async function POST(req: Request , res : NextResponse) {
           }
       }); 
       console.log(event.id)
-      return event.id
+      return event
       
     } catch (error) {
       console.log(`createEvent error : ${error}`)
       return 0
     }
   }
-  async function sendRequests(url:string , stakeholders : EmailArray) {
+  async function sendRequests(url:string , emailsArray : EmailArray, event_id :string ) {
+    const data = {
+      emailsArray,
+      event_id
+    };
     const response = await  fetch( url,{
         method: "POST", 
         headers: {
             "Content-Type": "application/json",
             // 'Content-Type': 'application/x-www-form-urlencoded',
           },
-          body: JSON.stringify(stakeholders),
+          body: JSON.stringify(data),
     })
     return response.json(); 
   }
-  async function createProposal(url:string , proposal : IPropsal) {
-    const response = await  fetch( url,{
-        method: "POST", 
-        headers: {
-            "Content-Type": "application/json",
-            // 'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: JSON.stringify(stakeholders),
-      })
-    return response.json(); 
+  async function createProposal(url:string, proposal:IPropsal, user_id:string, event_id:string) {
+    const data = {
+      proposal,
+      user_id,
+      event_id
+    };
+  
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
+  
+    return response.json();
   }
 
   
@@ -99,7 +109,7 @@ export async function POST(req: Request , res : NextResponse) {
     const {
         user_id,
         proposal,
-        stakeholders
+        emailsArray
         // Add other fields from the proposal object here if necessary
     }: {
         user_id: string;
@@ -115,7 +125,7 @@ export async function POST(req: Request , res : NextResponse) {
         cost?: number; // assuming it's a number type for decimal
         total_number_tickets?: number;
         proposal:IPropsal;
-        stakeholders: EmailArray;
+        emailsArray: EmailArray;
     } = requestBody        
 
     const numericCost = Number(proposal.cost);
@@ -125,14 +135,6 @@ export async function POST(req: Request , res : NextResponse) {
       return NextResponse.json({ status: 'number error' ,}, { status: 500 })
     }
 
-    // const eventID = await createEvent(proposal,user_id)
-
-
-    // if (eventID == 0 ) {
-    //   return NextResponse.json({ status: 'event error' ,}, { status: 500 })
-    // }
-
-    //-------TEST---------//
 
     const {
       event_type,
@@ -146,32 +148,21 @@ export async function POST(req: Request , res : NextResponse) {
       cost,
       total_number_tickets,
     } = proposal;
-   const  userId = "1be3c37d-106c-49e0-9346-06ec291602a2"
-    const event = await prisma.events.create({
-      data: {
-      //@ts-ignore//
-        event_type,
-        event_name,
-        user_id,
-        //@ts-ignore//
-        event_category,
-        event_start_time: new Date(),
-        event_timezone,
-        event_location,
-        description,
-        event_end_time: new Date(),
-        cost: cost as number,
-        total_number_tickets,
-      },
-    });
+   
 
-    return NextResponse.json(event.id, { status: 200 })
-  
-  
-  // const urlRequests  = ""
-  // const urlProposal = ""
 
-  // const resRequests  = sendRequests(urlRequests,stakeholders)
-  // const resProposal =createProposal(urlProposal,proposal)
-  
-}
+    const event = await createEvent(proposal,user_id)
+    
+    if (!event) {
+      return NextResponse.json({ status: 'event error' ,}, { status: 500 }) 
+    }
+
+    const event_id = event.id
+    
+
+      const url = "http://localhost:3000/api/events/proposals";
+      const prop = await createProposal(url, proposal,user_id,event_id);
+      const url2 = "http://localhost:3000/api/events/requests/sendRequests"
+      const reqs = await sendRequests(url2,emailsArray,event_id)
+      return NextResponse.json({ message: "success",  event, prop,reqs }, { status: 200 });
+    }
