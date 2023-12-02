@@ -1,6 +1,7 @@
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import DashboardActivityLineChart from "./DashboardActivityLineChart";
 import StakeholderRevenuePiechart from "./StakeholderRevenuePiechart";
+import TicketSalesLineChart from "./TicketSalesLineChart";
 
 //data to come from backend api
 const data = [
@@ -18,6 +19,16 @@ const revenueData = [
   ["Brown Tech", 900],
   ["Zambia BOZ", 1000],
 ];
+
+const ticketsData = [
+  ["Day", "Sold Tickets"],
+  ["Monday", 800],
+  ["Tuesday", 110],
+  ["Wedesday", 660],
+  ["Thursday", 1030],
+  ["Friday", 1030],
+];
+
 
 
 const DashboardAdminActivity = () => {
@@ -38,6 +49,7 @@ const DashboardAdminActivity = () => {
 
         <DashboardActivityLineChart data={data} />
         <StakeholderRevenuePiechart data={revenueData} />
+        <TicketSalesLineChart data={ticketsData} />
 
       
 
