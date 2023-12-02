@@ -24,9 +24,8 @@ export const options = {
   lineWidth: 3,
   animation: {
     startup: true,
-    duration: 500, // Animation duration in milliseconds
-    easing: "cubic-bezier(0.645, 0.045, 0.355, 1)", // Cubic bezier for ease-in
-    trigger: "both",
+    duration: 1000,
+    easing: "inAndOut",
   },
 };
 

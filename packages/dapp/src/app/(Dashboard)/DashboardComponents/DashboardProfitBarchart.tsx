@@ -5,15 +5,15 @@ import { Chart } from "react-google-charts";
 const options = {
   title: "Product Sales Comparison",
   chartArea: { right: 0, width: "90%", height: "65%" },
-  legend: { position: "none"},
+  legend: { position: "none" },
   hAxis: {
     textStyle: { color: "#3f3f46" },
-    gridlines: {  count: -1, minValue: 0 },
+    gridlines: { count: -1, minValue: 0 },
   },
   animation: {
     startup: true,
-    duration: 500,
-    trigger: "both",
+    duration: 1000,
+    easing: "inAndOut",
   },
 };
 

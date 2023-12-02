@@ -4,17 +4,17 @@ import Chart from "react-google-charts";
 
 const options = {
   title: "Ticket Sales Over Time",
-  curveType: 'function',
+  curveType: "function",
   legend: { position: "top" },
   pointSize: 6,
   chartArea: { right: 4, width: "90%", height: "70%" },
   series: {
-    0: { areaOpacity: 0.5, color: '#4285F4' }, 
+    0: { areaOpacity: 0.5, color: "#4285F4" },
   },
   vAxis: {
     title: "Total tickets",
-    textStyle: { color: "#3f3f46",  italic: false, bold: true},
-    gridlines: { color: "#d4d4d8", count: -1,  },
+    textStyle: { color: "#3f3f46", italic: false, bold: true },
+    gridlines: { color: "#d4d4d8", count: -1 },
   },
   hAxis: {
     title: "Time",
@@ -24,9 +24,8 @@ const options = {
   lineWidth: 3,
   animation: {
     startup: true,
-    duration: 500, 
-    easing: "out", 
- 
+    duration: 1000,
+    easing: "inAndOut",
   },
 };
 
