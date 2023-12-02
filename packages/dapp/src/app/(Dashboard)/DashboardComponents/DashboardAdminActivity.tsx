@@ -2,6 +2,7 @@ import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import DashboardActivityLineChart from "./DashboardActivityLineChart";
 import StakeholderRevenuePiechart from "./StakeholderRevenuePiechart";
 import TicketSalesLineChart from "./TicketSalesLineChart";
+import EventAttendanceBarChart from "./EventAttendanceBarChart";
 
 //data to come from backend api
 const data = [
@@ -31,6 +32,18 @@ const ticketsData = [
 
 
 
+const eventssData = [
+  ["Event", "Attentance"],
+  ["Event-one", 500],
+  ["Event-two", 900],
+  ["Event-three", 860],
+  ["Event-four", 130],
+  ["Event-five", 550],
+  ["Event-six", 100],
+
+];
+
+
 const DashboardAdminActivity = () => {
   return (
     <section>
@@ -46,13 +59,10 @@ const DashboardAdminActivity = () => {
             {/* Dropdown icon for week selection */}
           </p>
         </div>
-
         <DashboardActivityLineChart data={data} />
         <StakeholderRevenuePiechart data={revenueData} />
         <TicketSalesLineChart data={ticketsData} />
-
-      
-
+        <EventAttendanceBarChart data={eventssData} />
       </div>
     </section>
   );

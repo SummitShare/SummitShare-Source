@@ -20,11 +20,7 @@ const options = {
     title: "Time",
     textStyle: { color: "#3f3f46" },
   },
-  tooltip: {
-    textStyle :{
-      color: "#6b7280" 
-    }
-  },
+
   lineWidth: 3,
   animation: {
     startup: true,
