@@ -4,3 +4,4 @@
 export * as openzeppelin from "./@openzeppelin";
 export * as uniswap from "./@uniswap";
 export * as contracts from "./contracts";
+export * as erc721A from "./erc721a";
