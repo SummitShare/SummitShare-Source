@@ -1,13 +1,54 @@
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
-import Image from "next/image";
-import React from "react";
-import lineChart from "/public/lineChart.png"; // Assuming this is the path to your lineChart image
+import DashboardActivityLineChart from "./DashboardActivityLineChart";
+import StakeholderRevenuePiechart from "./StakeholderRevenuePiechart";
+import TicketSalesLineChart from "./TicketSalesLineChart";
+import EventAttendanceBarChart from "./EventAttendanceBarChart";
+
+//data to come from backend api
+const data = [
+  ["Day", "Sold Tickets", "Earnings"],
+  ["Monday", 1000, 500],
+  ["Tuesday", 1170, 600],
+  ["Wedesday", 660, 700],
+  ["Thursday", 1030, 900],
+  ["Friday", 1030, 900],
+];
+const revenueData = [
+  ["stakeholders", "revenue"],
+  ["Zamtel", 300],
+  ["Airtel", 400],
+  ["Brown Tech", 900],
+  ["Zambia BOZ", 1000],
+];
+
+const ticketsData = [
+  ["Day", "Sold Tickets"],
+  ["Monday", 800],
+  ["Tuesday", 110],
+  ["Wedesday", 660],
+  ["Thursday", 1030],
+  ["Friday", 1030],
+];
+
+
+
+const eventssData = [
+  ["Event", "Attentance"],
+  ["Event-one", 500],
+  ["Event-two", 900],
+  ["Event-three", 860],
+  ["Event-four", 130],
+  ["Event-five", 550],
+  ["Event-six", 100],
+
+];
+
 
 const DashboardAdminActivity = () => {
   return (
     <section>
       {/* Container for Activity */}
-      <div className="bg-white  lg:w-[638px] h-[220px] rounded-xl p-6 shadow-sm">
+      <div className="bg-white  lg:w-[638px]  rounded-xl p-6 shadow-sm">
         {/* Activity Header */}
         <div className="flex flex-row justify-between items-center">
           <p className="text-xl font-semibold">Activity</p>{" "}
@@ -18,8 +59,10 @@ const DashboardAdminActivity = () => {
             {/* Dropdown icon for week selection */}
           </p>
         </div>
-        {/* Activity Line Chart */}
-        <div>{/* Display the line chart */}</div>
+        <DashboardActivityLineChart data={data} />
+        <StakeholderRevenuePiechart data={revenueData} />
+        <TicketSalesLineChart data={ticketsData} />
+        <EventAttendanceBarChart data={eventssData} />
       </div>
     </section>
   );
