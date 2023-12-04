@@ -11,12 +11,14 @@ export async function GET(req: Request , res : NextResponse) {
   
     if (token) {
       // Perform your email verification logic here
+        console.log(`token = ${token}`)
       try {
-        //@ts-ignore
-        const verificationRecord = await prisma.userverification.findUnique({
-          //@ts-ignore
+        
+        const verificationRecord = await prisma.email_verification.findFirst({
           where: { token: token },  // Assuming token is a field in your userverification model
         });
+
+        console.log(`vrecord ${verificationRecord}`)
         
         if (!verificationRecord) {
           return NextResponse.json({ error: "Invalid token" });
@@ -29,21 +31,24 @@ export async function GET(req: Request , res : NextResponse) {
         //   where: { token },
         // });
     
-        // if (!verificationRecord || new Date() > new Date(verificationRecord.expires)) {
-        //   return NextResponse.json({ error: "Invalid or expired token" });
-        // }
+        if (!verificationRecord || new Date() > new Date(verificationRecord.expires)) {
+          return NextResponse.json({ error: "Invalid or expired token" });
+        }
+
+        // const id = verificationRecord.user_id
+        
     
         await prisma.$transaction([
           prisma.users.update({
-            where: { userid: verificationRecord.userid },
+            where: { id : verificationRecord.user_id! },
             data: { 
-              isemailverified: true,
-              roleid: 1  // Replace 'admin_role_id_here' with the actual RoleID for admin users
+               email_verified: true,
+               // roleid: 1   Replace 'admin_role_id_here' with the actual RoleID for admin users
             },
           }),
-          //@ts-ignore
-          prisma.userVerification.delete({
-            where: { id: verificationRecord.id },
+   
+          prisma.email_verification.delete({
+            where: { id: verificationRecord.id! },
           }),
         ]);
     
@@ -55,9 +60,5 @@ export async function GET(req: Request , res : NextResponse) {
         return NextResponse.json({ message: 'faliure'}, { status: 400 })
     }
    
-
-
- 
-
   
 }
