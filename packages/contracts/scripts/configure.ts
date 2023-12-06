@@ -13,8 +13,8 @@ async function main() {
 
   
     const exhibit1 ={
-        name: "Alliance Francaise Lusaka",
-        symbol: "AFL",
+        name: "Demo 3",
+        symbol: "DE3",
         ticketPrice: ethers.parseUnits("10", 18),
         beneficiaries: [beneficiary1.address, beneficiary2.address],
         shares: [50, 50],
@@ -22,11 +22,11 @@ async function main() {
         location: "Lusaka,Zambia",
         artifactNFT: artifactNFT1,
         details: "Expressing the word with color",
-        id: "exhibit3"
+        id: "DE30"
     } 
     const exhibit2 ={
-        name: "Chaminuka Art Gallery",
-        symbol: "CAG",
+        name: "Demo 4",
+        symbol: "DE4",
         ticketPrice: ethers.parseUnits("10", 18),
         beneficiaries: [beneficiary1.address, beneficiary2.address],
         shares: [50, 50],
@@ -34,7 +34,7 @@ async function main() {
         location: "New York,USA",
         artifactNFT: artifactNFT2,
         details: "Those who walked before us and those to come.",
-        id: "exhibit4"
+        id: "DE40"
     }
 
     // Connect to the contracts

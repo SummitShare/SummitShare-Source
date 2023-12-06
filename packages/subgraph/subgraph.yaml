@@ -146,5 +146,5 @@ templates:
       eventHandlers:
         - event: EventEscrowDeployed(address,address[],uint256[],uint256)
           handler: handleEventEscrowDeployed
-        - event: PaymentDistributed(address,uint256)
+        - event: PaymentDistributed(address,uint256,address)
           handler: handlePaymentDistributed

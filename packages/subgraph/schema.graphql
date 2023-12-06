@@ -16,6 +16,7 @@ type PaymentDistributed @entity {
   escrow: Escrow!
   beneficiary: Beneficiary!
   amount: BigInt!
+  indexedcaller: Bytes! #Added field for new parameter 
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!

@@ -14,7 +14,7 @@ contract EventEscrow {
         _;
     }
 
-    event PaymentDistributed(address beneficiary, uint256 amount);
+    event PaymentDistributed(address beneficiary, uint256 amount, address indexedcaller);
     event EventEscrowDeployed(
         address usdcToken,
         address[] beneficiaries,
@@ -55,7 +55,7 @@ contract EventEscrow {
             uint256 payment = (totalAmount * payouts[beneficiary]) /
                 totalShares;
             usdcToken.transfer(beneficiary, payment);
-            emit PaymentDistributed(beneficiary, payment);
+            emit PaymentDistributed(beneficiary, payment, msg.sender);
         }
     }
 
