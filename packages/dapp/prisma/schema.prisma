@@ -30,6 +30,7 @@ model events {
   event_end_time                               DateTime?                @db.Timestamp(6)
   cost                                         Decimal?                 @db.Decimal(10, 2)
   total_number_tickets                         Int?
+  created_at                                   DateTime                 @default(now()) @db.Timestamp(6)
   contracts_contracts_event_idToevents         contracts[]              @relation("contracts_event_idToevents")
   event_images                                 event_images[]
   users                                        users?                   @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)

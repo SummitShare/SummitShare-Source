@@ -1,7 +1,11 @@
 import { NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client';
+import { ISwapRouter__factory } from '@/utils/typechain-types';
 const prisma = new PrismaClient();
 
+interface IStakes {
+    [stakeholder: string]: number;
+  }
 export async function POST(req: Request, res: NextResponse) {
     try {
         const requestBody = await req.json();
@@ -60,27 +64,57 @@ export async function POST(req: Request, res: NextResponse) {
         const allStakeholdersVotedPositively = stakeholders.every(stakeholder => 
         allVotes.some(vote => vote.user_id === stakeholder.user_id && vote.decision === true));
         
-        if (eventCreatorVotedPositively && allStakeholdersVotedPositively) {
+        if (allStakeholdersVotedPositively) {
             // Assuming proposal.content is JSON and maps directly to the event fields
 
                 if (typeof proposal.content === 'string' && proposal.content !== null) {
                     const content = JSON.parse(proposal.content);
                 
-                    await prisma.events.update({
-                        where: { id: event_id },
-                        data: {
-                            event_type: content.event_type,
-                            event_name: content.event_name,
-                            event_category: content.event_category,
-                            event_start_time: new Date(content.event_start_time),
-                            event_timezone: content.event_timezone,
-                            event_location: content.event_location,
-                            description: content.description,
-                            event_end_time: new Date(content.event_end_time),
-                            cost: parseFloat(content.cost),
-                            total_number_tickets: parseInt(content.total_number_tickets)
+                   
+                    if (content.stakes) {
+                        try {
+                            const stakeUpdates = Object.entries(content.stakes).map(async ([stakeholderId, stakeValue]) => {
+                                // Asserting stakeValue as string
+                                const stake = parseInt(stakeValue as string);
+                        
+                                return prisma.stakeholders.update({
+                                    where: { stakeholder_id: stakeholderId },
+                                    data: { stake }
+                                });
+                            });
+                        
+                            // Perform all stakeholder updates
+                            await Promise.all(stakeUpdates);
+
+                            await prisma.events.update({
+                                where: { id: event_id },
+                                data: {
+                                    event_type: content.event_type,
+                                    event_name: content.event_name,
+                                    event_category: content.event_category,
+                                    event_start_time: new Date(content.event_start_time),
+                                    event_timezone: content.event_timezone,
+                                    event_location: content.event_location,
+                                    description: content.description,
+                                    event_end_time: new Date(content.event_end_time),
+                                    cost: parseFloat(content.cost),
+                                    total_number_tickets: parseInt(content.total_number_tickets)
+                                }
+                            });
+                        
+                            // Additional code can be added here if needed after successful updates
+                        
+                            // Return a successful response
+                            return NextResponse.json({ message: "Stakeholders updated successfully" }, { status: 200 });
+                        
+                        } catch (error) {
+                            console.error('Error updating stakeholders:', error);
+                        
+                            // Return an error response
+                            return NextResponse.json({ error: 'An error occurred while updating stakeholders.' }, { status: 500 });
                         }
-                    });
+                        
+                    }
                 }
             
          

@@ -107,10 +107,10 @@ export async function POST(req: Request , res : NextResponse) {
     const requestBody = await req.json();
 
     const {
-        user_id,
-        proposal,
-        emailsArray
-        // Add other fields from the proposal object here if necessary
+      user_id,
+      proposal,
+      emailsArray
+      // Add other fields from the proposal object here if necessary
     }: {
         user_id: string;
         event_type?: any; // or the specific enum type if defined
@@ -158,6 +158,14 @@ export async function POST(req: Request , res : NextResponse) {
     }
 
     const event_id = event.id
+
+    const newStakeholder = await prisma.stakeholders.create({
+      data: {
+          user_id: user_id,
+          event_id: event_id,
+      },
+      });
+      console.log(`newStakeholder = ${newStakeholder.user_id}`) 
     
 
       const url = "http://localhost:3000/api/events/proposals";

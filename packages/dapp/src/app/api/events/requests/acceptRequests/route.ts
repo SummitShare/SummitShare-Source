@@ -53,8 +53,7 @@ export async function  GET(req: Request , res : NextResponse) {
       },
       });
       console.log(`newStakeholder = ${newStakeholder}`) 
-   
-
+ 
         return NextResponse.json({ message: "Email verified successfully" },{status: 201});
       } catch (error) {
         console.log(`error = ${error}`)

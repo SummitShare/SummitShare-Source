@@ -22,6 +22,8 @@ interface IPropsal {
     total_number_tickets?: number;
     // Additional properties for relations can be added if needed
   }
+
+  
 interface EmailArray extends Array<string> {}
 interface IPropsal extends Object{}
 
@@ -31,7 +33,7 @@ export async function POST(req: Request, res: NextResponse) {
         // Parse the request body
         
         const requestBody = await req.json();
-        const { proposal , event_id , user_id }: { proposal: IPropsal, event_id: string , user_id:string } = requestBody;
+        const { proposal , event_id , user_id }: { proposal: IPropsal, event_id: string , user_id:string  } = requestBody;
         const prop = JSON.stringify(proposal)
 
         const newProposal = await prisma.proposals.create({
@@ -42,8 +44,6 @@ export async function POST(req: Request, res: NextResponse) {
             }
         })
 
-
-       
         const newVote = await prisma.votes.create({
           data: {
               user_id: user_id,
