@@ -48,7 +48,7 @@ const DashboardAdminActivity = () => {
   return (
     <section>
       {/* Container for Activity */}
-      <div className="bg-white  lg:w-[638px]  rounded-xl p-6 shadow-sm">
+      <div className="bg-white  lg:w-full  rounded-xl p-6 shadow-sm">
         {/* Activity Header */}
         <div className="flex flex-row justify-between items-center">
           <p className="text-xl font-semibold">Activity</p>{" "}
@@ -60,9 +60,9 @@ const DashboardAdminActivity = () => {
           </p>
         </div>
         <DashboardActivityLineChart data={data} />
-        <StakeholderRevenuePiechart data={revenueData} />
+        {/* <StakeholderRevenuePiechart data={revenueData} />
         <TicketSalesLineChart data={ticketsData} />
-        <EventAttendanceBarChart data={eventssData} />
+        <EventAttendanceBarChart data={eventssData} /> */}
       </div>
     </section>
   );

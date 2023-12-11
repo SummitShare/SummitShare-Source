@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import DashBoardNav from "./DashboardComponents/DashBoardNav";
 import DashboardNavBar from "./DashboardComponents/DashBoardNav";
+import DashboardAdminInfo from "./DashboardComponents/DashboardAdminInfo";
+import NavBar from "./DashboardComponents/components-new/navBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,8 +20,9 @@ export default function DashBoardLayout({
 }) {
   return (
     <html lang="en">
-      <body className=" overscroll-none bg-white {inter.className} relative">
-        <DashboardNavBar />
+      <body className=" overscroll-none bg-slate-100 {inter.className} relative">
+
+           <NavBar />
         {children}
       </body>
     </html>

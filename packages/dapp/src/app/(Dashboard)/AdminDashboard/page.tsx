@@ -1,26 +1,36 @@
-import DashboardAdminInfo from "../DashboardComponents/DashboardAdminInfo";
-import DashboardAdminStats from "../DashboardComponents/DashboardAdminStats";
+
+import WidgetsSection from "../DashboardComponents/components-new/widgetsSection";
+import EventsCarsSection from "../DashboardComponents/components-new/eventsCarsSection";
+import DashboardAdminInfo from "../DashboardComponents/components-new/infoBar";
 import DashboardAdminActivity from "../DashboardComponents/DashboardAdminActivity";
-import DashboardAdminUpComingEvents from "../DashboardComponents/DashboardAdminUpComingEvents";
 import DashboardAdminProfits from "../DashboardComponents/DashboardAdminProfits";
-import DashboardAdminTransactionsHome from "../DashboardComponents/DashboardAdminTransactionsHome";
+import PartnersStatusSection from "../DashboardComponents/components-new/partnersStatusSection";
 
 const EventCreatorDashboard = async () => {
   // const session = await getServerSession(authOptions);
 
   return (
-    <div className=" px-6 my-24 lg:ml-[215px] lg:my-8 lg:flex lg:flex-row space-y-6">
-      <div className="space-y-6">
-        <DashboardAdminInfo />
-        <DashboardAdminStats />
-        <DashboardAdminActivity />
-        <DashboardAdminUpComingEvents />
+
+    <div className="ml-[250px] mr-5  flex flex  gap-6 grow srink mb-10   ">
+   <div className=" flex flex-col grow gap-6 base-1/2 mt-10 shrink ">
+     <DashboardAdminInfo />
+      <WidgetsSection />
+      <DashboardAdminActivity />
+      <EventsCarsSection />
       </div>
-      <div className="lg:px-6 lg:space-y-6 lg:fixed lg:top-0 lg:right-0 space-y-6   w-full lg:w-[400px] ">
+
+      <div className=" sticky top-5 right-5 h-full base-1/4 grow srink mt-5 ">
+     <div className=" space-y-6 ">   
         <DashboardAdminProfits />
-        <DashboardAdminTransactionsHome />
+        <PartnersStatusSection/>
       </div>
+      </div>
+ 
+ 
     </div>
+  
+   
+  
   );
 };
 

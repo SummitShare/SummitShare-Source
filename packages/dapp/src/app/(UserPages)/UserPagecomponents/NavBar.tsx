@@ -40,8 +40,8 @@ function NavBar() {
       <div className="py-4 px-8 flex flex-row justify-between items-center fixed top-0 inset-x-0 w-full backdrop-blur-md bg-white/80 border-b z-50 ">
         <div className="flex items-center w-full lg:w-fit">
           <div className="flex flex-row gap-4 items-center text-lg">
-            <Link href={"/"} className="font-bold tracking-tighter">
-              Summit<span className="text-orange-500 font-semibold ">Share</span>
+            <Link href={"/"} className="font-bold tracking-tighter text-base">
+              Summit<span className=" text-orange-500  ">Share</span>
             </Link>
             <div className="relative w-fit sm:block hidden group">
               <input
