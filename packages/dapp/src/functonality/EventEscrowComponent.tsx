@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import {gql, useApolloClient } from "@apollo/client";
-import EventEscrowABI from '../../../../../utils/artifacts/contracts/EventEscrow.sol/EventEscrow.json';
+import EventEscrowABI from '../utils/artifacts/contracts/EventEscrow.sol/EventEscrow.json';
 import React, {useEffect, useState} from "react";
 
 const EscrowABI = EventEscrowABI as unknown as ethers.ContractInterface; //Match Fix
@@ -37,7 +37,8 @@ const EventEscrowComponent = ({ provider, exhibitId }: EventEscrowComponentProps
             const signer = provider.getSigner();
             const escrowContract = new ethers.Contract(escrowAddress, EscrowABI, signer);
             setStatus('Initiating fund distribution...');
-
+            
+//Use effect depend on the below
             const tx = await escrowContract.distributePayments();
             await tx.wait(6);
             setStatus('Funds distributed successfully.');
@@ -67,7 +68,8 @@ const EventEscrowComponent = ({ provider, exhibitId }: EventEscrowComponentProps
                 setStatus(`Error fetching address: ${error.message}`);
             });
         }
-    }, [exhibitId, client]);
+        //Status added for query
+    }, [exhibitId, client, status]);
     
     return (
         <div>

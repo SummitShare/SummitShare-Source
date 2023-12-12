@@ -6,7 +6,6 @@ import LineInputs from "@/components/reusebaeComponents/LineInput";
 import RemovePartnerButton from "@/components/reusebaeComponents/removePartnerIcon";
 import SelectComponent from "@/components/reusebaeComponents/selectComponent";
 
-
 import TextArea from "@/components/reusebaeComponents/textArea";
 import { useState } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
@@ -34,14 +33,17 @@ interface fromData {
 
 function EventForm() {
   const eventTypes = [
-    { name: "museum" },
+    { name: "Museum" },
     { name: "Art Gallery" },
     // other event types
   ];
 
   const timeZone = [
-    { name: "GTA" },
-    { name: "ETA" },
+    { name: "CAT" },
+    { name: "GMT" },
+    { name: "PST" },
+    { name: "EAT" },
+    { name: "WAT" },
     // other event types
   ];
 

@@ -48,7 +48,7 @@ import {
               "Begin your Journey with SummitShare!",
           }}
 
-          //Placement of Custom images and policy her e
+          //Placement of Custom images and policy here
           modalTitleIconUrl={
             "https://Summitshareicongoeshere.com"
           }
