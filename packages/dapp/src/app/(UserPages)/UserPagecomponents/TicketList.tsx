@@ -42,15 +42,7 @@ const dummyData: EventData[] = [
     image:
       "https://images.unsplash.com/photo-1518998053901-5348d3961a04?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
-  {
-    name: "Forest Trail",
-    date: "2023-08-05",
-    country: "Amazon Rainforest",
-    price: "Free",
-    eventType: "Wildlife Photography",
-    image:
-      "https://images.unsplash.com/photo-1621886292650-520f76c747d6?q=80&w=2671&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  },
+
   {
     name: "Night Sky",
     date: "2023-01-15",
@@ -81,7 +73,7 @@ const TicketsList: React.FC = () => {
   );
   const [currentPage, setCurrentPage] = useState(0);
   const [filteredEvents, setFilteredEvents] = useState<EventData[]>(dummyData);
-  const recordsPerPage = 6;
+  const recordsPerPage = 4;
 
   useEffect(() => {
     // Filter logic inside useEffect which will run when dependencies change
@@ -164,7 +156,7 @@ const TicketsList: React.FC = () => {
         </div>
       </div>
 
-      <div className="relative flex flex-row gap-3 w-full group mt-6">
+      <div className="relative flex flex-row gap-3 w-full  mt-6">
         {filteredEvents.slice(startIndex, endIndex).map((event, index) => (
           <EventCard event={event} key ={index}/>
         ))}
