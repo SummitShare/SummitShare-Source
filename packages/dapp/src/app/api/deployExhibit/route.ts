@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from 'next/server'
 import { ethers } from "ethers";
 import EventOrganizerServiceABI from '../../../utils/artifacts/contracts/EventOrganizerService.sol/EventOrganizerService.json';
 
@@ -16,6 +17,40 @@ type ExhibitParams = {
     id: string;
 };
 
+async function callDeployEventApi(eventId: string) {
+    const url = 'http://localhost:3000/api/events/deploy';
+    const requestBody = {
+        event_id: eventId
+    };
+
+    try {
+        // existing try block code
+    } catch (error ) {
+        console.error('Error calling the deploy event API:', error);
+        throw new Error(`Failed to call deploy event API: ${error}`);
+    }
+
+
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestBody)
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data : ExhibitParams  = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error calling the deploy event API:', error);
+        throw error;
+    }
+}
 // Deploy Function v1
 async function deployExhibit(exhibitParams: ExhibitParams) {
     try{
@@ -32,7 +67,7 @@ async function deployExhibit(exhibitParams: ExhibitParams) {
         const wallet = new ethers.Wallet(devPrivateKey, provider);
 
         // Address of deployed EventOrganizerService
-        const organizerServiceAddress = '0xdFB611127315848Fd0D53226eC886BbF6514B5D1';
+        const organizerServiceAddress = "0xdFB611127315848Fd0D53226eC886BbF6514B5D1";
 
         // Create instance
         const organizerServiceContract = new ethers.Contract(
@@ -72,30 +107,22 @@ async function deployExhibit(exhibitParams: ExhibitParams) {
 
     }
 
-    //API Handler Function
-    export default async function handler(
-        req: NextApiRequest,
-        res: NextApiResponse
+   
+    export async function POST(req :Request) {
 
-    ) {
-        if (req.method == 'POST') {
-            try {
-                // Validate & Extract Exhibit Params From Request
-                const exhibitParams: ExhibitParams = req.body;
-                const receipt = await deployExhibit(exhibitParams);
+        const reqBody =await req.json()
+        const {  event_id }: { event_id: string   } = reqBody;
+        try {
+           const exhibitParams = await  callDeployEventApi(event_id)
+           console.log(exhibitParams)
+            
+            const receipt = await  deployExhibit(exhibitParams)
+            console.log(receipt)
+            NextResponse.json({ Success:"Great success",receipt},{status:201})  
 
-                // Status Logging
-                res.status(200).json ({ receipt });
-
-            } catch (error) {
-                console.error('Error Deploying Exhibit:', error);
-                res.status(500).json ({error: 'Great Failure'});
-            }
-
-        } else {
-            //Handle Non-Post Requests
-            res.setHeader('Allow', 'POST');
-            res.status(405).end('Illegal Method');
+            
+        } catch (error) {
+           NextResponse.json({faliure:"you are a faliure"},{status:500})  
         }
 
-        }    
+    }

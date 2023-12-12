@@ -100,7 +100,6 @@ async function main() {
     const receipt4 = await tx4.wait(6);
     console.log("Minted ArtifactNFT 1", receipt4.status)
 
-
     
   
   // // Purchase a few tickets
@@ -131,3 +130,4 @@ main()
         console.error(error);
         process.exit(1);
     });
+ 

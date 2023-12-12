@@ -1,6 +1,5 @@
 import { PrismaClient } from '@prisma/client'
 import { NextResponse } from 'next/server'
-import { transporter,emailServer } from '../../../../../config/nodemailer'
 import prisma from '../../../../../config/db'
 import crypto from 'node:crypto'
 
@@ -45,7 +44,7 @@ export async function POST(req: Request, res: NextResponse) {
     
     try {
         const requestBody = await req.json();
-        const {  event_id }: { event_id: string ,  } = requestBody;
+        const {  event_id }: { event_id: string   } = requestBody;
         const eventData = await prisma.events.findUnique({
             where: { id: event_id },
             include: {
