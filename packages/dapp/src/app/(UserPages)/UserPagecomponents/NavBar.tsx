@@ -12,6 +12,8 @@ import Link from "next/link";
 import Button from "@/components/reusebaeComponents/button";
 import { useRouter } from "next/navigation";
 import { SearchResults, useSearch } from "@/lib/useSearch";
+import WalletConnectNav from "@/functonality/walletconnect";
+
 export const dynamic = "force-dynamic";
 
 
@@ -98,6 +100,7 @@ function NavBar() {
               textColor="text-slate-950"
               hover="transition-all hover:shadow-lg"
             />
+           < WalletConnectNav/>
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import {ThirdwebProvider, ConnectWallet, metamaskWallet, coinbaseWallet, walletConnect, safeWallet, lightTheme, useAddress,} from "@thirdweb-dev/react";
 import React, {useEffect, useState} from 'react';
 
-  export default function App() {
+  export default function WalletConnectNav () {
 
     //Logging of connected useraddress
     const userAddress = useAddress();
