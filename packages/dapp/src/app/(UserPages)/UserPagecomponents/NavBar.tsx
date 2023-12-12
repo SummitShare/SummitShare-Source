@@ -17,10 +17,6 @@ import { ThirdwebProvider } from "@thirdweb-dev/react";
 
 export const dynamic = "force-dynamic";
 
-
-
-
-
 function NavBar() {
   const router = useRouter();
 

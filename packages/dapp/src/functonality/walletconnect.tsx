@@ -1,5 +1,6 @@
 import {ThirdwebProvider, ConnectWallet, metamaskWallet, coinbaseWallet, walletConnect, safeWallet, lightTheme, useAddress,} from "@thirdweb-dev/react";
 import React, {useEffect, useState} from 'react';
+import axios from 'axios'; 
 
   export default function WalletConnectNav () {
 
@@ -7,17 +8,26 @@ import React, {useEffect, useState} from 'react';
     const userAddress = useAddress();
     const [connectedAddress, setConnectedAddress] = useState('');
 
+    const sendApiRequest = async (address: string,user_id: string) => {
+      try {
+        const response = await axios.post('YOUR_API_ENDPOINT', { address });
+        console.log('API Response:', response.data);
+        // Handle the response as needed
+      } catch (error) {
+        console.error('API Request Failed:', error);
+        // Handle the error as needed
+      }
+    };
+
      // Effect to capture the user's public address when connected
      useEffect(() => {
       if (userAddress) {
           setConnectedAddress(userAddress);
           console.log("Connected Wallet Address:", userAddress);
+          const user_id=""
+          sendApiRequest(userAddress, user_id);
       }
   }, [userAddress]);
-
-    // function en() {
-    //   throw new Error("Language Error.");
-    // }
 
     return (
       <ThirdwebProvider
