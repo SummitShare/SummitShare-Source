@@ -73,12 +73,33 @@ export async function POST(req: Request, res: NextResponse) {
                    
                     if (content.stakes) {
                         try {
-                            const stakeUpdates = Object.entries(content.stakes).map(async ([stakeholderId, stakeValue]) => {
+                            const stakeUpdates = Object.entries(content.stakes).map(async ([email, stakeValue]) => {
                                 // Asserting stakeValue as string
                                 const stake = parseInt(stakeValue as string);
+
+                                const user = await prisma.users.findUnique({
+                                    where: { email: email }
+                                });
                         
+                                if (!user) {
+                                    throw new Error(`User not found for email: ${email}`);
+                                }
+                        
+                                // Find the stakeholder ID for the user and event
+                                const stakeholder = await prisma.stakeholders.findFirst({
+                                    where: {
+                                        user_id: user.id,
+                                        event_id: event_id
+                                    }
+                                });
+                        
+                                if (!stakeholder) {
+                                    throw new Error(`Stakeholder not found for user ID: ${user.id} and event ID: ${event_id}`);
+                                }
+                        
+                                // Update the stakeholder's stake
                                 return prisma.stakeholders.update({
-                                    where: { stakeholder_id: stakeholderId },
+                                    where: { stakeholder_id: stakeholder.stakeholder_id },
                                     data: { stake }
                                 });
                             });
@@ -102,7 +123,32 @@ export async function POST(req: Request, res: NextResponse) {
                                 }
                             });
                         
-                            // Additional code can be added here if needed after successful updates
+                            // Step 1: Retrieve stakeholders for the given event
+                            const stakeholders = await prisma.stakeholders.findMany({
+                                where: { event_id: event_id },
+                                include: {
+                                    users: true // Include user information to access user_id
+                                }
+                            });
+
+                            // Step 2 & 3: For each stakeholder, find and update wallet address
+                            for (const stakeholder of stakeholders) {
+                                if (stakeholder.user_id) {
+                                    // Find the wallet address for the user
+                                    const userId :string = stakeholder.user_id;
+                                    const userWallet = await prisma.user_wallets.findFirst({
+                                        where: { user_id:  userId }
+                                    });
+
+                                    if (userWallet && userWallet.wallet_address) {
+                                        // Update the stakeholder's wallet_address field
+                                        await prisma.stakeholders.update({
+                                            where: { stakeholder_id: stakeholder.stakeholder_id },
+                                            data: { wallet_address: userWallet.wallet_address }
+                                        });
+                                    }
+                                }
+                            }
                         
                             // Return a successful response
                             return NextResponse.json({ message: "Stakeholders updated successfully" }, { status: 200 });

@@ -7,7 +7,7 @@ type ExhibitParams = {
     name : string;
     symbol : string;
     ticketPrice : string;
-    beneficaries : string[];
+    beneficiaries : string[];
     shares: number[];
     baseURI: string;
     location: string;
@@ -50,7 +50,7 @@ async function deployExhibit(exhibitParams: ExhibitParams) {
             exhibitParams.symbol,
             ticketPriceWei,
             //exhibitParams.ticketPrice,
-            exhibitParams.beneficaries,
+            exhibitParams.beneficiaries,
             exhibitParams.shares,
             exhibitParams.baseURI,
             exhibitParams.location,

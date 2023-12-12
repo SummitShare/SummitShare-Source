@@ -9,6 +9,7 @@ interface IPropsal {
     event_name?: string;
     event_category?: string; // assuming event_category_enum is a string enum
     event_start_time?: Date;
+    symbol?: string;
     event_timezone?: string;
     event_location?: string;
     description?: string;
@@ -18,12 +19,16 @@ interface IPropsal {
     total_number_tickets?: number;
     // Additional properties for relations can be added if needed
   }
+
+  interface EmailArray extends Array<string> {}
+
+
 interface EmailStatus {
     exists: boolean;
     sent: boolean;
     status: number;
   }
-interface EmailArray extends Array<string> {}
+
 
 
 export async function POST(req: Request , res : NextResponse) {
@@ -37,6 +42,7 @@ export async function POST(req: Request , res : NextResponse) {
       event_timezone,
       event_location,
       description,
+      symbol,
       contract_address,
       event_end_time,
       cost,
@@ -59,6 +65,7 @@ export async function POST(req: Request , res : NextResponse) {
             event_end_time, // converting to Date object
             cost, // converting to Prisma's Decimal type
             total_number_tickets, // assumed to be an integer or null
+            symbol
             // ... other fields with their values
           }
       }); 

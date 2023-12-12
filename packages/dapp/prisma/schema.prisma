@@ -31,6 +31,7 @@ model events {
   cost                                         Decimal?                 @db.Decimal(10, 2)
   total_number_tickets                         Int?
   created_at                                   DateTime                 @default(now()) @db.Timestamp(6)
+  symbol                                       String?                  @db.VarChar(5)
   contracts_contracts_event_idToevents         contracts[]              @relation("contracts_event_idToevents")
   event_images                                 event_images[]
   users                                        users?                   @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -70,9 +71,11 @@ model stakeholders {
   user_id            String?              @db.Uuid
   event_id           String?              @db.Uuid
   stake              Int?
+  wallet_address     String?              @db.VarChar(255)
   fund_distributions fund_distributions[]
   events             events?              @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   users              users?               @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user_wallets       user_wallets?        @relation(fields: [wallet_address], references: [wallet_address], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model users {
@@ -213,10 +216,11 @@ model user_types {
 }
 
 model user_wallets {
-  id             String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  user_id        String? @db.Uuid
-  wallet_address String
-  users          users?  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id             String         @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  user_id        String         @db.Uuid
+  wallet_address String         @unique(map: "wallet_address_unique")
+  stakeholders   stakeholders[]
+  users          users          @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 enum decision {

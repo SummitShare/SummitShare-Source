@@ -20,6 +20,7 @@ interface IPropsal {
     event_end_time?: Date;
     cost?: number; // Decimal type in Prisma translates to number in TypeScript
     total_number_tickets?: number;
+    symbol?: string;
     // Additional properties for relations can be added if needed
   }
 
