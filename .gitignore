@@ -8,3 +8,4 @@ codeql-custom-queries-javascript/example.ql
 codeql-custom-queries-javascript/codeql-pack.lock.yml
 codeql-custom-queries-javascript/codeql-pack.yml
 codeql-custom-queries-javascript
+.DS_Store
