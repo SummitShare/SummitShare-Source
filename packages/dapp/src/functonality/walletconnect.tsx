@@ -15,15 +15,15 @@ import React, {useEffect, useState} from 'react';
       }
   }, [userAddress]);
 
-    function en() {
-      throw new Error("Language Error.");
-    }
+    // function en() {
+    //   throw new Error("Language Error.");
+    // }
 
     return (
       <ThirdwebProvider
-        activeChain="sepolia"
+        activeChain="mumbai"
         clientId="YOUR_CLIENT_ID"
-       locale={en()}
+      //  locale={en()}
 
 // Wallets our platfrom allows to connect
         supportedWallets={[

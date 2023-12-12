@@ -13,6 +13,7 @@ import Button from "@/components/reusebaeComponents/button";
 import { useRouter } from "next/navigation";
 import { SearchResults, useSearch } from "@/lib/useSearch";
 import WalletConnectNav from "@/functonality/walletconnect";
+import { ThirdwebProvider } from "@thirdweb-dev/react";
 
 export const dynamic = "force-dynamic";
 
@@ -100,7 +101,12 @@ function NavBar() {
               textColor="text-slate-950"
               hover="transition-all hover:shadow-lg"
             />
-           < WalletConnectNav/>
+     <ThirdwebProvider
+    
+    >
+      <WalletConnectNav />
+      {/* Other components of your app */}
+    </ThirdwebProvider>
           </div>
         </div>
       </div>
