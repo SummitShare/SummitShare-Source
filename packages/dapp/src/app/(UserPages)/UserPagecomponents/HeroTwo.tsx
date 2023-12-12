@@ -23,55 +23,62 @@ function HeroTwo() {
   };
 
   return (
-    <div className="px-8 w-full h-full flex flex-col group relative justify-top items=top">
+    <div className="w-full h-fit flex flex-col group relative justify-top items=top">
       {exhibits && exhibits.map((exhibit, index) => (
 
-        < div key={index} className={`relative duration-500 ${index === currentIndex ? 'block' : 'hidden'}`}>
-          <div className=" text-center md:flex md:flex-row lg:gap-10 lg:px-10 w-full">
-            <div className="bg-red-300 rounded-xl w-full lg:w-[480px] lg:h-[480px] flex-shrink-0">
+        < div key={index} className={`relative duration-500 ${index === currentIndex ? 'block' : 'hidden'} h-[600px] w-full`}>
+          
               <Image
-                className=" lg:w-[480px] lg:h-[480px] rounded-xl"
-                src="https://images.squarespace-cdn.com/content/v1/5878a307ebbd1ab23e1ed5a0/1650963860604-LGJSBAWOMLQIU9ZXUK1K/all-women.71ba3487f51cab4dc38a.png?format=2500w"
+                className="rounded-xl w-full h-full object-cover"
+                src="https://images.unsplash.com/photo-1561214115-f2f134cc4912?q=80&w=2509&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 alt=""
                 width={480}
                 height={480}
+                quality={100} // {number 1-100}
+                priority={true} // {false} | {true}
+                style={{ objectFit: 'cover' }} // Add this line
               />
-            </div>
-            <div className="flex flex-col gap-5 items-center justify-center text-left ">
+       
+            <div className=" absolute top-[25%] right-[10%] flex flex-col gap-5 items-center justify-center text-left backdrop-blur-sm bg-white/10 rounded-xl  p-6 w-fit shadow-md ">
               <div className="space-y-2  flex flex-col w-full">
-                <p className="title-h2-slate tracking-tighter">{exhibit.name}</p>
-                <p className="body-text-h4">{exhibit.details}</p>
+                <p className="text-2xl font-bold text-white">{exhibit.name}</p>
+                {/* <p className="open-sans font-light text-slate-50">{exhibit.details}</p> */}
+                  <p className="open-sans font-light text-slate-200 w-[500px]">Celebrate the vibrant and diverse culture of Africa through its art! Join us on an immersive journey where you will experience the beauty and richness of African art firsthand</p>
               </div>
               <div className="flex flex-row w-full gap-2 justify-start">
                 <Button
-                  text="Buy Ticket"
+                  text="Purchases Ticket"
                   type="button"
-                  backGroundColor=" bg-red-500"
-                  textColor="text-white"
+                  backGroundColor=" bg-white"
+                  textColor="text-slate-950 font-semibold open-sans"
                   click={() => router.push(`/Profile/Ticket/${exhibit.exhibit.id}`)}
                 />
                 <Button
                   text="Biography"
                   type="button"
-                  backGroundColor="bg-slate-100"
-                  textColor="text-slate-950"
+                  backGroundColor="backdrop-blur-sm bg-white/5 "
+                  textColor="text-white open-sans font-semibold"
                   borderColor="border-none"
                   click={() => router.push(`/Profile/Exibition/${exhibit.exhibit.id}`)}
                 />
+               
               </div>
+                 <div className="open-sans  text-slate-200 w-[500px] flex flex-row gap-2 items-center justify-start"><p className="open-sans">11.13.2023</p>
+                  <div className="rounded-full w-[5px] h-[5px] bg-slate-200 "></div>
+                  <p className="open-sans">100 - tickets</p></div>
             </div>
-          </div>
+        
         </div>
       ))
       }
       <div
-        className="absolute left-0 top-[50%] w-10 h-10 flex justify-center items-center bg-slate-950/80 rounded-full cursor-pointer opacity-0 group-hover:opacity-100 transition-all"
+        className="absolute left-[-15px] top-[50%] w-10 h-10 flex justify-center items-center bg-slate-950/80 rounded-full cursor-pointer opacity-0 group-hover:opacity-100 transition-all"
         onClick={prevIndex}
       >
         <ChevronLeftIcon className="w-5 h-5 text-white" />
       </div>
       <div
-        className="absolute right-8 top-[50%] w-10 h-10 flex justify-center items-center bg-slate-950/80 rounded-full cursor-pointer opacity-0 group-hover:opacity-100 transition-all"
+        className="absolute right-[-15px] top-[50%] w-10 h-10 flex justify-center items-center bg-slate-950/80 rounded-full cursor-pointer opacity-0 group-hover:opacity-100 transition-all"
         onClick={nextIndex}
       >
         <ChevronRightIcon className="w-5 h-5 text-white" />

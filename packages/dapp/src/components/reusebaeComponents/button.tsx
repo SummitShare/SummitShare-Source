@@ -30,7 +30,7 @@ function Button({
   return (
     <button
       type={type}
-      className={`px-4 py-2 flex items-center justify-center w-auto h-10 text-xs sm:text-sm font-medium rounded-xl whitespace-nowrap ${backGroundColor} ${textColor} border-${borderColor} hover:${hoverColor} ${hover} transition-all`}
+      className={`px-[23px] py-[14px] flex items-center justify-center w-auto h-fit  rounded-xl whitespace-nowrap ${backGroundColor} ${textColor} border-${borderColor} hover:${hoverColor} ${hover} transition-all`}
       onClick={click}
     >
       <div>{text}</div>

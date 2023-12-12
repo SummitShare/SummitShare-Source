@@ -22,13 +22,16 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
       <div className="  w-[190px] h-fit rounded-xl flex flex-col  shadow-md px-1 ">
         <div className="relative w-full h-[150px]">
           <div className="absolute inset-0 bg-black/20 rounded-xl"></div>
-          <Image
-            width={100}
-            height={150}
-            src={event.image}
-            alt="Event Image"
-            className="w-full h-[150px]  bg-slate-300 rounded-xl"
-          />
+           <Image
+                className="rounded-xl w-full h-full object-cover"
+                src={event.image}
+                alt=""
+                width={480}
+                height={480}
+                quality={100} // {number 1-100}
+                priority={true} // {false} | {true}
+                style={{ objectFit: 'cover' }} // Add this line
+              />
         </div>
 
         <div className="  inset-0 p-3 flex flex-col space-y-[10px] body-text-h5 w-full h-full justify-end">

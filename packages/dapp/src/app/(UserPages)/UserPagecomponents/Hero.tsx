@@ -17,13 +17,13 @@ const data = {
   buttonOneData: "Ticket",
   buttonTwoData: "Biography",
   image:
-    "https://images.squarespace-cdn.com/content/v1/5878a307ebbd1ab23e1ed5a0/1650963860604-LGJSBAWOMLQIU9ZXUK1K/all-women.71ba3487f51cab4dc38a.png?format=2500w",
+    "https://images.unsplash.com/photo-1561214115-f2f134cc4912?q=80&w=2509&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 };
 
 function Hero() {
   return (
-    <div className="space-y-6 text-center lg:flex lg:flex-row lg:gap-10 lg:px-10 w-full">
-      <div className="bg-red-300 rounded-xl w-full lg:w-[480px] lg:h-[480px] ">
+    <div className="felex flex-row grow shrink rounded-xl ">
+      <div className="rounded-xl w-full lg:w-[480px] lg:h-[480px] ">
         <Image
           className=" lg:w-[480px] lg:h-[480px] rounded-xl"
           src={data.image}
