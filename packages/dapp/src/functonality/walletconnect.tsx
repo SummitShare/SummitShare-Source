@@ -1,19 +1,29 @@
-import {
-    ThirdwebProvider,
-    ConnectWallet,
-    metamaskWallet,
-    coinbaseWallet,
-    walletConnect,
-    safeWallet,
-    lightTheme,
-  } from "@thirdweb-dev/react";
-  
+import {ThirdwebProvider, ConnectWallet, metamaskWallet, coinbaseWallet, walletConnect, safeWallet, lightTheme, useAddress,} from "@thirdweb-dev/react";
+import React, {useEffect, useState} from 'react';
+
   export default function App() {
+
+    //Logging of connected useraddress
+    const userAddress = useAddress();
+    const [connectedAddress, setConnectedAddress] = useState('');
+
+     // Effect to capture the user's public address when connected
+     useEffect(() => {
+      if (userAddress) {
+          setConnectedAddress(userAddress);
+          console.log("Connected Wallet Address:", userAddress);
+      }
+  }, [userAddress]);
+
+    function en() {
+      throw new Error("Language Error.");
+    }
+
     return (
       <ThirdwebProvider
         activeChain="sepolia"
         clientId="YOUR_CLIENT_ID"
-       // locale={en()}
+       locale={en()}
 
 // Wallets our platfrom allows to connect
         supportedWallets={[
