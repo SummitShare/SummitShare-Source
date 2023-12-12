@@ -8,9 +8,11 @@ import axios from 'axios';
     const userAddress = useAddress();
     const [connectedAddress, setConnectedAddress] = useState('');
 
+    const user_id = 'd0ffa426-41e5-49ed-b9e0-653a8c55d036';
+
     const sendApiRequest = async (address: string,user_id: string) => {
       try {
-        const response = await axios.post('YOUR_API_ENDPOINT', { address });
+        const response = await axios.post('https://localhost:3000/api/users/wallets/addWallet', { address,user_id });
         console.log('API Response:', response.data);
         // Handle the response as needed
       } catch (error) {
@@ -70,7 +72,7 @@ import axios from 'axios';
 
           //Placement of Custom images and policy here
           modalTitleIconUrl={
-            "https://Summitshareicongoeshere.com"
+            "https://summitshare3.s3.eu-north-1.amazonaws.com/IMG_3157.PNG"
           }
           termsOfServiceUrl={
             "https://termsofservicegoeshere.com"

@@ -1,9 +1,12 @@
 import { CheckIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import React from "react";
 
+
+
+
 function Success() {
   return (
-    <div className="absolute inset-0 flex items-center justify-center bg-slate-950/10">
+    <div className="fixed inset-0 flex items-center justify-center bg-slate-950/20 z-50">
       <div className=" relative w-[350px] h-fit rounded-xl space-y-5  bg-slate-50 shadow-md px-5 py-10">
         <div>
           <XMarkIcon className="w-6 h-6 absolute top-5 right-5 text-slate-950" />

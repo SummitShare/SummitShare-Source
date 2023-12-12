@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "../reusebaeComponents/button";
 
 function PaymentInfo() {
   const PaymentData = [
@@ -10,34 +11,43 @@ function PaymentInfo() {
   ];
 
   return (
-    <div className="absolute inset-0 flex items-center justify-center bg-slate-950/10 ">
-      <div className="w-[350px] h-fit rounded-xl space-y-5  bg-slate-50 shadow-md px-5 py-4">
-        <div className="text-xs text-slate-500 space-y-2">
-          <p className="font-semibold text-slate-950 text-xl">Buy Ticket</p>
-          <p className="text-xs text-slate-500">
+    <div className="fixed inset-0 flex items-center justify-center bg-slate-950/20 z-50 ">
+      <div className="w-[350px] h-fit rounded-xl space-y-6  bg-slate-50 shadow-md px-5 py-4">
+        <div className="text-base text-blue-950 space-y-2">
+          <p className="font-bold text-blue-950 text-2xl">Buy Ticket</p>
+          <p className="text-slate-500">
             View all the payment details below
           </p>
         </div>
-        <div className="space-y-4">
-          <p className="text-base font-semibold text-slate-950">
-            Event Details
-          </p>
+        <div className="space-y-6">
+      
           <div className="space-y-2">
             {PaymentData.map((details) => (
               <div key={details.id} className="flex flex-row justify-between">
-                <p className="text-sm text-slate-700">{details.name}</p>
-                <p className="text-xs text-slate-500">{details.value}</p>
+                <p className="text-base text-bold text-slate-700">{`${details.name}:`}</p>
+                <p className="text-base text-slate-500">{details.value}</p>
               </div>
             ))}
           </div>
         </div>
         <div className="flex flex-row gap-2">
-          <button className="bg-slate-950 text-white rounded-xl px-4 py-2 text-xs">
-            Purchase
-          </button>
-          <button className="border border-slate-400 text-slate-400 rounded-xl px-4 py-3 text-xs">
-            Cancel
-          </button>
+       <Button
+       
+       text="Purchuse"
+       type="submit"
+       backGroundColor="bg-orange-500"
+       hover="hover:shadow-lg"
+       textColor="text-white font-semibold"
+       />
+          <Button
+       
+       text="Cancle"
+       type="button"
+       hover="hover:shadow-lg"
+       textColor="text-red-500 font-semibold"
+       borderColor=" border border-red-500"
+       />
+         
         </div>
       </div>
     </div>
