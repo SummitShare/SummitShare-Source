@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 import { ethers } from "ethers";
 import EventOrganizerServiceABI from '../../../utils/artifacts/contracts/EventOrganizerService.sol/EventOrganizerService.json';
 
+const EOSABI = EventOrganizerServiceABI as unknown as ethers.ContractInterface;
 // Exhibit Object
 type ExhibitParams = {
     name : string;
@@ -72,7 +73,7 @@ async function deployExhibit(exhibitParams: ExhibitParams) {
         // Create instance
         const organizerServiceContract = new ethers.Contract(
             organizerServiceAddress,
-            EventOrganizerServiceABI.abi, // Imported From Utils folder(Updated typchain and artifacts)
+            EOSABI, // Imported From Utils folder(Updated typchain and artifacts)
             wallet // Signer
         );
 

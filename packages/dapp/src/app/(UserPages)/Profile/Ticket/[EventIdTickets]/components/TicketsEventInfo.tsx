@@ -13,7 +13,7 @@ import { ClockIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 
 
 
@@ -24,6 +24,7 @@ function EventInfo() {
   const pathname = usePathname();
   const id = pathname.split('/').pop() as string;
   const exhibit = useExhibit(id);
+
   return (
     <div className="space-y-5">
       <div className="flex flex-row justify-between w-full ">
@@ -54,7 +55,8 @@ function EventInfo() {
           </div>
 
          
-          <TicketPurchaseComponent userAddress="" exhibitId={pathname}/>
+          <TicketPurchaseComponent userAddress="" exhibitId={id}/>
+          <p>{id}</p>
         </div>
         <div className="flex flex-row gap-2 w-full justify-end">
           <div className="w-[300px] h-[300px] bg-slate-100 rounded-xl">
