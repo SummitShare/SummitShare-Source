@@ -20,12 +20,12 @@ export interface ExhibitionData {
 
 const dummyData: ExhibitionData[] = [
   {
-    name: "Greenery",
-    country: "Location 1",
-    price: "$100",
-    eventType: "Type 1",
+    name: "Womens History",
+    country: "Lusaka,Zambia",
+    price: "$10",
+    eventType: "Museum",
     image:
-      "https://images.unsplash.com/photo-1677070542698-164b6126d0de?q=80&w=2160&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "https://images.squarespace-cdn.com/content/v1/5878a307ebbd1ab23e1ed5a0/1650967637542-JRICAI9PM44TACJ9MINP/ll-cover.7d6f50234cee534f9855.png?format=2500w",
   },
   {
     name: "Spectrums Galley",

@@ -8,7 +8,7 @@ interface VirtualEventCardProps {
 }
 const VirtualEventsCard: React.FC<VirtualEventCardProps> = ({ event }) => {
   return (
-    <Link href={`/Profile/${event.name}`} key={event.name} className="group">
+    <Link href={`/Profile/Ticket/0x36ea30fd21b212f3904ac88cd8080acc72bc9104`} key={event.name} className="group">
       <div className="  w-[230px] h-fit rounded-xl flex flex-col  shadow-md  p-1 ">
         <div className="relative w-full h-[150px]">
           <div className="absolute inset-0  rounded-xl bg-black/10"></div>

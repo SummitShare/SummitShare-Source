@@ -43,12 +43,7 @@ function EventInfo() {
             <div className="w-6 h-6 rounded-full bg-slate-100 border-2 border-slate-50 cursor-pointer"></div>
           </div>
 
-          <Button
-            text=" Punches"
-            type="button"
-            backGroundColor="bg-gradient-to-r from-orange-500 to-orange-400"
-            textColor="text-white"
-          ></Button>
+         
         </div>
         <div className="flex flex-row gap-2 w-full">
           <div className="w-[300px] h-[300px] bg-slate-100 rounded-xl">

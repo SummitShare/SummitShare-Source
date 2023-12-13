@@ -1,5 +1,6 @@
 'use client'
 import Button from "@/components/reusebaeComponents/button";
+import TicketPurchaseComponent from "@/functonality/ticketpurchasecomponent";
 import useExhibit from "@/lib/useGetExhibitById";
 import {
   CalendarDaysIcon,
@@ -52,18 +53,14 @@ function EventInfo() {
             </div>
           </div>
 
-          <Button
-            text=" Punches"
-            type="button"
-            backGroundColor="bg-blue-950 "
-            textColor="font-roboto font-semibold text-white"
-          ></Button>
+         
+          <TicketPurchaseComponent userAddress="" exhibitId={pathname}/>
         </div>
         <div className="flex flex-row gap-2 w-full justify-end">
           <div className="w-[300px] h-[300px] bg-slate-100 rounded-xl">
            <Image
                 className="rounded-xl w-full h-full object-cover"
-                src="https://images.unsplash.com/photo-1515405295579-ba7b45403062?q=80&w=2160&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                src="https://images.squarespace-cdn.com/content/v1/5878a307ebbd1ab23e1ed5a0/1650965527334-E2Z03ZQODOD6V3BHR8NK/lueji.f1f3c00ac13a6f15ad29.png?format=750w"
                 alt=""
                 width={480}
                 height={480}
@@ -75,7 +72,7 @@ function EventInfo() {
           <div className="w-[300px] h-[300px] bg-slate-100 rounded-xl">
  <Image
                 className="rounded-xl w-full h-full object-cover"
-                src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=2545&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                src="https://images.squarespace-cdn.com/content/v1/5878a307ebbd1ab23e1ed5a0/1650965510178-D24QXQOCKFVJEMJ26XVL/loongo.fb394b5caa52590a76f2.png?format=750w"
                 alt=""
                 width={480}
                 height={480}

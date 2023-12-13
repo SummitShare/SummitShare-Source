@@ -4,7 +4,7 @@ import React from "react";
 import { useRouter, usePathname } from 'next/navigation';
 import useExhibit from "@/lib/useGetExhibitById";
 import Image from 'next/image';
-import TicketPurchaseComponent from "@/functonality/ticketpurchasecomponent";
+
 function EventHero() {
 
   const router = useRouter();
@@ -19,10 +19,9 @@ function EventHero() {
       < div  className={`relative duration-500  h-[600px] w-full`}>
           
 
-<<<<<<< HEAD
       <Image
                 className="rounded-xl w-full h-full object-cover"
-                src="https://images.unsplash.com/photo-1561214115-f2f134cc4912?q=80&w=2509&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                src="https://images.squarespace-cdn.com/content/v1/5878a307ebbd1ab23e1ed5a0/1553622184666-CI6FIQ660SKJO67HZQVO/sitefrontpage1.jpg?format=2500w"
                 alt=""
                 width={480}
                 height={480}
@@ -58,10 +57,6 @@ function EventHero() {
                   <div className="rounded-full w-[5px] h-[5px] bg-slate-200 "></div>
                   <p className="open-sans">100 - tickets</p></div>
             </div>
-=======
-          <TicketPurchaseComponent provider={}  />
-        </div>
->>>>>>> 9dd3f937 (updated ticketpurchase(demo))
 
         <div className="flex flex-row w-full justify-start gap-2 lg:justify-start"></div>
       </div>

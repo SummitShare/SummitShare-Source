@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { usePathname, useRouter } from 'next/navigation';
 import { ethers } from 'ethers';
 import { gql, useApolloClient } from '@apollo/client';
 import usdcABI from '../utils/artifacts/contracts/MUSDC.sol/MUSDC.json';
@@ -11,16 +11,18 @@ const museumABI = museumABIJson as unknown as ethers.ContractInterface;
 
 interface TicketPurchaseProps {
     userAddress: string;
+    exhibitId:string;
 };
 
 
-const TicketPurchaseComponent = ({ userAddress}: TicketPurchaseProps) => {
+const TicketPurchaseComponent = ({ userAddress,exhibitId}: TicketPurchaseProps) => {
     const [ticketPrice, setTicketPrice] = useState('');
+    const pathname = usePathname();
     const [status, setStatus] = useState('');
     const [provider, setProvider] = useState<ethers.providers.Web3Provider | null>(null);
     const client = useApolloClient();
     const router = useRouter();
-    const exhibitId = router.query.id as string;
+    // const exhibitId = router.query.id as string;
     const usdcAddress = '0xDd4c60185608108D073C19432eef0ae50AB3830d';
     const museumAddress = '0xF4857Efc226Bb39C6851Aa137347CFf8F8e050F9';
 
@@ -53,7 +55,7 @@ const TicketPurchaseComponent = ({ userAddress}: TicketPurchaseProps) => {
                 .then(response => setTicketPrice(response.data.exhibit.ticketPrice))
                 .catch(error => {
                     console.error('Error fetching ticket price:', error);
-                    setStatus(`Error fetching ticket price: ${error.message}`);
+                    setStatus(`Error fetching ticket price: ${error.message} `+ pathname);
                 });
         }
     }, [exhibitId, client]);
@@ -88,8 +90,12 @@ const TicketPurchaseComponent = ({ userAddress}: TicketPurchaseProps) => {
 
     return (
         <div>
-            <button onClick={purchaseTicket} disabled={!ticketPrice}>Purchase Ticket</button>
-            <p>Status: {status}</p>
+
+            
+            <button className='px-[23px] py-[13px] bg-blue-950 font-opensans font-semibold w-fit rounded-xl h-fit text-white cursor-pointer' onClick={purchaseTicket} disabled={!ticketPrice}>Purchase</button>
+
+          
+          
         </div>
     );
 };

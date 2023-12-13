@@ -68,7 +68,7 @@ const dummyData: EventData[] = [
 const UpcomingArtExhibitions: React.FC = () => {
   const [activeTab, setActiveTab] = useState<
     "today" | "week" | "month" | "year"
-  >("today");
+  >("year");
   const [selectedCountry, setSelectedCountry] = useState<string>("");
 
   const [currentPage, setCurrentPage] = useState(0);
