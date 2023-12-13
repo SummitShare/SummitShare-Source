@@ -66,6 +66,12 @@ import axios from 'axios';
 
           modalSize={"wide"}
           welcomeScreen={{
+            img: {
+              src:
+                "https://summitshare3.s3.eu-north-1.amazonaws.com/IMG_3157.PNG",
+              width: 100,
+              height: 100,
+            },
             title:
               "Begin your Journey with SummitShare!",
           }}
