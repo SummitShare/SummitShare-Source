@@ -4,6 +4,7 @@ import { ethers } from 'ethers';
 import { gql, useApolloClient } from '@apollo/client';
 import usdcABI from '../utils/artifacts/contracts/MUSDC.sol/MUSDC.json';
 import museumABIJson from '../utils/artifacts/contracts/Museum.sol/Museum.json';
+import Link from 'next/link';
 
 const musdcABI = usdcABI as unknown as ethers.ContractInterface;
 const museumABI = museumABIJson as unknown as ethers.ContractInterface;
@@ -92,7 +93,7 @@ const TicketPurchaseComponent = ({ userAddress,exhibitId}: TicketPurchaseProps) 
         <div>
 
             
-            <button className='px-[23px] py-[13px] bg-blue-950 font-opensans font-semibold w-fit rounded-xl h-fit text-white cursor-pointer' onClick={purchaseTicket} disabled={!ticketPrice}>Purchase</button>
+            <Link href="https://oncyber.io/spaces/GAm7CDuZsqy1VyYSPlHe" className='px-[23px] py-[13px] bg-blue-950 font-opensans font-semibold w-fit rounded-xl h-fit text-white cursor-pointer' >Open Museum</Link>
 
           
           
