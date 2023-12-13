@@ -25,14 +25,15 @@ import NextAuth from "next-auth";
 declare module "next-auth" {
   interface User {
     Email: string;
+    id: string; // Add the id field to the User interface
   }
 
   interface Session {
-    user: User & {
-      Email: string;
-    };
+    user: User & DefaultSession["user"];
     token: {
       Email: string;
+      id: string; // If you are also adding id to the token, include it here
     };
   }
 }
+

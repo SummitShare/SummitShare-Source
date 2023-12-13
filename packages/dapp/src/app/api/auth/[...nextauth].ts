@@ -40,6 +40,18 @@ export default NextAuth({
   secret: process.env.JWT_SECRET,
   session: {
     strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+  },callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      session.user.id = token.id;
+      return session;
+    },
   },
   pages: {
     signIn: '/(UserPages)/auth/signin', // custom sign-in page for front end

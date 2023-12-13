@@ -20,9 +20,32 @@ function SignIn() {
   const form = useForm<fromData>();
   const { register, control, handleSubmit, formState } = form;
   const { errors } = formState;
-  const onSubmit = (data: fromData) => {
-    console.log("form submitted", data);
+  const onSubmit = async (data: fromData) => {
+    try {
+      const response = await fetch('/api/auth/callback/credentials', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          csrfToken: await fetch('/api/auth/csrf').then((res) => res.json()).then(data => data.csrfToken), // fetch CSRF token
+          email: data.email,
+          password: data.password,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to sign in');
+      }
+  
+      // Redirect the user after successful login
+      router.push('/some-redirect-route'); // Update this with where you want to redirect after login
+    } catch (error) {
+      console.error('Sign in failed:', error);
+      // Handle sign-in error, such as showing a notification to the user
+    }
   };
+  
 
   return (
     <div className=" ">

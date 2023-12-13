@@ -23,8 +23,28 @@ function SignUp() {
   const { register, control, handleSubmit, formState } = form;
   const { errors } = formState;
   const onSubmit = (data: fromData) => {
-    console.log("form submitted", data);
+    fetch("http://localhost:3000/api/signup", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    })
+        .then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            router.push("/login");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+    })
+        console.log("form submitted", data);
   };
+
+
+
 
   return (
     <div className=" ">
