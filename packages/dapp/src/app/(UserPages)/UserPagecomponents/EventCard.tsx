@@ -19,12 +19,12 @@ interface EventCardProps {
 const EventCard: React.FC<EventCardProps> = ({ event }) => {
   return (
     <Link href={`/Profile/${event.name}`} key={event.name} className="group">
-      <div className="  w-[250px] h-fit rounded-[24px] flex flex-col  shadow-md  p-2 ">
-        <div className="relative w-full h-[200px]">
-          <div className="absolute inset-0  rounded-[24px] bg-black/10"></div>
+      <div className="  w-[230px] h-fit rounded-xl flex flex-col  shadow-md  p-1 ">
+        <div className="relative w-full h-[150px]">
+          <div className="absolute inset-0  rounded-xl bg-black/10"></div>
          
            <Image
-                className="rounded-[24px] w-full h-full object-cover"
+                className="rounded-xl w-full h-full object-cover"
                 src={event.image}
                 alt=""
                 width={480}
@@ -35,7 +35,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
               />
 
               <div className="absolute inset-0 w-full h-full flex items-end justify-center py-2">
-<div className="  bg-slate-950 rounded-[12px] px-[12px] py-[10px] text-center w-fit h-fit invisible group-hover:visible transition-all duration-500">
+<div className="  bg-slate-950 rounded-[12px] px-[12px] py-[10px] text-center w-fit h-fit invisible group-hover:visible transition-all duration-150">
                  <p className="roboto font-medium text-sm text-white">View Ticket</p>
                 </div>
               </div>
@@ -57,7 +57,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
               <p className=" roboto text-[10px] font-medium text-white">{event.price}</p>
             </div>
           </div>
-          <div className="flex flex-row justify-between bg-[#F1F5F9] rounded-[8px] p-[10px] ">
+          <div className="flex flex-row justify-between bg-[#F1F5F9] rounded-[8px] py-[10px] px-3 ">
             <div className="flex flex-col gap-2 items-left text-xs font-normal text-slate-500 ">
               <p className="roboto text-sm font-light ">Date</p>
               <p className="roboto font-semibold text-sm text-blue-950">  {event.date}</p>

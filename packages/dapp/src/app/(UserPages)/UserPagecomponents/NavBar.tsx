@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { SearchResults, useSearch } from "@/lib/useSearch";
 import WalletConnectNav from "@/functonality/walletconnect";
 import { ThirdwebProvider } from "@thirdweb-dev/react";
+import ProfileIconDropDown from "./profileIconDropDown";
 
 export const dynamic = "force-dynamic";
 
@@ -36,10 +37,10 @@ function NavBar() {
 
   return (
     <div>
-      <div className="py-4 px-8 flex flex-row justify-between items-center fixed top-0 inset-x-0 w-full backdrop-blur-md bg-white/80 border-b z-50 ">
+      <div className="py-4 px-8 flex flex-row justify-between items-center fixed top-0 inset-x-0 w-full backdrop-blur-md bg-white/80 border-b z-50 grow shrink">
         <div className="flex items-center w-full lg:w-fit">
           <div className="flex flex-row gap-4 items-center text-lg">
-            <Link href={"/"} className="font-bold tracking-tighter text-base">
+            <Link href={"/"} className="text-[20px] font-bold roboto">
               Summit<span className=" text-orange-500  ">Share</span>
             </Link>
             <div className="relative w-fit sm:block hidden group">
@@ -64,23 +65,32 @@ function NavBar() {
         <div className="flex flex-row gap-4 items-center text-lg">
 
         </div>
-        <div className="px-8 flex flex-row gap-8 items-center text-sm w-full justify-end">
-          <div className="font-medium flex flex-row gap-4 ">
-            <Link className="text-slate-950 transition-all cursor-pointer md:block  sm:hidden" href="#">
+        <div className="px-8 flex flex-row gap-8 items-center w-full justify-end">
+          <div className=" text-base flex flex-row gap-4 ">
+            <Link className="transition-all cursor-pointer md:block sm:hidden font-open-sans text-base" href="#">
               Partners
             </Link>
-            <Link className="text-slate-950 transition-all cursor-pointer  md:block sm:hidden" href="#">
+            <Link className="transition-all cursor-pointer md:block sm:hidden font-open-sans text-base" href="#">
               Help
             </Link>
-            <Link className="text-slate-950 transition-all cursor-pointer hidden lg:block md:hidden" href="#">
+            <Link className="transition-all cursor-pointer hidden lg:block md:hidden font-open-sans text-base" href="#">
               Blog
             </Link>
-            <Link className="text-slate-950 transition-all cursor-pointer hidden lg:block md:hidden" href="#">
+            <div className="flex flex-flex-row items-center w-fit h-fit gap-2">
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
+  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+</svg>
+ <Link className="transition-all cursor-pointer hidden lg:block md:hidden font-open-sans text-base" href="#">
               GitHub
             </Link>
+            </div>
+
+           
           </div>
+         
+           
           <div className="flex flex-row gap-4">
-            <Button
+            {/* <Button
               click={handleClickSignUp}
               text="Sign Up"
               type="button"
@@ -96,14 +106,20 @@ function NavBar() {
               borderColor="amber-950"
               textColor="text-slate-950"
               hover="transition-all hover:shadow-lg"
-            />
+            /> */}
+
+
+
      <ThirdwebProvider
     
     >
       <WalletConnectNav />
       {/* Other components of your app */}
     </ThirdwebProvider>
+
+
           </div>
+            <ProfileIconDropDown/>
         </div>
       </div>
       <div className="">{isNotificationsOpen ? <NotificationCard /> : ""}</div>

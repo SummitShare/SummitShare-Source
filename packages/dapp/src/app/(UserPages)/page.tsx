@@ -1,17 +1,11 @@
 import VirtualEventCard from "@/app/(UserPages)/UserPagecomponents/Exhibition";
 import AdminSignUpCard from "./UserPagecomponents/AdminSignUpCard";
-
-import ContactUs from "./UserPagecomponents/ContactUsEmail";
-import Footer from "./UserPagecomponents/Footer";
-import HelpCardList from "./UserPagecomponents/HelpCardList";
-
-import TicketsList from "./UserPagecomponents/TicketList";
-
-
 import { getClient } from "@/lib/client";
 
 import { gql } from "@apollo/client";
 import HeroTwo from "./UserPagecomponents/HeroTwo";
+import UpcomingMuseumExhibitions from "./UserPagecomponents/TicketList";
+import UpcomingArtExhibitions from "./UserPagecomponents/UpcomingArtExhibitions";
 
 export const revalidate = 0;
 const query = gql`
@@ -37,13 +31,12 @@ export default async function Home() {
 
 
   return (
-    <main className="pt-4 space-y-20">
+    <main className="py-10 space-y-10">
       <HeroTwo />
-      <TicketsList />
-      <HelpCardList />
-      <VirtualEventCard />
+      <UpcomingMuseumExhibitions />
+      <UpcomingArtExhibitions/>
       <AdminSignUpCard />
-      <Footer />
+      <VirtualEventCard />
     </main>
   );
 }

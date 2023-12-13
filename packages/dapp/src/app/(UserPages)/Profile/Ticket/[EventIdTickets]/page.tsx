@@ -5,6 +5,7 @@ import OtherEvents from "@/app/(UserPages)/Profile/Ticket/[EventIdTickets]/compo
 import PreviousEvents from "@/app/(UserPages)/Profile/Ticket/[EventIdTickets]/components/PreviousEvents";
 
 import React from "react";
+import AdminSignUpCard from "@/app/(UserPages)/UserPagecomponents/AdminSignUpCard";
 
 
 function Event() {
@@ -13,6 +14,7 @@ function Event() {
     <div className="space-y-10">
       <EventHero />
       <EventInfo />
+            <AdminSignUpCard />
       <PreviousEvents />
       <OtherEvents />
     </div>

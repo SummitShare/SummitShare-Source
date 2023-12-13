@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import {
   CalendarDaysIcon,
+  ChevronRightIcon,
   ClockIcon,
   MapPinIcon,
 } from "@heroicons/react/24/outline";
@@ -13,7 +14,7 @@ import EventTypeFilter from "@/app/(UserPages)/UserPagecomponents/Filters/EventT
 import PaginationControls from "@/app/(UserPages)/UserPagecomponents/Filters/Pagination";
 import EventCard from "@/app/(UserPages)/UserPagecomponents/EventCard";
 import { EventData } from "../../../../types";
-import { ChevronRightIcon } from "@heroicons/react/24/solid";
+import { ChevronRight } from "lucide-react";
 
 const dummyData: EventData[] = [
   {
@@ -64,7 +65,7 @@ const dummyData: EventData[] = [
   },
 ];
 
-const UpcomingMuseumExhibitions: React.FC = () => {
+const UpcomingArtExhibitions: React.FC = () => {
   const [activeTab, setActiveTab] = useState<
     "today" | "week" | "month" | "year"
   >("today");
@@ -128,7 +129,7 @@ const UpcomingMuseumExhibitions: React.FC = () => {
   return (
     <div className="container mx-auto p-4 space-y-5">
       <div className="space-y-2">
-        <p className="font-poppins text-2xl text-blue-950 font-bold">Upcoming Museum Exhibitions</p>
+        <p className="font-poppins text-2xl text-blue-950 font-bold">Upcoming Art Exhibitions</p>
         <p className="font-opensans text-blue-950 ">
           Explore upcoming exhibitions with ease! Filter by country, date, and{" "}
           <br />
@@ -164,7 +165,7 @@ const UpcomingMuseumExhibitions: React.FC = () => {
   );
 };
 
-export default UpcomingMuseumExhibitions;
+export default UpcomingArtExhibitions;
 
 // Helper functions to extract unique countries and event eventTypes
 function getUniqueCountries(events: EventData[]) {

@@ -98,7 +98,7 @@ import Link from 'next/link';
 
 
 export const SearchResults: React.FC<SearchResultProps> = ({ data, searchResultsRef }) => (
-    <div ref={searchResultsRef} className="absolute top-full w-full bg-white shadow-lg rounded-md overflow-auto max-h-[200px]">
+    <div ref={searchResultsRef} className="absolute top-12 w-full bg-white shadow-lg rounded-md overflow-auto max-h-[200px]  ">
         {data.map((exhibit: any, index: any) => (
             <Link href={`/Profile/Exibition/${exhibit.exhibit.id}`} key={index}>
 

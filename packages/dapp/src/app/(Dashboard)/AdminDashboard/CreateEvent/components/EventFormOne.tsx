@@ -10,28 +10,85 @@ import TextArea from "@/components/reusebaeComponents/textArea";
 import { useState } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 
-interface fromData {
-  eventName: string;
-  eventStartTime: string;
-  eventEndTime: string;
-  eventLocation: string;
-  ticketCost: string;
-  ticketNo: string;
-  discretion: string;
-  eventDate: string;
-  Symbol: string;
-  partners: {
-    email: string;
-    walletAddress: string;
-    split: string;
-  }[];
-  coverPhoto: FileList;
-  galleryImages: FileList;
-  eventType: string;
-  timeZone: string;
+interface FormData {
+  proposal: {
+    event_type: string;
+    event_name: string;
+    event_category: string;
+    event_start_time: Date;
+    event_end_time: Date;
+    event_timezone: string;
+    event_location: string;
+    description: string;
+    contract_address: string;
+    symbol: string;
+    cost: number;
+    total_number_tickets: number;
+    eventDate: string;
+  };
+  emailsArray: string[];
 }
 
-function EventForm() {
+interface SubmissionData {
+  eventType: string;
+  eventName: string;
+  eventCategory: string;
+  eventStartTime: Date;
+  eventEndTime: Date;
+  eventTimezone: string;
+  eventLocation: string;
+  eventDescription: string;
+  contractAddress: string;
+  symbol: string;
+  cost: number;
+  totalNumberTickets: number;
+  eventDate: string;
+  emailsArray: string[];
+}
+
+// function transformFormData(formData: FormData): SubmissionData {
+//   const {
+//     proposal: {
+//       event_type,
+//       event_name,
+//       event_category,
+//       event_start_time,
+//       event_end_time,
+//       event_timezone,
+//       event_location,
+//       description,
+//       contract_address,
+//       symbol,
+//       cost,
+//       total_number_tickets,
+//       eventDate,
+//     },
+//     emailsArray,
+//   } = formData;
+// const formattedData: SubmissionData = {
+//     eventType: event_type,
+//     eventName: event_name,
+//     eventCategory: event_category,
+//     eventStartTime: event_start_time,
+//     eventEndTime: event_end_time,
+//     eventTimezone: event_timezone,
+//     eventLocation: event_location,
+//     eventDescription: description,
+//     contractAddress: contract_address,
+//     symbol: symbol,
+//     cost: cost,
+//     totalNumberTickets: total_number_tickets,
+//     eventDate: eventDate,
+//     emailsArray: emailsArray,
+//   };
+
+//   return formattedData;
+// }
+
+
+
+
+function EventForm()  {
   const eventTypes = [
     { name: "Museum" },
     { name: "Art Gallery" },
@@ -47,27 +104,41 @@ function EventForm() {
     // other event types
   ];
 
-  const form = useForm<fromData>({
-    defaultValues: {
-      partners: [
-        {
-          email: "",
-          walletAddress: "",
-          split: "",
-        },
-      ],
-    },
-  });
+  const form = useForm<FormData>({
+
+});
 
   const { register, control, handleSubmit, formState } = form;
   const { errors } = formState;
-  const onSubmit = (data: fromData) => {
+  const onSubmit = (data: response ) => {
     console.log("form submitted", data);
   };
-  const { fields, append, remove } = useFieldArray({
-    name: "partners",
-    control,
-  });
+const { fields, append, remove } = useFieldArray({
+  control,
+  // @ts-ignore
+  name: "emailsArray",
+
+
+});
+function transformFormData(formData: FormData): SubmissionData {
+  const {
+    proposal: {
+      event_type,
+      event_name,
+      event_category,
+      event_start_time,
+      event_end_time,
+      event_timezone,
+      event_location,
+      description,
+      contract_address,
+      symbol,
+      cost,
+      total_number_tickets,
+      eventDate,
+    },
+    emailsArray,
+  } = formData;
 
   const [coverPhotoPreview, setCoverPhotoPreview] = useState<string | null>(
     null
@@ -87,6 +158,7 @@ function EventForm() {
       reader.readAsDataURL(e.target.files[0]);
     }
   };
+
 
   const handleGalleryImagesChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -108,6 +180,7 @@ function EventForm() {
         });
     }
   };
+}
 
   return (
     <div>
@@ -123,7 +196,7 @@ function EventForm() {
               <div className="flex flex-row justify-between w-full">
                 {" "}
                 <Controller
-                  name="eventType"
+                  name="event_type"
                   control={control}
                   render={({ field }) => (
                     <SelectComponent
@@ -136,7 +209,7 @@ function EventForm() {
                   )}
                 />
                 <Controller
-                  name="timeZone"
+                  name="event_timezone"
                   control={control}
                   render={({ field }) => (
                     <SelectComponent
@@ -163,91 +236,91 @@ function EventForm() {
                     text="The world museum"
                     length="[350px]"
                     label="Event Name"
-                    name="eventName"
+                    name="event_name"
                     type="text"
-                    id="eventName"
+                    id="event_name"
                     message="event name required!"
                     register={register}
                   />
                   <p className="text-xs text-red-500 font-light">
-                    {errors.eventName?.message}
+                    {errors.event_name?.message}
                   </p>
                   <LineInputs
                     text="Lusaka,Zambia"
                     length="[350px]"
                     label="Event Location"
-                    name="eventLocation"
+                    name="event_location"
                     type="text"
-                    id="eventLocation"
+                    id="event_location"
                     message="event location required!"
                     register={register}
                   />
                   <p className="text-xs text-red-500 font-light">
-                    {errors.eventLocation?.message}
+                    {errors.event_location?.message}
                   </p>
                   <LineInputs
-                    text="0000.000Eth"
+                    text="$0.00"
                     length="[350px]"
                     label="Ticket Cost"
-                    name="ticketCost"
+                    name="cost"
                     type="text"
-                    id="ticketCost"
+                    id="cost"
                     message="ticket cost required!"
                     register={register}
                   />
                   <p className="text-xs text-red-500 font-light">
-                    {errors.ticketCost?.message}
+                    {errors.cost?.message}
                   </p>
                   <LineInputs
                     text="Number"
                     length="[350px]"
-                    label="Ticket N.o"
-                    name="ticketNo"
+                    label="   total_number_tickets"
+                    name="   total_number_tickets"
                     type="text"
-                    id="ticketNo"
+                    id="   total_number_tickets"
                     message="ticketNo required!"
                     register={register}
                   />
                   <p className="text-xs text-red-500 font-light">
-                    {errors.ticketNo?.message}
+                    {errors.   total_number_tickets?.message}
                   </p>
                   <TextArea
                     text="Type..."
                     length="full"
-                    label="Discretion"
-                    name="discretion"
-                    id="discretion"
-                    message="discretion required!"
+                    label="description"
+                    name="description"
+                    id="description"
+                    message="description required!"
                     register={register}
                   />
                   <p className="text-xs text-red-500 font-light">
-                    {errors.discretion?.message}
+                    {errors.description?.message}
                   </p>
                 </div>
                 <div className="space-y-6">
                   <LineInputs
                     length="[350px]"
                     label="Event Start Time"
-                    name="eventStartTime"
+                    name="event_start_time"
                     type="time"
-                    id="eventStartTime"
+                    id="event_start_time"
                     message="time required!"
                     register={register}
                   />
                   <p className="text-xs text-red-500 font-light">
-                    {errors.eventStartTime?.message}
+                    {errors.event_start_time?.message}
                   </p>
                   <LineInputs
                     length="[350px]"
                     label="Event End Time"
-                    name="eventEndTime"
+                    name="event_end_time"
                     type="time"
-                    id="eventEndTime"
+                    id="event_end_time"
                     message="time required!"
                     register={register}
                   />
                   <p className="text-xs text-red-500 font-light">
-                    {errors.eventEndTime?.message}
+                    {errors.event_end_time?.message}
                   </p>
                   <LineInputs
                     length="[350px]"
@@ -264,15 +337,15 @@ function EventForm() {
                   <LineInputs
                     text="Lusaka,Zambia"
                     length="[350px]"
-                    label="Symbol"
-                    name="Symbol"
+                    label="symbol"
+                    name="symbol"
                     type="text"
-                    id="Symbol"
-                    message="event Symbol required!"
+                    id="symbol"
+                    message="event symbol required!"
                     register={register}
                   />
                   <p className="text-xs text-red-500 font-light">
-                    {errors.Symbol?.message}
+                    {errors.symbol?.message}
                   </p>
                 </div>
               </div>
@@ -288,67 +361,39 @@ function EventForm() {
                   className="w-fit h-fit"
                   onClick={() =>
                     append({
-                      email: "",
-                      walletAddress: "",
-                      split: "",
+                      emailsArray:"",
+              
                     })
                   }
                 >
                   <AddPartnerButton />
                 </div>
 
-                {/* Partner input fields */}
-                {fields.map((partners, index) => (
-                  <div
-                    key={partners.id}
-                    className=" flex flex-row gap-2 items-end"
-                  >
-                    {/* Email input */}
-                    <LineInputs
-                      text="partner@mail.com"
-                      length="[350px]"
-                      label="Email"
-                      name={`partners.${index}.email`} // Fixed name attribute
-                      type="text"
-                      id="email"
-                      message="email required!"
-                      register={register}
-                    />
+         {fields.map((field, index) => (
+  <div key={field.id} className="flex flex-row gap-2 items-end">
+     <LineInputs
+      text="partner@mail.com"
+      length="[350px]"
+      label="Email"
+      name={`emailsArray.${index}`}
+      type="text"
+      id={`email-${index}`}
+      message="Email required!"
+      register={register}
+    />
+ 
+    {/* Remove partner button */}
+    {fields.length > 1 && (
+      <div className="pb-[2px]" onClick={() => remove(index)}>
+        <RemovePartnerButton />
+      </div>
+    )}
+  </div>
+))}
 
-                    {/* Wallet Address input */}
-                    <LineInputs
-                      text="Wallet Address(ERC20)"
-                      length="[400px]"
-                      label="Wallet Address"
-                      name={`partners.${index}.walletAddress`}
-                      type="text"
-                      id="walletAddress"
-                      message="walletAddress required!"
-                      register={register}
-                    />
 
-                    {/* Split input */}
-                    <LineInputs
-                      text="0%"
-                      length="24"
-                      label="Split"
-                      name={`partners.${index}.split`}
-                      type="text"
-                      id="split"
-                      message="split required!"
-                      register={register}
-                    />
-
-                    {/* Remove partner button */}
-                    {fields.length > 1 && (
-                      <div className="pb-[2px]" onClick={() => remove(index)}>
-                        <RemovePartnerButton />
-                      </div>
-                    )}
-                  </div>
-                ))}
               </div>
-              <div className="space-y-6">
+              {/* <div className="space-y-6">
                 <div className="space-y-2">
                   <p className="text-3xl text-blue-950 font-bold">Images</p>
                   <p className="text-slate-500">
@@ -448,7 +493,7 @@ function EventForm() {
                     )}
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           }
           submit={

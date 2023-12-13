@@ -25,8 +25,30 @@ function EventsCardDb({
   location,
   description,
 }: EventsCardProps) {
-  const [isOpen, setIsOpen] = useState(false);
+ 
 
+
+  const [stauts,setStatus] = useState<boolean>();
+
+const handleAccept = () => {
+    setStatus(true);
+    console.log({
+      proposal_id: "65021f62-4a67-420c-bdd1-8cd96d0db1b9",
+      Vote: true,
+      user_id: "d0ffa426-41e5-49ed-b9e0-653a8c55d036"
+    });
+  };
+
+  const handleDecline = () => {
+    setStatus(false);
+    console.log({
+      proposal_id: "65021f62-4a67-420c-bdd1-8cd96d0db1b9",
+      Vote: false,
+      user_id: "d0ffa426-41e5-49ed-b9e0-653a8c55d036"
+    });
+  };
+
+  const [isOpen, setIsOpen] = useState(false);
   const handleOpen = () => {
     setIsOpen(!isOpen);
   };
@@ -66,10 +88,10 @@ function EventsCardDb({
                 <p className="Body-text-mobile-mid w-[250px]">{description}</p>
               </div>
               <div className="space-x-2">
-                <button className="bg-green-500 px-6 py-2 rounded-xl Button-text text-white w-fit">
+                <button onClick={handleAccept} className="bg-green-500 px-6 py-2 rounded-xl Button-text text-white w-fit">
                   Accept
                 </button>
-                <button className="border border-red-500 px-6 py-2 rounded-xl Button-text text-red-500 w-fit">
+                <button onClick={handleDecline} className="border border-red-500 px-6 py-2 rounded-xl Button-text text-red-500 w-fit">
                   Decline
                 </button>
               </div>

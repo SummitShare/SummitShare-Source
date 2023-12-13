@@ -25,14 +25,12 @@ function EmailForm() {
   };
 
   return (
-    <div className=" ">
-      <Form
-        title="Hey welcome back!"
-        // @ts-ignore
-        onSubmit={handleSubmit(onSubmit)}
-        noValidate
-        description="SignIn to your SummitShare Account"
-        inputs={
+    <div className="space-y-6  ">
+      <div className="space-y-2">
+        <p className="text-2xl font-poppins font-bold">Join Our News Letter</p>
+        <p className="font-opensans text-slate-500">Input yore email to assess all our latast news</p>
+      </div>
+      
           <div className="space-y-5">
             <LineInputs
               length="[350px]"
@@ -44,8 +42,8 @@ function EmailForm() {
               register={register}
             />
           </div>
-        }
-        submit={
+  
+      
           <div className="flex flex-row gap-2">
             <Button
               text="Submit"
@@ -55,8 +53,8 @@ function EmailForm() {
               hover="hover:shadow-lg"
             />
           </div>
-        }
-      />
+    
+  
     </div>
   );
 }

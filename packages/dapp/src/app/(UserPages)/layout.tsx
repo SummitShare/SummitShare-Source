@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import NavBar from "./UserPagecomponents/NavBar";
 import { ApolloWrapper } from "./apolloWrapper";
+import Footer from "./UserPagecomponents/Footer";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -21,6 +22,7 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
         <ApolloWrapper>
           <NavBar />
           {children}
+          <Footer/>
         </ApolloWrapper>
       </body>
     </html>

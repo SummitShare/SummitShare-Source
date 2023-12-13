@@ -5,6 +5,9 @@ import CountryFilter from "@/app/(UserPages)/UserPagecomponents/Filters/CountryF
 import EventTypeFilter from "@/app/(UserPages)/UserPagecomponents/Filters/EventTypeFilter";
 import PaginationControls from "@/app/(UserPages)/UserPagecomponents/Filters/Pagination";
 import VirtualEventsCard from "@/components/reusebaeComponents/VirtualEventsCard";
+import Link from "next/link";
+import { ChevronRightIcon } from "@heroicons/react/24/solid";
+import Button from "@/components/reusebaeComponents/button";
 
 export interface ExhibitionData {
   name: string;
@@ -77,16 +80,10 @@ const VirtualEventCard = () => {
 
   return (
     <div className="container mx-auto p-4 space-y-5">
-      <div className="space-y-2">
-        <p className="title-h4-slate">Virtual Exhibitions</p>
-        <p className="body-text-h4">
-          Explore virtual exhibitions with ease! Filter by country and type{" "}
-          <br />
-          below to find exactly what you're looking for
-        </p>
-      </div>
-      <div className="flex flex-row justify-between ">
-        <CountryFilter
+      
+      <div className="flex flex-row justify-between  ">
+        <div className="flex flex-row gap-3">
+            <CountryFilter
           onCountryChange={setSelectedCountry}
           uniqueCountries={getUniqueCountries(dummyData)}
         />
@@ -94,13 +91,47 @@ const VirtualEventCard = () => {
           onEventTypeChange={setSelectedEventType}
           uniqueEventTypes={getUniqueEventTypes(dummyData)}
         />
+        </div>
+    
+          <Link href={"#"} className="font-opensans bg-slate-100 rounded-xl flex flex-row gap-2 items-center px-3 py-[10px] w-fit">View All Exhibtions <ChevronRightIcon className="w-[18px] h-[18px]"/></Link>
       </div>
 
-      <div className="relative flex flex-row gap-3 w-full group mt-6">
+<div className="flex flex-row justify-between items-center">
+  <div className="space-y-6">
+    <div className="space-y-2">
+        <p className="font-poppins text-2xl text-blue-950 font-bold">Virtual Exhibitions</p>
+        <p className="font-opensans text-blue-950 ">
+          Explore virtual exhibitions with ease! Filter by country 
+            <br />and type
+          below to find exactly what   <br />you're looking for
+        </p>
+
+        
+      </div>
+    <div className="flex flex-row gap-3">
+        <Button
+          text="View All"
+          backGroundColor="bg-blue-950"
+          textColor="text-white text-base font-bold font-roboto"
+          type="button"
+        />
+         <Button
+          text="Learn More"
+          backGroundColor="bg-slate-500/30"
+          textColor="text-white text-base font-bold font-roboto"
+          type="button"
+        />
+      </div>
+  </div>
+
+  <div className=" flex flex-row gap-3 w-fit  mt-6">
         {filteredEvents.slice(startIndex, endIndex).map((event, index) => (
           <VirtualEventsCard key ={index} event={event} />
         ))}
       </div>
+</div>
+
+    
 
       <PaginationControls
         currentPage={currentPage}

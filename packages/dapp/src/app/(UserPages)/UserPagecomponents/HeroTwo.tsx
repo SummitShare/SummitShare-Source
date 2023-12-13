@@ -43,7 +43,7 @@ function HeroTwo() {
               <div className="space-y-2  flex flex-col w-full">
                 <p className="text-2xl font-bold text-white">{exhibit.name}</p>
                 {/* <p className="open-sans font-light text-slate-50">{exhibit.details}</p> */}
-                  <p className="open-sans font-light text-slate-200 w-[500px]">Celebrate the vibrant and diverse culture of Africa through its art! Join us on an immersive journey where you will experience the beauty and richness of African art firsthand</p>
+                  <p className="open-sans font-light text-slate-200 w-[500px]">{exhibit.details}</p>
               </div>
               <div className="flex flex-row w-full gap-2 justify-start">
                 <Button
