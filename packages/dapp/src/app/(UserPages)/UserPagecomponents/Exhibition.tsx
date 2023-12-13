@@ -22,7 +22,7 @@ const dummyData: ExhibitionData[] = [
   {
     name: "Womens History",
     country: "Lusaka,Zambia",
-    price: "$10",
+    price: "$100",
     eventType: "Museum",
     image:
       "https://images.squarespace-cdn.com/content/v1/5878a307ebbd1ab23e1ed5a0/1650967637542-JRICAI9PM44TACJ9MINP/ll-cover.7d6f50234cee534f9855.png?format=2500w",
