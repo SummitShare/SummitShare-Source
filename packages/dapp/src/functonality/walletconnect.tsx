@@ -69,8 +69,8 @@ import axios from 'axios';
             img: {
               src:
                 "https://summitshare3.s3.eu-north-1.amazonaws.com/IMG_3157.PNG",
-              width: 100,
-              height: 100,
+              width: 150,
+              height: 150,
             },
             title:
               "Begin your Journey with SummitShare!",

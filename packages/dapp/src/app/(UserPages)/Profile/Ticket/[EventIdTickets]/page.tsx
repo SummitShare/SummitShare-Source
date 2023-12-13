@@ -2,7 +2,7 @@ import EventHero from "@/app/(UserPages)/Profile/Ticket/[EventIdTickets]/compone
 import EventInfo from "@/app/(UserPages)/Profile/Ticket/[EventIdTickets]/components/TicketsEventInfo";
 
 import OtherEvents from "@/app/(UserPages)/Profile/Ticket/[EventIdTickets]/components/OtherEvents";
-import PreviousEvents from "@/app/(UserPages)/Profile/Ticket/[EventIdTickets]/components/PreviousEvents";
+
 
 import React from "react";
 import AdminSignUpCard from "@/app/(UserPages)/UserPagecomponents/AdminSignUpCard";
@@ -11,11 +11,11 @@ import AdminSignUpCard from "@/app/(UserPages)/UserPagecomponents/AdminSignUpCar
 function Event() {
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-10 pt-8 pb-20">
       <EventHero />
       <EventInfo />
             <AdminSignUpCard />
-      <PreviousEvents />
+ 
       <OtherEvents />
     </div>
   );
