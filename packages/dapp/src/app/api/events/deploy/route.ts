@@ -40,18 +40,18 @@ interface EmailArray extends Array<string> {}
 interface IPropsal extends Object{}
 
 
-export async function POST(req: Request, res: NextResponse) {
-    
+export async function POST(req: Request) {
     try {
+        console.log("Received request in deploy route");
         const requestBody = await req.json();
-        const {  event_id }: { event_id: string   } = requestBody;
+        console.log("Request Body:", requestBody);
+        const { event_id }: { event_id: string } = requestBody;
+
         const eventData = await prisma.events.findUnique({
             where: { id: event_id },
-            include: {
-                stakeholders: true // Include stakeholders related to the event
-            }
+            include: { stakeholders: true }
         });
-        
+
         if (!eventData) {
             throw new Error('Event not found');
         }
@@ -61,21 +61,19 @@ export async function POST(req: Request, res: NextResponse) {
             name: eventData.event_name || 'Default Name', 
             symbol: eventData.symbol || 'Default Symbol',  
             ticketPrice: eventData.cost?.toString() || '0',  
-            beneficiaries: eventData.stakeholders.map(stakeholder => stakeholder.wallet_address|| 'Default Wallet ID'),  
-            shares: eventData.stakeholders.map(stakeholder => stakeholder.stake || 0),  
-            baseURI: 'your-base-uri', 
+            beneficiaries: eventData.stakeholders.map((stakeholder: { wallet_address: any; }) => stakeholder.wallet_address|| 'Default Wallet ID'),  
+            shares: eventData.stakeholders.map((stakeholder: { stake: any; }) => stakeholder.stake || 0),  
+            baseURI: 'http://localhost:3000/api/ticket/', 
             location: eventData.event_location || 'Default Location',  
-            artifactNFT: 'your-artifact-nft', 
+            artifactNFT: '0x5851195868fdc91585cc2308595c2b8c992c06f2', 
             details: eventData.description || 'Default Details',  
             id: eventData.id
         };
         
-
-
-        // Return the status of all operations
+        console.log("Returning exhibitParams:", exhibitParams);
         return NextResponse.json(exhibitParams, { status: 200 });
-      } catch (error) {
-        console.error('Error in POST endpoint:', error);
+    } catch (error) {
+        console.error('Error in deploy POST endpoint:', error);
         return NextResponse.json({ error: 'An error occurred while processing your request.' }, { status: 500 });
-      }
-  }
+    }
+}
