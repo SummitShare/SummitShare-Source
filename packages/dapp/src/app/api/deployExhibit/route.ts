@@ -2,8 +2,11 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { NextResponse } from "next/server";
 import { ethers } from "ethers";
 import EventOrganizerServiceABI from '../../../utils/artifacts/contracts/EventOrganizerService.sol/EventOrganizerService.json';
+import prisma from "../../../../config/db";
 
 const EOSABI = EventOrganizerServiceABI as unknown as ethers.ContractInterface;
+
+
 
 // Exhibit Object Type
 type ExhibitParams = {
@@ -18,6 +21,56 @@ type ExhibitParams = {
     details: string;
     id: string;
 };
+
+
+interface BigNumber {
+    _hex: string;
+    _isBigNumber: boolean;
+  }
+  
+  interface LogEntry {
+    transactionIndex: number;
+    blockNumber: number;
+    transactionHash: string;
+    address: string;
+    topics: string[]; // Assuming topics are an array of strings
+    data: string;
+    logIndex: number;
+    blockHash: string;
+  }
+  
+  interface EventEntry extends LogEntry {
+    removeListener?: Function; // Replace with more specific function type if known
+    getBlock?: Function; // Replace with more specific function type if known
+    getTransaction?: Function; // Replace with more specific function type if known
+    getTransactionReceipt?: Function; // Replace with more specific function type if known
+    args?: any[]; // Replace with more specific type if known
+    decode?: Function; // Replace with more specific function type if known
+    event?: string;
+    eventSignature?: string;
+  }
+  
+  interface TransactionReceipt {
+    to: string;
+    from: string;
+    contractAddress: string | null;
+    transactionIndex: number;
+    gasUsed: BigNumber;
+    logsBloom: string;
+    blockHash: string;
+    transactionHash: string;
+    logs: LogEntry[];
+    blockNumber: number;
+    confirmations: number;
+    cumulativeGasUsed: BigNumber;
+    effectiveGasPrice: BigNumber;
+    status: number;
+    type: number;
+    byzantium: boolean;
+    events: EventEntry[];
+  }
+  
+  
 
 // Function to call an external API for event parameters
 async function callDeployEventApi(eventId: string): Promise<ExhibitParams> {
@@ -73,7 +126,7 @@ async function deployExhibit(exhibitParams: ExhibitParams) {
         );
 
         // Parse ticket price to Wei
-        const ticketPriceWei = ethers.utils.parseUnits(exhibitParams.ticketPrice, 18)
+       // const ticketPriceWei = ethers.utils.parseUnits(exhibitParams.ticketPrice, 18)
 
         // Organize exhibit
         const tx = await organizerServiceContract.organizeExhibit(
@@ -170,8 +223,31 @@ export async function POST(req: Request) {
 
 
         // Deploy the exhibit using the retrieved parameters
-        const receipt = await deployExhibit(exhibitParams);
-        console.log(receipt);
+        const receipt: TransactionReceipt = await deployExhibit(exhibitParams);
+        console.log(receipt.logs[2].address);
+        console.log(receipt.logs[3].address);
+        console.log(receipt.events[2].address);
+        console.log(receipt.events[3].address);
+
+        const contract_address = receipt.logs[2].address
+
+        //Update database with exhibitid address
+        // await prisma.events.update({
+        //     where: {id: event_id},
+        //     data: {contract_address:receipt.address}
+
+        // })
+
+        const contract = await prisma.contracts.create({
+          data:{
+            contract_address,
+            contract_type:"EOA",
+            event_id:event_id
+            },
+
+        })
+        
+        
 
         // Return success response
         return NextResponse.json({ Success: "Great success, you are failure no longer, now wife and kids have home", receipt }, { status: 201 });

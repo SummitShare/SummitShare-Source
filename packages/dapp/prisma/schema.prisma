@@ -8,40 +8,36 @@ datasource db {
 }
 
 model contracts {
-  contract_address                          String   @id
-  contract_abi                              Json     @db.Json
-  deploy_id                                 String
-  event_id                                  String?  @db.Uuid
-  events_contracts_event_idToevents         events?  @relation("contracts_event_idToevents", fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  events_events_contract_addressTocontracts events[] @relation("events_contract_addressTocontracts")
+  contract_address                  String  @id
+  event_id                          String? @db.Uuid
+  contract_type                     String?
+  events_contracts_event_idToevents events? @relation("contracts_event_idToevents", fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model events {
-  id                                           String                   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  event_type                                   event_type_enum?
-  event_name                                   String?
-  user_id                                      String?                  @db.Uuid
-  event_category                               event_category_enum?
-  event_start_time                             DateTime?                @db.Timestamp(6)
-  event_timezone                               String?
-  event_location                               String?
-  description                                  String?
-  contract_address                             String?
-  event_end_time                               DateTime?                @db.Timestamp(6)
-  cost                                         Decimal?                 @db.Decimal(10, 2)
-  total_number_tickets                         Int?
-  created_at                                   DateTime                 @default(now()) @db.Timestamp(6)
-  symbol                                       String?                  @db.VarChar(5)
-  contracts_contracts_event_idToevents         contracts[]              @relation("contracts_event_idToevents")
-  event_images                                 event_images[]
-  users                                        users?                   @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  contracts_events_contract_addressTocontracts contracts?               @relation("events_contract_addressTocontracts", fields: [contract_address], references: [contract_address], onDelete: NoAction, onUpdate: NoAction, map: "fk_events_contracts")
-  latest_rejecters_queue                       latest_rejecters_queue[]
-  proposals                                    proposals[]
-  requests                                     requests[]
-  stakeholders                                 stakeholders[]
-  ticket_transaction                           ticket_transaction[]
-  tickets                                      tickets[]
+  id                                   String                   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  event_type                           event_type_enum?
+  event_name                           String?
+  user_id                              String?                  @db.Uuid
+  event_category                       event_category_enum?
+  event_start_time                     DateTime?                @db.Timestamp(6)
+  event_timezone                       String?
+  event_location                       String?
+  description                          String?
+  event_end_time                       DateTime?                @db.Timestamp(6)
+  cost                                 Decimal?                 @db.Decimal(10, 2)
+  total_number_tickets                 Int?
+  created_at                           DateTime                 @default(now()) @db.Timestamp(6)
+  symbol                               String?                  @db.VarChar(5)
+  contracts_contracts_event_idToevents contracts[]              @relation("contracts_event_idToevents")
+  event_images                         event_images[]
+  users                                users?                   @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  latest_rejecters_queue               latest_rejecters_queue[]
+  proposals                            proposals[]
+  requests                             requests[]
+  stakeholders                         stakeholders[]
+  ticket_transaction                   ticket_transaction[]
+  tickets                              tickets[]
 }
 
 model proposals {

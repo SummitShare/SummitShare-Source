@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 import prisma from '../../../../../config/db'
 import crypto from 'node:crypto'
 
+
 interface EmailStatus {
     exists: boolean;
     sent: boolean;
