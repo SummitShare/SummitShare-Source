@@ -225,19 +225,12 @@ export async function POST(req: Request) {
         // Deploy the exhibit using the retrieved parameters
         const receipt: TransactionReceipt = await deployExhibit(exhibitParams);
         console.log(receipt.logs[2].address);
-        console.log(receipt.logs[3].address);
-        console.log(receipt.events[2].address);
-        console.log(receipt.events[3].address);
+        // console.log(receipt.logs[3].address);
+        // console.log(receipt.events[2].address);
+        // console.log(receipt.events[3].address);
 
         const contract_address = receipt.logs[2].address
-
-        //Update database with exhibitid address
-        // await prisma.events.update({
-        //     where: {id: event_id},
-        //     data: {contract_address:receipt.address}
-
-        // })
-
+        // posts to database deployed exhibitid/address
         const contract = await prisma.contracts.create({
           data:{
             contract_address,
@@ -246,9 +239,7 @@ export async function POST(req: Request) {
             },
 
         })
-        
-        
-
+ 
         // Return success response
         return NextResponse.json({ Success: "Great success, you are failure no longer, now wife and kids have home", receipt }, { status: 201 });
 
