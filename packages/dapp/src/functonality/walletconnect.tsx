@@ -1,8 +1,15 @@
-import {ThirdwebProvider, ConnectWallet, metamaskWallet, coinbaseWallet, walletConnect, safeWallet, lightTheme, useAddress,} from "@thirdweb-dev/react";
+import {ThirdwebProvider, ConnectWallet, metamaskWallet, coinbaseWallet, walletConnect, safeWallet, lightTheme, useAddress,ThirdwebSDK} from "@thirdweb-dev/react";
 import React, {useEffect, useState} from 'react';
 import axios from 'axios'; 
 
+const apiKey = process.env.NEXT_PUBLIC_THIRDWEB_API_KEY;
+const sdk = new ThirdwebSDK('ethereum', {
+  //@ts-ignore 
+  apiKey: apiKey
+});
   export default function WalletConnectNav () {
+
+
 
     //Logging of connected useraddress
     const userAddress = useAddress();
