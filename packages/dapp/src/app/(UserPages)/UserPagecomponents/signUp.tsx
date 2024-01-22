@@ -23,6 +23,8 @@ function SignUp() {
   const { register, control, handleSubmit, formState } = form;
   const { errors } = formState;
   const onSubmit = (data: fromData) => {
+
+    
     fetch("http://localhost:3000/api/signup", {
       method: "POST",
       body: JSON.stringify(data),
@@ -109,7 +111,6 @@ function SignUp() {
               hover="hover:shadow-lg  "
             />
             <Button
-              // @ts-ignore
               click={handleCancel}
               text="Cancel"
               type="button"

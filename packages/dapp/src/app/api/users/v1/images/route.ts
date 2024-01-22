@@ -30,7 +30,7 @@ export async function GET (request: Request , response : NextResponse) {
       ContentType: `image/jpg`
     }
 
-    const uploadUrl = await s3.getSignedUrl('putObject',s3Params)
+    const uploadUrl = s3.getSignedUrl('putObject',s3Params)
 
 
     // const allUsers = await prisma.users.findMany()

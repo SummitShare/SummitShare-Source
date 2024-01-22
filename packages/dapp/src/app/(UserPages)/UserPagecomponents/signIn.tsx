@@ -4,6 +4,10 @@ import Form from "@/components/reusebaeComponents/form";
 import LineInputs from "@/components/reusebaeComponents/LineInput";
 import Button from "@/components/reusebaeComponents/button";
 import { useForm } from "react-hook-form";
+import { useSession } from "next-auth/react";
+import { json } from "stream/consumers";
+
+
 
 interface fromData {
   email: string;
@@ -11,6 +15,7 @@ interface fromData {
 }
 
 function SignIn() {
+  const { data: session, status } = useSession();
   const router = useRouter();
 
   const handleCancel = () => {
@@ -22,24 +27,29 @@ function SignIn() {
   const { errors } = formState;
   const onSubmit = async (data: fromData) => {
     try {
-      const response = await fetch('/api/auth/callback/credentials', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          csrfToken: await fetch('/api/auth/csrf').then((res) => res.json()).then(data => data.csrfToken), // fetch CSRF token
-          email: data.email,
-          password: data.password,
-        }),
-      });
+
+     console.log(data)
+
+     const res = await fetch('/api/test', {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+     })
   
-      if (!response.ok) {
-        throw new Error('Failed to sign in');
-      }
-  
-      // Redirect the user after successful login
-      router.push('/some-redirect-route'); // Update this with where you want to redirect after login
+    
+      
+        // After successful login, check session status
+      // if (status === "authenticated") {
+      //   console.log("Current session:", session);
+      //   router.push('/'); // Redirect on successful login
+      // } else {
+      //   console.error('Session not established');
+      // }
+
+      router.push("/AuthTest")
     } catch (error) {
       console.error('Sign in failed:', error);
       // Handle sign-in error, such as showing a notification to the user
@@ -96,7 +106,6 @@ function SignIn() {
               hover="hover:shadow-lg"
             />
             <Button
-              // @ts-ignore
               click={handleCancel}
               text="Cancel"
               type="button"
