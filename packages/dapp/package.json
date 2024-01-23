@@ -37,7 +37,7 @@
     "@uniswap/v3-periphery": "^1.4.4",
     "alchemy-sdk": "^2.10.1",
     "aws-sdk": "^2.1473.0",
-    "axios": "^1.5.1",
+    "axios": "^1.6.0",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",

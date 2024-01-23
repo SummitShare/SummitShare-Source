@@ -9,18 +9,19 @@ contract ArtifactNFT is ERC721A, Ownable {
 
     event Minted(address to, uint256 quantity);
 
-    constructor(
-        string memory _name,
-        string memory _symbol,
-        address _owner,
-        string memory _baseURI
-    ) ERC721A(_name, _symbol) Ownable(_owner) {
-        baseURI = _baseURI;
-    }
-
+constructor(
+    string memory _name,
+    string memory _symbol,
+    address _owner,
+    string memory baseURIParam
+) ERC721A(_name, _symbol) Ownable() {  // <-- Corrected
+    baseURI = baseURIParam;
+    transferOwnership(_owner);  // Optionally transfer ownership if needed
+}
     function mint(address to, uint256 quantity) external onlyOwner returns (uint256) {
         _mint(to, quantity);
         emit Minted(to, quantity);
+        return quantity;
     }
 
 
