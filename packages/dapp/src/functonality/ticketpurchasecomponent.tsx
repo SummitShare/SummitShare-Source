@@ -32,6 +32,7 @@ const TicketPurchaseComponent = ({ userAddress, exhibitId }: TicketPurchaseProps
   const client = useApolloClient();
   const router = useRouter();
   const [purchaseSuccessful, setPurchaseSuccessful] = useState<boolean>(false);
+  const [customGasLimit, setCustomGasLimit] = useState<string>('250000');
 
   // Contract addresses
    const usdcAddress = '0xDd4c60185608108D073C19432eef0ae50AB3830d';
@@ -48,14 +49,22 @@ const TicketPurchaseComponent = ({ userAddress, exhibitId }: TicketPurchaseProps
      }
  }
 `;
+
     // Effect hook for initializing Web3 provider
     useEffect(() => {
     console.log("Exhibit ID From URL:", exhibitId);
+
     const ethWindow = window as EthereumWindow;
+
   if (ethWindow.ethereum || ethWindow.web3) {
     const web3Provider = new ethers.providers.Web3Provider(window.ethereum);
-    web3Provider.send('eth_requestAccounts', []);
-    setProvider(web3Provider);
+
+    web3Provider.send('eth_requestAccounts', []).then(() => {
+    setProvider(web3Provider); 
+    }).catch((err) => {
+      setStatus (`Error connecting to user wallet: ${err.message}`);
+    });
+    
   } else {
     setStatus('Please install a Web3 wallet (e.g., MetaMask) to purchase tickets.');
   }
@@ -91,6 +100,9 @@ const TicketPurchaseComponent = ({ userAddress, exhibitId }: TicketPurchaseProps
             return;
         }
 
+         // Convert customGasLimit to BigNumber
+        const gasLimit = ethers.utils.parseUnits(customGasLimit, 'wei');
+
         try {
             const signer = provider.getSigner();
             const usdcContract = new ethers.Contract(usdcAddress, musdcABI, signer);
@@ -101,13 +113,13 @@ const TicketPurchaseComponent = ({ userAddress, exhibitId }: TicketPurchaseProps
             
             // Approve USDC transfer for ticket purchase
             setStatus('Approving USDC transfer...');
-            const approveTx = await usdcContract.approve(museumAddress, ticketPrice);
-            await approveTx.wait();
+            const approveTx = await usdcContract.approve(museumAddress, ticketPrice, { gasLimit });
+            await approveTx.wait(6);
 
             // Execute ticket purchase transaction
             setStatus('Purchasing ticket...');
-            const purchaseTx = await museumContract.purchaseTicket(exhibitId, ticketPrice);
-            await purchaseTx.wait();
+            const purchaseTx = await museumContract.purchaseTicket(exhibitId, ticketPrice, { gasLimit });
+            await purchaseTx.wait(6);
 
             //State update after successful ticket purchase
              setPurchaseSuccessful(true);
