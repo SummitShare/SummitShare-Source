@@ -6,10 +6,10 @@ async function main() {
     const [deployer] = await ethers.getSigners();
 
     // Deployment parameters
-    const nftName = "TestArtifactNFT";
-    const nftSymbol = "TANFT";
+    const nftName = "leadingLadies";
+    const nftSymbol = "LLE";
     const ownerAddress = deployer.address; // Using deployer as owner for test purposes
-    const baseURIParam = "http://example.com/api/item/";
+    const baseURIParam = "https://summitsharecollections.s3.eu-north-1.amazonaws.com/collections/leadingLadies";
 
     console.log("Deploying ArtifactNFT contract...");
 
@@ -17,12 +17,21 @@ async function main() {
     try {
         const ArtifactNFT = await ethers.getContractFactory("ArtifactNFT");
         const artifactNFT = await ArtifactNFT.deploy(nftName, nftSymbol, ownerAddress, baseURIParam);
-        await artifactNFT.deployed();
+        
 
         console.log(`ArtifactNFT deployed to: ${artifactNFT.address}`);
+
+        // Check if the contract has been deployed
+        if (artifactNFT.address) {
+        console.log(`ArtifactNFT deployed to: ${artifactNFT.address}`);
+     
+         } else {
+        console.error("ArtifactNFT deployment failed.");
+      }
+
                // Minting parameters
                const recipientAddress = deployer.address; // Address receiving the NFTs
-               const mintQuantity = 5; // Number of NFTs to mint
+               const mintQuantity = 3; // Number of NFTs to mint
        
                console.log(`Minting ${mintQuantity} NFTs to ${recipientAddress}...`);
        
