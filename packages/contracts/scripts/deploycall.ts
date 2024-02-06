@@ -9,7 +9,7 @@ async function main() {
     const nftName = "leadingLadies";
     const nftSymbol = "LLE";
     const ownerAddress = deployer.address; // Using deployer as owner for test purposes
-    const baseURIParam = "https://summitsharecollections.s3.eu-north-1.amazonaws.com/collections/leadingLadies";
+    const baseURIParam = "https://s3.tebi.io/summitsharemetadata/leadingLadies";
 
     console.log("Deploying ArtifactNFT contract...");
 
