@@ -3,10 +3,9 @@ import { NextResponse } from "next/server";
 import { ethers } from "ethers";
 import EventOrganizerServiceABI from '../../../utils/artifacts/contracts/EventOrganizerService.sol/EventOrganizerService.json';
 import prisma from "../../../../config/db";
+import { isAddress } from "ethers/lib/utils";
 
 const EOSABI = EventOrganizerServiceABI as unknown as ethers.ContractInterface;
-
-
 
 // Exhibit Object Type
 type ExhibitParams = {
@@ -70,8 +69,6 @@ interface BigNumber {
     events: EventEntry[];
   }
   
-  
-
 // Function to call an external API for event parameters
 async function callDeployEventApi(eventId: string): Promise<ExhibitParams> {
     const url = 'http://localhost:3000/api/events/deploy';
@@ -125,14 +122,11 @@ async function deployExhibit(exhibitParams: ExhibitParams) {
             wallet
         );
 
-        // Parse ticket price to Wei
-       // const ticketPriceWei = ethers.utils.parseUnits(exhibitParams.ticketPrice, 18)
 
         // Organize exhibit
         const tx = await organizerServiceContract.organizeExhibit(
             exhibitParams.name,
             exhibitParams.symbol,
-            //ticketPriceWei,
             exhibitParams.ticketPrice,
             exhibitParams.beneficiaries,
             exhibitParams.shares,
@@ -142,7 +136,7 @@ async function deployExhibit(exhibitParams: ExhibitParams) {
             exhibitParams.details,
             exhibitParams.id,
             {
-                gasLimit: ethers.utils.hexlify(2800000) 
+                //gasLimit: ethers.utils.hexlify(2800000) 
             }
         );
 
@@ -225,11 +219,8 @@ export async function POST(req: Request) {
         // Deploy the exhibit using the retrieved parameters
         const receipt: TransactionReceipt = await deployExhibit(exhibitParams);
         console.log(receipt.logs[2].address);
-        // console.log(receipt.logs[3].address);
-        // console.log(receipt.events[2].address);
-        // console.log(receipt.events[3].address);
-
         const contract_address = receipt.logs[2].address
+
         // posts to database deployed exhibitid/address
         const contract = await prisma.contracts.create({
           data:{

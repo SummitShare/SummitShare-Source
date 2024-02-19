@@ -114,12 +114,12 @@ const TicketPurchaseComponent = ({ userAddress, exhibitId }: TicketPurchaseProps
             // Approve USDC transfer for ticket purchase
             setStatus('Approving USDC transfer...');
             const approveTx = await usdcContract.approve(museumAddress, ticketPrice, { gasLimit });
-            await approveTx.wait(6);
+            await approveTx.wait(2);
 
             // Execute ticket purchase transaction
             setStatus('Purchasing ticket...');
             const purchaseTx = await museumContract.purchaseTicket(exhibitId, ticketPrice, { gasLimit });
-            await purchaseTx.wait(6);
+            await purchaseTx.wait(2);
 
             //State update after successful ticket purchase
              setPurchaseSuccessful(true);

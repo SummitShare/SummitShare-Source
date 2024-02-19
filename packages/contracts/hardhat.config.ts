@@ -32,7 +32,7 @@ const config: HardhatUserConfig = {
       url: SEPOLIA_RPC_URL,
       accounts,
       chainId: 11155111, // Sepolia chain ID
-      gasPrice: 4000000000,
+      gasPrice: 'auto',
     },
   },
 

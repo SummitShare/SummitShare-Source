@@ -3,6 +3,7 @@ pragma solidity ^0.8.0;
 
 import "erc721a/contracts/ERC721A.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 
 contract ArtifactNFT is ERC721A, Ownable {
     string private baseURI;
@@ -26,6 +27,13 @@ contract ArtifactNFT is ERC721A, Ownable {
 
     function _baseURI() internal view override returns (string memory) {
         return baseURI;
+    }
+
+       function tokenURI(uint256 tokenId) public view override returns (string memory) {
+        //require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
+
+        // Concatenate the baseURI, tokenId, and ".json" to form the full URI
+        return string(abi.encodePacked(_baseURI(), Strings.toString(tokenId), ".json"));
     }
 
     function setBaseURI(string memory newBaseURI) external onlyOwner {
