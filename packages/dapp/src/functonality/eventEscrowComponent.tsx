@@ -1,15 +1,9 @@
-import { ethers } from "ethers";
 import { gql, useApolloClient } from "@apollo/client";
-import EventEscrowABI from '../utils/artifacts/contracts/EventEscrow.sol/EventEscrow.json';
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import { contracts } from "@/utils/dev/contractInit";
+import { EventEscrowComponentProps } from "@/utils/dev/typeInit";
 
-const EscrowABI = EventEscrowABI as unknown as ethers.ContractInterface;
-
-interface EventEscrowComponentProps {
-    provider: ethers.providers.Web3Provider;
-    exhibitId: string;
-}
 
 const EventEscrowComponent = ({ provider, exhibitId }: EventEscrowComponentProps) => {
     // State for managing component data and UI
@@ -58,11 +52,12 @@ const EventEscrowComponent = ({ provider, exhibitId }: EventEscrowComponentProps
           // Attempting to distribute funds
         try {
             const signer = provider.getSigner();
-            const escrowContract = new ethers.Contract(escrowDetails.id, EscrowABI, signer);
+            const escrowContract = contracts.getEventEscrow(escrowDetails.id).connect(signer) // In production the address must be gotten from the appollo wrapped Distribution dashboard pages
+
             setStatus('Initiating fund distribution...');
             
             const tx = await escrowContract.distributePayments();
-            await tx.wait(6);
+            await tx.wait(2);
             setStatus('Funds distributed successfully.');
 
             // Refresh escrow details post-distribution
