@@ -1,74 +1,10 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import { NextResponse } from "next/server";
-import { ethers } from "ethers";
-import EventOrganizerServiceABI from '../../../utils/artifacts/contracts/EventOrganizerService.sol/EventOrganizerService.json';
+import { contracts } from '@/utils/dev/contractInit';
+import type { ExhibitParams, TransactionReceipt } from '@/utils/dev/typeInit'; 
 import prisma from "../../../../config/db";
-import { isAddress } from "ethers/lib/utils";
+import { NextApiRequest } from 'next';
+import { NextResponse } from "next/server";
+import { ethers } from 'ethers';
 
-const EOSABI = EventOrganizerServiceABI as unknown as ethers.ContractInterface;
-
-// Exhibit Object Type
-type ExhibitParams = {
-    name: string;
-    symbol: string;
-    ticketPrice: string;
-    beneficiaries: string[];
-    shares: number[];
-    baseURI: string;
-    location: string;
-    artifactNFT: string;
-    details: string;
-    id: string;
-};
-
-
-interface BigNumber {
-    _hex: string;
-    _isBigNumber: boolean;
-  }
-  
-  interface LogEntry {
-    transactionIndex: number;
-    blockNumber: number;
-    transactionHash: string;
-    address: string;
-    topics: string[]; // Assuming topics are an array of strings
-    data: string;
-    logIndex: number;
-    blockHash: string;
-  }
-  
-  interface EventEntry extends LogEntry {
-    removeListener?: Function; // Replace with more specific function type if known
-    getBlock?: Function; // Replace with more specific function type if known
-    getTransaction?: Function; // Replace with more specific function type if known
-    getTransactionReceipt?: Function; // Replace with more specific function type if known
-    args?: any[]; // Replace with more specific type if known
-    decode?: Function; // Replace with more specific function type if known
-    event?: string;
-    eventSignature?: string;
-  }
-  
-  interface TransactionReceipt {
-    to: string;
-    from: string;
-    contractAddress: string | null;
-    transactionIndex: number;
-    gasUsed: BigNumber;
-    logsBloom: string;
-    blockHash: string;
-    transactionHash: string;
-    logs: LogEntry[];
-    blockNumber: number;
-    confirmations: number;
-    cumulativeGasUsed: BigNumber;
-    effectiveGasPrice: BigNumber;
-    status: number;
-    type: number;
-    byzantium: boolean;
-    events: EventEntry[];
-  }
-  
 // Function to call an external API for event parameters
 async function callDeployEventApi(eventId: string): Promise<ExhibitParams> {
     const url = 'http://localhost:3000/api/events/deploy';
@@ -94,39 +30,17 @@ async function callDeployEventApi(eventId: string): Promise<ExhibitParams> {
 }
 
 // Function to deploy an exhibit
-async function deployExhibit(exhibitParams: ExhibitParams) {
+async function deployExhibit(exhibitParams : ExhibitParams) {
     try {
         // Validating input parameters
         validateExhibitParams(exhibitParams);
 
-        // Connect to Node Provider
-        const provider = new ethers.providers.JsonRpcProvider(process.env.SEPOLIA_RPC_URL);
+        // Use the modular approach to get the EventOrganizerService contract
+        const organizerServiceContract = contracts.getEventOrganizerService();
 
-        // Transaction Signer Wallet
-        const devPrivateKey = process.env.DEV_PRIVATE_KEY;
-        // Private Key Check
-        if (!devPrivateKey) {
-            throw new Error('DEV_PRIVATE_KEY is not defined.');
-        }
-
-        const wallet = new ethers.Wallet(devPrivateKey, provider);
-
-        // Address of deployed EventOrganizerService
-        const organizerServiceAddress = "0xdFB611127315848Fd0D53226eC886BbF6514B5D1";
-        validateEthereumAddress(organizerServiceAddress, "Organizer Service Address");
-
-        // Create contract instance
-        const organizerServiceContract = new ethers.Contract(
-            organizerServiceAddress,
-            EOSABI,
-            wallet
-        );
-
-
-        // Organize exhibit
         const tx = await organizerServiceContract.organizeExhibit(
             exhibitParams.name,
-            exhibitParams.symbol,
+            exhibitParams.symbol, 
             exhibitParams.ticketPrice,
             exhibitParams.beneficiaries,
             exhibitParams.shares,
@@ -134,15 +48,12 @@ async function deployExhibit(exhibitParams: ExhibitParams) {
             exhibitParams.location,
             exhibitParams.artifactNFT,
             exhibitParams.details,
-            exhibitParams.id,
-            {
-                //gasLimit: ethers.utils.hexlify(2800000) 
-            }
+            exhibitParams.id
         );
 
-        // Wait for transaction to be mined
-        const receipt = await tx.wait(6);
-        return receipt;
+        const receipt0 = await tx.wait(6)
+        return receipt0;
+
     } catch (error) {
         console.error('Error deploying Exhibit:', error);
         throw new Error(`Exhibit deployment failed: ${error}`);
@@ -198,27 +109,20 @@ function validateEthereumAddress(address: string, addressName: string) {
     }
 }
 
-// Function to validate private key
-function validatePrivateKey(key: string | undefined) {
-    if (typeof key !== 'string' || key.length === 0) {
-        throw new Error('DEV_PRIVATE_KEY is not defined or is not a valid string.');
-    }
-}
 
 // POST Handler for API Route
 export async function POST(req: Request) {
     try {
         // Validate and parse the request body
         const { event_id } : { event_id: string } = await req.json();
-        console.log(event_id)
+        //console.log(event_id)
 
         // Call API or function to get exhibit parameters based on the event_id
         const exhibitParams = await callDeployEventApi(event_id);
 
-
         // Deploy the exhibit using the retrieved parameters
         const receipt: TransactionReceipt = await deployExhibit(exhibitParams);
-        console.log(receipt.logs[2].address);
+        //console.log(receipt.logs[2].address);
         const contract_address = receipt.logs[2].address
 
         // posts to database deployed exhibitid/address
@@ -241,28 +145,8 @@ export async function POST(req: Request) {
     }
 }
 
-// Function to parse and validate the request body
-async function parseAndValidateRequestBody(req: NextApiRequest): Promise<{ event_id: string }> {
-    if (!req.body) {
-        throw new Error("Request body is missing.");
-    }
-
-    let event_id: string;
-
-    try {
-        // Attempt to parse the JSON body
-        const reqBody = JSON.parse(req.body);
-        event_id = reqBody.event_id;
-    } catch (error) {
-        // Handle any parsing errors
-        throw new Error("Invalid JSON in the request body.");
-    }
-
-    if (!event_id || typeof event_id !== 'string') {
-        throw new Error("Invalid event_id in request body.");
-    }
-
-    return { event_id };
-}
 
 
+
+
+    
