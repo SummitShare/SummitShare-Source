@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+/* Category: Smart Contract
+   Purpose: Acts as the central hub for curating exhibits and managing event logistics, including ticket sales and participant access. */
+
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./ExhibitNFT.sol";
 

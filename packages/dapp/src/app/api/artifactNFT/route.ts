@@ -1,3 +1,8 @@
+/*
+Category: Blockchain Interaction Layer - API
+Purpose: Deploys tokenized artifacts via the EventOraganizerService Contract
+*/
+
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 import { ArtifactNFTDeployment, ArtifactNFTMinting } from "@/utils/dev/typeInit";

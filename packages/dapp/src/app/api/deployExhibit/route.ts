@@ -1,3 +1,8 @@
+/*
+Category: Blockchain Interaction Layer - API
+Purpose: Deploys an exhibit onto chain and posts the deployed exhibit's address onto the PostGres DB
+*/
+
 import { contracts } from '@/utils/dev/contractInit';
 import type { ExhibitParams, TransactionReceipt } from '@/utils/dev/typeInit'; 
 import prisma from "../../../../config/db";
