@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+/* Category: Smart Contract
+   Purpose: Manages Non-Fungible Tokens (NFTs) representing individual exhibits, ensuring ownership and access rights for event participants. */
+
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "./EventEscrow.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";

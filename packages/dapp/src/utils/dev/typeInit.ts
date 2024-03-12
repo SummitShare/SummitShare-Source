@@ -1,3 +1,7 @@
+/*
+Category: Blockchain Interaction Layer
+Purpose: Provides type interfaces for the various layers of smart contract interaction within dapp
+*/
 import { ethers } from "ethers";
 
 // <----- Contract Function Parameters Type Interfaces ------>

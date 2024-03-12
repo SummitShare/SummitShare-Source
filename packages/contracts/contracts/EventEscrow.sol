@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+/* Category: Smart Contract
+   Purpose: Manages escrow for events, securing funds and automating revenue distribution to stakeholders post-event. */
+
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract EventEscrow {

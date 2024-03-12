@@ -1,3 +1,8 @@
+/*
+Category: Blockchain Interaction Layer
+Purpose: Wallet Initialisation within the dev env
+*/
+
 import { ethers } from "ethers";
 
 export const initializeWallet = (): ethers.Wallet => {
