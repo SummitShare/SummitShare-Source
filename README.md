@@ -47,7 +47,7 @@ This directory contains the Next.js-based frontend application of the platform, 
 - **Pages**: The application's pages constructed using Next.js's file-based routing system.
 - **Utils**: Includes utilities for connecting to Ethereum wallets, handling contracts, and interacting with the subgraph.
 
-### [`subgraph/`](https://github.com/bicos-io01/Revenue-Sharing-Source/tree/Central/packages/subgraph)- The Data Indexing Layer 📈
+### [`subgraph/`](https://github.com/bicos-io01/Revenue-Sharing-Source/tree/Central/packages/subgraph) - The Data Indexing Layer 📈
 Housing the GraphQL schema and manifest for The Graph, the `subgraph/` directory is responsible for indexing blockchain data to support efficient data queries. It serves as a bridge between smart contract events and the frontend, enabling quick and reliable data retrieval for user interfaces and backend processing.
 
 - **Schema**: Defines the GraphQL entities and their relationships.
