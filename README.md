@@ -53,7 +53,7 @@ Housing the GraphQL schema and manifest for The Graph, the `subgraph/` directory
 - **Schema**: Defines the GraphQL entities and their relationships.
 - **Manifest**: Configures the data sources, entities, and mappings needed for indexing the smart contract events.
 
-### [`contracts/`](https://github.com/bicos-io01/Revenue-Sharing-Source/tree/Central/packages/contracts - Smart Contract Codebase) ⚙️
+### [`contracts/`](https://github.com/bicos-io01/Revenue-Sharing-Source/tree/Central/packages/contracts) - Smart Contract Codebase) ⚙️
 The smart contracts of SummitShare(RVS-m) are contained within this directory, including the Solidity code for the various contracts that power the platform's features. Here, you'll find the contracts for managing exhibits, revenue distribution, tokenization of
 
 artifacts, and stakeholder governance.
