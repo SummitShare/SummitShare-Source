@@ -60,3 +60,11 @@ The Dapp Directory is organized into three main parts: frontend components, cont
 
 - **Hosted Service**: For the latest updates and interaction with the platform's subgraph, visit [The Graph Hosted Service](https://thegraph.com/hosted-service/subgraph/daodesigner/revenue-sharing-source).
 - **Contracts Directory**: For a more in depth exploration into the [smart contracts (RVS-m)](https://github.com/bicos-io01/Revenue-Sharing-Source/tree/Central/packages/contracts) operating within the platform.
+
+- **Utils**: Collection of essential utility scripts and configurations in the [Utils directory](https://github.com/bicos-io01/Revenue-Sharing-Source/tree/Central/packages/dapp/src/utils), which provide the building blocks for Dapp development and maintenance.
+
+- **API**: Explore the [API directory](https://github.com/bicos-io01/Revenue-Sharing-Source/tree/Central/packages/dapp/src/app/api) for backend endpoints that handle everything from user authentication to exhibit management and contract interaction scripts, ensuring seamless data flow and functionality.
+
+- **lib**: The [lib directory](https://github.com/bicos-io01/Revenue-Sharing-Source/tree/Central/packages/dapp/src/lib) is home to our custom hooks and components that interface with the blockchain, offering a modular approach to building reactive frontend features.
+
+- **functionality**: Within the [Functionality directory](https://github.com/bicos-io01/Revenue-Sharing-Source/tree/Central/packages/dapp/src/functonality), you'll find scripts that are focussed client components covering ticketpurchase to escrow fund distribution.
