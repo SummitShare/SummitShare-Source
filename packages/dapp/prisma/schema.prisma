@@ -29,7 +29,9 @@ model events {
   total_number_tickets                 Int?
   created_at                           DateTime                 @default(now()) @db.Timestamp(6)
   symbol                               String?                  @db.VarChar(5)
+  collections                          collections[]
   contracts_contracts_event_idToevents contracts[]              @relation("contracts_event_idToevents")
+  event_collections                    event_collections[]
   event_images                         event_images[]
   users                                users?                   @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   latest_rejecters_queue               latest_rejecters_queue[]
@@ -217,6 +219,36 @@ model user_wallets {
   wallet_address String         @unique(map: "wallet_address_unique")
   stakeholders   stakeholders[]
   users          users          @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model artifacts {
+  name          String?      @db.VarChar(255)
+  image_url     String?      @db.VarChar(255)
+  content       Json?
+  collection_id String?      @db.Uuid
+  id            String       @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  index         Int?
+  base_uri      String?      @db.VarChar
+  collections   collections? @relation(fields: [collection_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model collections {
+  id                String              @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name              String?             @db.VarChar(255)
+  baseURI           String?
+  event_id          String?             @db.Uuid
+  artifacts         artifacts[]
+  events            events?             @relation(fields: [event_id], references: [id], onUpdate: NoAction, map: "fk_event")
+  event_collections event_collections[]
+}
+
+model event_collections {
+  event_id      String      @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  collection_id String      @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  collections   collections @relation(fields: [collection_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  events        events      @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([event_id, collection_id])
 }
 
 enum decision {

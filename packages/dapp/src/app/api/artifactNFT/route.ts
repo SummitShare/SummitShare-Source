@@ -7,6 +7,9 @@ import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 import { ArtifactNFTDeployment, ArtifactNFTMinting } from "@/utils/dev/typeInit";
 import { contracts } from "@/utils/dev/contractInit";
+import {testWallets} from "@/utils/dev/walletInit"
+import prisma from "../../../../config/db";
+
 
 // Function to deploy an ArtifactNFT contract
 const deployArtifactNFT = async (artifactnftdeployment : ArtifactNFTDeployment) => {
@@ -77,24 +80,50 @@ const mintArtifactNFTs = async (ArtifactNFTAddress : string, artifactnftminting 
 }
 
 
-// export async function GET (req: Request){
-//     const deploymentParams : ArtifactNFTDeployment = {
-//         name: "LeadingLadies",
-//         symbol: "LLEZ",
-//         ownerAddress: "0x6E95E4a97efb1FaDE341Cd867F07101C7b997151",
-//         baseURIParam: "https://s3.tebi.io/summitsharemetadata/leadingLadies/"
-//     }
+export async function POST (req: Request){
+         
+    try {
+        // Parse the request body to extract the event ID
+        const requestBody = await req.json();
+        const { event_id }: { event_id: string } = requestBody;
 
-//    const receipt=  await deployArtifactNFT(deploymentParams);
+        // Retrieve the event details from the database
+        const event = await prisma.events.findUnique({
+            where: { id: event_id },
+        });
+        //console.log(`event symbol ${event.symbol}`)
 
-//    try {
+        // Retrieve the collection details associated with the event
+        const collection = await prisma.collections.findFirst({
+            where: { event_id: event_id },
+        });
 
-//     return NextResponse.json({ Success: "Great success, you are failure no longer, now wife and kids have home", receipt }, { status: 201 });
+        if (!event || !collection) {
+            return NextResponse.json({ failure: "Event or Collection not found" }, { status: 404 });
+        }        
+        //console.log(`collection  name ${collection.name}`)
+        const ownerAddress = testWallets[0];
 
-// } catch (error) {
-//     // Return error response
-//     if(error instanceof Error)
-//     return NextResponse.json({ failure: "you are a faliure", error: error.message }, { status: 500 });
-// }
-// }
 
+    // Prepare deployment parameters for the ArtifactNFT
+    const deploymentParams : ArtifactNFTDeployment = {
+        name: collection.name,
+        symbol: event.symbol,
+        owner: ownerAddress,
+        baseURIParam: collection.baseURI,
+    }
+
+    //console.log(deploymentParams)
+
+    // Deploy the ArtifactNFT using the prepared parameters
+   const receipt = await deployArtifactNFT(deploymentParams);
+
+    return NextResponse.json({ Success: "Great success, you are failure no longer, now wife and kids have home", receipt }, { status: 201 });
+    } catch (error) {
+        // Return error response
+        if(error instanceof Error) {
+            console.error(`Deployment error: ${error.message}`);
+        return NextResponse.json({  failure: "you are a faliure", error: error.message }, { status: 500 });
+    }
+}
+}

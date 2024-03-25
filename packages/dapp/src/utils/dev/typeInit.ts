@@ -8,10 +8,10 @@ import { ethers } from "ethers";
 
 // ArtifactNFT Contract
 export interface ArtifactNFTDeployment {
-    name : string;
-    symbol : string;
-    owner : string
-    baseURIParam : string;
+    name : any;
+    symbol : any;
+    owner : any;
+    baseURIParam : any;
 };
 
 export interface ArtifactNFTMinting {
