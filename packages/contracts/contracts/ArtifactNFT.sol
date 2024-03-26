@@ -32,13 +32,6 @@ contract ArtifactNFT is ERC721A, Ownable {
         return baseURI;
     }
 
-       function tokenURI(uint256 tokenId) public view override returns (string memory) {
-        //require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
-
-        // Concatenate the baseURI, tokenId, and ".json" to form the full URI
-        return string(abi.encodePacked(_baseURI(), Strings.toString(tokenId), ".json"));
-    }
-
     function setBaseURI(string memory newBaseURI) external onlyOwner {
         baseURI = newBaseURI;
     }
