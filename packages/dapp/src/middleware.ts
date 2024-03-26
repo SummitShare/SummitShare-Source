@@ -18,8 +18,8 @@ export default auth((req) => {
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
   const isApiRoute =  nextUrl.pathname.startsWith(apiRoute);
-  console.log("Route :",req.nextUrl.pathname); 
-  console.log("Is Logged in: ",isLoggedIn);
+  // console.log("Route :",req.nextUrl.pathname); --> Comment out in Dev Env
+  // console.log("Is Logged in: ",isLoggedIn);
 
   if (isApiAuthRoute||isApiRoute) {
     return null;
@@ -33,8 +33,8 @@ export default auth((req) => {
   }
   
   if(!isLoggedIn && !isPublicRoute){
-    //return null;
-     return Response.redirect(new URL("/auth/signIn",nextUrl));
+    return null;
+     //return Response.redirect(new URL("/auth/signIn",nextUrl));
   }
 
   return null;
