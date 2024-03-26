@@ -106,11 +106,20 @@ export namespace EventEscrowDeployedEvent {
 }
 
 export namespace PaymentDistributedEvent {
-  export type InputTuple = [beneficiary: AddressLike, amount: BigNumberish];
-  export type OutputTuple = [beneficiary: string, amount: bigint];
+  export type InputTuple = [
+    beneficiary: AddressLike,
+    amount: BigNumberish,
+    indexedcaller: AddressLike
+  ];
+  export type OutputTuple = [
+    beneficiary: string,
+    amount: bigint,
+    indexedcaller: string
+  ];
   export interface OutputObject {
     beneficiary: string;
     amount: bigint;
+    indexedcaller: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -223,7 +232,7 @@ export interface EventEscrow extends BaseContract {
       EventEscrowDeployedEvent.OutputObject
     >;
 
-    "PaymentDistributed(address,uint256)": TypedContractEvent<
+    "PaymentDistributed(address,uint256,address)": TypedContractEvent<
       PaymentDistributedEvent.InputTuple,
       PaymentDistributedEvent.OutputTuple,
       PaymentDistributedEvent.OutputObject
