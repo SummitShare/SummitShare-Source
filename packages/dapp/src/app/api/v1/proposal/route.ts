@@ -1,45 +1,31 @@
+/*
+Category: Proposal Management
+Purpose: Manages the lifecycle of a proposal from creation to notification. This route supports the submission of new proposals, 
+         automatically sends out email requests to potential stakeholders for their participation, and ensures the proposal 
+         submitter is added as a stakeholder. It's designed to streamline the process of proposal engagement within the governance 
+         framework of the application.
+*/
+
 import { PrismaClient, } from '@prisma/client'
 import { NextResponse } from 'next/server'
 import prisma from '../../../../../config/db'
+import { IPropsal, EmailArray, EmailStatus } from '@/utils/dev/typeInit'
 
-// const prisma = new PrismaClient()
-
-interface IPropsal {
-    event_type: string; // assuming event_type_enum is a string enum
-    event_name?: string;
-    event_category?: string; // assuming event_category_enum is a string enum
-    event_start_time?: Date;
-    symbol?: string;
-    event_timezone?: string;
-    event_location?: string;
-    description?: string;
-    contract_address?: string;
-    event_end_time?: Date;
-    cost?: number; // Decimal type in Prisma translates to number in TypeScript
-    total_number_tickets?: number;
-    // Additional properties for relations can be added if needed
-  }
-
-  interface EmailArray extends Array<string> {}
-
-
-interface EmailStatus {
-    exists: boolean;
-    sent: boolean;
-    status: number;
-  }
-
-
-
+/**
+ * Sends email requests to potential stakeholders using an external API.
+ * 
+ * @param url - The endpoint for the email sending service.
+ * @param emailsArray - An array of email addresses to which the proposal requests will be sent.
+ * @param proposal_id - The unique identifier of the proposal related to the email requests.
+ * @returns The response from the email sending service.
+ */
 export async function POST(req: Request , res : NextResponse) {
-
-
-
   async function sendRequests(url:string , emailsArray : EmailArray, proposal_id :string ) {
     const data = {
       emailsArray,
       proposal_id
     };
+
     const response = await  fetch( url,{
         method: "POST", 
         headers: {
@@ -51,13 +37,29 @@ export async function POST(req: Request , res : NextResponse) {
     return response.json(); 
   }
 
-  async function createProposal(url:string, proposal:IPropsal, user_id:string, )   {
-    
+  /**
+ * Creates a proposal in the database and optionally sends requests to stakeholders.
+ * 
+ * @param url - The endpoint for the proposal creation service.
+ * @param proposal - The proposal object containing details about the proposal.
+ * @param user_id - The unique identifier of the user creating the proposal.
+ * @returns The newly created proposal record.
+ */
+  async function createProposal(url : string, proposal : IPropsal, user_id : string, )   {
     const data = {
       proposal,
-      user_id,
+      user_id
     };
   
+    /**
+     * POST handler for the proposals route. Orchestrates the creation of a new proposal, 
+     * the sending of email requests to potential stakeholders, and the registration of the 
+     * proposal creator as a stakeholder.
+     * 
+     * @param req - The incoming HTTP POST request containing the proposal details.
+     * @returns A JSON response summarizing the outcome of the operations.
+     */
+    
     const response = await fetch(url, {
       method: "POST",
       headers: {
@@ -65,6 +67,7 @@ export async function POST(req: Request , res : NextResponse) {
       },
       body: JSON.stringify(data)
     });
+
     const prop = JSON.stringify(proposal)
     const newProposal = await prisma.proposals.create({
       data:{
@@ -72,43 +75,29 @@ export async function POST(req: Request , res : NextResponse) {
         content: prop
       }
   })
-
-  
     return newProposal;
   }
 
-  
     const requestBody = await req.json();
-
     const {
       user_id,
       proposal,
       emailsArray
       // Add other fields from the proposal object here if necessary
-    }: {
+    } : {
         user_id: string;
-
         proposal:IPropsal;
         emailsArray: EmailArray;
     } = requestBody        
-
  
     // Validate that numericCost is a number and not NaN
- 
-    const {
-      event_name,
-    } = proposal;
-   
-
-
-    
+    const { event_name } = proposal;
     
       const host = process.env.HOST
       const url = `${host}api/v1/proposal/createProposal`;
       const prop = await createProposal(url, proposal,user_id,);
       const url2 = `${host}/api/v1/proposal/requests/sendRequests`
       const reqs = await sendRequests(url2,emailsArray,prop.id)
-
 
       const newStakeholder = await prisma.stakeholders.create({
         data: {

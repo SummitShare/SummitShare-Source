@@ -1,45 +1,25 @@
+/*
+Category: API Layer
+Purpose: Facilitates the deployment of event data to the blockchain, preparing events for live interaction. It transforms event data into parameters suitable for smart contract integration, marking the transition from proposal to active event status.
+*/
+
 import { PrismaClient } from '@prisma/client'
 import { NextResponse } from 'next/server'
 import crypto from 'node:crypto'
 import prisma from '../../../../../../config/db';
-
-
-interface EmailStatus {
-    exists: boolean;
-    sent: boolean;
-    status: number;
-}
-interface IPropsal {
-    event_type?: string; // assuming event_type_enum is a string enum
-    event_name?: string;
-    event_category?: string; // assuming event_category_enum is a string enum
-    event_start_time?: Date;
-    event_location?: string;
-    description?: string;
-    event_timezone?: string;
-    event_end_time?: Date;
-    cost?: number; // Decimal type in Prisma translates to number in TypeScript
-    total_number_tickets?: number;
-    symbol?: string;
-    // Additional properties for relations can be added if needed
-}
-type ExhibitParams = {
-    name : string;
-    symbol : string;
-    ticketPrice : string;
-    beneficiaries : string[];
-    shares: number[];
-    baseURI: string;
-    location: string;
-    artifactNFT: string;
-    details: string;
-    id: string;
-};
-
+import { EmailStatus, IPropsal, IStakes, ExhibitParams } from '@/utils/dev/typeInit';
   
-interface EmailArray extends Array<string> {}
-interface IPropsal extends Object{}
 
+/**
+ * POST handler for deploying event data.
+ * 
+ * This endpoint retrieves event data from the database based on a provided event ID, formats this data into
+ * parameters suitable for a smart contract, and returns these parameters for further blockchain-based processing.
+ * This step is crucial for transitioning an event from its planning stage to being live and interactable within the dApp.
+ * 
+ * @param req - The incoming HTTP POST request containing the event ID.
+ * @returns A JSON response containing formatted event parameters for blockchain deployment or an error message.
+ */
 
 export async function POST(req: Request) {
     try {
@@ -48,6 +28,7 @@ export async function POST(req: Request) {
         console.log("Request Body:", requestBody);
         const { event_id }: { event_id: string } = requestBody;
 
+        // Retrieve the event data along with its stakeholders
         const eventData = await prisma.events.findUnique({
             where: { id: event_id },
             include: { stakeholders: true }
@@ -57,8 +38,9 @@ export async function POST(req: Request) {
             throw new Error('Event not found');
         }
         
-        // Map the event data to ExhibitParams
+        // Formatting the event data into parameters(exhibitParams) suitable for smart contract interaction 
         const exhibitParams: ExhibitParams = {
+            // Hardcoded for Dev
             name: eventData.event_name || 'Default Name', 
             symbol: eventData.symbol || 'Default Symbol',  
             ticketPrice: eventData.cost?.toString() || '0',  

@@ -1,29 +1,22 @@
+/*
+Category: Voting and Event Management
+Purpose: Manages the voting process on proposals by stakeholders, updates event details, and stakeholder information based on the voting outcome. 
+         This route facilitates a critical part of the governance mechanism, enabling stakeholders to have a say in proposal ratification and 
+         ensuring the seamless update of event and stakeholder records upon proposal acceptance.
+*/
+
 import { NextResponse } from 'next/server'
 import { PrismaClient, event_category_enum, event_type_enum } from '@prisma/client';
-import { ISwapRouter__factory } from '@/utils/typechain-types';
+import { EventData, IStakes, StakeholderStakes } from '@/utils/dev/typeInit';
+
 const prisma = new PrismaClient();
 
-interface IStakes {
-  [stakeholder: string]: number;
-}
-
-interface EventData {
-  event_type: string;
-  event_name: string;
-  event_category: string;
-  event_start_time: string;
-  event_timezone: string;
-  event_location: string;
-  description: string;
-  event_end_time: string;
-  cost: number;
-  total_number_tickets: number;
-  symbol: string;
-  stakes: {
-    [email: string]: number;
-  };
-}
-
+/**
+ * Updates the event ID for a proposal and its associated stakeholders in the database.
+ * @param eventId - The ID of the newly created event.
+ * @param proposal_id - The ID of the proposal being updated.
+ * @returns A boolean indicating the success of the update operation.
+ */
 
 async function updateEventIdForProposalAndStakeholders(eventId: string, proposal_id: string): Promise<boolean> {
   try {
@@ -31,6 +24,7 @@ async function updateEventIdForProposalAndStakeholders(eventId: string, proposal
 
     // Start a transaction to ensure both updates are performed together
     await prisma.$transaction(async (prisma) => {
+
       // Update the proposal with the new event ID
       await prisma.proposals.update({
         where: { id: proposal_id },
@@ -52,6 +46,12 @@ async function updateEventIdForProposalAndStakeholders(eventId: string, proposal
   }
 }
 
+/**
+ * Maps email stakes to stakeholder stakes based on a proposal ID.
+ * @param proposalId - The ID of the proposal.
+ * @param emailStakes - A mapping of email addresses to stake percentages.
+ * @returns A mapping of stakeholder IDs to stake percentages, or null in case of failure.
+ */
 
 async function mapEmailStakesToStakeholderStakes(
   proposalId: string,
@@ -93,10 +93,11 @@ async function mapEmailStakesToStakeholderStakes(
   }
 }
 
-
-interface StakeholderStakes {
-  [stakeholderId: string]: number;
-}
+/**
+ * Updates the wallet addresses and stakes for stakeholders in the database.
+ * @param stakeholderStakes - A mapping of stakeholder IDs to stake percentages.
+ * @returns A boolean indicating the success of the update operation.
+ */
 
 async function updateWalletsAndStakes(
   stakeholderStakes: StakeholderStakes
@@ -147,13 +148,38 @@ async function updateWalletsAndStakes(
 }
     // Iterate over each stakeholderStakes entry
 
+/**
+ * POST handler for casting votes on proposals, creating events based on accepted proposals, and updating stakeholders.
+ * @param req - The incoming HTTP POST request containing the vote and proposal details.
+ * @returns A JSON response summarizing the outcome of the voting and update operations.
+ */
 
 export async function POST(req: Request, res: NextResponse) {
   try {
+   // Extract relevant information from the request body
     const requestBody = await req.json();
     const { proposal_id, Vote, user_id }: { proposal_id: string; Vote: boolean; user_id: string } = requestBody;
     console.log(`proposal recieved ${proposal_id}`)
 
+        /*
+        The following operations are performed in this section of the script:
+
+        1. **Proposal Validation**: It checks if the specified proposal exists and if it has a linked previous proposal ID. This step ensures that the proposal is valid and ready for voting.
+
+        2. **User Validation**: It verifies the existence of the user casting the vote, ensuring that only registered users can participate in the voting process.
+
+        3. **Vote Duplication Check**: It prevents users from casting multiple votes on the same proposal, maintaining the integrity of the voting process.
+
+        4. **Vote Casting**: If the user hasn't already voted on the proposal, their vote is recorded. This action contributes to the collective decision-making process regarding the proposal.
+
+        5. **Vote Evaluation**: After casting the vote, the script checks if all stakeholders have voted and if all votes are positive. This collective agreement is necessary for the proposal to be accepted.
+
+        6. **Event Creation (if applicable)**: If the proposal is accepted (all stakeholders voted positively), the script proceeds to parse the proposal content and creates an event with the details specified in the proposal. This step translates the approved proposal into an actionable event within the platform.
+
+        7. **Update Records**: Finally, it updates the event ID for the proposal and associated stakeholders, linking them to the newly created event. This update reflects the transition from proposal to execution upon acceptance.
+        */
+
+    // Retrieve and validate the proposal and user
     const proposal = await prisma.proposals.findUnique({
       where: { id: proposal_id },
     });
@@ -172,13 +198,13 @@ export async function POST(req: Request, res: NextResponse) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
+    // Check for existing vote and record the new vote
     const existingVote = await prisma.votes.findFirst({
       where: {
         proposal_id: proposal_id,
         user_id: user_id,
       },
     });
-
 
     if (existingVote) {
       return NextResponse.json({ error: 'user has voted already' }, { status: 401 });
@@ -192,10 +218,7 @@ export async function POST(req: Request, res: NextResponse) {
       },
     });
 
-
-
     const allVotes = await prisma.votes.findMany({ where: { proposal_id: proposal_id } });
-
     const stakeholders = await prisma.stakeholders.findMany({ where: { proposal_id: proposal_id } });
 
     const allStakeholdersVotedPositively =
@@ -203,8 +226,9 @@ export async function POST(req: Request, res: NextResponse) {
       && allVotes.length === stakeholders.length
       && allVotes.every(vote => vote.decision === true);
 
+    // Evaluate if all stakeholders voted positively
     if (allStakeholdersVotedPositively) {
-
+      // Proceed with event creation and record updates:
       if (typeof proposal.content === 'string' && proposal.content !== null) {
     
         const propData: EventData = JSON.parse(proposal.content);
@@ -255,21 +279,5 @@ export async function POST(req: Request, res: NextResponse) {
     return NextResponse.json({ error: 'An error occurred while processing your request' }, { status: 500 });
   }
 }
-
-
-// export async function GET(req: Request, res: NextResponse) {
-//   const requestBody = await req.json();
-//     const { proposal_id }: { proposal_id: string; } = requestBody;
-//     console.log(`proposal recieved ${proposal_id}`)
-
-//     const proposal = await prisma.proposals.findUnique({
-//       where: { id: proposal_id },
-//     });
-//     console.log(` prop id  recieved ${proposal_id}`)
-//     console.log(` prop ${proposal}`)
-
-//     return NextResponse.json({ proposal , proposal_id}, { status: 500 });
-
-// }
 
 
