@@ -19,7 +19,7 @@ export async function POST(request: Request , response : NextResponse) {
         })
         return NextResponse.json({ yes: 'great success'}, { status: 200 })
     } catch (error) {
-        return NextResponse.json({ no: 'you are a faliure'}, { status: 200 })
+        return NextResponse.json({ no: 'you are a failure'}, { status: 200 })
     }
    
 }
