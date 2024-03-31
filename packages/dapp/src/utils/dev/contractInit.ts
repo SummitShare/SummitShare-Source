@@ -56,7 +56,7 @@ export const contracts = {
     getMUSDC: (signer?: ethers.Signer) => {
         const contract = new ethers.Contract(
             CONTRACT_ADDRESSES.MUSDCAdd,
-            MUSDCABI as unknown as ethers.ContractInterface,
+            MUSDCABI as ethers.ContractInterface,
             signer || initializeWallet() // Use provided signer or initialize a new wallet
         );
         return contract;
@@ -65,7 +65,7 @@ export const contracts = {
     getMuseum: (signer?: ethers.Signer) => {
         const contract = new ethers.Contract(
             CONTRACT_ADDRESSES.MuseumAdd,
-            MuseumABI as unknown as ethers.ContractInterface,
+            MuseumABI as ethers.ContractInterface,
             signer || initializeWallet() // Use provided signer or initialize a new wallet
         );
         return contract;

@@ -5,45 +5,27 @@ import { gql, useApolloClient } from '@apollo/client';
 import { TicketPurchaseProps, EthereumWindow } from '@/utils/dev/typeInit';
 import { CONTRACT_ADDRESSES, contracts } from '@/utils/dev/contractInit';
 
-const TicketPurchaseComponent = ({ userAddress,exhibitId}: TicketPurchaseProps) => {
-      useEffect(() => {
-        // Split the pathname and extract the wallet address
-        const pathSegments = exhibitId.split('/');
-        const walletAddress = pathSegments[pathSegments.indexOf('Ticket') + 1];
+const TicketPurchaseComponent = ({ userAddress, exhibitId }: TicketPurchaseProps) => {
+  // State hooks for managing component state
+  const [ticketPrice, setTicketPrice] = useState<string>('');
+  const [status, setStatus] = useState<string>('');
+  const [provider, setProvider] = useState<ethers.providers.Web3Provider | null>(null);
+  const client = useApolloClient();
+  const router = useRouter();
+  const [purchaseSuccessful, setPurchaseSuccessful] = useState<boolean>(false);
+  //const [customGasLimit, setCustomGasLimit] = useState<string>('250000');
 
-        console.log('Wallet Address:', walletAddress);
 
-        // ... remaining component logic
-    }, [exhibitId]);
-    const [ticketPrice, setTicketPrice] = useState('');
-    const pathname = usePathname();
-    const [status, setStatus] = useState('');
-    const [provider, setProvider] = useState<ethers.providers.Web3Provider | null>(null);
-    const client = useApolloClient();
-    const router = useRouter();
-
-  
-    // const exhibitId = router.query.id as string;
-    const usdcAddress = '0xDd4c60185608108D073C19432eef0ae50AB3830d';
-    const museumAddress = '0xF4857Efc226Bb39C6851Aa137347CFf8F8e050F9';
-
-    const GET_TICKET_PRICE = gql`
-    query GetTicketPrice($exhibitId: ID!) {
-        exhibit(id: $exhibitId) {
-            ticketPrice
-        }
-    }
-`;
-
-const GET_ALL_EXHIBITS = gql`
-  query GetAllExhibits {
-    exhibits {
-      id
-      exhibitDetails {
-        ticketPrice
-      }
-    }
-  }
+ // GraphQL query for fetching all exhibits
+ const GET_ALL_EXHIBITS = gql`
+ query GetAllExhibits {
+     exhibits {
+         id
+         exhibitDetails {
+             ticketPrice
+         }
+     }
+ }
 `;
 
    // Effect hook to initialize the Web3 provider when the component mounts or exhibitId changes

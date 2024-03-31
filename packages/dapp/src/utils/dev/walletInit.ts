@@ -25,11 +25,3 @@ export const initializeWallet = (): ethers.Wallet => {
     const wallet = new ethers.Wallet(privateKey, provider);
     return wallet;
 };
-
-// Test Wallets - Should have Sepolia/OP Sepolia 
-export const testWallets = [
-process.env.araragi,
-process.env.shinobu,
-process.env.hanekawa,
-process.env.oshino
-];

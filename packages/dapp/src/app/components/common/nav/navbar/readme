@@ -1,0 +1,38 @@
+# Navbar Component Documentation
+
+The `Navbar` component is designed to offer a responsive and customizable navigation solution for React applications. It features an adaptive layout suitable for a wide range of devices, integrates search functionality for desktop views, and utilizes icons for a modern interface. This component is built to work seamlessly with Next.js for routing and is styled using Tailwind CSS for a sleek appearance.
+
+## Features
+
+- **Responsive Layout**: Automatically adjusts to the screen size, providing a mobile-friendly collapsible menu for smaller devices.
+- **Search Integration**: Incorporates a search input field in desktop views to enhance site navigation.
+- **Heroicons**: Uses `@heroicons/react` for high-quality SVG icons, enhancing the visual appeal and user experience.
+- **Next.js Compatibility**: Leverages `next/link` for optimized single-page application (SPA) navigation.
+- **Customizable Button**: Includes a `ButtonOrange` component, offering a prominent call-to-action for users.
+
+## Installation
+
+Before integrating the `Navbar` component into your project, ensure you have React, Next.js, and Tailwind CSS configured. If not already included in your project, you can add `@heroicons/react` for icons:
+
+```bash
+npm install @heroicons/react
+# or
+yarn add @heroicons/react
+
+```
+
+```jsx
+import React from "react";
+import Navbar from "./components/Navbar"; // Adjust the import path based on your directory structure
+
+function MyApp() {
+  return (
+    <>
+      <Navbar />
+      {/* Main application content goes here */}
+    </>
+  );
+}
+
+export default MyApp;
+```

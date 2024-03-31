@@ -1,0 +1,65 @@
+# Select Component Documentation
+
+The `Select` component is a customizable dropdown selection input designed for React applications. It utilizes `react-hook-form` for form state management and validation, and incorporates Heroicons for a modern, stylish dropdown icon. This component is ideal for forms requiring a dropdown menu with custom styling and functionality.
+
+## Features
+
+- **React Hook Form Integration**: Simplifies form handling and validation with seamless integration with `react-hook-form`.
+- **Customizable Dropdown**: Offers a flexible interface for dropdown selection with customizable options.
+- **Heroicons Integration**: Utilizes Heroicons for a sleek dropdown indicator icon.
+
+## Props
+
+- **options** (`select[]`): An array of options that the user can select from. Each option is an object that must contain at least a `names` property.
+- **placeholder** (`string?`): Optional. Text displayed when no option is selected. Defaults to the `first` prop's value.
+- **onChange** (`(value: select) => void`): Function called when an option is selected. It passes the selected option back to the parent component.
+- **value** (`select?`): The currently selected option. Useful for controlling the component in a form.
+- **first** (`string`): Initial placeholder text to be shown before any selection is made.
+
+## Installation
+
+Before using the `Select` component, ensure your project includes `react`, `react-hook-form`, and `@heroicons/react`. If not already installed, you can add them with:
+
+```bash
+npm install react react-hook-form @heroicons/react
+# OR
+yarn add react react-hook-form @heroicons/react
+```
+
+```jsx
+import React from "react";
+import Select from "./path/to/Select"; // Adjust the import path as needed
+import { useForm, Controller } from "react-hook-form";
+
+function MyForm() {
+  const { control } = useForm();
+  const options = [
+    { names: "Option 1" },
+    { names: "Option 2" },
+    { names: "Option 3" },
+  ];
+
+  const handleSelectChange = (selectedOption) => {
+    console.log("Selected option:", selectedOption);
+  };
+
+  return (
+    <form>
+      <Controller
+        control={control}
+        name="dropdown"
+        render={({ field }) => (
+          <Select
+            options={options}
+            first="Select an Option"
+            onChange={field.onChange}
+            value={field.value}
+          />
+        )}
+      />
+    </form>
+  );
+}
+
+export default MyForm;
+```

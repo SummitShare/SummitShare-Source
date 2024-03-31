@@ -1,47 +1,46 @@
-import authConfig from "../auth.config"
-import NextAuth from "next-auth"
-import { 
+import authConfig from "../auth.config";
+import NextAuth from "next-auth";
+import {
   DEFAULT_REDIRECT_URL,
   publicRoutes,
   apiAuthPrefix,
   authRoutes,
-  apiRoute
- } from "../route"
+  apiRoute,
+} from "../route";
 
-const {auth} = NextAuth(authConfig)
+const { auth } = NextAuth(authConfig);
 
 export default auth((req) => {
-  const{nextUrl}= req;
-  const isLoggedIn =!!req.auth;
+  const { nextUrl } = req;
+  const isLoggedIn = !!req.auth;
 
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
-  const isApiRoute =  nextUrl.pathname.startsWith(apiRoute);
-  // console.log("Route :",req.nextUrl.pathname); --> Comment out in Dev Env
-  // console.log("Is Logged in: ",isLoggedIn);
+  const isApiRoute = nextUrl.pathname.startsWith(apiRoute);
+  console.log("Route :", req.nextUrl.pathname);
+  console.log("Is Logged in: ", isLoggedIn);
 
-  if (isApiAuthRoute||isApiRoute) {
+  if (isApiAuthRoute || isApiRoute) {
     return null;
   }
-  if (isAuthRoute){
-    if (isLoggedIn){
-      return Response.redirect(new URL(DEFAULT_REDIRECT_URL,nextUrl));
+  if (isAuthRoute) {
+    if (isLoggedIn) {
+      return Response.redirect(new URL(DEFAULT_REDIRECT_URL, nextUrl));
     }
 
     return null;
   }
-  
-  if(!isLoggedIn && !isPublicRoute){
-    return null;
-     //return Response.redirect(new URL("/auth/signIn",nextUrl));
+
+  if (!isLoggedIn && !isPublicRoute) {
+    //return null;
+    // return Response.redirect(new URL("/auth-sign-in", nextUrl));
   }
 
   return null;
-
-})
+});
 
 // Optionally, don't invoke Middleware on some paths
 export const config = {
   matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
-}
+};

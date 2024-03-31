@@ -112,5 +112,5 @@
   "references": [
     {"path": "./packages/contracts/"},
     {"path": "./packages/subgraph/"},
-    {"path": "./packages/app/"}]
+    {"path": "./packages/dapp/"}]
 }

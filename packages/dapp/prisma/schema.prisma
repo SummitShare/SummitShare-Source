@@ -226,6 +226,7 @@ model user_wallets {
   id             String         @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   user_id        String         @db.Uuid
   wallet_address String         @unique(map: "wallet_address_unique")
+  index          Int?           @db.SmallInt
   stakeholders   stakeholders[]
   users          users          @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
