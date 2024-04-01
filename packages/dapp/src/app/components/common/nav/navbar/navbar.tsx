@@ -54,15 +54,10 @@ import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { SearchResults, useSearch } from "@/lib/useSearch";
 import WalletConnectNav from "@/functonality/walletconnect";
 import { ThirdwebProvider } from "@thirdweb-dev/react";
-
-interface Props {
-  title: string;
-  message: string;
-  dateTime: string; // Renamed to a more conventional property name
-}
+import { notificationProps } from "@/utils/dev/frontEndInterfaces";
 
 // Create an array of objects conforming to the Props interface
-const notifications: Props[] = [
+const notifications: notificationProps[] = [
   {
     title: "Event Invitation",
     message:
@@ -177,18 +172,18 @@ const Navbar = () => {
             {/* Replace '#' with actual paths */}
 
             <li className=" text-gray-700 w-full flex flex-row gap-2 hover:text-orange-500">
-              <Link href="#"> partners</Link>
+              <Link href="#"> Partners</Link>
             </li>
             <li className=" text-gray-700 w-full flex flex-row gap-2 hover:text-orange-500">
-              <Link href="#"> blog</Link>
+              <Link href="#"> Blog</Link>
             </li>
             <li className=" text-gray-700 w-full flex flex-row gap-2 hover:text-orange-500">
-              <Link href="/help/connect-wallet"> help</Link>
+              <Link href="/help/connect-wallet"> Help</Link>
             </li>
             <li className=" text-gray-700 w-full flex flex-row gap-2 hover:text-orange-500 items-center">
               <GitHubLogoIcon className="w-6" />
               <Link href="https://github.com/SummitShare/SummitShare">
-                gitHub
+                Github
               </Link>
             </li>
           </ul>
@@ -313,7 +308,7 @@ const Navbar = () => {
             </li>
             <li className="text-xl text-gray-700 w-full flex flex-row gap-2  items-center">
               <BookOpenIcon className="w-6 text-gray-950" />
-              <Link href="#"> blog</Link>
+              <Link href="#"> Blog</Link>
             </li>
             <li className="text-xl text-gray-700 w-full flex flex-row gap-2 items-center">
               <QuestionMarkCircleIcon className="w-7 text-gray-950" />

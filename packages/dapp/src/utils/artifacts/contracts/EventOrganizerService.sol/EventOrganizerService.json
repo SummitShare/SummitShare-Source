@@ -1,5 +1,5 @@
 [
-  {
+    {
       "inputs": [
         {
           "internalType": "contract Museum",
@@ -307,4 +307,4 @@
       "stateMutability": "view",
       "type": "function"
     }
-]
+  ]

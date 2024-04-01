@@ -1,10 +1,5 @@
 // DateFilter.tsx
-import React from "react";
-
-interface DateFilterProps {
-  activeTab: "today" | "week" | "month" | "year";
-  onTabChange: (tab: "today" | "week" | "month" | "year") => void;
-}
+import { DateFilterProps } from "@/utils/dev/frontEndInterfaces";
 
 const DateFilter: React.FC<DateFilterProps> = ({ activeTab, onTabChange }) => {
   const timeframes: Array<"today" | "week" | "month" | "year"> = [

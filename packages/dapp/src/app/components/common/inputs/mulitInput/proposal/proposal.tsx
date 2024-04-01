@@ -27,26 +27,12 @@ import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import Input from "../../input/input"; // Ensure this path is correct
 import SelectType from "../../../functonal/selectType/selectType";
+import { IProposal } from "@/utils/dev/frontEndInterfaces"; // Interface for form data structure
+
 
 // Dummy options for select components
 const TIMEZONE_OPTIONS = ["UTC-5", "UTC", "UTC+1", "UTC+2"];
 const CATEGORY_OPTIONS = ["History", "Art"];
-
-// Interface for form data structure
-interface IProposal {
-  event_type: string;
-  event_name?: string;
-  event_category?: string;
-  event_start_time?: Date;
-  symbol?: string;
-  event_timezone?: string;
-  event_location?: string;
-  description?: string;
-  contract_address?: string;
-  event_end_time?: Date;
-  cost?: number;
-  total_number_tickets?: number;
-}
 
 const ProposalForm: React.FC = () => {
   const { register, handleSubmit, control, reset } = useForm<IProposal>();

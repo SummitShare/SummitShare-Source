@@ -29,15 +29,7 @@ import PaginationControls from "../functonal/pagination/pagination";
 import SelectType from "../functonal/selectType/selectType";
 import ProductCard from "../productCards/productCard";
 import { RootState } from "@/redux/store";
-
-interface EventData {
-  name: string;
-  date: string;
-  country: string;
-  price: string;
-  eventType: string;
-  image: string;
-}
+import { EventData } from "@/utils/dev/frontEndInterfaces";
 
 const dummyData: EventData[] = [
   {
@@ -196,7 +188,7 @@ const ProductsContainer: React.FC = () => {
         </p>
         <p className="text-sm text-gray-700">
           Explore upcoming exhibitions with ease! Filter by country, date, and
-          event Type below to find exactly what your looking for
+          event to find exactly what you're looking for!
         </p>
       </div>
 

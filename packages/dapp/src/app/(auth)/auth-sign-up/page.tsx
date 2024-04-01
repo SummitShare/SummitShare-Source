@@ -14,13 +14,7 @@ import Input from "@/app/components/common/inputs/input/input";
 import Link from "next/link";
 import React from "react";
 import { useForm } from "react-hook-form";
-
-interface props {
-  userName: string;
-  email: string;
-  walletAddress: string;
-  password: string;
-}
+import { authUserProps } from "@/utils/dev/frontEndInterfaces";
 
 const Register = () => {
   const {
@@ -36,7 +30,7 @@ const Register = () => {
     },
   });
 
-  const onSubmit = (data: props) => {
+  const onSubmit = (data: authUserProps) => {
     console.log(data);
   };
 
@@ -88,7 +82,7 @@ const Register = () => {
             className="text-gray-800 underline text-sm  font-semibold"
             href={`#`}
           >
-            Already have an account? Sign in
+            Already have an account? Sign in!
           </Link>
         </div>
       </form>

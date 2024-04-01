@@ -23,19 +23,15 @@
 
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
+import { SelectComponentTypes } from "@/utils/dev/frontEndInterfaces";
 
-interface SelectComponentProps {
-  options: string[];
-  placeholder?: string;
-  width?: string;
-  first: string;
-}
+
 
 export default function Select({
   options,
   placeholder,
   first,
-}: SelectComponentProps) {
+}: SelectComponentTypes) {
   // Initialize the placeholder with the value of the first prop if not explicitly provided
   placeholder = placeholder || first;
   const [isTypeOpen, setIsTypeOpen] = useState(false);

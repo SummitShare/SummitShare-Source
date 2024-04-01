@@ -23,11 +23,7 @@
 
 import React, { useState } from "react";
 import { ChevronDownIcon } from "@heroicons/react/24/outline"; // Import ChevronDownIcon from Heroicons
-
-interface CountryFilterProps {
-  onCountryChange: (country: string) => void; // Callback function when a country is selected
-  uniqueCountries: string[]; // Array of unique country names
-}
+import { CountryFilterProps } from "@/utils/dev/frontEndInterfaces";
 
 // Define the CountryFilter functional component with destructured props
 const CountryFilter: React.FC<CountryFilterProps> = ({

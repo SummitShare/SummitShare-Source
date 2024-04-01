@@ -40,7 +40,6 @@ const TicketPurchaseComponent = ({ userAddress, exhibitId }: TicketPurchaseProps
         }).catch((err) => {
             setStatus(`Error connecting to user wallet: ${err.message}`);
         });
-
     } else {
         setStatus('Please install a Web3 wallet (e.g., MetaMask) to purchase tickets.');
     }

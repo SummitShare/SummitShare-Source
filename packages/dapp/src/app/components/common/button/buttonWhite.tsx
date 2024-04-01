@@ -1,10 +1,4 @@
-import React, { ReactNode } from "react";
-
-interface buttonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  children: ReactNode;
-  text: string;
-  width: string;
-}
+import { buttonProps } from "@/utils/dev/frontEndInterfaces";
 
 function ButtonWhite({ children, width, text }: buttonProps) {
   return (

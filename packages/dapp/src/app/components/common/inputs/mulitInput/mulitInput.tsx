@@ -28,12 +28,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import Box from "../../containers/box/box";
 import Input from "../input/input";
-
-// Type definition for form fields
-interface RequestProps {
-  eventName: string;
-  email: string; // For individual email input
-}
+import { RequestProps } from "@/utils/dev/frontEndInterfaces"; // Import of type definitions
 
 const EventRequest: React.FC = () => {
   const { control, handleSubmit, register, reset, getValues } =

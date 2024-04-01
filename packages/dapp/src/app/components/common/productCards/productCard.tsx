@@ -22,19 +22,9 @@
 
 import Link from "next/link";
 import React from "react";
+import { productCardsTypes } from "@/utils/dev/frontEndInterfaces";
 
-interface Props {
-  author: string;
-  title: string;
-  price: string;
-  detailOne: string;
-  detailTwo: string;
-  valueOne: string;
-  valueTwo: string;
-  // image: string; // Consider uncommenting and using for dynamic image URLs
-}
-
-const ProductCard: React.FC<Props> = ({
+const ProductCard: React.FC<productCardsTypes> = ({
   author,
   title,
   price,
@@ -43,7 +33,7 @@ const ProductCard: React.FC<Props> = ({
   valueOne,
   valueTwo,
 }: // image
-Props) => {
+productCardsTypes) => {
   return (
     <Link
       href="/"

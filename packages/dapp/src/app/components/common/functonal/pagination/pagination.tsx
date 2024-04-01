@@ -20,15 +20,9 @@
  * or last page).
  */
 
-import React from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline"; // Navigation arrow icons
 import { DotFilledIcon } from "@radix-ui/react-icons"; // Dot icon for page indicators
-
-interface PaginationControlsProps {
-  currentPage: number; // The current active page
-  totalPages: number; // Total number of pages
-  onPageChange: (page: number) => void; // Function to call when a new page is selected
-}
+import { PaginationControlsProps } from "@/utils/dev/frontEndInterfaces";
 
 const PaginationControls: React.FC<PaginationControlsProps> = ({
   currentPage,

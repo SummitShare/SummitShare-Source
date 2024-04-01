@@ -2,9 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 import { ArtifactNFTDeployment, ArtifactNFTMinting } from "@/utils/dev/typeInit";
 import { contracts } from "@/utils/dev/contractInit";
-import { testWallets } from "@/utils/dev/walletInit";
-import { getGasPrice } from "@/utils/dev/gasEstimator";
 import prisma from "../../../../config/db";
+import { testWallets } from "@/utils/dev/walletInit";
 
 
 /**
@@ -17,9 +16,6 @@ const deployArtifactNFT = async (artifactnftdeployment: ArtifactNFTDeployment) =
     try {
         // Retrieve the EventOrganizerService contract instance
         const organizerServiceContract = contracts.getEventOrganizerService();
-
-        // Fetch the current gas price
-        const gasPrice0 = await getGasPrice(organizerServiceContract.provider);
         
         // Deploy the ArtifactNFT contract with the provided details
         const tx0 = await organizerServiceContract.deployArtifactNFT(
@@ -27,7 +23,6 @@ const deployArtifactNFT = async (artifactnftdeployment: ArtifactNFTDeployment) =
             artifactnftdeployment.symbol,
             artifactnftdeployment.owner,
             artifactnftdeployment.baseURIParam , 
-            {gasPrice0} 
         );
 
         // Wait for the transaction to be mined
@@ -48,7 +43,7 @@ const deployArtifactNFT = async (artifactnftdeployment: ArtifactNFTDeployment) =
     }
 };
 
-/**
+/*
  * Function to mint NFTs on a deployed ArtifactNFT contract.
  * It mints a specified quantity of NFTs to a recipient address and logs each NFT's token URI.
  */
@@ -64,14 +59,10 @@ const mintArtifactNFTs = async (ArtifactNFTAddress: string, artifactnftminting: 
     }
 
     try {
-        // Minting txn
-        const gasPrice1 = await getGasPrice(artifactNFTContract.provider);
-
         // Mint NFTs to the specified recipient address with the given quantity
         const tx1 = await artifactNFTContract.mint(
             artifactnftminting.recipientAddress,
             artifactnftminting.mintQuantity,
-            {gasPrice1}
         );
 
         // Wait for the minting transaction to be mined

@@ -28,11 +28,7 @@ import Input from "@/app/components/common/inputs/input/input";
 import Link from "next/link";
 import React from "react";
 import { useForm } from "react-hook-form";
-
-interface props {
-  email: string;
-  password: string;
-}
+import { authUserSignIn } from "@/utils/dev/frontEndInterfaces";
 
 const Register = () => {
   const {
@@ -46,7 +42,7 @@ const Register = () => {
     },
   });
 
-  const onSubmit = (data: props) => {
+  const onSubmit = (data: authUserSignIn) => {
     console.log(data);
   };
 

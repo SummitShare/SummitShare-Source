@@ -27,16 +27,7 @@
 
 // React and react-hook-form imports
 import React from "react";
-import { UseFormRegister } from "react-hook-form";
-
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
-  name: string;
-  description?: string;
-  message?: string;
-  register: UseFormRegister<any>;
-  need?: boolean; // Demonstrates an optional prop for additional validation or UI indication
-}
+import { InputProps } from "@/utils/dev/frontEndInterfaces";
 
 function Input({
   label,

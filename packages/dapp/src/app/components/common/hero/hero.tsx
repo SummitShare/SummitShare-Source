@@ -36,11 +36,11 @@ function Hero() {
   // Handlers for navigating through exhibits
   const prevIndex = () =>
     setCurrentIndex((oldIndex) =>
-      oldIndex === 0 ? exhibits.length - 1 : oldIndex - 1
+      oldIndex === 0 ? exhibits!.length - 1 : oldIndex - 1
     );
   const nextIndex = () =>
     setCurrentIndex((oldIndex) =>
-      oldIndex === exhibits.length - 1 ? 0 : oldIndex + 1
+      oldIndex === exhibits!.length - 1 ? 0 : oldIndex + 1
     );
 
   return (

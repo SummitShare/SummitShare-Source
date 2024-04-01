@@ -2,32 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useSuspenseQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 import { gql } from "@apollo/client";
-
-interface Collection {
-  id: string;
-  baseURI: string;
-  name: string;
-  symbol: string;
-  totalMinted: string;
-}
-
-interface Exhibit {
-  id: string;
-  museumId: string;
-}
-
-interface ExhibitCreated {
-  name: string;
-  location: string;
-  details: string;
-  ticketPrice: string;
-  exhibit: Exhibit;
-  collection: Collection;
-}
-
-interface SearchData {
-  exhibitCreateds: ExhibitCreated[];
-}
+import { Collection,Exhibit,ExhibitCreated,SearchData } from "@/utils/dev/frontEndInterfaces";
 
 export const useSearch = () => {
   const searchResultsRef = useRef(null);
@@ -63,7 +38,7 @@ export const useSearch = () => {
   });
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = (event: { target: any; }) => {
       if (
         searchResultsRef.current &&
         !searchResultsRef.current.contains(event.target)

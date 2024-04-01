@@ -1,32 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useQuery, gql } from '@apollo/client';
-
-interface Collection {
-    id: string;
-    baseURI: string;
-    name: string;
-    symbol: string;
-    totalMinted: string;
-}
-
-interface Exhibit {
-    id: string;
-    museumId: string;
-}
-
-interface ExhibitCreated {
-    name: string;
-    location: string;
-    details: string;
-    ticketPrice: string;
-    baseURI: string;
-    exhibit: Exhibit;
-    collection: Collection;
-}
-
-interface RecentExhibitsData {
-    exhibitCreateds: ExhibitCreated[];
-}
+import { Collection, Exhibit, ExhibitCreated, RecentExhibitsData } from '@/utils/dev/frontEndInterfaces';
 
 /**
  * Custom hook for fetching the 5 most recent exhibits

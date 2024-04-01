@@ -8,15 +8,7 @@ import useExhibit from "@/lib/useGetExhibitById";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-
-interface EventData {
-  name: string;
-  date: string;
-  country: string;
-  price: string;
-  eventType: string;
-  image: string;
-}
+import { EventData } from "@/utils/dev/frontEndInterfaces";
 
 const dummyData: EventData[] = [
   {

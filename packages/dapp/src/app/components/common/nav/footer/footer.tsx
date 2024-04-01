@@ -72,8 +72,8 @@ function Footer() {
         <div className="space-y-2 ">
           <h4 className="text-lg text-gray-950 font-semibold">Link</h4>
           <div className=" text-sm flex flex-col gap-1 items-center text-gray-700">
-            <Link href={""}>signUp</Link>
-            <Link href={""}>signIn</Link>
+            <Link href={""}>Sign Up</Link>
+            <Link href={""}>Sign In</Link>
             <Link href={""}>Register</Link>
             <Link href={""}>Tickets</Link>
           </div>
@@ -81,23 +81,23 @@ function Footer() {
         <div className="space-y-2 ">
           <h4 className="text-lg text-gray-950 font-semibold">Join Us</h4>
           <div className="text-sm flex flex-col gap-1 items-center text-gray-700">
-            <Link href={""}>x</Link>
+            <Link href={"https://twitter.com/summitshare_zm"}>X</Link>
             <Link
               className=" w-full flex items-center justify-center gap-2"
               href={"https://github.com/SummitShare/SummitShare"}
             >
               <GitHubLogoIcon /> Github
             </Link>
-            <Link href={""}>facebook</Link>
+            <Link href={""}>Facebook</Link>
             <Link href={""}>Instagram</Link>
           </div>
         </div>
       </div>
       <div className="border-t w-full flex flex-col gap-1 text-gray-700  items-center py-5 md:flex-row md:px-80 md:justify-between text-sm">
         <Link href={""}>Terms</Link>
-        <Link href={""}>Privacy policy</Link>
-        <Link href={""}>Community guidelines</Link>
-        copyRight@2023
+        <Link href={""}>Privacy Policy</Link>
+        <Link href={""}>Community Guidelines</Link>
+        Copyright@2023
       </div>
     </div>
   );

@@ -1,13 +1,8 @@
 import React from "react";
-
-interface Props {
-  title: string;
-  message: string;
-  dateTime: string; // Renamed to a more conventional property name
-}
+import { notificationProps } from "@/utils/dev/frontEndInterfaces";
 
 // Create an array of objects conforming to the Props interface
-const notifications: Props[] = [
+const notifications: notificationProps[] = [
   {
     title: "Event Invitation",
     message:

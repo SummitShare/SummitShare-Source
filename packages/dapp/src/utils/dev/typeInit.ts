@@ -10,7 +10,7 @@ import { ethers } from "ethers";
 export interface ArtifactNFTDeployment {
     name : string;
     symbol : string;
-    owner : string
+    owner : string;
     baseURIParam : string;
 };
 
@@ -104,3 +104,60 @@ export interface EthereumWindow extends Window {
   ethereum?: ethers.providers.ExternalProvider;
   web3?: any;
 };
+
+
+// <----- APIs ------>
+
+// createEvent/route
+export interface IPropsal {
+  stakes: IStakes;
+  event_type: string; // assuming event_type_enum is a string enum
+  event_name?: string;
+  event_category?: string; // assuming event_category_enum is a string enum
+  event_start_time?: Date;
+  symbol?: string;
+  event_timezone?: string;
+  event_location?: string;
+  description?: string;
+  contract_address?: string;
+  event_end_time?: Date;
+  cost?: number; // Decimal type in Prisma translates to number in TypeScript
+  total_number_tickets?: number;
+  // Additional properties for relations can be added if needed
+}
+
+export interface EmailArray extends Array <string> {}
+
+export interface EmailStatus {
+  exists: boolean;
+  sent: boolean;
+  status: number;
+}
+
+// proposals/createNewProposal
+
+export interface IStakes{
+  [stakeholder: string]: number;
+
+}
+
+export interface EventData {
+  event_type: string;
+  event_name: string;
+  event_category: string;
+  event_start_time: string; 
+  event_timezone: string;
+  event_location: string;
+  description: string;
+  event_end_time: string;
+  cost: number;
+  total_number_tickets: number;
+  symbol: string;
+  stakes: {
+    [email: string]: number;
+  };
+}
+
+export interface StakeholderStakes {
+  [stakeholderId: string]: number;
+}

@@ -26,16 +26,7 @@
  */
 
 import React from "react";
-import { UseFormRegister } from "react-hook-form";
-
-interface TextAreaProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
-  label?: string;
-  name: string;
-  description?: string;
-  message?: string;
-  register: UseFormRegister<any>;
-}
+import { TextAreaProps } from "@/utils/dev/frontEndInterfaces";
 
 function TextArea({
   label,

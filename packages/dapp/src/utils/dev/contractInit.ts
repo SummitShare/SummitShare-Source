@@ -33,7 +33,7 @@ export const contracts = {
         const wallet = initializeWallet();
         return new ethers.Contract(
             CONTRACT_ADDRESSES.EventOrganizerServiceAdd,
-            EventOrganizerServiceABI as unknown as ethers.ContractInterface,
+            EventOrganizerServiceABI as ethers.ContractInterface,
             wallet
         );
     },
@@ -41,7 +41,7 @@ export const contracts = {
         const wallet = initializeWallet();
         return new ethers.Contract(
             address, // Using a dynamic address for ArtifactNFT instances
-            ArtifactNFTABI as unknown as ethers.ContractInterface,
+            ArtifactNFTABI as ethers.ContractInterface,
             wallet
         );
     },
@@ -49,7 +49,7 @@ export const contracts = {
         const wallet = initializeWallet();
         return new ethers.Contract(
             address, 
-            EventEscrowABI as unknown as ethers.ContractInterface,
+            EventEscrowABI as ethers.ContractInterface,
             wallet
         );
     },

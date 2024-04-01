@@ -37,18 +37,7 @@ import {
   setEvent_timezone,
 } from "@/redux/features/select-slice";
 import { AppDispatch } from "@/redux/store";
-
-interface SelectComponentProps
-  extends React.SelectHTMLAttributes<HTMLSelectElement> {
-  options: string[];
-  first: string;
-  type:
-    | "eventType"
-    | "eventCountryType"
-    | "event_timezone"
-    | "event_category"
-    | "event_location";
-}
+import { SelectComponentProps } from "@/utils/dev/frontEndInterfaces";
 
 const SelectType = ({
   options,
