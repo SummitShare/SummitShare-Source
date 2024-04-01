@@ -50,6 +50,7 @@ model proposals {
   created_at             DateTime                 @default(now()) @db.Timestamp(6)
   previous_proposal_id   String?                  @db.Uuid
   latest_rejecters_queue latest_rejecters_queue[]
+  proposal_images        proposal_images[]
   events                 events?                  @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   users                  users?                   @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   proposals              proposals?               @relation("proposalsToproposals", fields: [previous_proposal_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "public_proposals_previous_proposal_id_fkey")
@@ -129,10 +130,12 @@ model email_verification {
 }
 
 model event_images {
-  id       String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  s3_url   String
-  event_id String? @db.Uuid
-  events   events? @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id            String           @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  url           String
+  event_id      String?          @db.Uuid
+  image_type    image_type_enum?
+  gallery_index Int?             @db.SmallInt
+  events        events?          @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model exhibitor_account_users {
@@ -197,7 +200,7 @@ model tickets {
 
 model user_images {
   id            String           @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  s3_url        String
+  url           String
   user_id       String?          @db.Uuid
   image_type    image_type_enum?
   gallery_index Int?
@@ -259,6 +262,15 @@ model event_collections {
   events        events      @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@id([event_id, collection_id])
+}
+
+model proposal_images {
+  id            String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  proposal_id   String           @db.Uuid
+  url           String           @db.VarChar
+  image_type    image_type_enum?
+  gallery_index Int?             @db.SmallInt
+  proposals     proposals        @relation(fields: [proposal_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 enum decision {
