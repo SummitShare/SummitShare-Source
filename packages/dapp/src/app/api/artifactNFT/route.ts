@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 import { ArtifactNFTDeployment, ArtifactNFTMinting } from "@/utils/dev/typeInit";
+import { applyGasConfig } from "@/utils/dev/gasconfig";
 import { contracts } from "@/utils/dev/contractInit";
 import prisma from "../../../../config/db";
 import { testWallets } from "@/utils/dev/walletInit";
+import { providers } from "ethers";
 
 
 /**
@@ -16,13 +18,21 @@ const deployArtifactNFT = async (artifactnftdeployment: ArtifactNFTDeployment) =
     try {
         // Retrieve the EventOrganizerService contract instance
         const organizerServiceContract = contracts.getEventOrganizerService();
-        
+
+        //
+        const deploymentOverrides : providers.TransactionRequest = applyGasConfig(
+            {},
+            '200',
+            '10'
+         );
+
         // Deploy the ArtifactNFT contract with the provided details
         const tx0 = await organizerServiceContract.deployArtifactNFT(
             artifactnftdeployment.name,
             artifactnftdeployment.symbol,
             artifactnftdeployment.owner,
             artifactnftdeployment.baseURIParam , 
+            deploymentOverrides
         );
 
         // Wait for the transaction to be mined
@@ -59,14 +69,22 @@ const mintArtifactNFTs = async (ArtifactNFTAddress: string, artifactnftminting: 
     }
 
     try {
+        // Set gas configuration for minting
+        const mintingOverrides : providers.TransactionRequest = applyGasConfig(
+            {}, // Empty overrides object
+            '150', // maxFeePerGas in Gwei
+            '8' // maxPriorityFeePerGas in Gwei
+        );
+
         // Mint NFTs to the specified recipient address with the given quantity
         const tx1 = await artifactNFTContract.mint(
             artifactnftminting.recipientAddress,
             artifactnftminting.mintQuantity,
+            mintingOverrides // Pass in overrides as parameter
         );
 
         // Wait for the minting transaction to be mined
-        const receipt1 = await tx1.wait(8);
+        const receipt1 = await tx1.wait(6);
         const mintingTransactionHash = tx1.hash;
 
             // Iterate through each minted NFT to fetch and log its token URI

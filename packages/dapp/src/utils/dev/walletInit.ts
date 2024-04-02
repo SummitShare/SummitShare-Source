@@ -22,8 +22,13 @@ export const initializeWallet = (): ethers.Wallet => {
     }
 
     // Create and return the wallet
-    const wallet = new ethers.Wallet(privateKey, provider);
-    return wallet;
+try {
+        const wallet = new ethers.Wallet(privateKey, provider);
+        return wallet;
+} catch (error) {
+    console.error("Failed to intialize wallet: ", error instanceof Error? error.message : String(error));
+    throw error;
+}
 };
 
 // Test Wallets - Should have Sepolia/OP Sepolia 
