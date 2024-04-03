@@ -15,22 +15,68 @@ import Link from "next/link";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { authUserProps } from "@/utils/dev/frontEndInterfaces";
+import { useRouter } from "next/navigation";
+
+
+
 
 const Register = () => {
+
+  const router = useRouter()
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      userName: "mario jere",
+      username: "mario jere",
       email: "mariomaguyasjere@gmail.com",
-      walletAddress: "0x64d18b130b676C784B8F3Aa6287fc69821A2A01b",
-      password: "123456",
+      type:"visitor",
+      password: "12345678",
     },
   });
 
-  const onSubmit = (data: authUserProps) => {
+  
+
+
+  const createUser = async ({ email, password, username }: any) => {
+    // Ensure HOST is read correctly, considering Next.js environment variables need to be prefixed with NEXT_PUBLIC_ if they are to be used on the client-side.
+    const host = process.env.NEXT_PUBLIC_HOST;
+    console.log(`host ${host} `)
+  
+    // Construct the URL with the correct protocol (http or https) and ensure that the HOST variable includes the entire domain.
+    const url = `${host}api/v1/signup`;
+    console.log(`url ${url} `)
+  
+    try {
+      const type = "visitor"
+      const response = await fetch(url, {
+        method: "POST", 
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password, username,type }),
+      });
+  
+      // Check if the response is ok (status in the range 200-299)
+      if (!response.ok) {
+        // You could throw an error or handle it in another way depending on your error handling strategy
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      }
+  
+      return response.json(); // Assuming the server responds with JSON.
+    } catch (error) {
+      console.error("Failed to create user:", error);
+      // Depending on how you want to handle errors, you might want to re-throw the error or handle it here
+      throw error;
+    }
+  }
+  
+
+  const onSubmit = async (data: any) => {
+    const response = await createUser(data)
+    console.log(response);
+    router.push("/auth-sign-in")
     console.log(data);
   };
 
@@ -51,7 +97,7 @@ const Register = () => {
             <Input
               type="text"
               label="username"
-              name="userName"
+              name="username"
               placeholder="username"
               register={register}
               required

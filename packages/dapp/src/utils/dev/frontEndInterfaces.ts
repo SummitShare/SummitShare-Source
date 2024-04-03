@@ -81,7 +81,7 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
     label?: string;
     name: string;
     description?: string;
-    message?: string;
+    message?: any;
     register: UseFormRegister<any>;
     need?: boolean; // Demonstrates an optional prop for additional validation or UI indication
 };

@@ -28,24 +28,65 @@ import Link from "next/link";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { authUserProps } from "@/utils/dev/frontEndInterfaces";
+import { useRouter } from "next/navigation";
 
 const Register = () => {
+  const router = useRouter()
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      userName: "mario jere",
+      username: "mario jere",
       email: "mariomaguyasjere@gmail.com",
-      walletAddress: "0x64d18b130b676C784B8F3Aa6287fc69821A2A01b",
+      wallet_address: "0x64d18b130b676C784B8F3Aa6287fc69821A2A01b",
       password: "123456",
+      type:'exhibitor'
     },
   });
 
-  const onSubmit = (data: authUserProps) => {
+
+  const createUser = async ({ email, password, username,wallet_address }: any) => {
+    // Ensure HOST is read correctly, considering Next.js environment variables need to be prefixed with NEXT_PUBLIC_ if they are to be used on the client-side.
+    const host = process.env.NEXT_PUBLIC_HOST;
+    console.log(`host ${host} `)
+  
+    // Construct the URL with the correct protocol (http or https) and ensure that the HOST variable includes the entire domain.
+    const url = `${host}api/v1/signup`;
+    console.log(`url ${url} `)
+  
+    try {
+      const type = "exhibitor"
+      const response = await fetch(url, {
+        method: "POST", 
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password, username,type,wallet_address }),
+      });
+  
+      // Check if the response is ok (status in the range 200-299)
+      if (!response.ok) {
+        // You could throw an error or handle it in another way depending on your error handling strategy
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      }
+  
+      return response.json(); // Assuming the server responds with JSON.
+    } catch (error) {
+      console.error("Failed to create user:", error);
+      // Depending on how you want to handle errors, you might want to re-throw the error or handle it here
+      throw error;
+    }
+  }
+
+  const onSubmit = async (data: any) => {
+    const response = await createUser(data)
+    console.log(response);
+    router.push("/auth-sign-in")
     console.log(data);
   };
+
 
   return (
     <main className="h-screen flex flex-col justify-end items-center bg-[url('https://images.unsplash.com/photo-1606885118474-c8baf907e998?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YWZyaWNhbiUyMGFydHxlbnwwfHwwfHx8MA%3D%3D')] bg-cover bg-center  md:flex-row">
@@ -64,7 +105,7 @@ const Register = () => {
             <Input
               type="text"
               label="username"
-              name="userName"
+              name="username"
               placeholder="username"
               register={register}
               required
@@ -80,7 +121,7 @@ const Register = () => {
             <Input
               type="text"
               label="wallet address"
-              name="walletAddress"
+              name="wallet_address"
               placeholder="TRC(20)"
               register={register}
               required

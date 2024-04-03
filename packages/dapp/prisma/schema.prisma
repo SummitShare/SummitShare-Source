@@ -91,10 +91,9 @@ model users {
   email                                                                       String                    @unique @db.VarChar(255)
   username                                                                    String?                   @unique @db.VarChar(255)
   password                                                                    String
-  wallet_address                                                              String?
   bio                                                                         String?
   email_verified                                                              Boolean?                  @default(false)
-  user_type_id                                                                Int?
+  type                                                                        String?
   email_verification                                                          email_verification[]
   events                                                                      events[]
   exhibitor_account_users_exhibitor_account_users_exhibitor_account_idTousers exhibitor_account_users[] @relation("exhibitor_account_users_exhibitor_account_idTousers")
@@ -106,7 +105,7 @@ model users {
   user_images                                                                 user_images[]
   user_sessions                                                               user_sessions[]
   user_wallets                                                                user_wallets[]
-  user_types                                                                  user_types?               @relation(fields: [user_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user_types                                                                  user_types?               @relation(fields: [type], references: [type], map: "public_users_type_fkey")
   votes                                                                       votes[]
 }
 
@@ -220,7 +219,7 @@ model user_sessions {
 
 model user_types {
   id          Int     @id
-  type_name   String  @unique @db.VarChar(255)
+  type        String  @unique(map: "user_types_type_name_key")
   description String?
   users       users[]
 }
