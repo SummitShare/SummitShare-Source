@@ -3,10 +3,9 @@ Category: API Layer
 Purpose: Handles sending out emails for various purposes including verification, newsletters, and other communications within the dApp.
 */
 
-import { PrismaClient } from '@prisma/client'
 import { NextResponse } from 'next/server'
 import { transporter, emailServer } from '../../../../config/nodemailer'
-const prisma = new PrismaClient()
+
 
 /**
  * POST handler for sending emails.
