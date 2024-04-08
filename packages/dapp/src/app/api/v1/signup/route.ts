@@ -32,7 +32,7 @@ async function createSendTokens(user:users,email:string) {
 
   // const host = req.headers.get('host');
   const host = process.env.HOST
-  const verificationLink = `${host}api/v1/user/verifyEmail?token=${token}`;
+  const verificationLink = `${host}api/v1/user/verification/verifyEmail?token=${token}`;
 
   const mailOptions = {
     from: emailServer,
