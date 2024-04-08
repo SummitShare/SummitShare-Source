@@ -187,14 +187,12 @@ model ticket_transaction {
 }
 
 model tickets {
-  id               String    @id
-  event_id         String?   @db.Uuid
-  wallet_address   String?
-  event_start_time DateTime? @db.Timestamp(6)
-  event_end_time   DateTime? @db.Timestamp(6)
-  event_timezone   String?
-  is_validated     Boolean   @default(false)
-  events           events?   @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  event_id       String?   @db.Uuid
+  wallet_address String?
+  purchased_at   DateTime? @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
+  validity       Int?
+  id             Int       @id @default(autoincrement())
+  events         events?   @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model user_images {
