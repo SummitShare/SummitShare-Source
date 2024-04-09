@@ -12,9 +12,9 @@ export async function POST(req: Request , res : NextResponse) {
 
     try {
 
-        const {wallet_addresss , event_id } = await req.json()
+        const {wallet_address , event_id } = await req.json()
 
-        if(!wallet_addresss){
+        if(!wallet_address){
             return NextResponse.json({ message: "no wallet address sent", }, { status: 400 });
         }
         if(!event_id){
@@ -23,7 +23,7 @@ export async function POST(req: Request , res : NextResponse) {
 
         const ticket = await prisma.tickets.create({
             data:{
-                wallet_address: wallet_addresss,
+                wallet_address: wallet_address,
                 event_id: event_id,
             }
         })

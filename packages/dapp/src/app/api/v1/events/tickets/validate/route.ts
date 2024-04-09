@@ -12,9 +12,9 @@ export async function POST(req: Request , res : NextResponse) {
 
     try {
 
-        const {wallet_addresss , event_id } = await req.json()
+        const {wallet_address , event_id } = await req.json()
 
-        if(!wallet_addresss){
+        if(!wallet_address){
             return NextResponse.json({ message: "no wallet address sent", }, { status: 400 });
         }
         if(!event_id){
@@ -23,7 +23,7 @@ export async function POST(req: Request , res : NextResponse) {
 
         const ticket = await prisma.tickets.findFirst({
             where:{
-                wallet_address: wallet_addresss,
+                wallet_address: wallet_address,
                 event_id: event_id,
             }
         })
@@ -33,12 +33,16 @@ export async function POST(req: Request , res : NextResponse) {
         }
 
         const purchased_at = new Date(ticket.purchased_at!)
-
         const expiryDate = new Date(purchased_at.getTime()+(48*60*60*1000))
 
 
         if(new Date() > expiryDate){
-            return NextResponse.json({ message: "ticket expired", }, { status: 401 });
+            await prisma.tickets.delete({
+                where:{
+                    id: ticket.id
+                }
+            })
+            return NextResponse.json({ message: "ticket expired and deleted", }, { status: 401 });
         }
 
         return NextResponse.json({ message: "ticket validated", }, { status: 200 });
