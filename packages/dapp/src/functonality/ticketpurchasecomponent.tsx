@@ -4,6 +4,7 @@ import { ethers } from 'ethers';
 import { gql, useApolloClient } from '@apollo/client';
 import { TicketPurchaseProps, EthereumWindow } from '@/utils/dev/typeInit';
 import { CONTRACT_ADDRESSES, contracts } from '@/utils/dev/contractInit';
+import { handleContractError } from '@/utils/dev/handleContractError';
 
 const TicketPurchaseComponent = ({ userAddress, exhibitId }: TicketPurchaseProps) => {
   // State hooks for managing component state
@@ -103,8 +104,9 @@ const TicketPurchaseComponent = ({ userAddress, exhibitId }: TicketPurchaseProps
 
           
         } catch (error: any) {
-            console.error('Error in purchasing ticket:', error);
-            setStatus(`Transaction failed: ${error.message}`);
+            console.error('Smart Contract Interaction Failed:', error);
+            const friendlyMessage = handleContractError(error as any); // Typecasting
+            setStatus(friendlyMessage);
         }
     };
 
