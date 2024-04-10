@@ -14,7 +14,7 @@ export async function GET(req: Request, res: NextResponse) {
   }
     
   try {
-    console.log(token)
+    console.log(`recieved token ${token}`)
     const verificationRecord = await prisma.email_verification.findFirst({
       where: { token: token },
     });
@@ -22,7 +22,7 @@ export async function GET(req: Request, res: NextResponse) {
     console.log(`vrecord ${verificationRecord}`)
 
     if (!verificationRecord) {
-      return NextResponse.json({ error: "Invalid token" }, { status: 400 });
+      return NextResponse.json({ message: "Invalid token" }, { status: 400 });
     }
 
     if (new Date() > new Date(verificationRecord.expires ?? '')) {

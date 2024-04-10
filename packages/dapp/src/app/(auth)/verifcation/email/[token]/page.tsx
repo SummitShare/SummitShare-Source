@@ -1,15 +1,17 @@
 'use client'
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 
- function page({ params }: { params: { token: string } }) {
-
-
+function Page({ params }: { params: { token: string } }) {
   const [verificationStatus, setVerificationStatus] = useState<number>();
+  const hasFetched = useRef(false);
+
   useEffect(() => {
     const verifyEmail = async () => {
-      if (!params.token) return;
+      if (!params.token || hasFetched.current) return;
+      hasFetched.current = true;
+      
       try {
         const response = await fetch(`http://localhost:3000/api/v1/user/verification/verifyEmail?token=${params.token}`, {
           method: "GET",
@@ -17,37 +19,40 @@ import { useEffect, useState } from "react";
             "Content-Type": "application/json",
           },
         });
+        const {message} = await response.json()
+        console.log(`message ${message}`)
 
-        setVerificationStatus(response.status);
+        setVerificationStatus(message);
       } catch (error) {
         console.error('Verification request failed:', error);
       }
     };
 
     verifyEmail();
-  },[params.token]);
+   
+  }, [params.token]);
 
 
 
-  console.log(verificationStatus)
+ 
 
-  // switch (response.status) {
-  //   case 200:
+  switch (verificationStatus) {
+    case 200:
 
-  //     return 
-  //   case 400:
+      return 
+    case 400:
 
-  //     return;
-  //   case 401:
+      return;
+    case 401:
 
-  //     return;
-  //   case 403:
+      return;
+    case 403:
 
-  //     return;
+      return;
 
-  //   default:
-  //     break;
-  // }
+    default:
+      break;
+  }
 
   const resendVerificationEmail = async () => {
     try {
@@ -80,21 +85,21 @@ import { useEffect, useState } from "react";
           Summit<span className="text-orange-500">Share</span>
         </h1>
         <div className=" w-[80%] text-center">
-          {verificationStatus === 200 ? <p className="text-sm text-gray-700">
+          {/* {verificationStatus? <p className="text-sm text-gray-700">
 
             Your email has been verified successful welcome to our community
-          </p> : <p className="text-sm text-red-700">  Sorry youre verified email has expired please selcet resend email and click the new email link <link rel="stylesheet" href="" /></p>}
-
+          </p> : <p className="text-sm text-red-700">  Sorry youre verified email has expired please selcet resend email and click the new email link <link rel="stylesheet" href="" /></p>} */}
+          {verificationStatus}
         </div>
       </div>
       <div className="space-y-3 ring-1 ring-gray-300 rounded-md py-3 px-4 fixed bottom-5 right-5 left-5  md:right-5 md:left-[60%] ">
         <p className="text-sm text-gray-700">
-          {verificationStatus === 200 ?
+          {/* {verificationStatus === 200 ?
 
             " navigate to the home page and start your cultural adventure"
-            : "Resend verified eamil note it will expire in 1 hour"}
+            : "Resend verified eamil note it will expire in 1 hour"} */}
 
-
+{verificationStatus}
         </p>
         <div>
 
@@ -104,7 +109,7 @@ import { useEffect, useState } from "react";
             </Link>
 
             :
-            <button  onClick={()=>resendVerificationEmail} className="ring-1 ring-gray-300 rounded-md px-3 py-2 text-xs">navigate</button>
+<button onClick={resendVerificationEmail} className="ring-1 ring-gray-300 rounded-md px-3 py-2 text-xs">Resend Email</button>
           
           }
         </div>
@@ -113,6 +118,6 @@ import { useEffect, useState } from "react";
   );
 }
 
-export default page;
+export default Page;
 
 

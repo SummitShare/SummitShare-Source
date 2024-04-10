@@ -11,7 +11,9 @@ async function createSendTokens(user:users,email:string) {
     // Create verification token and expiry time
   const token = crypto.randomUUID(); // Generate a token
   const now = new Date();
-  const expires = new Date(now.getTime() + 60 * 60 * 1000); // adds 1 hour to the current time
+
+  //* 60 * 1000 
+  const expires = new Date(now.getTime() + 60); // adds 1 hour to the current time
 
   const nowISO = now.toISOString();
   const expiresISO = expires.toISOString();
@@ -32,7 +34,8 @@ async function createSendTokens(user:users,email:string) {
 
   // const host = req.headers.get('host');
   const host = process.env.HOST
-  const verificationLink = `${host}api/v1/user/verification/verifyEmail?token=${token}`;
+  //${host}api/v1/user/verification/verifyEmail?token=${token}
+  const verificationLink = `${host}verifcation/email/${token}`;
 
   const mailOptions = {
     from: emailServer,

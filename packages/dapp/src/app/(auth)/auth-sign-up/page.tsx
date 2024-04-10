@@ -67,8 +67,7 @@ const Register = () => {
       return response.json(); // Assuming the server responds with JSON.
     } catch (error) {
       console.error("Failed to create user:", error);
-      // Depending on how you want to handle errors, you might want to re-throw the error or handle it here
-      throw error;
+      
     }
   }
   
