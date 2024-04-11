@@ -11,7 +11,7 @@ export const publicRoutes = [
  */
 export const authRoutes = [
     "/auth/signUp",
-    "/auth/signIn",
+    "/auth/sign",
 ];
 /**
  * Api route prefix for authentication
@@ -20,9 +20,11 @@ export const authRoutes = [
 export const apiAuthPrefix = "/api/auth";
 /**
  * default redirect url after login
+ *  * @type {string}
  */
-export const DEFAULT_REDIRECT_URL = "/AuthTest";
+export const DEFAULT_REDIRECT_URL = "/";
 /**
  * api route
+ *  * @type {string}
  */
-export const apiRoute = "/api/";
+export const apiRoute = "/api";

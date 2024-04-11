@@ -29,6 +29,8 @@ import Link from "next/link";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { authUserSignIn } from "@/utils/dev/frontEndInterfaces";
+import { signIn } from "next-auth/react";
+
 
 const Register = () => {
   const {
@@ -42,15 +44,89 @@ const Register = () => {
     },
   });
 
-  const onSubmit = (data: authUserSignIn) => {
-    console.log(data);
-  };
+
+  const signInUser = async ({ email, password }: authUserSignIn) => {
+    // Ensure HOST is read correctly, considering Next.js environment variables need to be prefixed with NEXT_PUBLIC_ if they are to be used on the client-side.
+    const host = process.env.NEXT_PUBLIC_HOST;
+    console.log(`host ${host} `)
+  
+    // Construct the URL with the correct protocol (http or https) and ensure that the HOST variable includes the entire domain.
+    const url = `${host}api/v1/signin`;
+    console.log(`url ${url} `)
+  
+    try {
+ 
+      const response = await fetch(url, {
+        method: "POST", 
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({email,password}),
+      });
+   
+      // Check if the response is ok (status in the range 200-299)
+      if (!response.ok) {
+        // You could throw an error or handle it in another way depending on your error handling strategy
+       console.log(`Error: ${response.status} - ${response.statusText}`);
+      }
+
+    
+      return response.json(); // Assuming the server responds with JSON.
+    } catch (error) {
+      console.error("Failed to create user:", error);
+      
+    }
+  }
+
+  // async function newSignIn(email:string,password:string) {
+    
+  //   try {
+  //     await signIn("credentials",{
+  //       email,
+  //       password,
+  //       redirectTo: DEFAULT_REDIRECT_URL,
+  //     })
+
+  //     return { success:"success"}
+  // } catch (error) {
+  //   if (error instanceof AuthError) {
+  //      switch (error.type) {
+  //       case "CredentialsSignin":
+  //         console.log("cred error ", error)
+  //         return {error : " invalid credentials"}
+  //       default: 
+  //       return {error : "something went wrong"}
+  //     }
+  //   }
+  //   console.log("server error ", error)
+  //   return{error : "server error something went wrong"}
+  
+  // }
+  // }
+
+
+  const onSubmit = async ({email,password}: authUserSignIn) => {
+     const response =  await signIn("credentials", {
+      email,
+      password,
+      redirect:true,
+    
+    })
+
+console.log(response)
+  }
+
+
+
+ 
+
+
 
   return (
     <main className="h-screen flex flex-col justify-end items-center bg-[url('https://images.unsplash.com/photo-1606885118474-c8baf907e998?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YWZyaWNhbiUyMGFydHxlbnwwfHwwfHx8MA%3D%3D')] bg-cover bg-center  md:flex-row">
       <div className="bg-gray-950/35 fixed inset-0 "></div>
 
-      <form
+      <form 
         onSubmit={handleSubmit(onSubmit)}
         className=" flex flex-col items-center justify-center h-[75%]  w-full gap-6 z-10 p-10 bg-white rounded-t-[48px] md:h-full  md:rounded-l-[32px]   md:rounded-tr-[0px] md:w-[35%] "
       >
