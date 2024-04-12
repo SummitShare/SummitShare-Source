@@ -1,17 +1,20 @@
 'use client'
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 
 function Page({ params }: { params: { token: string } }) {
-  const [verificationStatus, setVerificationStatus] = useState<number>();
+  const router = useRouter()
+  const [verificationStatus, setverificationStatus] = useState<number>()
+  const [verificationMessage, setVerificationMessage] = useState<number>();
   const hasFetched = useRef(false);
 
   useEffect(() => {
     const verifyEmail = async () => {
       if (!params.token || hasFetched.current) return;
       hasFetched.current = true;
-      
+
       try {
         const response = await fetch(`http://localhost:3000/api/v1/user/verification/verifyEmail?token=${params.token}`, {
           method: "GET",
@@ -19,40 +22,36 @@ function Page({ params }: { params: { token: string } }) {
             "Content-Type": "application/json",
           },
         });
-        const {message} = await response.json()
+        const { status } = response
+        const { message } = await response.json()
+        console.log(`status ${status}`)
         console.log(`message ${message}`)
 
-        setVerificationStatus(message);
+        setVerificationMessage(message);
+        setverificationStatus(response?.status)
+
       } catch (error) {
         console.error('Verification request failed:', error);
       }
     };
 
     verifyEmail();
-   
+
   }, [params.token]);
 
 
+  {
+    verificationStatus === 200 ?
 
- 
 
-  switch (verificationStatus) {
-    case 200:
+     setTimeout(() => {
+       router.push('/auth-sign-in');
+     }, 2000) : null
+   }
 
-      return 
-    case 400:
 
-      return;
-    case 401:
 
-      return;
-    case 403:
 
-      return;
-
-    default:
-      break;
-  }
 
   const resendVerificationEmail = async () => {
     try {
@@ -85,35 +84,35 @@ function Page({ params }: { params: { token: string } }) {
           Summit<span className="text-orange-500">Share</span>
         </h1>
         <div className=" w-[80%] text-center">
-          {/* {verificationStatus? <p className="text-sm text-gray-700">
+          <p className="text-sm text-gray-700">
+            {verificationMessage}
+          </p>
 
-            Your email has been verified successful welcome to our community
-          </p> : <p className="text-sm text-red-700">  Sorry youre verified email has expired please selcet resend email and click the new email link <link rel="stylesheet" href="" /></p>} */}
-          {verificationStatus}
         </div>
       </div>
-      <div className="space-y-3 ring-1 ring-gray-300 rounded-md py-3 px-4 fixed bottom-5 right-5 left-5  md:right-5 md:left-[60%] ">
-        <p className="text-sm text-gray-700">
-          {/* {verificationStatus === 200 ?
 
-            " navigate to the home page and start your cultural adventure"
-            : "Resend verified eamil note it will expire in 1 hour"} */}
+      {verificationStatus === 200 ?
+        null
+        : <div className="space-y-3 ring-1 ring-gray-300 rounded-md py-3 px-4 fixed bottom-5 right-5 left-5  md:right-5 md:left-[60%] ">
+          <p className="text-sm text-gray-700">
+            {/* {verificationStatus === 200 ?
 
-{verificationStatus}
-        </p>
-        <div>
+        " navigate to the home page and start your cultural adventure"
+        : "Resend verified eamil note it will expire in 1 hour"} */}
 
-          {verificationStatus === 200 ?
-            <Link href={"/auth-sign-in"}>
-              <button className="ring-1 ring-gray-300 rounded-md px-3 py-2 text-xs">navigate</button>
-            </Link>
+            {verificationMessage}
+          </p>
+          <div>
 
-            :
-<button onClick={resendVerificationEmail} className="ring-1 ring-gray-300 rounded-md px-3 py-2 text-xs">Resend Email</button>
-          
-          }
+
+            <button onClick={resendVerificationEmail} className="ring-1 ring-gray-300 rounded-md px-3 py-2 text-xs">Resend Email</button>
+
+
+          </div>
         </div>
-      </div>
+      }
+
+
     </div>
   );
 }

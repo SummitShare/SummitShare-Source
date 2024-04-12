@@ -30,9 +30,12 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { authUserSignIn } from "@/utils/dev/frontEndInterfaces";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
 
 
 const Register = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -40,7 +43,7 @@ const Register = () => {
   } = useForm({
     defaultValues: {
       email: "mariomaguyasjere@gmail.com",
-      password: "123456",
+      password: "password",
     },
   });
 
@@ -109,12 +112,15 @@ const Register = () => {
      const response =  await signIn("credentials", {
       email,
       password,
-      redirect:true,
-    
+      redirect: false,
     })
 
-console.log(response)
+console.log(response?.status)
+const status = response?.status
+{status == 200? router.push('/'): alert('wrong email password')}
   }
+
+
 
 
 

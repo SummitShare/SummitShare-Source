@@ -44,6 +44,7 @@ import {
   ShoppingBagIcon,
   ShoppingCartIcon,
   QrCodeIcon,
+  PowerIcon,
 } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 
@@ -55,6 +56,8 @@ import { SearchResults, useSearch } from "@/lib/useSearch";
 import WalletConnectNav from "@/functonality/walletconnect";
 import { ThirdwebProvider } from "@thirdweb-dev/react";
 import { notificationProps } from "@/utils/dev/frontEndInterfaces";
+import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 // Create an array of objects conforming to the Props interface
 const notifications: notificationProps[] = [
@@ -110,6 +113,8 @@ const tickets = [
 
 // Navbar component definition
 const Navbar = () => {
+const router = useRouter()
+  const session =  useSession();
   // State to control the visibility of the mobile menu
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [search, setSearch] = useState<boolean>(false);
@@ -333,6 +338,19 @@ const Navbar = () => {
               <GlobeAltIcon className="w-6 text-gray-950" />
               <Link href="#"> sessions</Link>
             </li>
+            <p>{JSON.stringify(session)}</p>
+            {session.status === "authenticated"? 
+            <li onClick={()=>{
+              signOut();
+          }} className="text-xl text-gray-700 w-full flex flex-row gap-2 items-center">
+              <PowerIcon className="w-6 text-gray-950" />
+              <Link href="#"> logout</Link>
+            </li>: <li onClick={()=>{
+              router.push("/auth-sign-up");
+          }} className="text-xl text-gray-700 w-full flex flex-row gap-2 items-center">
+              <PowerIcon className="w-6 text-gray-950" />
+              <Link href="#"> signIn</Link>
+            </li>}
           </ul>
           <ThirdwebProvider>
             <WalletConnectNav />

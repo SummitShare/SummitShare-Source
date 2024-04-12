@@ -29,54 +29,58 @@ const Register = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      username: "mario jere",
+
       email: "mariomaguyasjere@gmail.com",
-      type:"visitor",
+      type: "visitor",
       password: "12345678",
     },
   });
 
-  
+
 
 
   const createUser = async ({ email, password, username }: any) => {
     // Ensure HOST is read correctly, considering Next.js environment variables need to be prefixed with NEXT_PUBLIC_ if they are to be used on the client-side.
     const host = process.env.NEXT_PUBLIC_HOST;
     console.log(`host ${host} `)
-  
+
     // Construct the URL with the correct protocol (http or https) and ensure that the HOST variable includes the entire domain.
     const url = `${host}api/v1/signup`;
     console.log(`url ${url} `)
-  
+
     try {
       const type = "visitor"
       const response = await fetch(url, {
-        method: "POST", 
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password, username,type }),
+        body: JSON.stringify({ email, password, username, type }),
       });
-  
+
       // Check if the response is ok (status in the range 200-299)
       if (!response.ok) {
         // You could throw an error or handle it in another way depending on your error handling strategy
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }
-  
+
+      { response.status === 201 ? router.push(`/verifcation/sign-up/${email}`) : alert('error') }
+
       return response.json(); // Assuming the server responds with JSON.
     } catch (error) {
       console.error("Failed to create user:", error);
-      
+
     }
-  }
   
+  }
+
 
   const onSubmit = async (data: any) => {
     const response = await createUser(data)
-    console.log(response);
-    router.push("/auth-sign-in")
-    console.log(data);
+    console.log(response.status);
+ 
+
+
   };
 
   return (
@@ -93,14 +97,7 @@ const Register = () => {
           </div>
 
           <div className="w-full space-y-3 ">
-            <Input
-              type="text"
-              label="username"
-              name="username"
-              placeholder="username"
-              register={register}
-              required
-            />
+
             <Input
               type="email"
               label="email"
