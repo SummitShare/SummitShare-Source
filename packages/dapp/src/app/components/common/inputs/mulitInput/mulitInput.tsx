@@ -29,6 +29,7 @@ import { useForm } from "react-hook-form";
 import Box from "../../containers/box/box";
 import Input from "../input/input";
 import { RequestProps } from "@/utils/dev/frontEndInterfaces"; // Import of type definitions
+import { PlusIcon } from "@heroicons/react/24/outline";
 
 const EventRequest: React.FC = () => {
   const { control, handleSubmit, register, reset, getValues } =
@@ -73,9 +74,9 @@ const EventRequest: React.FC = () => {
           <button
             type="button" // Prevent form submission on button click
             onClick={handleAddEmail}
-            className="px-3 py-2 bg-gray-950 text-white rounded-md w-[20%] h-full"
+            className="px-3 py-2 hover:bg-orange-500 ring-1 ring-orange-500 text-orange-500 hover:text-white rounded-md w-3xl h-3xl rounded-full"
           >
-            Add
+           <PlusIcon className="w-4"/>
           </button>
         </div>
         {emails.length > 0 && (

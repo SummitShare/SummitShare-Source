@@ -21,8 +21,8 @@ function Box({ children }: { children: ReactNode }) {
   // Component render function
   return (
     // Container div with Tailwind CSS classes for styling
-    <div className="space-y-6 border-b-[0.5px] border-gray-300 w-full py-6">
-      {children} // Renders the children passed to the Box component
+    <div className="space-y-6  w-full py-6">
+      {children} 
     </div>
   );
 }

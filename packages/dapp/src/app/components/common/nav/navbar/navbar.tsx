@@ -45,6 +45,7 @@ import {
   ShoppingCartIcon,
   QrCodeIcon,
   PowerIcon,
+  PlusCircleIcon,
 } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 
@@ -325,7 +326,12 @@ const router = useRouter()
                 gitHub
               </Link>
             </li>
-
+            <li className="text-xl text-gray-700 w-full flex flex-row gap-2  items-center">
+              <PlusCircleIcon className="w-6 text-gray-950" />
+              <Link href="/request">
+                create request
+              </Link>
+            </li>
             <li className="text-xl text-gray-700 w-full flex flex-row gap-2 items-center">
               <UserIcon className="w-6 text-gray-950" />
               <Link href="#"> profile</Link>
