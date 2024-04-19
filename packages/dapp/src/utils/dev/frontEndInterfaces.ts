@@ -5,6 +5,7 @@ Purpose: Types for React components for the front end
 import { ReactNode } from "react";
 import React from "react";
 import { UseFormRegister } from "react-hook-form";
+import { EmailArray } from "./typeInit";
 
 // auth-register/page.tsx
 export interface authUserProps {
@@ -98,8 +99,9 @@ export interface TextAreaProps
 
 // packages/dapp/src/app/components/common/inputs/mulitInput/mulitInput.tsx
 export interface RequestProps {
-    eventName: string;
-    email: string; // For individual email input
+    user_id:string;
+    proposal: IProposal;
+    emails: EmailArray; // For individual email input
 };
 
 // common/inputs/mulitInput/proposal/proposal.tsx

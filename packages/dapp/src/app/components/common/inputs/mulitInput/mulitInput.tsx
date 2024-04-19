@@ -1,57 +1,88 @@
-/**
- * EventRequest Component
- *
- * This component serves as a form for submitting event requests, allowing users to input an event name and
- * add multiple email addresses associated with the event. It utilizes `react-hook-form` for form handling,
- * including validation and submission. The component demonstrates a dynamic way to handle an array of email
- * addresses, allowing users to add emails individually to a list before form submission.
- *
- * Features:
- * - Utilizes `react-hook-form` for efficient form management.
- * - Dynamically adds email addresses to a list, providing visual feedback of the added emails.
- * - Validates and submits event name and associated email addresses as a consolidated object.
- * - Leverages the custom `Input` component for input fields, ensuring a consistent UI/UX.
- *
- * The form simplifies the process of collecting multiple emails by allowing users to add them one at a time,
- * and displays the current list of added emails. Upon submission, the event name along with the list of emails
- * is logged to the console, demonstrating how the data could be processed or sent to an API.
- *
- * Implementation Notes:
- * - The `handleAddEmail` function prevents the addition of empty or duplicate email addresses to the list.
- * - Form submission resets the input fields and the list of emails, readying the form for another submission.
- * - The `Box` component is used to wrap the form elements, providing a styled container.
- */
-
 // Import statements
 "use client";
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import React, { use, useState } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
 import Box from "../../containers/box/box";
-import Input from "../input/input";
-import { RequestProps } from "@/utils/dev/frontEndInterfaces"; // Import of type definitions
+
 import { PlusIcon } from "@heroicons/react/24/outline";
+import { Input } from "@/app/components/ui/input";
+import { proposals } from "@prisma/client";
+import { useSession } from "next-auth/react";
+import { ExtendedUser } from "next-auth";
+
+
+
+// Define the structure of the email list
+type EmailArray = string[];
+
+// Interface for the proposal part of the form
+interface IProposal {
+  event_name: string; // Make event_name required as it's critical for form submission
+  event_type?: string;
+  event_category?: string;
+  event_start_time?: Date;
+  event_end_time?: Date;
+  symbol?: string;
+  event_timezone?: string;
+  event_location?: string;
+  description?: string;
+  contract_address?: string;
+  cost?: number;
+  total_number_tickets?: number;
+}
+
+// Interface for the entire form's data model
+interface RequestProps {
+  user_id:string
+  proposal: IProposal;
+  emailsArray: EmailArray;
+}
 
 const EventRequest: React.FC = () => {
-  const { control, handleSubmit, register, reset, getValues } =
-    useForm<RequestProps>();
-  const [emails, setEmails] = useState<string[]>([]); // State to store the list of emails
+  const session = useSession();
+  const { handleSubmit, register, reset, getValues } = useForm<RequestProps>();
+  const [emails, setEmails] = useState<EmailArray>([]);
 
   const handleAddEmail = () => {
-    const emailToAdd = getValues("email");
+    const emailToAdd: any  | undefined = getValues("emailsArray"); // Specify that this is a string from the form
     if (emailToAdd && !emails.includes(emailToAdd)) {
       setEmails((currentEmails) => [...currentEmails, emailToAdd]);
-      reset({ eventName: getValues("eventName") }); // Reset only the email field, preserving eventName
+      // Since `emails` is not a directly registered input in react-hook-form, we manage it via state
+    }
+  };  
+
+  const sendData = async ({ emailsArray, proposal, user_id }: RequestProps) => {
+    const host = process.env.NEXT_PUBLIC_HOST;
+    const url = `${host}/api/v1/proposal`;  // Ensure correct URL formation
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ emailsArray, proposal, user_id }),
+      });
+
+      if (!response.ok) {
+        console.error(`Error: ${response.status} - ${response.statusText}`);
+        return;
+      }
+
+      return response.json();
+    } catch (error) {
+      console.error("Failed to post request:", error);
     }
   };
 
-  const onSubmit = (data: RequestProps) => {
-    const requestData = {
-      eventName: data.eventName,
-      emailsArray: emails,
-    };
-    console.log(requestData);
-    reset(); // Reset the form fields
-    setEmails([]); // Clear the email list
+  const onSubmit: SubmitHandler<RequestProps> = async (formData) => {
+    const user_id = session.data?.user.id || '';  // Ensuring user_id is never undefined
+    const { proposal } = formData;
+    const event_name= proposal.event_name
+    await sendData({ emailsArray: emails, proposal:{event_name}, user_id });
+    console.log({ emailArray: emails, proposal:{event_name}, user_id })
+    reset();
+    setEmails([]);
   };
 
   return (
@@ -59,33 +90,25 @@ const EventRequest: React.FC = () => {
       <Box>
         <Input
           placeholder="Event Name"
-          register={register}
-          required
-          name="eventName"
-          message="Event name is required"
+          {...register("proposal.event_name", { required: "Event name is required" })}
         />
         <div className="flex flex-row gap-2">
           <Input
             placeholder="name@gmail.com"
-            register={register}
-            required
-            name="email"
+            {...register("emailsArray")}
           />
           <button
-            type="button" // Prevent form submission on button click
+            type="button"
             onClick={handleAddEmail}
-            className="px-3 py-2 hover:bg-orange-500 ring-1 ring-orange-500 text-orange-500 hover:text-white rounded-md w-3xl h-3xl rounded-full"
+            className="px-3 py-2 hover:bg-orange-500 ring-1 ring-orange-500 text-orange-500 hover:text-white rounded-md"
           >
-           <PlusIcon className="w-4"/>
+            <PlusIcon className="w-4 h-4" />
           </button>
         </div>
         {emails.length > 0 && (
           <div className="mt-4">
             {emails.map((email, index) => (
-              <div
-                key={index}
-                className="flex justify-between items-center text-sm py-2 h-10"
-              >
+              <div key={index} className="flex justify-between items-center text-sm py-2">
                 <p>{email}</p>
               </div>
             ))}
