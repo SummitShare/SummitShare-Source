@@ -50,16 +50,7 @@ export async function POST(req: Request , res : NextResponse) {
       proposal,
       user_id
     };
-  
-    /**
-     * POST handler for the proposals route. Orchestrates the creation of a new proposal, 
-     * the sending of email requests to potential stakeholders, and the registration of the 
-     * proposal creator as a stakeholder.
-     * 
-     * @param req - The incoming HTTP POST request containing the proposal details.
-     * @returns A JSON response summarizing the outcome of the operations.
-     */
-    
+
     const response = await fetch(url, {
       method: "POST",
       headers: {

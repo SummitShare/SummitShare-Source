@@ -8,8 +8,7 @@ Purpose: Manages the voting process on proposals by stakeholders, updates event 
 import { NextResponse } from 'next/server'
 import { PrismaClient, event_category_enum, event_type_enum } from '@prisma/client';
 import { EventData, IStakes, StakeholderStakes } from '@/utils/dev/typeInit';
-
-const prisma = new PrismaClient();
+import prisma from '../../../../../../config/db';
 
 /**
  * Updates the event ID for a proposal and its associated stakeholders in the database.

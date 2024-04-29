@@ -6,8 +6,9 @@ Purpose: Handles the creation of new proposals for events, updating stakeholders
 import { PrismaClient } from '@prisma/client'
 import { NextResponse } from 'next/server'
 import { EmailStatus, IPropsal, IStakes, EmailArray } from '@/utils/dev/typeInit';
+import prisma from '../../../../../../config/db';
 
-const prisma = new PrismaClient()
+
 
   /**
    * Updates the proposal ID for all stakeholders associated with a previous proposal to a new proposal ID.
@@ -47,7 +48,7 @@ const prisma = new PrismaClient()
 async function ensureStakeholdersInTable(stakes: IStakes ,proposal_id : string) : Promise<boolean> {
   // Guard clause to check if companyStakes is empty
   if (Object.keys(stakes).length === 0) {
-    console.log("The companyStakes object is empty.");
+  
     return false; // Return false if companyStakes is empty
   }
 
@@ -60,7 +61,7 @@ async function ensureStakeholdersInTable(stakes: IStakes ,proposal_id : string) 
 
   const emails = Object.keys(stakes); // Get all stakeholder IDs from the Stakes object
 
-  // Iterate through each stakeholder email to validate their presence and association with the proposal.
+ 
   for (const email of emails) {
     const user = await prisma.users.findUnique({
       where: { email: email }
@@ -121,7 +122,7 @@ export async function POST(req: Request, res: NextResponse) {
 
         const stakesValidated = await ensureStakeholdersInTable(stakes,proposal_id)
         if (stakesValidated == false) {
-          return NextResponse.json({ error: 'wrong stakeholder format ' }, { status: 400 });
+          return NextResponse.json({ error: "invalid or missing stakeholders please ensure all stakeholders have accepted the requesrs " }, { status: 400 });
         }
 
       // Append stakes to the proposal object if stakesValidated is true

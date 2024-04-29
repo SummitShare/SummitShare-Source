@@ -76,13 +76,21 @@ const EventRequest: React.FC = () => {
   };
 
   const onSubmit: SubmitHandler<RequestProps> = async (formData) => {
-    const user_id = session.data?.user.id || '';  // Ensuring user_id is never undefined
-    const { proposal } = formData;
-    const event_name= proposal.event_name
-    await sendData({ emailsArray: emails, proposal:{event_name}, user_id });
-    console.log({ emailArray: emails, proposal:{event_name}, user_id })
-    reset();
-    setEmails([]);
+
+    try{
+      const user_id = session.data?.user.id;  
+      const { proposal } = formData;
+      const event_name= proposal.event_name
+      await sendData({ emailsArray: emails, proposal:{event_name}, user_id });
+      console.log({ emailArray: emails, proposal:{event_name}, user_id })
+      reset();
+      setEmails([]);
+    }
+
+    catch(err){
+console.log(err)
+    }
+   
   };
 
   return (

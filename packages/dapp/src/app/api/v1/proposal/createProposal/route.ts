@@ -90,7 +90,9 @@ export async function POST(req: Request, res: NextResponse) {
         // Parse the request body
         const requestBody = await req.json();
         const { proposal ,user_id ,  }: { proposal: IPropsal,  user_id:string  } = requestBody;
-
+        if (!proposal || !user_id) {
+          return NextResponse.json({ message: 'no proposal or user id sent' }, { status: 404 });
+        }
         // Serializes the proposal object to store as a string in the database
         const prop = JSON.stringify(proposal);
 

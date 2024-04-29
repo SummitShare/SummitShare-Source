@@ -29,7 +29,7 @@ async function handleEmailProcessing(email: string, proposal_id: string, host: s
     const emailExists = !!user;
 
     const t = crypto.randomUUID();
-    const verificationLink = `http://${host}/api/v1/proposal/requests/acceptRequests?token=${t}`;
+    const verificationLink = `http://${host}/verifcation/request/${t}`;
 
     // Configure the mail options
     const mailOptions = {
