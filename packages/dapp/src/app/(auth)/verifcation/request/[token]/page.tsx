@@ -76,6 +76,8 @@ catch
     
     console.log(`token ${token}`)
     console.log(`choice ${response}`)
+
+    router.push('/')
  }
 
    // const verifyEmail =  () => {

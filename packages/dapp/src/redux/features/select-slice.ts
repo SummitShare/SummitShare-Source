@@ -7,6 +7,7 @@ interface SelectState {
   event_timezone: string;
   event_category: string;
   event_location: string;
+  event_type:string
 }
 
 const initialState: SelectState = {
@@ -15,7 +16,11 @@ const initialState: SelectState = {
   event_timezone: "",
   event_category: "",
   event_location: "",
+  event_type:"",
 };
+
+
+
 
 export const selectSlice = createSlice({
   name: "select",
@@ -36,6 +41,9 @@ export const selectSlice = createSlice({
     setEvent_location: (state, action: PayloadAction<string>) => {
       state.event_location = action.payload;
     },
+    setEvent_Type: (state, action: PayloadAction<string>) => {
+      state.event_type = action.payload;
+    },
   },
 });
 
@@ -45,6 +53,7 @@ export const {
   setEvent_category,
   setEvent_location,
   setEvent_timezone,
+  setEvent_Type
 } = selectSlice.actions;
 
 export default selectSlice.reducer;

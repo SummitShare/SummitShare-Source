@@ -14,25 +14,25 @@ import prisma from '../../../../../../config/db';
 
 export async function POST(req: Request, res: NextResponse) {
   const requestBody = await req.json();
-  const host = req.headers.get('host');
-  const {  email_address}: {   email_address: string } = requestBody;
+  const {  user_id}: {   user_id: string } = requestBody;
 
-  if (!email_address){
+  if (!user_id){
     return NextResponse.json({ "message": "no user id sent"}, { status: 404 });
   }
   try {
-    const requests = await prisma.requests.findMany({
+    const stakeholders = await prisma.stakeholders.findMany({
         where: {
-            email_address:email_address,
-            status: "Pending"
+          user_id: user_id
         },
+        select: {
+          proposal_id: true  // Only select the proposal_id from the relation
+        }
       });
     
       // Extract the proposal IDs into a flat array, filtering out any nulls
-      const verificationLinks = requests.map(request => {
-        return `http://${host}/verification/request/${request.token}`;
-    });
-     return NextResponse.json({verificationLinks},{ status: 200 });
+      const proposalIds = stakeholders.map(stakeholder => stakeholder.proposal_id).filter(id => id !== null);
+     proposalIds;
+     return NextResponse.json({proposalIds},{ status: 200 });
     
   } catch (error) {
     console.log(error)

@@ -74,7 +74,8 @@ export interface SelectComponentProps extends React.SelectHTMLAttributes<HTMLSel
     | "eventCountryType"
     | "event_timezone"
     | "event_category"
-    | "event_location";
+    | "event_location"
+    | "event_type";
 };
 
 // common/inputs/input/input.tsx

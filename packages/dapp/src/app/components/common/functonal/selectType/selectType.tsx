@@ -35,6 +35,7 @@ import {
   setEvent_category,
   setEvent_location,
   setEvent_timezone,
+  setEvent_Type
 } from "@/redux/features/select-slice";
 import { AppDispatch } from "@/redux/store";
 import { SelectComponentProps } from "@/utils/dev/frontEndInterfaces";
@@ -72,6 +73,9 @@ const SelectType = ({
       case "event_location":
         dispatch(setEvent_location(option));
         break;
+        case "event_type":
+          dispatch(setEvent_Type(option));
+          break;
       default:
         console.warn("Unhandled select type:", type);
     }
