@@ -11,9 +11,10 @@ const TicketPurchaseComponent = ({ userAddress, exhibitId }: TicketPurchaseProps
   const [ticketPrice, setTicketPrice] = useState<string>('');
   const [status, setStatus] = useState<string>('');
   const [provider, setProvider] = useState<ethers.providers.Web3Provider | null>(null);
+  const [purchaseSuccessful, setPurchaseSuccessful] = useState<boolean>(false);
+  const [ticketURI, setTicketURI] = useState<string>('');
   const client = useApolloClient();
   const router = useRouter();
-  const [purchaseSuccessful, setPurchaseSuccessful] = useState<boolean>(false);
   //const [customGasLimit, setCustomGasLimit] = useState<string>('250000');
 
 
@@ -91,12 +92,16 @@ const TicketPurchaseComponent = ({ userAddress, exhibitId }: TicketPurchaseProps
             // Approve USDC transfer for ticket purchase
             setStatus('Approving USDC transfer...');
             const approveTx = await usdcContract.approve(CONTRACT_ADDRESSES.MuseumAdd, ticketPrice,)// { gasLimit });
-            await approveTx.wait(2);
+            await approveTx.wait(6);
 
             // Execute ticket purchase transaction
             setStatus('Purchasing ticket...');
             const purchaseTx = await museumContract.purchaseTicket(exhibitId, ticketPrice,) //{ gasLimit });
-            await purchaseTx.wait(2);
+            await purchaseTx.wait(4);
+
+            const tokenId = await museumContract.tokenOfOwnerByIndex(userAddress, 0); // Fetch the latest token
+            const uri = await museumContract.tokenURI(tokenId);
+            setTicketURI(uri);
 
             //State update after successful ticket purchase
              setPurchaseSuccessful(true);

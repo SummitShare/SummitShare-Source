@@ -9,7 +9,7 @@ import prisma from "../../../../config/db";
 import { NextApiRequest } from 'next';
 import { NextResponse } from "next/server";
 import { ethers } from 'ethers';
-import { getGasPrice } from "@/utils/dev/gasEstimator";
+
 
 // Function to call an external API for event parameters
 async function callDeployEventApi(eventId: string): Promise<ExhibitParams> {
@@ -43,9 +43,6 @@ async function deployExhibit(exhibitParams : ExhibitParams) {
 
         // Use the modular approach to get the EventOrganizerService contract
         const organizerServiceContract = contracts.getEventOrganizerService();
-        
-        // Gas Limit application
-        const gasLimit = await getGasPrice(organizerServiceContract.provider)
 
         const tx = await organizerServiceContract.organizeExhibit(
             exhibitParams.name,
@@ -58,9 +55,6 @@ async function deployExhibit(exhibitParams : ExhibitParams) {
             exhibitParams.artifactNFT,
             exhibitParams.details,
             exhibitParams.id,
-            {
-                gasLimit
-            }
         );
 
         const receipt0 = await tx.wait(6)

@@ -3,8 +3,13 @@
 /* eslint-disable */
 export type { ArtifactNFT } from "./ArtifactNFT";
 export type { ConversionContract } from "./ConversionContract";
+export type { Donations } from "./Donations";
 export type { EventEscrow } from "./EventEscrow";
 export type { EventOrganizerService } from "./EventOrganizerService";
 export type { ExhibitNFT } from "./ExhibitNFT";
 export type { MUSDC } from "./MUSDC";
 export type { Museum } from "./Museum";
+
+export function getDonations(projectWalletAddress: string | undefined) {
+    throw new Error('Function not implemented.');
+}
