@@ -26,9 +26,9 @@
 
 "use client"; // Directive for React Server Components to ensure client-side execution
 
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import React, { useState, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
+import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import {
   setEventCountryType,
   setEventType,
@@ -36,27 +36,23 @@ import {
   setEvent_location,
   setEvent_timezone,
   setEvent_Type
-} from "@/redux/features/select-slice";
-import { AppDispatch } from "@/redux/store";
-import { SelectComponentProps } from "@/utils/dev/frontEndInterfaces";
+} from '@/redux/features/select-slice';
+import { AppDispatch } from '@/redux/store';
+import { SelectComponentProps } from '@/utils/dev/frontEndInterfaces';
 
-const SelectType = ({
-  options,
-  first,
-  type,
-  ...selectProps
-}: SelectComponentProps) => {
+const SelectType = React.memo(({ options, first, type, ...selectProps }: SelectComponentProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const [isTypeOpen, setIsTypeOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState<string>(first);
 
-  const handleTypeOpen = () => setIsTypeOpen(!isTypeOpen);
+  const handleTypeOpen = useCallback(() => {
+    setIsTypeOpen(prev => !prev);
+  }, []);
 
-  const handleEventTypeChange = (option: string) => {
+  const handleEventTypeChange = useCallback((option: string) => {
     setSelectedValue(option);
     setIsTypeOpen(false);
 
-    // Dispatch the appropriate Redux action based on the `type` prop
     switch (type) {
       case "eventCountryType":
         dispatch(setEventCountryType(option));
@@ -73,39 +69,29 @@ const SelectType = ({
       case "event_location":
         dispatch(setEvent_location(option));
         break;
-        case "event_type":
-          dispatch(setEvent_Type(option));
-          break;
+      case "event_type":
+        dispatch(setEvent_Type(option));
+        break;
       default:
         console.warn("Unhandled select type:", type);
     }
 
-    // If an onChange handler is provided, invoke it with a simulated event object
     if (selectProps.onChange) {
       const event = { target: { value: option, name: selectProps.name } };
       selectProps.onChange(event as any);
     }
-  };
+  }, [dispatch, type, selectProps.onChange, selectProps.name]);
 
   return (
     <div className="relative space-y-2 w-full">
-      {/* Button to toggle dropdown */}
-      <button
-        onClick={handleTypeOpen}
-        className="w-full rounded-md flex justify-between items-center gap-2 h-10 ring-1 ring-neutral-300 px-3 bg-white text-[0.8rem]"
-      >
+      <button onClick={handleTypeOpen} className="w-full rounded-md flex justify-between items-center gap-2 h-10 ring-1 ring-neutral-300 px-3 bg-white text-[0.8rem]">
         <p className="text-neutral-950">{selectedValue}</p>
         <ChevronDownIcon className="w-3 h-3 text-neutral-700" />
       </button>
-      {/* Dropdown list */}
       {isTypeOpen && (
         <ul className="absolute w-full h-[200px] rounded-md flex flex-col items-start gap-1 p-2 z-30 bg-white ring-1 ring-neutral-300 shadow-sm overflow-y-scroll">
           {options.map((option, index) => (
-            <li
-              key={index}
-              onClick={() => handleEventTypeChange(option)}
-              className="hover:bg-neutral-50 w-full px-2 py-2 rounded-[4px] cursor-pointer text-neutral-950"
-            >
+            <li key={index} onClick={() => handleEventTypeChange(option)} className="hover:bg-neutral-50 w-full px-2 py-2 rounded-[4px] cursor-pointer text-neutral-950">
               {option}
             </li>
           ))}
@@ -113,6 +99,6 @@ const SelectType = ({
       )}
     </div>
   );
-};
+});
 
 export default SelectType;

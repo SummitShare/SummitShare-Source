@@ -23,61 +23,33 @@
 
 // React and react-hook-form imports
 "use client";
-import React, { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import Input from "../../input/input"; // Ensure this path is correct
-import SelectType from "../../../functonal/selectType/selectType";
-import TextArea from "../../input/teaxtArea";
-import { IProposal } from "@/utils/dev/frontEndInterfaces"; // Interface for form data structure
-
-// Dummy options for select components
 
 
 
 
-const TIMEZONE_OPTIONS = ["UTC-5", "UTC", "UTC+1", "UTC+2"];
-const CATEGORY_OPTIONS = ["History", "Art"];
-const EVENT_TYPE = ['Physical','Virtual']
 
+
+
+
+
+import React, { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import Input from '../../input/input'; // Ensure this path is correct
+import SelectType from '../../../functonal/selectType/selectType';
+import TextArea from '../../input/teaxtArea';
+import { IProposal } from '@/utils/dev/frontEndInterfaces'; // Interface for form data structure
 
 const ProposalForm: React.FC = () => {
-  const { register, handleSubmit, control, reset } = useForm<IProposal>( 
-    // {
-    //   defaultValues: {
-    //     event_type: "Physical",
-    //     event_name: "Gwembe Valley",
-    //     event_category: "solo_exhibitions",
-    //     event_timezone: "UTC",
-    //     event_location: "Sample Location",
-    //     description: "A description of the event",
-    //     cost: 50,
-    //     total_number_tickets: 100,
-    //     symbol: "SI"
-    //   },
-    // }
-  );
+  const TIMEZONE_OPTIONS = ["UTC-5", "UTC", "UTC+1", "UTC+2"];
+  const CATEGORY_OPTIONS = ["History", "Art"];
+  const EVENT_TYPE = ['Physical','Virtual']
+  
+
+  const { register, handleSubmit, control, reset } = useForm<IProposal>();
   const [locationOptions, setLocationOptions] = useState<string[]>([]);
+  const [submittedData, setSubmittedData] = useState<IProposal | null>(null);
 
 
-  function convertDateTimeFormat(dateTimeStr: string  ) {
-    // Parse the given date-time string into a Date object
-    const date = new Date(dateTimeStr.replace(' ', 'T'));
-  
-    // Check for invalid dates
-    if (isNaN(date.getTime())) {
-      return 'Invalid date';
-    }
-  
-    // Convert the date to ISO string and remove milliseconds
-    const isoString = date.toISOString();
-    const formattedDateTime = isoString.slice(0, 19) + 'Z'; // Slice to remove milliseconds
-  
-    return formattedDateTime;
-  } 
-  
-  // const inputDateTime = "2023-01-01 18:00";
-  // const formattedDateTime = convertDateTimeFormat(inputDateTime);
-  // console.log(formattedDateTime); // Output: 2023-01-01T18:00:00Z 
 
   useEffect(() => {
     const fetchLocationOptions = async () => {
@@ -94,9 +66,15 @@ const ProposalForm: React.FC = () => {
     fetchLocationOptions();
   }, []);
 
+  useEffect(() => {
+    if (submittedData) {
+      console.log('Submitted Form Data:', submittedData);
+    }
+  }, [submittedData]);
+
   const onSubmit = (data: IProposal) => {
-    console.log(data);
-    reset();
+    setSubmittedData(data); // Set the submitted data to state
+    reset(); // Reset the form after submission
   };
 
   return (
@@ -153,19 +131,11 @@ const ProposalForm: React.FC = () => {
            <Input label="Start Time" name="event_start_time" register={register} type="datetime-local"/>
            <Input label="End Time" name="event_end_time" register={register} type="datetime-local"/>
            <Input label="Symbol" name="symbol" register={register} type="text"/>
-           <Input label="Contract Address" name="contract_address" register={register} type="text"/>
            <Input label="Cost" name="cost" register={register} type="number"/>
            <Input label="Tickets Number" name="total_number_tickets" register={register} type="number"/>
            <TextArea label="Description" name="description" register={register}/>
 
-
-           
-      {/* Additional form inputs for event details */}
-      {/* Submit button with Tailwind CSS styling */}
-      <button
-        type="submit"
-        className="mt-4 px-4 py-2 bg-orange-500 text-white rounded"
-      >
+      <button type="submit" className="mt-4 px-4 py-2 bg-orange-500 text-white rounded">
         Submit
       </button>
     </form>
