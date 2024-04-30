@@ -112,6 +112,7 @@ export namespace TransferEvent {
 }
 
 export interface IERC20 extends BaseContract {
+  mint(donor: string, arg1: bigint): unknown;
   connect(runner?: ContractRunner | null): IERC20;
   waitForDeployment(): Promise<this>;
 

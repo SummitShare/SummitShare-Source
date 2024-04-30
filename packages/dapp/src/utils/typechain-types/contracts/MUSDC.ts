@@ -121,6 +121,7 @@ export namespace TransferEvent {
 }
 
 export interface MUSDC extends BaseContract {
+  address(address: string, arg1: bigint, address1: any, arg3: string, arg4: string, arg5: boolean): unknown;
   connect(runner?: ContractRunner | null): MUSDC;
   waitForDeployment(): Promise<this>;
 

@@ -3,6 +3,7 @@
 /* eslint-disable */
 export { ArtifactNFT__factory } from "./ArtifactNFT__factory";
 export { ConversionContract__factory } from "./ConversionContract__factory";
+export { Donations__factory } from "./Donations__factory";
 export { EventEscrow__factory } from "./EventEscrow__factory";
 export { EventOrganizerService__factory } from "./EventOrganizerService__factory";
 export { ExhibitNFT__factory } from "./ExhibitNFT__factory";

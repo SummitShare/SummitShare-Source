@@ -11,6 +11,8 @@ import MuseumABI from '../artifacts/contracts/Museum.sol/Museum.json'
 import ArtifactNFTABI from '../artifacts/contracts/ArtifactNFT.sol/ArtifactNFT.json'
 import EventEscrowABI from '../artifacts/contracts/EventEscrow.sol/EventEscrow.json'
 import MUSDCABI from '../artifacts/contracts/MUSDC.sol/MUSDC.json'
+import ExhibitNFTABI from '../artifacts/contracts/ExhibitNFT.sol/ExhibitNFT.json'
+import DonationsABI from "../artifacts/contracts/Donations.sol/Donations.json"
 
 
 export const CONTRACT_ADDRESSES = {
@@ -26,6 +28,8 @@ export const ABIs = {
     ArtifactNFTABI,
     EventEscrowABI,
     MUSDCABI,
+    ExhibitNFTABI,
+    DonationsABI
 };
 
 export const contracts = {
@@ -33,30 +37,33 @@ export const contracts = {
         const wallet = initializeWallet();
         return new ethers.Contract(
             CONTRACT_ADDRESSES.EventOrganizerServiceAdd,
-            EventOrganizerServiceABI as ethers.ContractInterface,
+            EventOrganizerServiceABI as unknown as ethers.ContractInterface, // `unknown` operator is used to dodge a type issue which can also be solved by removing the outer tags of the contract ABI 
             wallet
         );
     },
+    
     getArtifactNFT: (address : string) => { // Accepting dynamic address for flexibility
         const wallet = initializeWallet();
         return new ethers.Contract(
             address, // Using a dynamic address for ArtifactNFT instances
-            ArtifactNFTABI as ethers.ContractInterface,
+            ArtifactNFTABI as unknown as ethers.ContractInterface,
             wallet
         );
     },
+
     getEventEscrow: (address : string) => {
         const wallet = initializeWallet();
         return new ethers.Contract(
             address, 
-            EventEscrowABI as ethers.ContractInterface,
+            EventEscrowABI as unknown as ethers.ContractInterface,
             wallet
         );
     },
+
     getMUSDC: (signer?: ethers.Signer) => {
         const contract = new ethers.Contract(
             CONTRACT_ADDRESSES.MUSDCAdd,
-            MUSDCABI as ethers.ContractInterface,
+            MUSDCABI as unknown as ethers.ContractInterface,
             signer || initializeWallet() // Use provided signer or initialize a new wallet
         );
         return contract;
@@ -65,10 +72,28 @@ export const contracts = {
     getMuseum: (signer?: ethers.Signer) => {
         const contract = new ethers.Contract(
             CONTRACT_ADDRESSES.MuseumAdd,
-            MuseumABI as ethers.ContractInterface,
+            MuseumABI as unknown as ethers.ContractInterface,
             signer || initializeWallet() // Use provided signer or initialize a new wallet
         );
         return contract;
 
+    },
+
+    getExhibitNFT: (address : string) => { // Accepting dynamic address for flexibility
+        const wallet = initializeWallet();
+        return new ethers.Contract(
+            address, // Using a dynamic address for ArtifactNFT instances
+            ExhibitNFTABI as unknown as ethers.ContractInterface,
+            wallet
+        );
+    },
+
+    getDonations: (address : string) => {
+        const wallet = initializeWallet();
+        return new ethers.Contract(
+            address,
+            DonationsABI as unknown as ethers.ContractInterface,
+            wallet
+        );
     }
 };
