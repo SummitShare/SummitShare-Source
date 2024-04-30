@@ -12,6 +12,7 @@ export const initializeWallet = (): ethers.Wallet => {
         throw new Error("RPC_URL is not defined in the environment variables.");
     }
 
+    
     // Initialize the provider with the RPC URL
     const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
 
