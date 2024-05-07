@@ -11,6 +11,7 @@
  * options that align with the overall theme of the application.
  */
 
+import { ArrowRightCircleIcon } from "@heroicons/react/24/outline";
 import ButtonTransparent from "../button/buttonTrasparent"; // Import custom transparent button component
 import ButtonWhite from "../button/buttonWhite"; // Import custom white button component
 
@@ -21,23 +22,27 @@ function AdminRegisterCard() {
     // Container with styling for rounded corners, padding, and orange background
     <div className="w-full rounded-xl p-6 space-y-6 bg-orange-500 md:p-10 md:py-20">
       {/* Text container with styling for bold and large text */}
-      <div className="text-2xl font-bold text-gray-50 w-full">
-        Interested In Uploading?
-        <br />
+      <div className="text-2xl font-bold text-gray-50 w-full space-y-2">
+        <p> Interested In Uploading?</p>
         {/* Subtext with reduced opacity for differentiation */}
-        <span className="text-gray-100/50">Sign up to become an Exhibitor</span>
+        <p className="text-gray-100/50">Sign up to become an Exhibitor</p>
       </div>
       {/* Button container with a gap for spacing */}
-      <div className="w-full flex gap-2">
-        {/* White button for the "Sign Up" action */}
-        <ButtonWhite text="Sign Up" width="w-fit">
-          Sign Up
-        </ButtonWhite>
-        {/* Transparent button for the "Learn More" action */}
-        <ButtonTransparent text="Sign Up" width="w-fit">
-          Learn More
-        </ButtonTransparent>
-      </div>
+      <div className="w-full md:w-fit space-y-3 text-center md:text-left">
+          <div className="relative w-full md:w-[400px] space-y-3">
+            <input
+              className="w-full h-10 focus:outline-none ring-1 ring-orange-300 focus:ring-orange-500 rounded-md py-[0.5rem] px-[0.8rem] transition-all input-autofill placeholder:text-gray-700 placeholder:text-[0.7rem] shadow-sm text-[0.7rem] text-gray-700"
+              placeholder="Email"
+            />
+            {/* Search icon positioned inside the input field */}
+         
+          </div>
+          <div className="w-full flex justify-right">
+            <ButtonTransparent text="text-sm " width="w-fit">
+              Submit
+            </ButtonTransparent>
+          </div>
+        </div>
     </div>
   );
 }

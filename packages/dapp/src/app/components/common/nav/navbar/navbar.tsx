@@ -29,19 +29,16 @@
 // Importing necessary icons from @heroicons/react and React hooks
 import {
   Bars2Icon,
-  GlobeEuropeAfricaIcon,
   MagnifyingGlassIcon,
   XMarkIcon,
   UserGroupIcon,
   BookOpenIcon,
   QuestionMarkCircleIcon,
-  TicketIcon,
   UserIcon,
   KeyIcon,
   GlobeAltIcon,
   UserCircleIcon,
   BellIcon,
-  ShoppingBagIcon,
   ShoppingCartIcon,
   QrCodeIcon,
   PowerIcon,
@@ -152,28 +149,11 @@ const router = useRouter()
 
         {/* Search input field, visible only on screens larger than 'sm' */}
 
-        <div className="relative hidden sm:block">
-          <input
-            type="text"
-            id="search"
-            onChange={handleSearchChange}
-            onBlur={() => setSearchTerm("")}
-            className="w-[400px] h-10 focus:outline-none ring-1 ring-gray-300 focus:ring-orange-500 rounded-md py-[0.5rem] px-[0.8rem] transition-all input-autofill placeholder:text-gray-500 placeholder:text-[0.7rem] shadow-sm text-[0.7rem] text-gray-700"
-            placeholder="Search by exhibit or artifact"
-          />
-          {/* Search icon positioned inside the input field */}
-          <MagnifyingGlassIcon
-            onClick={handleSearchChange}
-            className="w-4 text-gray-500 absolute top-3 right-3"
-          />
-          {data && (
-            <SearchResults data={data} searchResultsRef={searchResultsRef} />
-          )}
-        </div>
+    
 
         {/* Horizontal list of navigation links, hidden on smaller screens */}
-        <div className="hidden sm:block">
-          <ul className="flex-row gap-6 flex">
+        <div className="hidden sm:block lg:flex w-full mx-6 justify-end">
+          <ul className="flex-row gap-6 flex ">
             {/* Navigation items with hover effect to change text color */}
             {/* Replace '#' with actual paths */}
 
@@ -198,10 +178,7 @@ const router = useRouter()
         {/* User icon and connect button, hidden on smaller screens */}
         <div className="hidden sm:block">
           <div className="flex gap-6">
-            <BellIcon
-              onClick={handleNote}
-              className="w-6 cursor-pointer hover:text-orange-500"
-            />
+        
             <ThirdwebProvider>
               <WalletConnectNav />
             </ThirdwebProvider>
@@ -229,52 +206,13 @@ const router = useRouter()
               onClick={handleCart}
               className="w-6 cursor-pointer hover:text-orange-500"
             />
-            {notes ? (
-              <div className="fixed top-[85px] right-0 ring-1 ring-gray-300 rounded-l h-80 bg-white w-[30%] overflow-y-scroll hidden sm:block">
-                {notifications.map((note, index) => (
-                  <div className="border-b border-gray-100 px-6 py-3 space-y-2 hover:bg-gray-100/50 cursor-pointer ">
-                    <h3 className="text-sm font-medium text-gray-950">
-                      {note.title}
-                    </h3>
-                    <p className="text-xs text-gray-700">{note.message}</p>
-                    <p className="text-[10px] text-gray-700">{note.dateTime}</p>
-                  </div>
-                ))}
-              </div>
-            ) : null}
+            
           </div>
         </div>
 
         {/* Mobile menu icons (search and menu toggle), visible only on small screens */}
         <div className="flex flex-row items-center justify-end gap-6 md:hidden lg:hidden">
-          {search ? (
-            <div className="fixed inset-x-0 px-6 w-full">
-              <input
-                type="text"
-                id="search"
-                onChange={handleSearchChange}
-                onBlur={() => setSearchTerm}
-                className="w-full h-10 focus:outline-none ring-1 ring-gray-300 focus:ring-orange-500 rounded-md py-[0.5rem] px-[0.8rem] transition-all input-autofill placeholder:text-gray-500 placeholder:text-[0.7rem] shadow-sm text-[0.7rem] text-gray-700"
-                placeholder="Search by exhibit or artifact"
-              />
-              {/* Search icon positioned inside the input field */}
-              <XMarkIcon
-                className="w-4 text-gray-500 absolute top-3 right-10"
-                onClick={handleSearch}
-              />
-              {data && (
-                <SearchResults
-                  data={data}
-                  searchResultsRef={searchResultsRef}
-                />
-              )}
-            </div>
-          ) : (
-            <MagnifyingGlassIcon
-              className="w-8 text-gray-950"
-              onClick={handleSearch}
-            />
-          )}
+         
 
           <Bars2Icon
             className="w-8 text-gray-950 cursor-pointer"
@@ -304,10 +242,7 @@ const router = useRouter()
               <ShoppingCartIcon className="w-6  text-gray-950" />
               <Link href="/tickets"> tickets</Link>
             </li>
-            <li className="text-xl text-gray-700 w-full flex flex-row gap-2 items-center">
-              <BellIcon className="w-6 text-gray-950" />
-              <Link href="/notifications"> notifications</Link>
-            </li>
+       
             <li className="text-xl text-gray-700 w-full flex flex-row gap-2 items-center">
               <UserGroupIcon className="w-6 text-gray-950" />
               <Link href="#"> partners</Link>
