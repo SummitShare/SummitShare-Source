@@ -102,6 +102,8 @@ model users {
   proposals                                                                   proposals[]
   social_media_links                                                          social_media_links[]
   stakeholders                                                                stakeholders[]
+  ticket_transaction                                                          ticket_transaction[]
+  tickets                                                                     tickets[]
   user_images                                                                 user_images[]
   user_sessions                                                               user_sessions[]
   user_wallets                                                                user_wallets[]
@@ -183,6 +185,8 @@ model ticket_transaction {
   event_id         String?  @db.Uuid
   price            Decimal  @db.Decimal(10, 2)
   transaction_time DateTime @default(now()) @db.Timestamp(6)
+  user_id          String   @db.Uuid
+  users            users    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   events           events?  @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tickets_transactions_event_id_fkey")
 }
 
@@ -192,7 +196,9 @@ model tickets {
   purchased_at   DateTime? @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamp(6)
   validity       Int?
   id             Int       @id @default(autoincrement())
+  user_id        String    @db.Uuid
   events         events?   @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users          users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model user_images {
