@@ -3,11 +3,13 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../styles/globals.css";
 import { Providers } from "@/redux/provider";
-import Navbar from "../components/common/nav/navbar/navbar";
 
-import Footer from "../components/common/nav/footer/footer";
+
+
 import { ApolloWrapper } from "./apolloWrapper";
 import { SessionProvider } from "next-auth/react";
+import { NavBar } from "../components/navigation/navBar";
+import Footer from "../components/navigation/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,12 +26,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`bg-gray-50 mt-24 mx-5 ${inter.className}`}>
+      <body className={`bg-gray-50 mt-10  ${inter.className}`}>
     
         <SessionProvider>
         <ApolloWrapper>
           <Providers>
-            <Navbar />
+            <NavBar />
             {children}
             <Footer />
           </Providers>
