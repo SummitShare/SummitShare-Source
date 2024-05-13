@@ -4,17 +4,21 @@ import { Bars2Icon, XMarkIcon } from "@heroicons/react/16/solid";
 import Link from "next/link";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { LinkProps } from "next/link";
 import {
   BookOpenIcon,
   InformationCircleIcon,
+  PowerIcon,
   TrashIcon,
   UserCircleIcon,
   UserGroupIcon,
 } from "@heroicons/react/24/outline";
 import { KeyIcon } from "@heroicons/react/24/outline";
 import { Banner } from "../banners/donation";
+import { ThirdwebProvider } from "@thirdweb-dev/react";
+import WalletConnectNav from "@/functonality/walletconnect";
+import { signOut, useSession } from "next-auth/react";
 
 interface NavLinkProps extends LinkProps {
   children: React.ReactNode;
@@ -22,6 +26,8 @@ interface NavLinkProps extends LinkProps {
 }
 
 export const NavBar = () => {
+ 
+
   return (
     <div className="w-full fixed top-0 inset-x-0 z-50">
       <nav className="w-full p-3 flex justify-between bg-gray-50 dark:bg-slate-800 border-b">
@@ -41,6 +47,9 @@ export const NavBar = () => {
               Github
             </NavLink>
           </ul>
+          <ThirdwebProvider>
+            <WalletConnectNav />
+          </ThirdwebProvider>
         </div>
 
         <Bars2 />
@@ -67,6 +76,8 @@ const NavLink: React.FC<NavLinkProps> = ({ children, className, ...props }) => {
 };
 
 function Bars2() {
+  const session =  useSession();
+  const router = useRouter()
   const [open, setOpen] = useState(false);
   return (
     <>
@@ -118,7 +129,23 @@ function Bars2() {
               <TrashIcon className="w-6" />
               Delate Account
             </NavLink>
+            <p>{JSON.stringify(session)}</p>
+            {session.status === "authenticated"? 
+            <li onClick={()=>{
+              signOut();
+          }} className="text-2xl text-gray-950 w-full flex flex-row gap-2 items-center">
+              <PowerIcon className="w-6 text-gray-950" />
+              <Link href="#"> logout</Link>
+            </li>: <li onClick={()=>{
+              router.push("/auth-sign-up");
+          }} className="text-2xl text-gray-950 w-full flex flex-row gap-2 items-center">
+              <PowerIcon className="w-6 text-gray-950" />
+              <Link href="#"> signIn</Link>
+            </li>}
           </ul>
+          <ThirdwebProvider>
+            <WalletConnectNav />
+          </ThirdwebProvider>
         </div>
       )}
     </>
