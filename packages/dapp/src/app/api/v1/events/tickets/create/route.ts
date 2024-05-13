@@ -4,14 +4,22 @@ import { NextResponse } from 'next/server'
 import prisma from '../../../../../../../config/db';
 import { randomUUID } from 'node:crypto';
 import { sendEmail } from '@/utils/methods/email/email';
-
+/**
+ * API Handler for creating tickets and recording ticket transactions.
+ * This handler is responsible for creating a ticket entry in the database and a corresponding
+ * ticket transaction record. It also sends a confirmation email to the user upon successful
+ * creation of the ticket and transaction.
+ *
+ * @param {Request} req - The incoming request object, expected to contain wallet_address,
+ *                        event_id, user_id, and eventLink in its JSON body.
+ * @param {NextResponse} res - The outgoing response object used to send back responses to the client.
+ * @returns {NextResponse} - Returns a JSON response with the status of the operation.
+ */
 
 export async function POST(req: Request, res: NextResponse) {
-
-
   try {
 
-    const { wallet_address, event_id, user_id, email,eventLink } = await req.json()
+    const { wallet_address, event_id, user_id,eventLink } = await req.json()
 
     if (!wallet_address) {
       return NextResponse.json({ message: "no wallet address sent", }, { status: 400 });
@@ -19,7 +27,7 @@ export async function POST(req: Request, res: NextResponse) {
     if (!event_id) {
       return NextResponse.json({ message: "no event id sent", }, { status: 400 });
     }
-    if (!user_id || !email) {
+    if (!user_id ) {
       return NextResponse.json({ message: "no user id sent or email", }, { status: 400 });
     }
 
@@ -34,6 +42,18 @@ export async function POST(req: Request, res: NextResponse) {
       return NextResponse.json({ message: "failed to create ticket", }, { status: 400 });
     }
 
+    
+    const user = await prisma.users.findUnique({
+      where:{
+        id:user_id
+      }
+    })
+
+    if (!user) {
+      return NextResponse.json({ message: "no user created", }, { status: 400 });
+    }
+     const email = user.email
+
     const event = await prisma.events.findUnique({
       where: {
         id: event_id
@@ -43,11 +63,10 @@ export async function POST(req: Request, res: NextResponse) {
       return NextResponse.json({ message: "no event found", }, { status: 400 });
     }
 
-
     const price = event.cost!
 
     if (!user_id) {
-      return NextResponse.json({ message: "no user di id sent", }, { status: 400 });
+      return NextResponse.json({ message: "no user id sent", }, { status: 400 });
     }
 
     const id = randomUUID()

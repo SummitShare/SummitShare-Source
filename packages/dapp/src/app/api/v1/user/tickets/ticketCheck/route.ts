@@ -16,7 +16,7 @@ export async function POST(req: Request, res: NextResponse) {
       return NextResponse.json({ message: "no user id sent", }, { status: 400 });
     }
 
-    const ticket = prisma.tickets.findFirst({
+    const ticket = await prisma.tickets.findFirst({
       where:{
         user_id,
         event_id
@@ -28,7 +28,7 @@ export async function POST(req: Request, res: NextResponse) {
     }
 
 
-    return NextResponse.json({ allowed:"true"}, { status: 401 });
+    return NextResponse.json({ allowed:"true"}, { status: 200 });
 
 
   } catch (error) {
