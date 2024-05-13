@@ -99,6 +99,7 @@ model users {
   exhibitor_account_users_exhibitor_account_users_exhibitor_account_idTousers exhibitor_account_users[] @relation("exhibitor_account_users_exhibitor_account_idTousers")
   exhibitor_account_users_exhibitor_account_users_user_idTousers              exhibitor_account_users[] @relation("exhibitor_account_users_user_idTousers")
   latest_rejecters_queue                                                      latest_rejecters_queue[]
+  password_reset_tokens                                                       password_reset_tokens[]
   proposals                                                                   proposals[]
   social_media_links                                                          social_media_links[]
   stakeholders                                                                stakeholders[]
@@ -274,6 +275,13 @@ model proposal_images {
   image_type    image_type_enum?
   gallery_index Int?             @db.SmallInt
   proposals     proposals        @relation(fields: [proposal_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model password_reset_tokens {
+  id         String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  user_id    String    @db.Uuid
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  users      users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 enum decision {
