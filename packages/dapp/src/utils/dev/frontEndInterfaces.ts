@@ -174,4 +174,12 @@ export interface RecentExhibitsData {
 };
 
 // useGetExhibitByID
+export interface ExhibitDetail {
+    baseURI: string;
+    name: string;
+    location: string;
+    details: string;
+    collection: Collection;
+    ticketPrice: string;
+}
 

@@ -1,38 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { ethers } from 'ethers';
-import { gql, useApolloClient } from '@apollo/client';
 import { TicketPurchaseProps, EthereumWindow } from '@/utils/dev/typeInit';
 import { CONTRACT_ADDRESSES, contracts } from '@/utils/dev/contractInit';
 import { handleContractError } from '@/utils/dev/handleContractError';
+import useExhibit from '@/lib/useGetExhibitById';
 
-const TicketPurchaseComponent = ({ userAddress, exhibitId }: TicketPurchaseProps) => {
+const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
+
+  // Hardcoded exhibit ID
+  const exhibitId = '0xf4857efc226bb39c6851aa137347cff8f8e050f9';
+
   // State hooks for managing component state
-  const [ticketPrice, setTicketPrice] = useState<string>('');
   const [status, setStatus] = useState<string>('');
   const [provider, setProvider] = useState<ethers.providers.Web3Provider | null>(null);
   const [purchaseSuccessful, setPurchaseSuccessful] = useState<boolean>(false);
   const [ticketURI, setTicketURI] = useState<string>('');
-  const client = useApolloClient();
-  const router = useRouter();
-  //const [customGasLimit, setCustomGasLimit] = useState<string>('250000');
-
-
- // GraphQL query for fetching all exhibits
- const GET_ALL_EXHIBITS = gql`
- query GetAllExhibits {
-     exhibits {
-         id
-         exhibitDetails {
-             ticketPrice
-         }
-     }
- }
-`;
+  const exhibit = useExhibit(exhibitId);
+  // const router = useRouter();
 
    // Effect hook to initialize the Web3 provider when the component mounts or exhibitId changes
    useEffect(() => {
-    //console.log("Exhibit ID:", exhibitId)
     const ethWindow = window as EthereumWindow;
     if (ethWindow.ethereum) {
         const web3Provider = new ethers.providers.Web3Provider(ethWindow.ethereum);
@@ -48,38 +36,17 @@ const TicketPurchaseComponent = ({ userAddress, exhibitId }: TicketPurchaseProps
 
 }, [exhibitId]);
 
-    // Effect hook for fetching ticket price
-    useEffect(() => {
-        client.query({ query: GET_ALL_EXHIBITS })
-          .then(response => {
-            const exhibits = response.data.exhibits;
-            const foundExhibit = exhibits.find((exhibit: { id: string; }) => exhibit.id === exhibitId);
-    
-            if (foundExhibit && foundExhibit.exhibitDetails.length > 0) {
-                // First item in exhibitDetails array contains the ticketPrice
-                setTicketPrice(foundExhibit.exhibitDetails[0].ticketPrice);
-            } else {
-                console.error('No matching exhibit found or no ticket details available');
-            }
-          })
-          .catch(error => {
-            console.error('Error fetching exhibits:', error);
-          });
-      }, [exhibitId, client]);
-    
-      if (!ticketPrice) {
-        return <div>Loading or no matching exhibit found...</div>;
-      }
-      
+  if (!exhibit) {
+    return <div>Loading or no Matching Exhibit Found.</div>
+  }
+  const ticketPrice = exhibit.exhibitDetails[0]?.ticketPrice || '';
+
       // Function to handle ticket purchase
        const purchaseTicket = async () => {
         if (!provider) {
             setStatus('Web3 provider is not initialized.');
             return;
         }
-
-         // Convert customGasLimit to BigNumber
-        //const gasLimit = ethers.utils.parseUnits(customGasLimit, 'wei');
 
         try {
 
@@ -88,7 +55,6 @@ const TicketPurchaseComponent = ({ userAddress, exhibitId }: TicketPurchaseProps
             const usdcContract = contracts.getMUSDC(signer)
             const museumContract = contracts.getMuseum(signer)
 
-            
             // Approve USDC transfer for ticket purchase
             setStatus('Approving USDC transfer...');
             const approveTx = await usdcContract.approve(CONTRACT_ADDRESSES.MuseumAdd, ticketPrice,)// { gasLimit });
@@ -127,7 +93,7 @@ const TicketPurchaseComponent = ({ userAddress, exhibitId }: TicketPurchaseProps
           <button 
             className='px-[23px] py-[13px] bg-blue-950 font-opensans font-semibold w-fit rounded-xl h-fit text-white cursor-pointer'
             onClick={purchaseTicket}
-            disabled={!ticketPrice}
+          
           >
             Purchase
           </button>
