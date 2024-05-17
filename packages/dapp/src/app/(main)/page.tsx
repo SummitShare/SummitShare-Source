@@ -1,10 +1,9 @@
 "use client";
 import { ArrowRightIcon, StarIcon } from "@heroicons/react/24/outline";
 import { useState, useEffect } from "react";
-import { XMarkIcon } from "@heroicons/react/16/solid";
+import Link from "next/link";
 
 export default function Home() {
-  const [open, setOpen] = useState(false);
 
   const [count, setCount] = useState({
     artifact: 0,
@@ -52,41 +51,6 @@ export default function Home() {
 
   return (
     <div className="space-y-20 ">
-        {open ? (
-          <div className="fixed inset-0 bg-gray-950/20 z-[60]">
-            <div className="bg-gray-50 p-6 space-y-6  ">
-              <XMarkIcon
-                className="w-6 float-end"
-                onClick={() => setOpen(!open)}
-              />
-              <div className="space-y-2">
-                <h1 className="text-xl font-bold space-y-2">Details</h1>
-                <p className="text-gray-700">
-                  Once Purchase is Selected the transaction will need to be
-                  signed in your wallet:
-                </p>
-              </div>
-
-              <div className="flex flex-row gap-6 ">
-                <ul className="space-y-2 font-semibold">
-                  <li>Exhibit</li>
-                  <li>Wallet to </li>
-                  <li>Payments</li>
-                </ul>
-                <ul className="space-y-2  text-gray-700">
-                  <li>Leading Ladies</li>
-                  <li className="truncate w-[40%]">
-                    041f4e029432bee35b075366b7b3ef881e46f993085310c6f05e0946a33d7
-                  </li>
-                  <li>$100</li>
-                </ul>
-              </div>
-              <button className="w-fit flex gap-3 items-center px-6 py-3 rounded-lg bg-orange-500 font-bold dark:bg-950 text-gray-50 dark:text-gray-50">
-                Purchase
-              </button>
-            </div>
-          </div>
-        ) : null}
       <section className="relative w-full  mt-10 px-6 pt-24 flex flex-col items-center justify-center gap-6 bg-[url('https://images.unsplash.com/photo-1553775927-a071d5a6a39a?q=80&w=2587&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-cover bg-center ">
         <div className="absolute l inset-0 bg-black opacity-40 "></div>
         <div className="flex flex-col items-center gap-6 md:items-start z-10">
@@ -115,23 +79,23 @@ export default function Home() {
             </li>
           </ul>
 
-          <button className="w-fit flex gap-3 items-center px-6 py-3 rounded-t-xl bg-gray-50 font-bold dark:bg-gray-50 text-gray-950 dark:text-gray-950" onClick={() => setOpen(!open)}>
-            Purchase ticket <ArrowRightIcon className="w-4" />
-          </button>
+          <Link href={'/exhibit'} className="w-fit flex gap-3 items-center px-6 py-3 rounded-t-xl bg-gray-50 font-bold dark:bg-gray-50 text-gray-950 dark:text-gray-950" >
+          view exhibit <ArrowRightIcon className="w-4" />
+          </Link>
         </div>
       </section>
       <section className=" px-6  w-full   flex flex-col  justify-center gap-6 ">
         <div className="space-y-2 text-pretty  z-10 text-gray-950">
           <h1 className="text-2xl font-black ">What is SummitShare?</h1>
           <p className="text-pretty leading-loose">
-            <span className="bg-orange-500 text-gray-50 p-1"> SummitShare</span>. stands as
+            <span className="bg-orange-500/10  p-1"> SummitShare</span>. stands as
             a pioneering digital platform dedicated to the repatriation of
             African cultural artifacts.{" "}
-            <span className="bg-orange-500 text-gray-50 p-1">
+            <span className="bg-orange-500/10  p-1">
               utilizes the power of blockchain technology to
             </span>
             reclaim, celebrate, and{" "}
-            <span className="bg-orange-500 text-gray-50 p-1">
+            <span className="bg-orange-500/10  p-1">
               share the rich tapestry of Africa's history
             </span>{" "}
             with the world.
