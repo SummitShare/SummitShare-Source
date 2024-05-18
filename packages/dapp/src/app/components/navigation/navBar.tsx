@@ -26,7 +26,7 @@ interface NavLinkProps extends LinkProps {
 }
 
 export const NavBar = () => {
- 
+
 
   return (
     <div className="w-full fixed top-0 inset-x-0 z-50">
@@ -64,11 +64,10 @@ const NavLink: React.FC<NavLinkProps> = ({ children, className, ...props }) => {
   return (
     <Link
       {...props}
-      className={`flex gap-2 items-center ${
-        pathname === props.href
+      className={`flex gap-2 items-center ${pathname === props.href
           ? "text-orange-500 font-medium"
           : "text-gray-950 dark:text-gray-50"
-      } ${className} `}
+        } ${className} `}
     >
       {children}
     </Link>
@@ -76,7 +75,7 @@ const NavLink: React.FC<NavLinkProps> = ({ children, className, ...props }) => {
 };
 
 function Bars2() {
-  const session =  useSession();
+  const session = useSession();
   const router = useRouter()
   const [open, setOpen] = useState(false);
   return (
@@ -130,18 +129,18 @@ function Bars2() {
               Delate Account
             </NavLink>
             <p>{JSON.stringify(session)}</p>
-            {session.status === "authenticated"? 
-            <li onClick={()=>{
-              signOut();
-          }} className="text-2xl text-gray-950 w-full flex flex-row gap-2 items-center">
-              <PowerIcon className="w-6 text-gray-950" />
-              <Link href="#"> logout</Link>
-            </li>: <li onClick={()=>{
-              router.push("/auth-sign-up");
-          }} className="text-2xl text-gray-950 w-full flex flex-row gap-2 items-center">
-              <PowerIcon className="w-6 text-gray-950" />
-              <Link href="#"> signIn</Link>
-            </li>}
+            {session.status === "authenticated" ?
+              <li onClick={() => {
+                signOut();
+              }} className="text-2xl text-gray-950 w-full flex flex-row gap-2 items-center">
+                <PowerIcon className="w-6 text-gray-950" />
+                <Link href="#"> logout</Link>
+              </li> : <li onClick={() => {
+                router.push("/auth-sign-in");
+              }} className="text-2xl text-gray-950 w-full flex flex-row gap-2 items-center">
+                <PowerIcon className="w-6 text-gray-950" />
+                <Link href="#"> signIn</Link>
+              </li>}
           </ul>
           <ThirdwebProvider>
             <WalletConnectNav />

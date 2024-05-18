@@ -43,7 +43,7 @@ async function deployExhibit(exhibitParams : ExhibitParams) {
 
         // Use the modular approach to get the EventOrganizerService contract
         const organizerServiceContract = contracts.getEventOrganizerService();
-
+        const gasLimit = ethers.utils.hexlify(1900000);
         const tx = await organizerServiceContract.organizeExhibit(
             exhibitParams.name,
             exhibitParams.symbol, 
@@ -55,6 +55,7 @@ async function deployExhibit(exhibitParams : ExhibitParams) {
             exhibitParams.artifactNFT,
             exhibitParams.details,
             exhibitParams.id,
+            { gasLimit }
         );
 
         const receipt0 = await tx.wait(6)
@@ -65,6 +66,7 @@ async function deployExhibit(exhibitParams : ExhibitParams) {
         throw new Error(`Exhibit deployment failed: ${error}`);
     }
 }
+
 
     // Function to validate exhibit parameters
 function validateExhibitParams(exhibitParams: ExhibitParams) {

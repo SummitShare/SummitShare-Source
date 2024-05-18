@@ -42,8 +42,8 @@ export interface EventEscrowComponentProps {
 
 // Museum Contract
 export interface TicketPurchaseProps {
-    userAddress: string;
-    exhibitId: string;
+    userAddress: string| undefined;
+    exhibitId?: string;
   };
 
 

@@ -9,7 +9,7 @@ dotenv.config();
 
 // You should replace these values with your own node URL and private keys
 
-const SEPOLIA_RPC_URL = process.env.SEPOLIA_RPC_URL;
+const SEPOLIA_RPC_URL = process.env.RPC_URL;
 const accounts = process.env.PRIVATE_KEYS?.split(',');
 
 

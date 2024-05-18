@@ -8,16 +8,16 @@ import useExhibit from '@/lib/useGetExhibitById';
 
 const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
 
-  // Hardcoded exhibit ID
-  const exhibitId = '0xf4857efc226bb39c6851aa137347cff8f8e050f9';
+  // Hardcoded exhibit ID for demo
+  const exhibitId = '0xe405b9c97656336ab949401bcd41ca3f50114725';
 
   // State hooks for managing component state
   const [status, setStatus] = useState<string>('');
   const [provider, setProvider] = useState<ethers.providers.Web3Provider | null>(null);
   const [purchaseSuccessful, setPurchaseSuccessful] = useState<boolean>(false);
-  const [ticketURI, setTicketURI] = useState<string>('');
+  const [purchaseFailed, setPurchaseFailed] = useState<boolean>(false);
   const exhibit = useExhibit(exhibitId);
-  // const router = useRouter();
+
 
    // Effect hook to initialize the Web3 provider when the component mounts or exhibitId changes
    useEffect(() => {
@@ -51,23 +51,20 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
         try {
 
           // Contract Init with Modular Approach
-            const signer = provider.getSigner();
-            const usdcContract = contracts.getMUSDC(signer)
-            const museumContract = contracts.getMuseum(signer)
+            const usdcContract = contracts.getMUSDC();
+            const museumContract = contracts.getMuseum();
 
             // Approve USDC transfer for ticket purchase
             setStatus('Approving USDC transfer...');
-            const approveTx = await usdcContract.approve(CONTRACT_ADDRESSES.MuseumAdd, ticketPrice,)// { gasLimit });
-            await approveTx.wait(6);
+            const gasLimitApprove = ethers.utils.hexlify(50000);
+            const approveTx = await usdcContract.approve(CONTRACT_ADDRESSES.MuseumAdd, ticketPrice, { gasLimit: gasLimitApprove })// { gasLimit });
+            await approveTx.wait(2);
 
             // Execute ticket purchase transaction
             setStatus('Purchasing ticket...');
-            const purchaseTx = await museumContract.purchaseTicket(exhibitId, ticketPrice,) //{ gasLimit });
+            const gasLimitPurchase = ethers.utils.hexlify(5000);
+            const purchaseTx = await museumContract.purchaseTicket(exhibitId, ticketPrice, { gasLimit: gasLimitPurchase }) //{ gasLimit });
             await purchaseTx.wait(4);
-
-            const tokenId = await museumContract.tokenOfOwnerByIndex(userAddress, 0); // Fetch the latest token
-            const uri = await museumContract.tokenURI(tokenId);
-            setTicketURI(uri);
 
             //State update after successful ticket purchase
              setPurchaseSuccessful(true);
@@ -83,7 +80,7 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
 
     // Render component UI
     return (
-      <div>
+      <div className='flex flex-col gap-2'>
         {purchaseSuccessful ? (
           <div>
             <p>Thank you for your purchase!</p>
@@ -91,7 +88,7 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
           </div>
         ) : (
           <button 
-            className='px-[23px] py-[13px] bg-blue-950 font-opensans font-semibold w-fit rounded-xl h-fit text-white cursor-pointer'
+            className="w-fit flex gap-3 items-center px-6 py-3 rounded-lg bg-orange-500 font-bold dark:bg-950 text-gray-50 dark:text-gray-50"
             onClick={purchaseTicket}
           
           >
@@ -99,7 +96,7 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
           </button>
         )}
         {/* Display current status */}
-        {status && <p>{status}</p>}
+        {status && <p className='text-sm font-semibold'>{status}</p>}
       </div>
     );
 };

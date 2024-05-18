@@ -3,6 +3,10 @@ import { ArrowRightIcon, StarIcon } from "@heroicons/react/24/outline";
 import { useState, useEffect } from "react";
 import { XMarkIcon } from "@heroicons/react/16/solid";
 import Link from "next/link";
+import TicketPurchaseComponent from "@/functonality/ticketpurchasecomponent";
+
+
+
 
 export default function page() {
   const [open, setOpen] = useState(false);
@@ -82,9 +86,10 @@ export default function page() {
                   <li>$100</li>
                 </ul>
               </div>
-              <button className="w-fit flex gap-3 items-center px-6 py-3 rounded-lg bg-orange-500 font-bold dark:bg-950 text-gray-50 dark:text-gray-50">
-                Purchase
-              </button>
+             
+              <TicketPurchaseComponent userAddress="" />
+
+            
             </div>
           </div>
         ) : null}
@@ -115,7 +120,6 @@ export default function page() {
               <h2>{count.donations.toFixed(1)}k</h2>
             </li>
           </ul>
-
           <button className="w-fit flex gap-3 items-center px-6 py-3 rounded-t-xl bg-gray-50 font-bold dark:bg-gray-50 text-gray-950 dark:text-gray-950" onClick={() => setOpen(!open)}>
             Purchase ticket <ArrowRightIcon className="w-4" />
           </button>
