@@ -17,7 +17,7 @@ const Note: React.FC<NoteProps> = ({ title, content }) => {
 // This function fetches all team notes to generate the paths for all individual note pages
 export const getStaticPaths: GetStaticPaths = async () => {
   const notes = await fetchAllTeamNotes(); // Fetching all team notes
-  const paths = notes.map((note: { shortId: any; }) => ({
+  const paths = notes.map((note: { shortId: string }) => ({
     params: { id: note.shortId }, // Creating paths for each note based on its shortId
   }));
 
