@@ -183,3 +183,13 @@ export interface ExhibitDetail {
     ticketPrice: string;
 }
 
+
+// blog usage for notes props
+export interface BlogProps {
+    notes: { id: string; title: string; shortId: string }[];
+  }
+
+export interface NoteProps {
+    title: string;
+    content: string; // Defining the type for the props of the Note component
+  }
