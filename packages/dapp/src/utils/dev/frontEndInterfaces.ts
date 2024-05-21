@@ -186,10 +186,31 @@ export interface ExhibitDetail {
 
 // blog usage for notes props
 export interface BlogProps {
-    notes: { id: string; title: string; shortId: string }[];
+    notes:Note[];
   }
 
 export interface NoteProps {
     title: string;
     content: string; // Defining the type for the props of the Note component
+  }
+
+  export interface Note {
+    id: string;
+    title: string;
+    tags: string[];
+    createdAt: number;
+    titleUpdatedAt: number;
+    tagsUpdatedAt: number;
+    publishType: string;
+    publishedAt: number;
+    permalink: string | null;
+    publishLink: string;
+    shortId: string;
+    content: string;
+    lastChangedAt: number;
+    lastChangeUser: string | null;
+    userPath: string | null;
+    teamPath: string;
+    readPermission: string;
+    writePermission: string;
   }
