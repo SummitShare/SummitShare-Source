@@ -4,9 +4,6 @@ import matter from 'gray-matter';
 const API_URL = 'https://api.hackmd.io/v1/notes';
 const BEARER_TOKEN = process.env.HACKMD_API_TOKEN;
 
-// Log environment variable to ensure it's being loaded
-console.log('HACKMD_API_TOKEN:', BEARER_TOKEN);
-
 /**
  * Fetch all notes from the team's workspace
  * @returns {Promise<any[]>} List of notes
@@ -20,7 +17,7 @@ export const fetchAllTeamNotes = async (): Promise<any[]> => {
         Authorization: `Bearer ${BEARER_TOKEN}`,
       },
     });
-    console.log('Fetched notes:', response.data);
+    // console.log('Fetched notes:', response.data); only for dev
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -46,7 +43,7 @@ export const fetchNoteContent = async (noteId: string): Promise<any> => {
         Authorization: `Bearer ${BEARER_TOKEN}`,
       },
     });
-    console.log('Fetched note:', response.data);
+    // console.log('Fetched note:', response.data); -- only for dev
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {

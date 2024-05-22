@@ -6,8 +6,8 @@ import { fetchNoteContent, parseNoteContent } from '@/lib/hackMD';
 const Note = async ({ params }: { params: { id: string } }) => {
   const noteId = params.id;
 
-  // Log the noteId to ensure it is correctly captured
-  console.log('Fetching note with ID---:', noteId);
+  // Log the noteId to ensure it is correctly captured -- only for dev
+  // console.log('Fetching note with ID---:', noteId);
 
   try {
     const note = await fetchNoteContent(noteId);
