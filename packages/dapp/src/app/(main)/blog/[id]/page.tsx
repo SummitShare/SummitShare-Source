@@ -2,10 +2,13 @@ import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkHtml from 'remark-html';
 import { fetchNoteContent, parseNoteContent } from '@/lib/hackMD';
-import Link from 'next/link';
 
-const Note = async () => {
-  const noteId = 'HyyljFKaa'; // Hardcoded ID for testing
+const Note = async ({ params }: { params: { id: string } }) => {
+  const noteId = params.id;
+
+  // Log the noteId to ensure it is correctly captured
+  console.log('Fetching note with ID---:', noteId);
+
   try {
     const note = await fetchNoteContent(noteId);
     const parsedNote = parseNoteContent(note.content);
