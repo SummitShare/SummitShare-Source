@@ -19,6 +19,41 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
   const exhibit = useExhibit(exhibitId);
   // const router = useRouter();
 
+
+  const createTicket = async ({ email, password }: ) => {
+    // Ensure HOST is read correctly, considering Next.js environment variables need to be prefixed with NEXT_PUBLIC_ if they are to be used on the client-side.
+    const host = process.env.NEXT_PUBLIC_HOST;
+    console.log(`host ${host} `)
+  
+    // Construct the URL with the correct protocol (http or https) and ensure that the HOST variable includes the entire domain.
+    const url = `${host}api/v1/event/ticket/create`;
+    console.log(`url ${url} `)
+  
+    try {
+ 
+      const response = await fetch(url, {
+        method: "POST", 
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({userAddress,exhibitId,user_id,eventLink}),
+      });
+   
+      // Check if the response is ok (status in the range 200-299)
+      if (!response.ok) {
+        // You could throw an error or handle it in another way depending on your error handling strategy
+       console.log(`Error: ${response.status} - ${response.statusText}`);
+      }
+
+    
+      return response.json(); // Assuming the server responds with JSON.
+    } catch (error) {
+      console.error("Failed to create user:", error);
+      
+    }
+  }
+
+
    // Effect hook to initialize the Web3 provider when the component mounts or exhibitId changes
    useEffect(() => {
     const ethWindow = window as EthereumWindow;

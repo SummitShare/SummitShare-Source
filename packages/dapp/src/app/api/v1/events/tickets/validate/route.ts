@@ -12,7 +12,7 @@ export async function POST(req: Request , res : NextResponse) {
 
     try {
 
-        const {wallet_address , event_id } = await req.json()
+        const {wallet_address , event_id, user_id } = await req.json()
 
         if(!wallet_address){
             return NextResponse.json({ message: "no wallet address sent", }, { status: 400 });
@@ -25,6 +25,7 @@ export async function POST(req: Request , res : NextResponse) {
             where:{
                 wallet_address: wallet_address,
                 event_id: event_id,
+                user_id
             }
         })
 
