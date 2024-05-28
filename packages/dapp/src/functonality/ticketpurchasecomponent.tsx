@@ -10,13 +10,11 @@ import { useSession } from 'next-auth/react';
 
 const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
 
-  const session = useSession();
+const session = useSession();
 const user_id = session.data?.user.id
 
-
-
   // Hardcoded exhibit ID for demo
-  const exhibitId = '0xe405b9c97656336ab949401bcd41ca3f50114725';
+  const exhibitId = CONTRACT_ADDRESSES.exhibitId
 
   // State hooks for managing component state
   const [status, setStatus] = useState<string>('');
@@ -76,6 +74,7 @@ const user_id = session.data?.user.id
     }
 
 }, [exhibitId]);
+
 
   if (!exhibit) {
     return <div>Loading or no Matching Exhibit Found.</div>

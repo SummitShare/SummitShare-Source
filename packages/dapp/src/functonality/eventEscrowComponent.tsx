@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { ethers } from "ethers";
-import { contracts } from "@/utils/dev/contractInit";
+import { contracts, CONTRACT_ADDRESSES } from "@/utils/dev/contractInit";
 import { handleContractError } from "@/utils/dev/handleContractError";
 import { EventEscrowComponentProps } from "@/utils/dev/typeInit";
 import useExhibit from "@/lib/useGetExhibitById";
 import { BanknotesIcon } from "@heroicons/react/20/solid";
+import { initializeUserWallet } from "@/utils/dev/walletInit";
 
-const EventEscrowComponent = ({ provider, userAddress }: any) => {
+const EventEscrowComponent = ({ userAddress }: EventEscrowComponentProps) => {
     // Hardcoded exhibit ID for demo
-    const exhibitId = '0xe405b9c97656336ab949401bcd41ca3f50114725';
+    const exhibitId = CONTRACT_ADDRESSES.exhibitId
+    const hardcodedEscrowAddress = CONTRACT_ADDRESSES.EscrowAdd;
 
     // State for managing component data and UI
     const [status, setStatus] = useState<string>('');
@@ -28,20 +30,17 @@ const EventEscrowComponent = ({ provider, userAddress }: any) => {
             return;
         }
         try {
-            const signer = provider.getSigner();
-            const eventOrganizerServiceContract = contracts.getEventOrganizerService().connect(signer);
+            const { provider, signer } = initializeUserWallet();
+            const escrowContract = contracts.getEventEscrow(hardcodedEscrowAddress).connect(signer);
 
-            const escrowAddress = await eventOrganizerServiceContract.getEventEscrow(exhibitId);
-            const escrowContract = contracts.getEventEscrow(escrowAddress).connect(signer);
+            // const shares = await escrowContract.getShares();
+            // const beneficiaries = await escrowContract.getBeneficiaries();
 
-            const shares = await escrowContract.getShares();
-            const beneficiaries = await escrowContract.getBeneficiaries();
-
-            setEscrowDetails({
-                id : escrowAddress,
-                shares,
-                beneficiaries
-            });
+            // setEscrowDetails({
+            //     id : hardcodedEscrowAddress,
+            //     shares,
+            //     beneficiaries
+            // });
             setStatus('');
         } catch (error) {
             setStatus('Failed to fetch escrow details.');
@@ -58,21 +57,22 @@ const EventEscrowComponent = ({ provider, userAddress }: any) => {
     const distributeFunds = async () => {
         setIsLoading(true);
 
-        // Check if escrow details are available
-        if (!escrowDetails || !escrowDetails.id) {
-            setStatus('No EventEscrow address found for the exhibit.');
-            setIsLoading(false);
-            return;
-        }
+        // // Check if escrow details are available
+        // if (!escrowDetails || !escrowDetails.id) {
+        //     setStatus('No EventEscrow address found for the exhibit.');
+        //     setIsLoading(false);
+        //     return;
+        // }
 
         // Attempting to distribute funds
         try {
-            const signer = provider.getSigner();
-            const escrowContract = contracts.getEventEscrow(escrowDetails.id).connect(signer);
+            const { signer } = initializeUserWallet();
+            const escrowContract = contracts.getEventEscrow(hardcodedEscrowAddress).connect(signer);
 
             setStatus('Initiating fund distribution...');
-            const tx = await escrowContract.distributePayments();
-            await tx.wait(2);
+            const gasLimit = ethers.utils.hexlify(100000);
+            const tx = await escrowContract.distributePayments({gasLimit});
+            await tx.wait(4);
             setStatus('Funds distributed successfully.');
             setDistributionSuccessful(true);
 
@@ -81,8 +81,14 @@ const EventEscrowComponent = ({ provider, userAddress }: any) => {
 
         } catch (error: any) {
             console.error('Error in distributing funds:', error);
-            const friendlyMessage = handleContractError(error);
-            setStatus(friendlyMessage);
+            if (error.message.includes('No funds to distribute')) {
+                setStatus('No funds available to distribute.');
+            } else if (error.code === 4001) {  // User denied transaction signature
+                setStatus('Transaction cancelled by user.');
+            } else {
+                const friendlyMessage = handleContractError(error);
+                setStatus(friendlyMessage);
+            }
             setDistributionFailed(true);
         }
         setIsLoading(false);
@@ -97,33 +103,49 @@ const EventEscrowComponent = ({ provider, userAddress }: any) => {
                     {/* Actions post-distribution */}
                 </div>
             ) : (
-                <button className="w-[15%] p-4 text-3xl bg-orange-500 rounded-tl-2xl text-white fixed bottom-0 right-0 shadow-md"   onClick={distributeFunds}
+                <button className="w-[15%] p-4 text-3xl bg-orange-500 rounded-tl-2xl text-white fixed bottom-0 right-0 shadow-md" onClick={distributeFunds}
                 disabled={isLoading} ><BanknotesIcon/></button>
-           
             )}
             {/* Display current status */}
             {status && <p className='text-sm font-semibold'>{status}</p>}
-            {/* Display Escrow Details */}
-            {escrowDetails && (
-                <div>
-                    <p>Escrow Address: {escrowDetails.id}</p>
-                    <p>Shares: {JSON.stringify(escrowDetails.shares)}</p>
-                    {/* Display Beneficiaries and Payments */}
-                    {escrowDetails.beneficiaries.map((beneficiary: any, index: number) => (
-                        <div key={index}>
-                            <p>Beneficiary Address: {beneficiary.id}</p>
-                            {beneficiary.paymentsReceived.map((payment: any, idx: number) => (
-                                <div key={idx}>
-                                    <p>Amount: {ethers.utils.formatEther(payment.amount)}</p>
-                                    <p>Transaction Hash: {payment.transactionHash}</p>
-                                </div>
-                            ))}
-                        </div>
-                    ))}
-                </div>
-            )}
         </div>
     );
 };
+//     return (
+//         <div className='flex flex-col gap-2'>
+//             {distributionSuccessful ? (
+//                 <div>
+//                     <p>Funds distributed successfully!</p>
+//                     {/* Actions post-distribution */}
+//                 </div>
+//             ) : (
+//                 <button className="w-[15%] p-4 text-3xl bg-orange-500 rounded-tl-2xl text-white fixed bottom-0 right-0 shadow-md"   onClick={distributeFunds}
+//                 disabled={isLoading} ><BanknotesIcon/></button>
+           
+//             )}
+//             {/* Display current status */}
+//             {status && <p className='text-sm font-semibold'>{status}</p>}
+//             {/* Display Escrow Details */}
+//             {escrowDetails && (
+//                 <div>
+//                     <p>Escrow Address: {escrowDetails.id}</p>
+//                     <p>Shares: {JSON.stringify(escrowDetails.shares)}</p>
+//                     {/* Display Beneficiaries and Payments */}
+//                     {escrowDetails.beneficiaries.map((beneficiary: any, index: number) => (
+//                         <div key={index}>
+//                             <p>Beneficiary Address: {beneficiary.id}</p>
+//                             {beneficiary.paymentsReceived.map((payment: any, idx: number) => (
+//                                 <div key={idx}>
+//                                     <p>Amount: {ethers.utils.formatEther(payment.amount)}</p>
+//                                     <p>Transaction Hash: {payment.transactionHash}</p>
+//                                 </div>
+//                             ))}
+//                         </div>
+//                     ))}
+//                 </div>
+//             )}
+//         </div>
+//     );
+// };
 
 export default EventEscrowComponent;

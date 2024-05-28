@@ -15,7 +15,7 @@ const user_id = process.env.NEXT_CLIENT_ID_THIRDWEB
     
     const sendApiRequest = async (address: string,user_id: string) => {
       try {
-        const response = await axios.post('https://localhost:3000/api/users/wallets/addWallet', { address,user_id });
+        const response = await axios.post('https://localhost:3000/v1/api/user/wallets/add', { address,user_id });
         console.log('API Response:', response.data);
         // Handle the response as needed
       } catch (error) {

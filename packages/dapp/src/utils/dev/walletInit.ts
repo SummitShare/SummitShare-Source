@@ -5,7 +5,6 @@ Purpose: Wallet Initialisation within the dev env
 
 import { ethers } from "ethers";
 
-
 // Initialize provider and signer from user's wallet
 export const initializeUserWallet = () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -29,8 +28,8 @@ export const initializeDevWallet = () => {
 
 // Test Wallets - Should have Sepolia/OP Sepolia 
 export const testWallets = [
-process.env.araragi,
-process.env.shinobu,
-process.env.hanekawa,
-process.env.oshino
+    process.env.araragi,
+    process.env.shinobu,
+    process.env.hanekawa,
+    process.env.oshino
 ];

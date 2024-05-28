@@ -18,7 +18,9 @@ import DonationsABI from "../artifacts/contracts/Donations.sol/Donations.json"
 export const CONTRACT_ADDRESSES = {
     EventOrganizerServiceAdd : '0xdFB611127315848Fd0D53226eC886BbF6514B5D1',
     MUSDCAdd : '0xDd4c60185608108D073C19432eef0ae50AB3830d',
-    MuseumAdd : '0xF4857Efc226Bb39C6851Aa137347CFf8F8e050F9'
+    MuseumAdd : '0xF4857Efc226Bb39C6851Aa137347CFf8F8e050F9',
+    exhibitId : '0xe405b9c97656336ab949401bcd41ca3f50114725',
+    EscrowAdd : '0x741b12d361683edccaafe3d8ccc898eb6b52377b'
 };
 
 // Export ABIs directly
@@ -55,8 +57,7 @@ export const contracts = {
         const {signer} = initializeUserWallet();
         return new ethers.Contract(
             address, 
-            EventEscrowABI as
-            ethers.ContractInterface,
+            EventEscrowABI as ethers.ContractInterface,
             signer
         );
     },
