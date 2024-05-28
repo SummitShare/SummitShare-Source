@@ -2,11 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { ethers } from 'ethers';
 import { TicketPurchaseProps, EthereumWindow } from '@/utils/dev/typeInit';
+import { createTicketProps } from '@/utils/dev/frontEndInterfaces';
 import { CONTRACT_ADDRESSES, contracts } from '@/utils/dev/contractInit';
 import { handleContractError } from '@/utils/dev/handleContractError';
 import useExhibit from '@/lib/useGetExhibitById';
+import { useSession } from 'next-auth/react';
 
 const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
+
+  const session = useSession();
+const user_id = session.data?.user.id
+
+
 
   // Hardcoded exhibit ID for demo
   const exhibitId = '0xe405b9c97656336ab949401bcd41ca3f50114725';
@@ -17,17 +24,16 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
   const [purchaseSuccessful, setPurchaseSuccessful] = useState<boolean>(false);
   const [purchaseFailed, setPurchaseFailed] = useState<boolean>(false);
   const exhibit = useExhibit(exhibitId);
+ 
 
-
-
-  const createTicket = async ({ email, password }: ) => {
+  const createTicket = async () => {
     // Ensure HOST is read correctly, considering Next.js environment variables need to be prefixed with NEXT_PUBLIC_ if they are to be used on the client-side.
     const host = process.env.NEXT_PUBLIC_HOST;
     console.log(`host ${host} `)
-  
+  const eventLink =`${host}/exhibit/0xe405b9c97656336ab949401bcd41ca3f50114725`
     // Construct the URL with the correct protocol (http or https) and ensure that the HOST variable includes the entire domain.
     const url = `${host}api/v1/event/ticket/create`;
-    console.log(`url ${url} `)
+    console.log(`url ${url} ` ,user_id)
   
     try {
  
@@ -48,7 +54,7 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
     
       return response.json(); // Assuming the server responds with JSON.
     } catch (error) {
-      console.error("Failed to create user:", error);
+      console.error("Failed to create ticket:", error);
       
     }
   }

@@ -214,3 +214,12 @@ export interface NoteProps {
     readPermission: string;
     writePermission: string;
   }
+
+// Create ticket component
+
+export interface createTicketProps {
+    user_id : string,
+    eventLink : string
+    userAddress: string,
+    exhbitId: string
+  }
