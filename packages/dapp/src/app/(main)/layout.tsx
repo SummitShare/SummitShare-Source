@@ -35,7 +35,7 @@ export default function RootLayout({
           <Providers>
             <NavBar />
             {children}
-        <EventEscrowComponent userAddress="" provider="" exhibitId="0xe405b9c97656336ab949401bcd41ca3f50114725"/>
+            <EventEscrowComponent userAddress="" provider="" exhibitId="0xe405b9c97656336ab949401bcd41ca3f50114725"/>
             <Footer />
           </Providers>
         </ApolloWrapper>

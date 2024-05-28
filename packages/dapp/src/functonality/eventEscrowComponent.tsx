@@ -7,7 +7,7 @@ import { EventEscrowComponentProps } from "@/utils/dev/typeInit";
 import useExhibit from "@/lib/useGetExhibitById";
 import { BanknotesIcon } from "@heroicons/react/20/solid";
 
-const EventEscrowComponent = ({ provider, userAddress }: EventEscrowComponentProps) => {
+const EventEscrowComponent = ({ provider, userAddress }: any) => {
     // Hardcoded exhibit ID for demo
     const exhibitId = '0xe405b9c97656336ab949401bcd41ca3f50114725';
 
