@@ -52,12 +52,12 @@ export const contracts = {
     },
 
     getEventEscrow: (address : string) => {
-        const {wallet} = initializeDevWallet();
+        const {signer} = initializeUserWallet();
         return new ethers.Contract(
             address, 
             EventEscrowABI as
-             ethers.ContractInterface,
-            wallet
+            ethers.ContractInterface,
+            signer
         );
     },
 
@@ -93,8 +93,7 @@ export const contracts = {
         const {wallet} = initializeDevWallet();
         return new ethers.Contract(
             address,
-            DonationsABI as
-             ethers.ContractInterface,
+            DonationsABI as unknown as ethers.ContractInterface,
             wallet
         );
     }
