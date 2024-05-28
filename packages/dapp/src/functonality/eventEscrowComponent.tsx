@@ -8,7 +8,7 @@ import useExhibit from "@/lib/useGetExhibitById";
 import { BanknotesIcon } from "@heroicons/react/20/solid";
 import { initializeUserWallet } from "@/utils/dev/walletInit";
 
-const EventEscrowComponent = ({ userAddress }: EventEscrowComponentProps) => {
+const EventEscrowComponent = ({ userAddress }: any) => {
     // Hardcoded exhibit ID for demo
     const exhibitId = CONTRACT_ADDRESSES.exhibitId
     const hardcodedEscrowAddress = CONTRACT_ADDRESSES.EscrowAdd;
@@ -103,8 +103,8 @@ const EventEscrowComponent = ({ userAddress }: EventEscrowComponentProps) => {
                     {/* Actions post-distribution */}
                 </div>
             ) : (
-                <button className="w-[15%] p-4 text-3xl bg-orange-500 rounded-tl-2xl text-white fixed bottom-0 right-0 shadow-md" onClick={distributeFunds}
-                disabled={isLoading} ><BanknotesIcon/></button>
+                <button className="w-full p-2 mt-5 font-bold bg-orange-500 rounded-lg text-white" onClick={distributeFunds}
+                disabled={isLoading} >Distrnute</button>
             )}
             {/* Display current status */}
             {status && <p className='text-sm font-semibold'>{status}</p>}

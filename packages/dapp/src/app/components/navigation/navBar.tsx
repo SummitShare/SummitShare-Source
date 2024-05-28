@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Bars2Icon, XMarkIcon } from "@heroicons/react/16/solid";
 import Link from "next/link";
-import { GitHubLogoIcon } from "@radix-ui/react-icons";
+import { DashboardIcon, GitHubLogoIcon } from "@radix-ui/react-icons";
 
 import { usePathname, useRouter } from "next/navigation";
 import { LinkProps } from "next/link";
@@ -104,11 +104,11 @@ function Bars2() {
               <UserGroupIcon className="w-6" />
               About us
             </NavLink>
-            <NavLink href={"/blogs"} className="text-2xl">
+            <NavLink href={"/blog"} className="text-2xl">
               <BookOpenIcon className="w-6" />
               Blogs
             </NavLink>
-            <NavLink href={"/help"} className="text-2xl">
+            <NavLink href={"/Help"} className="text-2xl">
               <InformationCircleIcon className="w-6" />
               Help
             </NavLink>
@@ -123,6 +123,10 @@ function Bars2() {
             <NavLink href={"/password"} className="text-2xl">
               <KeyIcon className="w-6" />
               Password
+            </NavLink>
+            <NavLink href={"/destrbution"} className="text-2xl">
+              <DashboardIcon className="w-6" />
+              Dashboard
             </NavLink>
             <NavLink href={"/deleteAccount"} className="text-2xl">
               <TrashIcon className="w-6" />

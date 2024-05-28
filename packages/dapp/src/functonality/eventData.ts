@@ -1,6 +1,7 @@
 export const sendData = async (user_id: string, event_id: string) => {
   const host = process.env.NEXT_PUBLIC_HOST;
-  const url = `${host}api/v1/events/data`;
+  const url = `http://localhost:3000/api/v1/events/data`;
+  console.log(`host ${host} `)
   try {
     const response = await fetch(url, {
       method: "POST",

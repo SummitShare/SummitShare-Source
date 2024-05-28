@@ -79,7 +79,7 @@ export default function Home() {
             </li>
           </ul>
 
-          <Link href={'/exhibit'} className="w-fit flex gap-3 items-center px-6 py-3 rounded-t-xl bg-gray-50 font-bold dark:bg-gray-50 text-gray-950 dark:text-gray-950" >
+          <Link href={'/exhibit/0xe405b9c97656336ab949401bcd41ca3f50114725'} className="w-fit flex gap-3 items-center px-6 py-3 rounded-t-xl bg-gray-50 font-bold dark:bg-gray-50 text-gray-950 dark:text-gray-950" >
           view exhibit <ArrowRightIcon className="w-4" />
           </Link>
         </div>
