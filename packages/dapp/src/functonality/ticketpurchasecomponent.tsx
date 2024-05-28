@@ -44,7 +44,7 @@ const user_id = session.data?.user.id
         },
         body: JSON.stringify({userAddress,exhibitId,user_id,eventLink}),
       });
-   
+
       // Check if the response is ok (status in the range 200-299)
       if (!response.ok) {
         // You could throw an error or handle it in another way depending on your error handling strategy

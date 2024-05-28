@@ -11,6 +11,8 @@ import { SessionProvider } from "next-auth/react";
 import { NavBar } from "../components/navigation/navBar";
 import Footer from "../components/navigation/footer";
 import { ThirdwebProvider } from "@thirdweb-dev/react";
+import { BanknotesIcon } from "@heroicons/react/24/outline";
+import EventEscrowComponent from "@/functonality/eventEscrowComponent";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -33,6 +35,7 @@ export default function RootLayout({
           <Providers>
             <NavBar />
             {children}
+        <EventEscrowComponent userAddress="" provider="" exhibitId="0xe405b9c97656336ab949401bcd41ca3f50114725"/>
             <Footer />
           </Providers>
         </ApolloWrapper>

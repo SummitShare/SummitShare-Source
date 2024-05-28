@@ -5,6 +5,7 @@ import { contracts } from "@/utils/dev/contractInit";
 import { handleContractError } from "@/utils/dev/handleContractError";
 import { EventEscrowComponentProps } from "@/utils/dev/typeInit";
 import useExhibit from "@/lib/useGetExhibitById";
+import { BanknotesIcon } from "@heroicons/react/20/solid";
 
 const EventEscrowComponent = ({ provider, userAddress }: EventEscrowComponentProps) => {
     // Hardcoded exhibit ID for demo
@@ -96,13 +97,9 @@ const EventEscrowComponent = ({ provider, userAddress }: EventEscrowComponentPro
                     {/* Actions post-distribution */}
                 </div>
             ) : (
-                <button
-                    className="w-fit flex gap-3 items-center px-6 py-3 rounded-lg bg-green-500 font-bold dark:bg-950 text-gray-50 dark:text-gray-50"
-                    onClick={distributeFunds}
-                    disabled={isLoading}
-                >
-                    Distribute Funds
-                </button>
+                <button className="w-[15%] p-4 text-3xl bg-orange-500 rounded-tl-2xl text-white fixed bottom-0 right-0 shadow-md"   onClick={distributeFunds}
+                disabled={isLoading} ><BanknotesIcon/></button>
+           
             )}
             {/* Display current status */}
             {status && <p className='text-sm font-semibold'>{status}</p>}
