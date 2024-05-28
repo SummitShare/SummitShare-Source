@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import matter from 'gray-matter';
-
+    // console.log('Fetching notes with URL:', url);
 const API_URL = 'https://api.hackmd.io/v1/notes';
 const BEARER_TOKEN = process.env.HACKMD_API_TOKEN;
 
@@ -11,7 +11,7 @@ const BEARER_TOKEN = process.env.HACKMD_API_TOKEN;
 export const fetchAllTeamNotes = async (): Promise<any[]> => {
   try {
     const url = `${API_URL}`;
-    console.log('Fetching notes with URL:', url);
+
     const response = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -37,7 +37,7 @@ export const fetchAllTeamNotes = async (): Promise<any[]> => {
 export const fetchNoteContent = async (noteId: string): Promise<any> => {
   try {
     const url = `${API_URL}/${noteId}`;
-    console.log('Fetching note with URL:', url);
+    // console.log('Fetching note with URL:', url);
     const response = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,

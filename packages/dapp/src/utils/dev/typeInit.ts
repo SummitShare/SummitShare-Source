@@ -38,6 +38,7 @@ export interface ExhibitParams {
 export interface EventEscrowComponentProps {
     provider: ethers.providers.Web3Provider;
     exhibitId: string;
+    userAddress: string| undefined;
 }
 
 // Museum Contract
