@@ -4,7 +4,7 @@ Purpose: Provides utility functions for initializing and interacting with smart 
 */
 
 import { ethers } from "ethers";
-import { initializeWallet } from "./walletInit";
+import { initializeDevWallet, initializeUserWallet } from "./walletInit";
 
 import EventOrganizerServiceABI from '../artifacts/contracts/EventOrganizerService.sol/EventOrganizerService.json'
 import MuseumABI from '../artifacts/contracts/Museum.sol/Museum.json'
@@ -34,65 +34,67 @@ export const ABIs = {
 
 export const contracts = {
     getEventOrganizerService: () => {
-        const wallet = initializeWallet();
+        const {wallet} = initializeDevWallet();
         return new ethers.Contract(
             CONTRACT_ADDRESSES.EventOrganizerServiceAdd,
-            EventOrganizerServiceABI as unknown as ethers.ContractInterface, // `unknown` operator is used to dodge a type issue which can also be solved by removing the outer tags of the contract ABI 
+            EventOrganizerServiceABI as ethers.ContractInterface, // `unknown` operator is used to dodge a type issue which can also be solved by removing the outer tags of the contract ABI 
             wallet
         );
     },
     
     getArtifactNFT: (address : string) => { // Accepting dynamic address for flexibility
-        const wallet = initializeWallet();
+        const {wallet} = initializeDevWallet();
         return new ethers.Contract(
             address, // Using a dynamic address for ArtifactNFT instances
-            ArtifactNFTABI as unknown as ethers.ContractInterface,
+            ArtifactNFTABI as ethers.ContractInterface,
             wallet
         );
     },
 
     getEventEscrow: (address : string) => {
-        const wallet = initializeWallet();
+        const {wallet} = initializeDevWallet();
         return new ethers.Contract(
             address, 
-            EventEscrowABI as unknown as ethers.ContractInterface,
+            EventEscrowABI as
+             ethers.ContractInterface,
             wallet
         );
     },
 
-    getMUSDC: (signer?: ethers.Signer) => {
-        const contract = new ethers.Contract(
+    getMUSDC: () => {
+        const { signer } = initializeUserWallet();
+        return new ethers.Contract(
             CONTRACT_ADDRESSES.MUSDCAdd,
-            MUSDCABI as unknown as ethers.ContractInterface,
-            signer || initializeWallet() // Use provided signer or initialize a new wallet
-        );
-        return contract;
+            MUSDCABI as ethers.ContractInterface,
+            signer
+        )
     },
 
-    getMuseum: (signer?: ethers.Signer) => {
-        const contract = new ethers.Contract(
+    getMuseum: () => {
+        const { signer } = initializeUserWallet();
+        return new ethers.Contract(
             CONTRACT_ADDRESSES.MuseumAdd,
-            MuseumABI as unknown as ethers.ContractInterface,
-            signer || initializeWallet() // Use provided signer or initialize a new wallet
-        );
-        return contract;
-
+            MuseumABI,
+            signer
+        )
     },
 
     getExhibitNFT: (address : string) => { // Accepting dynamic address for flexibility
-        const wallet = initializeWallet();
+        const {wallet} = initializeDevWallet();
         return new ethers.Contract(
             address, // Using a dynamic address for ArtifactNFT instances
-            ExhibitNFTABI as unknown as ethers.ContractInterface,
+            ExhibitNFTABI as
+             ethers.ContractInterface,
             wallet
         );
     },
 
     getDonations: (address : string) => {
-        const wallet = initializeWallet();
+        const {wallet} = initializeDevWallet();
         return new ethers.Contract(
             address,
-            DonationsABI as unknown as ethers.ContractInterface,
+            DonationsABI as
+             ethers.ContractInterface,
             wallet
         );
     }

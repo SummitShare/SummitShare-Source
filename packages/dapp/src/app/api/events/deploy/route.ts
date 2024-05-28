@@ -31,7 +31,7 @@ type ExhibitParams = {
     shares: number[];
     baseURI: string;
     location: string;
-    artifactNFT: string;
+    artifactNFT: string; 
     details: string;
     id: string;
 };
@@ -59,14 +59,14 @@ export async function POST(req: Request) {
         
         // Map the event data to ExhibitParams
         const exhibitParams: ExhibitParams = {
-            name: eventData.event_name || 'Default Name', 
+            name: "SepoliaLeading", 
             symbol: eventData.symbol || 'Default Symbol',  
             ticketPrice: eventData.cost?.toString() || '0',  
             beneficiaries: eventData.stakeholders.map((stakeholder: { wallet_address: any; }) => stakeholder.wallet_address|| 'Default Wallet ID'),  
             shares: eventData.stakeholders.map((stakeholder: { stake: any; }) => stakeholder.stake || 0),  
-            baseURI: 'http://localhost:3000/api/ticket/', 
+            baseURI: 'https://s3.tebi.io/summitsharemetadata/leadingLadies', 
             location: eventData.event_location || 'Default Location',  
-            artifactNFT: '0x5851195868fdc91585cc2308595c2b8c992c06f2', 
+            artifactNFT: '0x87D291503ef18Ee9A39166A93B8642B42fa44ae6', 
             details: eventData.description || 'Default Details',  
             id: eventData.id
         };

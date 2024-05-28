@@ -10,6 +10,7 @@ import { ApolloWrapper } from "./apolloWrapper";
 import { SessionProvider } from "next-auth/react";
 import { NavBar } from "../components/navigation/navBar";
 import Footer from "../components/navigation/footer";
+import { ThirdwebProvider } from "@thirdweb-dev/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,7 +28,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`bg-gray-50 mt-10  ${inter.className}`}>
-    
         <SessionProvider>
         <ApolloWrapper>
           <Providers>
