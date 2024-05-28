@@ -1,44 +1,43 @@
-import { useSession } from 'next-auth/react';
-import React, { useEffect } from 'react'
+'use client'
 
-function page() {
-  const session = useSession();
-  const exhibitId = '0xe405b9c97656336ab949401bcd41ca3f50114725';
-  const host = process.env.NEXT_PUBLIC_HOST;
-  const user_id = session.data?.user.id 
-  const sendData = async () => {
-  const url = `${host}api/v1/event/data`;
-    try {
-     const response = await fetch(url, {
-        method: "POST", 
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({exhibitId,user_id})
-      });
+import { sendData } from '@/functonality/eventData';
+import React, { useEffect, useState } from 'react';
 
-      if (!response.ok) {
-       console.log(`Error: ${response.status} - ${response.statusText}`);
-      }
-      return console.log(response.json());
-    } catch (error) {
-      console.error("Failed to send data:", error);
-      
-    }
-  }
-  
+const exhibit_Id = 'a65306ad-571f-484e-9985-929a4a0310ba';
+const user_id = "227a4cbb-e8c0-40c3-91d1-db44116cf9eb";
+
+const Page: React.FC = () => {
+  const [eventData, setEventData] = useState<any>(null);
+
   useEffect(() => {
     if (user_id) {
-      sendData();
+      sendData(user_id, exhibit_Id).then(data => setEventData(data));
     }
   }, [user_id]);
 
-
   return (
     <div>
-      <p>hello</p>
+      {eventData ? (
+        <div>
+          <p>Total: {eventData.total}</p>
+          <p>Tickets Sold: {eventData.ticketsSold}</p>
+          <h3>Stakeholder Data:</h3>
+          <ul>
+            {eventData.stekholderData.map((stakeholder: any) => (
+              <li key={stakeholder.user_id}>
+                <p>User ID: {stakeholder.user_id}</p>
+                <p>Username: {stakeholder.username || 'N/A'}</p>
+                <p>Share Percentage: {stakeholder.sharePercentage}%</p>
+                <p>Distributed Amount: {stakeholder.distributedAmount}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : (
+        <p>Loading...</p>
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default Page;
