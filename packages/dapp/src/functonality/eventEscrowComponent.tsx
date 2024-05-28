@@ -16,7 +16,6 @@ const EventEscrowComponent = ({ provider, userAddress }: EventEscrowComponentPro
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [distributionSuccessful, setDistributionSuccessful] = useState<boolean>(false);
     const [distributionFailed, setDistributionFailed] = useState<boolean>(false);
-    const { data: session } = useSession();
 
     // Fetch exhibit details
     const exhibit = useExhibit(exhibitId);
@@ -57,13 +56,6 @@ const EventEscrowComponent = ({ provider, userAddress }: EventEscrowComponentPro
     // Function to distribute funds from the escrow contract
     const distributeFunds = async () => {
         setIsLoading(true);
-
-        // Check if the user is logged in and has the right permissions
-        if (!session || !session.user || session.user.role !== 'Beneficiary') {
-            setStatus('You do not have permission to distribute funds.');
-            setIsLoading(false);
-            return;
-        }
 
         // Check if escrow details are available
         if (!escrowDetails || !escrowDetails.id) {
