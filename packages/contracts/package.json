@@ -19,7 +19,6 @@
     "@nomiclabs/hardhat-ethers": "^2.2.1",
     "@openzeppelin/contracts-upgradeable": "^5.0.1",
     "@openzeppelin/hardhat-upgrades": "^3.0.2",
-    "@types/axios": "^0.14.0",
     "@types/chai": "^4.3.9",
     "@types/mocha": "^10.0.3",
     "@types/node": "^20.8.7",
