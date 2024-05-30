@@ -8,9 +8,9 @@ async function main() {
     // Hardcoded addresses
     const usdcTokenAddress = "0x9C337031e628cE48f24113db2b3437b83fB668a5";
     const museumAddress = "0x47CA7e46cEDCD8cB2ddAd9646c4F7954e9bE49D1";
-    const organizerServiceAddress = "0x9C337031e628cE48f24113db2b3437b83fB668a5";
-    const artifactNFT1 = "0x160f48cad57bf2a4f537df5fbb24277619f34ac5";
-    const artifactNFT2 = "0x5851195868fdc91585cc2308595c2b8c992c06f2";
+    const organizerServiceAddress = "0x07591Dec37a5E1299fBC302B285712aA550b0Dd4";
+    const artifactNFT1 = "0xD8b5a20Bf39fcDFF63C0850e5CfEdA0058780fFC";
+    const artifactNFT2 = "0xF91634898bfcFC1C7Ac654C176d0604aC4ab3B4A";
 
     // Connect to the contracts
     const OrganizerService = await ethers.getContractFactory("EventOrganizerService");

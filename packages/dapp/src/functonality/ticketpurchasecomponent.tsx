@@ -88,6 +88,9 @@ const user_id = session.data?.user.id
             return;
         }
 
+        console.log("Exhibition Ticket Price:", ticketPrice);
+        console.log("Your exhibit ID:", exhibitId)
+
         try {
 
           // Contract Init with Modular Approach
@@ -96,16 +99,22 @@ const user_id = session.data?.user.id
 
             // Approve USDC transfer for ticket purchase
             setStatus('Approving USDC transfer...');
-            const gasLimitApprove = ethers.utils.hexlify(50000);
-            const approveTx = await usdcContract.approve(CONTRACT_ADDRESSES.MuseumAdd, ticketPrice, { gasLimit: gasLimitApprove })// { gasLimit });
-            await approveTx.wait(2);
+            const totalCost = ethers.utils.parseUnits(ticketPrice, 18);
+            console.log(`Total cost for approval: ${totalCost.toString()}`);
+
+            const gasLimitApprove = await usdcContract.estimateGas.approve(CONTRACT_ADDRESSES.MuseumAdd, totalCost);
+            console.log(`Estimated gas for approve: ${gasLimitApprove.toString()}`);
+            const approveTx = await usdcContract.approve(CONTRACT_ADDRESSES.MuseumAdd, totalCost, { gasLimit: gasLimitApprove });
+            console.log(`Approve TX: ${approveTx.hash}`);
+            await approveTx.wait();
 
             // Execute ticket purchase transaction
             setStatus('Purchasing ticket...');
-            const gasLimitPurchase = ethers.utils.hexlify(5000);
-            const purchaseTx = await museumContract.purchaseTicket(exhibitId, ticketPrice, { gasLimit: gasLimitPurchase }) //{ gasLimit });
-            await purchaseTx.wait(4);
-
+            const gasLimitPurchase = await museumContract.estimateGas.purchaseTicket(exhibitId, totalCost);
+            console.log(`Estimated gas for purchaseTicket: ${gasLimitPurchase.toString()}`);
+            const purchaseTx = await museumContract.purchaseTicket(exhibitId, totalCost, { gasLimit: gasLimitPurchase });
+            console.log(`Purchase TX: ${purchaseTx.hash}`);
+            await purchaseTx.wait();
             //State update after successful ticket purchase
              setPurchaseSuccessful(true);
              setStatus('Ticket purchased successfully!');

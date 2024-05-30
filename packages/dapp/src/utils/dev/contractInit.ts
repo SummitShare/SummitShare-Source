@@ -19,7 +19,7 @@ export const CONTRACT_ADDRESSES = {
     EventOrganizerServiceAdd : '0x07591Dec37a5E1299fBC302B285712aA550b0Dd4',
     MUSDCAdd : '0x9C337031e628cE48f24113db2b3437b83fB668a5',
     MuseumAdd : '0x47CA7e46cEDCD8cB2ddAd9646c4F7954e9bE49D1',
-    exhibitId : '0xea047c9bd440e1d585093419cc4165c2fa7c548d',
+    exhibitId : '0x42c37c91d2e9157d7730be5913afb3a49c5f0bd3',
     EscrowAdd : '0x47e57da995734d4b573a48fb39de3a4c1d55670c'
 };
 
