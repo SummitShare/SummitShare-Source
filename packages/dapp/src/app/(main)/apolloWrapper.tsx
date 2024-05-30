@@ -9,7 +9,8 @@ import {
 
 function makeClient() {
   const httpLink = new HttpLink({
-    uri: "https://api.thegraph.com/subgraphs/name/daodesigner/revenue-sharing-source",
+    uri: "https://api.studio.thegraph.com/query/76738/subgraph-garbanzo/0.2",
+    
     fetchOptions: { cache: "no-store" },
   });
 

@@ -34,7 +34,7 @@ export async function POST(req: Request, res: NextResponse) {
     })
   
     if (!event) {
-      return NextResponse.json({ message: "no event found", }, { status: 400 });
+      return NextResponse.json({ message: "no event found", }, { status: 404 });
     }
 
     const stakeholders = await prisma.stakeholders.findMany({
@@ -62,7 +62,6 @@ export async function POST(req: Request, res: NextResponse) {
         return null;
       }
 
-      // Calculate the distributed amount based on stake percentage
       const sharePercentage = stakeholder.stake || 0;
       const totalAmount = ticketTransactions * Number(event.cost);
       const distributedAmount = (sharePercentage / 100) * totalAmount;

@@ -60,7 +60,7 @@ export async function POST(req: Request, res: NextResponse) {
       }
     })
     if (!event) {
-      return NextResponse.json({ message: "no event found", }, { status: 400 });
+      return NextResponse.json({ message: "no event found", }, { status: 404 });
     }
 
     const price = event.cost!

@@ -16,11 +16,11 @@ import DonationsABI from "../artifacts/contracts/Donations.sol/Donations.json"
 
 
 export const CONTRACT_ADDRESSES = {
-    EventOrganizerServiceAdd : '0xdFB611127315848Fd0D53226eC886BbF6514B5D1',
-    MUSDCAdd : '0xDd4c60185608108D073C19432eef0ae50AB3830d',
-    MuseumAdd : '0xF4857Efc226Bb39C6851Aa137347CFf8F8e050F9',
-    exhibitId : '0xe405b9c97656336ab949401bcd41ca3f50114725',
-    EscrowAdd : '0x741b12d361683edccaafe3d8ccc898eb6b52377b'
+    EventOrganizerServiceAdd : '0x07591Dec37a5E1299fBC302B285712aA550b0Dd4',
+    MUSDCAdd : '0x9C337031e628cE48f24113db2b3437b83fB668a5',
+    MuseumAdd : '0x47CA7e46cEDCD8cB2ddAd9646c4F7954e9bE49D1',
+    exhibitId : '0xea047c9bd440e1d585093419cc4165c2fa7c548d',
+    EscrowAdd : '0x47e57da995734d4b573a48fb39de3a4c1d55670c'
 };
 
 // Export ABIs directly
