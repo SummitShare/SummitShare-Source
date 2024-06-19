@@ -15,39 +15,22 @@ const Test =  () =>{
 
 
     return(
-        <div className="px-2">
-   
-          {/* <p>{JSON.stringify(session)}</p> */}
-
-          <div>
+       <div className="flex flex-col gap-2 p-2">
       <Buttons type="primary" size="large" active>
         Primary Large Active Button
       </Buttons>
-      <Buttons type="secondary" size="large">
+      <Buttons type="secondary" size="large" active>
         Secondary Large Button
       </Buttons>
       <Buttons type="primary" size="small" active>
         Primary Small Active Button
       </Buttons>
-      <Buttons type="secondary" size="small">
+      <Buttons type="secondary" size="small" active>
         Secondary Small Button
       </Buttons>
     </div>
 
-      
-
-<p>
-  
-</p>
-
-
-            <nav>
-                {/* {session?
-                    <Logout/>:<Link href="/auth-sign-in">Login</Link>
-                } */}
-                 
-            </nav>
-        </div>
+    
     );
 }
 export default Test;
