@@ -88,12 +88,12 @@ function Bars2() {
       ) : (
         <div className="fixed inset-0 space-y-6 bg-gray-50 dark:bg-slate-800 z-50 p-3">
           <div className="flex justify-between">
-            <Link
-              href={"/"}
-              className="text-gray-950 font-black text-2xl dark:text-gray-50"
+            <h2
+           
+              className="font-black text-2xl dark:text-gray-50"
             >
-              Summit<span className="text-orange-500">Share</span>
-            </Link>
+              Summit<span className="primary-500">Share</span>
+            </h2>
             <XMarkIcon
               onClick={() => setOpen(false)}
               className="text-gray-950 w-6 dark:text-gray-50"
