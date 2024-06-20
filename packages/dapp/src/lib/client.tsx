@@ -1,9 +1,9 @@
 import { HttpLink, from } from "@apollo/client";
 import {
-  NextSSRInMemoryCache,
-  NextSSRApolloClient,
-} from "@apollo/experimental-nextjs-app-support/ssr";
-import { registerApolloClient } from "@apollo/experimental-nextjs-app-support/rsc";
+  InMemoryCache,
+  ApolloClient,
+} from "@apollo/experimental-nextjs-app-support";
+import { registerApolloClient } from "@apollo/experimental-nextjs-app-support";
 import { onError } from './apolloErrorHandler';
 
 // apolloErrorHandler
@@ -24,8 +24,8 @@ const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) 
 });
 
 export const { getClient } = registerApolloClient(() => {
-  return new NextSSRApolloClient({
-    cache: new NextSSRInMemoryCache(),
+  return new ApolloClient({
+    cache: new InMemoryCache(),
     link: from([
       errorLink, 
       new HttpLink({
