@@ -1,75 +1,56 @@
-import { GitHubLogoIcon } from "@radix-ui/react-icons";
-import Link from "next/link";
+import React from 'react'
+import { ArrowRightCircleIcon } from '@heroicons/react/24/outline'
+import { GitHubLogoIcon } from '@radix-ui/react-icons'
+import Inputs from '../common/inputs/input/Inputs'
 
-import { ArrowRightCircleIcon } from "@heroicons/react/24/outline";
-// import EmailForm from "./EmailForm";
-
-function Footer() {
+function footer() {
   return (
-    <div className="w-full text-center space-y-6 mt-40  ">
-      <div className=" w-full space-y-6 md:flex md:justify-between  md:space-y-0 px-6 ">
-        <div className="w-full md:w-fit space-y-3 text-center md:text-left">
-          <div className="space-y-2">
-            <h4 className="text-lg text-gray-950 font-semibold">
-              Join Our News Letter
-            </h4>
-            <p className="text-sm text-gray-700">
-              Input yore email to assess all our latest news
-            </p>
-          </div>
-
-          <div className="relative w-full md:w-[400px] space-y-3">
-            <input
-              className="w-full h-10 focus:outline-none ring-1 ring-gray-300 focus:ring-orange-500 rounded-md py-[0.5rem] px-[0.8rem] transition-all input-autofill placeholder:text-gray-500 placeholder:text-[0.7rem] shadow-sm text-[0.7rem] text-gray-700"
-              placeholder="Email"
-            />
-            {/* Search icon positioned inside the input field */}
-            <ArrowRightCircleIcon className="w-6 text-gray-400 absolute -top-1 right-2 md:hidden" />
-          </div>
-       
+    <footer className='w-full space-y-2  '>
+      <section className='w-full flex flex-col gap-6 items-center md:flex-row md:justify-between p-6  md:px-4 lg:px-[20%]' >
+        <div className='text-center md:text-left'>
+<h3>Newsletter </h3>
+<p>join our news letter and get the latest updates</p>
+<Inputs type='input' state='active' rightIcon={<ArrowRightCircleIcon/>}/>
         </div>
 
-        <div className="space-y-2 ">
-          <h4 className="text-lg text-gray-950 font-semibold">Exhibit</h4>
-          <div className="text-sm flex flex-col gap-1 items-center text-gray-700">
-            <Link href={""}>Blog</Link>
-            <Link href={""}>Help</Link>
-            <Link href={""}>Products</Link>
-            <Link href={""}>Partners</Link>
-          </div>
+        <div className=''>
+          <ul className='flex flex-col gap-6 md:flex-row text-center '>
+        <li className='space-y-2'>
+              <h3>Quick links</h3>
+              <ul>
+                <li><a href="">Blogs</a></li>
+                <li><a href="">Help</a></li>
+                <li><a href="">Partners</a></li>
+              </ul>
+            </li>
+            <li className='space-y-2'>
+              <h3>Other links</h3>
+              <ul>
+              <li><a href="">Donate</a></li>
+              <li><a href="">Exhibit</a></li>
+              <li><a href="">Profile</a></li>
+
+              </ul>
+            </li>
+            <li className='space-y-2'>
+              <h3>Social links</h3>
+              <ul className='flex flex-col items-center'>
+              <li><a href="">x</a></li>
+              <li  ><a className='flex flex-row gap-2 items-center' href=""><GitHubLogoIcon className="w-4"/>Github</a></li>
+              <li><a href="">Instagram</a></li>
+              </ul>
+            </li>
+            
+          </ul>
         </div>
-        <div className="space-y-2 ">
-          <h4 className="text-lg text-gray-950 font-semibold">Link</h4>
-          <div className=" text-sm flex flex-col gap-1 items-center text-gray-700">
-            <Link href={""}>signUp</Link>
-            <Link href={""}>signIn</Link>
-            <Link href={""}>Register</Link>
-            <Link href={""}>Tickets</Link>
-          </div>
-        </div>
-        <div className="space-y-2 ">
-          <h4 className="text-lg text-gray-950 font-semibold">Join Us</h4>
-          <div className="text-sm flex flex-col gap-1 items-center text-gray-700">
-            <Link href={""}>x</Link>
-            <Link
-              className=" w-full flex items-center justify-center gap-2"
-              href={"https://github.com/SummitShare/SummitShare"}
-            >
-              <GitHubLogoIcon /> Github
-            </Link>
-            <Link href={""}>facebook</Link>
-            <Link href={""}>Instagram</Link>
-          </div>
-        </div>
-      </div>
-      <div className="border-t w-full flex flex-col gap-1 text-gray-700  items-center py-5 md:flex-row md:px-80 md:justify-between text-sm">
-        <Link href={""}>Terms</Link>
-        <Link href={""}>Privacy policy</Link>
-        <Link href={""}>Community guidelines</Link>
-        copyRight@2023
-      </div>
-    </div>
-  );
+
+      </section>
+      <section className='w-full text-center border-t border-primary-900-5 py-2'>
+<p>Copyright@2024</p>
+      </section>
+
+    </footer>
+  )
 }
 
-export default Footer;
+export default footer
