@@ -1,8 +1,9 @@
 'use client'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import React, { useState } from 'react'
-import Buttons from '../Buttons'
+
 import { usePathname } from 'next/navigation'
+import Buttons from '../common/button/Butons'
 
 /**
  * PrimaryNav component represents the main navigation bar for the application.
@@ -32,7 +33,7 @@ const PrimaryNav: React.FC = () => {
   const pathname = usePathname()
 
   return (
-    <ul className='fixed inset-x-0 px-6 py-4 flex flex-row justify-between items-center border-b border-primary-900-5 text-primary-900 z-10 bg-white'>
+    <ul className='fixed top-0 inset-x-0 px-6 py-4 flex flex-row justify-between items-center border-b border-primary-900-5 text-primary-900 z-10 bg-white'>
       <li><h2><span className='text-primary-400'>Summit</span>Share</h2></li>
       <li className='sm:block hidden md:hidden lg:block'>
         <ul className='flex flex-row gap-[32px] text-p1-m text-primary-100'>

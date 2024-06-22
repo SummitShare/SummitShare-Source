@@ -8,11 +8,11 @@ import { Providers } from "@/redux/provider";
 
 import { ApolloWrapper } from "./apolloWrapper";
 import { SessionProvider } from "next-auth/react";
-import { NavBar } from "../components/navigation/navBar";
 import Footer from "../components/navigation/footer";
 import { ThirdwebProvider } from "@thirdweb-dev/react";
 import { BanknotesIcon } from "@heroicons/react/24/outline";
 import EventEscrowComponent from "@/functonality/eventEscrowComponent";
+import PrimaryNav from "../components/navigation/PrimaryNav";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,11 +29,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`bg-gray-50 mt-10  ${inter.className}`}>
+      <body className={``}>
         <SessionProvider>
         <ApolloWrapper>
           <Providers>
-            <NavBar />
+            <PrimaryNav />
             {children}
             <Footer />
           </Providers>
