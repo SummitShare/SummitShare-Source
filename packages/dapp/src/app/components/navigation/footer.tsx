@@ -18,7 +18,7 @@ function footer() {
         <li className='space-y-2'>
               <h3>Quick links</h3>
               <ul>
-                <li><a href="">Blogs</a></li>
+                <li><a href="">Blog</a></li>
                 <li><a href="">Help</a></li>
                 <li><a href="">Partners</a></li>
               </ul>

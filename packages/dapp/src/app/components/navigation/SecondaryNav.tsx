@@ -9,12 +9,12 @@ const [openMenu,setOpenMenu] = useState<boolean>(false)
 const [openSecondaryMenu,setOpenSecondaryMenu] = useState<boolean>(false)
 
 const menuItems: { title: string, items: { name: string, link: string }[] }[] = [
-  { title: 'Pages', items: [{ name: 'What is summitshare?', link: '/blogs' }, { name: 'Our goal as summitsahre', link: '/help' }, { name: 'Where is all started', link: '/partners' }] }
+  { title: 'Pages', items: [{ name: 'What is summitshare?', link: '/blog' }, { name: 'Our goal as summitsahre', link: '/help' }, { name: 'Where is all started', link: '/partners' }] }
 
 ]
 
 const items: { name: string, link: string }[] = [
-  { name: 'Blogs', link: '/blogs' },
+  { name: 'Blog', link: '/blog' },
   { name: 'Partners', link: '/partners' },
   { name: 'Help', link: '/help' },
   { name: 'Profile', link: '/profile' },
@@ -28,7 +28,7 @@ const pathname = usePathname()
       <nav className={`fixed inset-y-0 left-0 w-fit  bg-white z-50 transform ${openMenu ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out`}>
         <div className='border-b border-primary-900-5 py-4 lg:py-[17.5px]'>
           <div className='px-6 flex flex-row justify-between text-primary-900'>
-            <h2 className='text-primary-400'>Blogs</h2>
+            <h2 className='text-primary-400'>Blog</h2>
             <XMarkIcon onClick={() => setOpenMenu(!openMenu)} className='w-4 cursor-pointer' />
           </div>
         </div>

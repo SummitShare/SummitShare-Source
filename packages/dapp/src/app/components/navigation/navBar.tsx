@@ -40,7 +40,7 @@ export const NavBar = () => {
         <div className="sm:block hidden ">
           <ul className=" w-fit flex gap-6 items-center ">
             <NavLink href={"/about"}>About</NavLink>
-            <NavLink href={"/blogs"}>Blogs</NavLink>
+            <NavLink href={"/blog"}>Blog</NavLink>
             <NavLink href={"/help"}>Help</NavLink>
             <NavLink href={"/github"}>
               <GitHubLogoIcon className="w-6" />
@@ -106,7 +106,7 @@ function Bars2() {
             </NavLink>
             <NavLink href={"/blog"} className="text-2xl">
               <BookOpenIcon className="w-6" />
-              Blogs
+              Blog
             </NavLink>
             <NavLink href={"/Help"} className="text-2xl">
               <InformationCircleIcon className="w-6" />
