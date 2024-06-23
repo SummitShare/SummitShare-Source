@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import Buttons from "@/app/components/common/button/Butons";
+import SummitShareCanvas from "@/app/components/3DCanvas/3dCanvas";
+import { Drum } from "@/app/components/3DCanvas/Drum";
 
 export default function Home() {
 
@@ -76,6 +78,10 @@ export default function Home() {
           className="w-full h-full object-cover"
         />
       </div>
+<div>
+  <SummitShareCanvas modle={<Drum/>}/>
+</div>
+
       <div className="space-y-6">
         <div className="space-y-2">
           <h2>The Leading Ladies</h2>

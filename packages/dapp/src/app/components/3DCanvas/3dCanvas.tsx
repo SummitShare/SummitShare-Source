@@ -4,7 +4,7 @@ import { OrbitControls } from "@react-three/drei";
 import { DirectionalLight } from "three"; // Import DirectionalLight
 // import { Drum } from "@/Drum";
 
-const SummitShareCanvas = (modle:ReactNode) => {
+const SummitShareCanvas = (modle:any)=> {
   return (
     <div className="bg-gradient-to-t from-orange-600 to-orange-400  h-[410px] w-[500px] rounded-xl">
       <Canvas
