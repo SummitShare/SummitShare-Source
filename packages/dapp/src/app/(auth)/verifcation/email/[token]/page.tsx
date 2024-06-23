@@ -1,4 +1,5 @@
 'use client'
+import Buttons from "@/app/components/common/button/Butons";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -78,40 +79,17 @@ function Page({ params }: { params: { token: string } }) {
 
 
   return (
-    <div className=" w-full flex items-center justify-center fixed inset-0 bg-gray-50 z-20 ">
-      <div className="flex flex-col gap-6 items-center justify-center  ">
-        <h1 className="text-3xl text-gray-950 ">
-          Summit<span className="text-orange-500">Share</span>
-        </h1>
-        <div className=" w-[80%] text-center">
-          <p className="text-sm text-gray-700">
-            {verificationMessage}
-          </p>
+    <div className=" flex flex-col justify-between min-h-screen my-[48px] mx-6">
+        <nav className="w-full flex flex-row justify-between items-center">
+        <p className="text-p2-m">
+          Step 1<span> of 3</span>
+        </p>
+        <p>Exit</p>
+      </nav>
+      <div className="w-full h-[322px]">
 
-        </div>
       </div>
-
-      {verificationStatus === 200 ?
-        null
-        : <div className="space-y-3 ring-1 ring-gray-300 rounded-md py-3 px-4 fixed bottom-5 right-5 left-5  md:right-5 md:left-[60%] ">
-          <p className="text-sm text-gray-700">
-            {/* {verificationStatus === 200 ?
-
-        " navigate to the home page and start your cultural adventure"
-        : "Resend verified eamil note it will expire in 1 hour"} */}
-
-            {verificationMessage}
-          </p>
-          <div>
-
-
-            <button onClick={resendVerificationEmail} className="ring-1 ring-gray-300 rounded-md px-3 py-2 text-xs">Resend Email</button>
-
-
-          </div>
-        </div>
-      }
-
+      <Buttons type="primary" size="large">Continue</Buttons>
 
     </div>
   );
