@@ -12,7 +12,10 @@ const nextConfig = {
       "plus.unsplash.com",
       "loremflickr.com",
       "images.squarespace-cdn.com",
-      'source.unsplash.com'
+      'source.unsplash.com',
+      'hackmd.io',
+      'amazonaws.com',
+      'ethereum.org'
     ],
   },
   env: {

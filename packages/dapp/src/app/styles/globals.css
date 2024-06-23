@@ -160,3 +160,9 @@ ge-100 {
 ge-500 {
   color: #207F42;
 }
+
+p>img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}

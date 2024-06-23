@@ -1,28 +1,26 @@
-import { Note } from '@/utils/dev/frontEndInterfaces';
 import axios, { AxiosError } from 'axios';
 import matter from 'gray-matter';
-    // console.log('Fetching notes with URL:', url);
+import { Note } from '@/utils/dev/frontEndInterfaces';
+
 const API_URL = 'https://api.hackmd.io/v1/notes';
-const BEARER_TOKEN = process.env.HACKMD_API_TOKEN;
+const BEARER_TOKEN = process.env.HACKMD_API_TOKEN as string;
 
 /**
  * Fetch all notes from the team's workspace
- * @returns {Promise<any[]>} List of notes
+ * @returns {Promise<Note[]>} List of notes
  */
-export const fetchAllTeamNotes = async (): Promise<any[]> => {
+export const fetchAllTeamNotes = async (): Promise<Note[]> => {
   try {
-    const url = `${API_URL}`;
-
-    const response = await axios.get(url, {
+    const response = await axios.get(API_URL, {
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
       },
     });
 
-    const notes = response.data;
+    const notes: Note[] = response.data;
 
-     const notesWithContent = await Promise.all(
-      notes.map(async (note: Note) => {
+    const notesWithContent = await Promise.all(
+      notes.map(async (note) => {
         const contentResponse = await axios.get(`${API_URL}/${note.id}`, {
           headers: {
             Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -34,7 +32,6 @@ export const fetchAllTeamNotes = async (): Promise<any[]> => {
     );
 
     return notesWithContent;
-    // console.log('Fetched notes:', response.data); only for dev
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error('Error fetching all team notes:', error.response?.data || error.message);
@@ -52,14 +49,11 @@ export const fetchAllTeamNotes = async (): Promise<any[]> => {
  */
 export const fetchNoteContent = async (noteId: string): Promise<any> => {
   try {
-    const url = `${API_URL}/${noteId}`;
-    // console.log('Fetching note with URL:', url);
-    const response = await axios.get(url, {
+    const response = await axios.get(`${API_URL}/${noteId}`, {
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
       },
     });
-    // console.log('Fetched note:', response.data); -- only for dev
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -76,7 +70,6 @@ export const fetchNoteContent = async (noteId: string): Promise<any> => {
  * @param {string} content - Raw content of the note
  * @returns {object} Parsed front matter and content
  */
-
 export const parseNoteContent = (content: string): { data: any; content: string } => {
   const parsed = matter(content);
   return {

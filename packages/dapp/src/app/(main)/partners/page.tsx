@@ -16,6 +16,8 @@ const Partners = async () => {
       .process(parsedNote.content);
     const contentHtml = processedContent.toString();
 
+    //console.log(contentHtml);
+
     return (
       <div>
         <h1>{parsedNote.data.title}</h1>
