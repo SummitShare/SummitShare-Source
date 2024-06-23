@@ -1,16 +1,27 @@
+import Inputs from "@/app/components/common/inputs/input/Inputs";
 import Details from "../../components/details/details";
 import ProfileForm from "../../components/profile/components/from";
+import Buttons from "@/app/components/common/button/Butons";
 
 
 
 function Profile() {
   return (
-    <div className="space-y-6 mt-20 ">
-      <Details
-        title="Personal Information"
-        info="Use a permanent address where you can receive mail."
-      />
-      <ProfileForm />
+    <div>
+       <nav className="w-full flex flex-row  items-end">
+       
+        <p>Exit</p>          
+      </nav>
+      <header className="text-center space-y-2">
+        <h2>Leading ladies</h2>
+        <p>Learn about the history you love!</p>
+      </header>
+      <div>
+      <Inputs type="input" label="username" state="active" defaultValue="" />
+      <Inputs type="input" label="Email" state="active" defaultValue=""/>
+      </div>
+      <Buttons type="primary" size="large">Update</Buttons>
+
     </div>
   );
 }
