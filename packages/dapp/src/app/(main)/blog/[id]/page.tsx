@@ -19,7 +19,7 @@ const Note = async ({ params }: { params: { id: string } }) => {
 
     const processedContent = await unified()
       .use(remarkParse)
-      .use(remarkHtml)
+      .use(remarkHtml, { sanitize: false})
       .process(parsedNote.content);
     const contentHtml = processedContent.toString();
 

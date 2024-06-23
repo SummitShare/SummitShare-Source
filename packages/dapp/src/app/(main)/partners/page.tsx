@@ -12,7 +12,7 @@ const Partners = async () => {
 
     const processedContent = await unified()
       .use(remarkParse)
-      .use(remarkHtml)
+      .use(remarkHtml, { sanitize: false})
       .process(parsedNote.content);
     const contentHtml = processedContent.toString();
 
