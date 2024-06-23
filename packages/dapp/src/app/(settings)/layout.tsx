@@ -20,9 +20,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className } flex flex-col items-center bg-gray-50 dark:bg-slate-800`}>
+      <body className={``}>
       <SessionProvider>
-        <NavBar/>
+ 
       {children}
       </SessionProvider>
       </body>
