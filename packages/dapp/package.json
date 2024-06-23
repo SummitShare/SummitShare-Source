@@ -30,6 +30,7 @@
     "@radix-ui/react-toggle": "^1.0.3",
     "@react-three/drei": "9.0.1",
     "@react-three/fiber": "^8.16.8",
+    "@react-three/gltfjsx": "^4.3.4",
     "@reduxjs/toolkit": "^2.2.2",
     "@tailwindcss/typography": "^0.5.10",
     "@tanstack/react-table": "^8.10.7",

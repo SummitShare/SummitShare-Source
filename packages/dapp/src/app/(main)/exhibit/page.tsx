@@ -2,9 +2,9 @@
 import { useState, useEffect } from "react";
 
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import Buttons from "@/app/components/common/button/Butons";
 import SummitShareCanvas from "@/app/components/3DCanvas/3dCanvas";
 import { Drum } from "@/app/components/3DCanvas/Drum";
+import Buttons from "@/app/components/common/button/Butons";
 
 export default function Home() {
 
@@ -79,7 +79,7 @@ export default function Home() {
         />
       </div>
 <div>
-  <SummitShareCanvas modle={<Drum/>}/>
+  <SummitShareCanvas/>
 </div>
 
       <div className="space-y-6">

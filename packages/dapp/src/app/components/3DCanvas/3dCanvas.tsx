@@ -2,9 +2,10 @@ import React, { ReactNode } from "react";
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from "@react-three/drei";
 import { DirectionalLight } from "three"; // Import DirectionalLight
-// import { Drum } from "@/Drum";
+import { Drum } from "./Drum";
 
-const SummitShareCanvas = (modle:any)=> {
+
+const SummitShareCanvas = ()=> {
   return (
     <div className="bg-gradient-to-t from-orange-600 to-orange-400  h-[410px] w-[500px] rounded-xl">
       <Canvas
@@ -22,7 +23,7 @@ const SummitShareCanvas = (modle:any)=> {
  
         <ambientLight intensity={10} />
 
-        {modle}
+     <Drum/>
 
         {/* Add OrbitControls to enable camera rotation around the object */}
         <OrbitControls
