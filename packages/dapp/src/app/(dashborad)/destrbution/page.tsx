@@ -18,29 +18,16 @@ const Page: React.FC = () => {
 
   return (
     <div>
-      {eventData ? (
-        <div>
-          <p>Total: {eventData.total}</p>
-          <p>Tickets Sold: {eventData.ticketsSold}</p>
-          <h3>Stakeholder Data:</h3>
-          <ul>
-            {eventData.stekholderData.map((stakeholder: any) => (
-              <li key={stakeholder.user_id}>
-                <p>User ID: {stakeholder.user_id}</p>
-                <p>Username: {stakeholder.username || 'N/A'}</p>
-                <p>Share Percentage: {stakeholder.sharePercentage}%</p>
-                <p>Distributed Amount: {stakeholder.distributedAmount}</p>
-              </li>
-            ))}
-
-<EventEscrowComponent userAddress="" provider="" exhibitId="0xe405b9c97656336ab949401bcd41ca3f50114725"/>
-
-          </ul>
-          
-        </div>
-      ) : (
-        <p>Loading...</p>
-      )}
+      <nav className="w-full flex flex-row justify-between items-center">
+        <p className="text-p2-m">
+        Distrbution
+        </p>
+        <p>Exit</p>
+      </nav>
+      <header className="text-center space-y-2">
+        <h2>Create account</h2>
+        <p>Learn about the history you love!</p>
+      </header>
     </div>
   );
 };

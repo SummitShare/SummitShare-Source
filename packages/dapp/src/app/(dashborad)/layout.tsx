@@ -30,9 +30,7 @@ export default function RootLayout({
 
  <ApolloWrapper>
           <Providers>
-            <Navbar />
             {children} 
-            <Footer/>
             </Providers>
         </ApolloWrapper>
 
