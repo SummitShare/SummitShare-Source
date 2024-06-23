@@ -25,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`bg-gray-50 mt-24 mx-5 ${inter.className}`}>
+      <body className={` `}>
  <SessionProvider>
 
  <ApolloWrapper>
