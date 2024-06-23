@@ -200,7 +200,7 @@ export interface NoteProps {
     tags: string[];
     createdAt: number;
     titleUpdatedAt: number;
-    tagsUpdatedAt: number;
+    tagsUpdatedAt: number | null;
     publishType: string;
     publishedAt: number;
     permalink: string | null;
@@ -208,9 +208,14 @@ export interface NoteProps {
     shortId: string;
     content: string;
     lastChangedAt: number;
-    lastChangeUser: string | null;
-    userPath: string | null;
-    teamPath: string;
+    lastChangeUser: {
+      name: string;
+      photo: string;
+      biography: string;
+      userPath: string;
+    };
+    userPath: string;
+    teamPath: string | null;
     readPermission: string;
     writePermission: string;
   }

@@ -1,3 +1,4 @@
+import { Note } from '@/utils/dev/frontEndInterfaces';
 import axios, { AxiosError } from 'axios';
 import matter from 'gray-matter';
     // console.log('Fetching notes with URL:', url);
@@ -17,8 +18,23 @@ export const fetchAllTeamNotes = async (): Promise<any[]> => {
         Authorization: `Bearer ${BEARER_TOKEN}`,
       },
     });
+
+    const notes = response.data;
+
+     const notesWithContent = await Promise.all(
+      notes.map(async (note: Note) => {
+        const contentResponse = await axios.get(`${API_URL}/${note.id}`, {
+          headers: {
+            Authorization: `Bearer ${BEARER_TOKEN}`,
+          },
+        });
+        note.content = contentResponse.data.content;
+        return note;
+      })
+    );
+
+    return notesWithContent;
     // console.log('Fetched notes:', response.data); only for dev
-    return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error('Error fetching all team notes:', error.response?.data || error.message);
