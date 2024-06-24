@@ -20,7 +20,7 @@ const PrimaryNav: React.FC = () => {
 
   // Menu items for the responsive nav menu
   const menuItems: { title: string, items: { name: string, link: string }[] }[] = [
-    { title: 'Pages', items: [{ name: 'Blog', link: '/blog' }, { name: 'Help', link: '/help' }, { name: 'Partners', link: '/partners' }] },
+    { title: 'Pages', items: [{ name: 'Blog', link: '/blog' }, { name: 'Partners', link: '/partners' }] },
     { title: 'Dashboard', items: [{ name: 'Distribution', link: '/distribution' }] },
     { title: 'Settings', items: [{ name: 'Profile', link: '/profile' }, { name: 'Change Password', link: '/change-password' }, { name: 'Delete Account', link: '/delete-account' }, { name: 'Log Out', link: '/logout' }] }
   ]

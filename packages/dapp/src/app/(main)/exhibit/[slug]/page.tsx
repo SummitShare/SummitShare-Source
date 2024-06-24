@@ -2,11 +2,11 @@
 import SummitShareCanvas from '@/app/components/3DCanvas/3dCanvas';
 import { Calabash } from '@/app/components/3DCanvas/models/Calabash';
 import Buttons from '@/app/components/button/Butons';
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 interface ObjectDescription {
   title: string;
-  object_URL: string;
+  object_URL?: string|ReactNode
   Object_description: string[][];
   Figure_artifact_details: string;
   figure_images_URLs: string[];
@@ -92,7 +92,7 @@ const data: ObjectDescription[] = [
 
   {
     title: "Mukwae",
-    object_URL: "https://s3.example.com/3d_objects/calabash.glb",
+    object_URL: <Calabash/>,
     Object_description: [
       ["Made from gourd, upper part decorated with engravings, braising, and chip offs darkened by burning."],
       ["Lower part knitted with fibres."],
@@ -160,16 +160,20 @@ const Page = ({ params }: PageProps) => {
   }
 
   return (
-    <div className="mt-[100px] px-6 space-y-[48px]">
+    <div className="space-y-12 mx-6 my-28">
 
-       <h2>{figure.title} & Artifct </h2>
-       <SummitShareCanvas><Calabash/></SummitShareCanvas>
+<h2>{figure.title} & Artifct </h2>
+       <article className='space-y-12 md:grid md:grid-cols-2 gap-6 w-full'>
+      
+       <SummitShareCanvas>{figure.object_URL}</SummitShareCanvas>
      
-      <ul className='space-y-3'>
-        {figure.Object_description.map((desc, index) => (
-          <li key={index}><p>{desc}</p></li>
-        ))}
-      </ul>
+     <ul className='flex flex-col gap-3'>
+       {figure.Object_description.map((desc, index) => (
+         <li key={index}><p>{desc}</p></li>
+       ))}
+     </ul>
+       </article>
+       
 
  
      
@@ -188,8 +192,27 @@ const Page = ({ params }: PageProps) => {
         ))}
       </ul>
 
+      <div className="w-full rounded-[8px] bg-primary-50 space-y-4 px-[45px] py-6">
+
+
+<div className="space-y-2">
+  <h3>Was this page informative?</h3>
+  <p>Those who walked before us and those to come.</p>
+</div>
+
+<div className='flex flex-row gap-4'>
+  <div className="w-[73px]">
+    <Buttons type="primary" size="small">Yes</Buttons>
+  </div>
+  <div className="w-[73px]">
+    <Buttons type="secondary" size="small">No</Buttons>
+  </div>
+</div>
+
+</div>
+
      
-        <div className='space-y-4'><Buttons type='primary' active={true} >Next</Buttons><Buttons type='secondary' active={true} >Back</Buttons></div>
+      <div className='space-y-4 md:flex md:flex-row md:gap-4 md:space-y-0'><Buttons type='secondary' active={true} >Back</Buttons><Buttons type='primary' active={true} >Next</Buttons></div>
      
       
     </div>

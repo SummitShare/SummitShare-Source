@@ -69,83 +69,84 @@ export default function Home() {
       </li>
     </ul>
 
-  return (<div className=" space-y-12 mx-6 mt-[96px]">
-    <section className="border-b border-primary-900-5 space-y-[48px] pb-6">
-      <div className="w-full h-[342px] rounded-[8px] overflow-hidden">
-        <img
-          src="https://images.unsplash.com/photo-1515658323406-25d61c141a6e?q=80&w=2509&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="women walking together in a group"
-          className="w-full h-full object-cover"
-        />
-      </div>
-<div>
-  <SummitShareCanvas/>
-</div>
+  return (<div className="space-y-24 mx-6 my-28">
+    <section className="border-b md:border-b-0 border-primary-900-5 space-y-[48px] pb-6 md:flex md:flex-row md:gap-4">
+      <div className="w-full md:w-[45%] h-[342px] rounded-[0.5rem] overflow-hidden bg-[url('https://images.squarespace-cdn.com/content/v1/5878a307ebbd1ab23e1ed5a0/1650963860604-mdJSBAWOMLQIU9ZXUK1K/all-women.71ba3487f51cab4dc38a.png?format=2500w')] bg-cover bg-primary-50 bg-center">
 
-      <div className="space-y-6">
+      </div>
+      <div className="space-y-6 md:w-[45%] md:flex md:flex-col md:justify-between">
         <div className="space-y-2">
           <h2>The Leading Ladies</h2>
           <p>
-            Those who walked before us and those to come. Those who wore red
-            clay masks and rested their heads on bended knees. Those who
-            washed the cowry bead and swung the snuff cup.
+            Those who walked before us and those to come. Those who wore red clay masks and rested their heads on bended knees. Those who washed the cowry bead and swung the snuff cup.Those who weaved the baskets and wrapped the cloth. Those who fought for peace and danced to the drum.
           </p>
         </div>
-        <Buttons type="primary" size="large">Purchase</Buttons>
+        <Buttons type="primary" size="large">Purchus</Buttons>
       </div>
     </section>
 
-    <div className="w-full rounded-[8px] bg-primary-50 space-y-4 px-[45px] py-6">
+    <div className="w-full rounded-[0.5rem] bg-primary-50 space-y-4 px-12 py-6">
       <div className="w-full ">
-      <XMarkIcon className="w-6 float-end"/>
+        <XMarkIcon className="w-6 float-end" />
       </div>
-      
+
       <div className="space-y-2">
-      <h3>How to purchase a ticket</h3>
-      <p>Those who walked before us and those to come.</p>
+        <h3>How to purchase a ticket</h3>
+        <p>Those who walked before us and those to come.</p>
       </div>
-      
+
       <div className="w-[118px]">
-          <Buttons type="subTartary" size="small">Help me</Buttons>
-        </div>
+        <Buttons type="subTartary" size="small">Help me</Buttons>
+      </div>
     </div>
 
-    <section className="w-full">
-<h2>All Artefact</h2>
+    <section className="w-full space-y-6">
+      <h2>All Artefact</h2>
 
-<section className="flex flex-row gap-4 overflow-x-auto py-6">
-<div className="flex flex-col  gap-6 justify-end min-w-[80%] h-[300px] rounded-[8px] bg-primary-50 px-[43px] py-6 ">
-      <h3 className="text-white">Artifact name</h3>
-        <div className="w-[66px]">
-          <Buttons type="tartary" size="small">View</Buttons>
+      <section className=" w-full  grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="flex flex-col  gap-6 justify-end  h-[15.625rem] rounded-[0.5rem] bg-primary-50 px-8 py-6 ">
+          <h3 className="text-white">Artifact name</h3>
+          <div className="w-[66px]">
+            <Buttons type="tartary" size="small">View</Buttons>
+          </div>
         </div>
-      </div>
-      <div className="flex flex-col  gap-6 justify-end min-w-[80%] h-[300px] rounded-[8px] bg-primary-50 px-[43px] py-6 ">
-      <h3 className="text-white">Artifact name</h3>
-        <div className="w-[66px]">
-          <Buttons type="tartary" size="small">View</Buttons>
+        <div className="flex flex-col  gap-6 justify-end  h-[15.625rem] rounded-[0.5rem] bg-primary-50 px-8 py-6 ">
+          <h3 className="text-white">Artifact name</h3>
+          <div className="w-[66px]">
+            <Buttons type="tartary" size="small">View</Buttons>
+          </div>
         </div>
-      </div>
+        <div className="flex flex-col  gap-6 justify-end  h-[15.625rem] rounded-[0.5rem] bg-primary-50 px-8 py-6 ">
+          <h3 className="text-white">Artifact name</h3>
+          <div className="w-[66px]">
+            <Buttons type="tartary" size="small">View</Buttons>
+          </div>
+        </div>
+        <div className="flex flex-col  gap-6 justify-end  h-[15.625rem] rounded-[0.5rem] bg-primary-50 px-8 py-6 ">
+          <h3 className="text-white">Artifact name</h3>
+          <div className="w-[66px]">
+            <Buttons type="tartary" size="small">View</Buttons>
+          </div>
+        </div>
       
+      
+
+      </section>
+
     </section>
 
-</section>
-
-    <section className="bg-primary-400 rounded-[8px] w-full h-[342px] flex flex-col items-center px-[45px] justify-center space-y-[48px]">
-
+    <section className="bg-primary-400 rounded-[0.5rem] w-full h-[21.375rem] flex flex-col items-center px-[2.813rem] justify-center space-y-12 ">
       <div className="space-y-2 text-center">
         <h3 className="text-white">Collaborate with us</h3>
         <p className="text-center text-white">Figma ipsum component variant main layer. Arrange draft plugin community.</p>
       </div>
-
       <div className="w-[164px]">
         <Buttons type="tartary" size="large">Register today</Buttons>
       </div>
-
     </section>
 
 
 
-   
+
   </div>);
 }

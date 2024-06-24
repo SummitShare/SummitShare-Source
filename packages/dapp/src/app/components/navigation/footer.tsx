@@ -6,7 +6,7 @@ import Inputs from '../inputs/Inputs'
 function footer() {
   return (
     <footer className='w-full space-y-2  '>
-      <section className='w-full flex flex-col gap-6 items-center lg:flex-row md:justify-between px-28  ' >
+      <section className='w-full flex flex-col gap-6 items-center lg:flex-row md:justify-between lg:px-28 px-6  ' >
         <div className='text-center lg:text-left'>
 <h3>Newsletter </h3>
 <p>join our news letter and get the latest updates</p>
