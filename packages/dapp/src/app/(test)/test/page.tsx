@@ -1,45 +1,50 @@
-'use client'
+import Link from 'next/link';
+import { fetchAllTeamNotes } from '../../../lib/hackMD'; 
+import { Note } from '@/utils/dev/frontEndInterfaces'; 
+import styles from './Blog.module.css';
+const getExcerpt = (content: string, length: number = 100): string => {
+  return content.length > length ? content.substring(0, length) + '...' : content;
+};
 
-import Buttons from "@/app/components/button/Butons";
-import Inputs from "@/app/components/inputs/Inputs";
-import { InfoCircledIcon } from "@radix-ui/react-icons";
+const BlogList = async () => {
+  try {
+    const notes: Note[] = await fetchAllTeamNotes();
 
-const Test = () => {
-  return (
-    <div className="flex flex-col gap-2 p-2">
+    return (
+     
+       
+
+        <ul className='w-full space-y-4 md:space-y-0 md:grid md:grid-cols-2 md:gap-4'>
+          {notes.map((note) => (
+            <li key={note.shortId} className={`w-full rounded-[8px] border border-primary-100/20 p-8 space-y-6`}>
+              <div className='space-y-4'>
+              <h3>{note.title}</h3>
+                {note.tags.length > 0 && (
+                  <div className={`w-full flex flex-wrap gap-1`}>
+                    {note.tags.map((tag) => (
+                      <span key={tag} className='w-fit rounded-2xl bg-primary-50 text-primary-900 px-4 py-1 text-p3-r'>
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                <p className={`text-p2-r`}>{getExcerpt(note.content)}</p>
+              </div>
+             
+<div>
+<Link className='w-ifit rounded-md bg-primary-600 text-white hover:bg-primary-600/95 px-8 py-2' href={`/blog/${note.shortId}`}>Read
+</Link>
+</div>
+             
+            </li>
+          ))}
+        </ul>
   
+    );
+  } catch (error) {
+    console.error('Error in Blog component:', error);
+    return <div>Error loading blog posts</div>;
+  }
+};
 
-      <div className="flex flex-col gap-2 p-2">
-      <Inputs
-          type="select"
-          label="Country"
-          state="active"
-          defaultValue="Select"
-          options={['USA', 'Canada', 'Zambia']}
-        />
-        <Inputs
-          type="input"
-          label="Fullname"
-          help="Enter your full name"
-          helpIcon={<InfoCircledIcon />}
-          state="active"
-          defaultValue="John Doe"
-        />
-      
-        <Inputs
-          type="textarea"
-          label="Comments"
-          state="active"
-          defaultValue="Your comments here"
-        />
-         <Buttons type="primary" size="large" active>
-      Sumbit my data
-      </Buttons>
-     
-      </div>
-     
-    </div>
-  );
-}
-
-export default Test;
+export default BlogList;

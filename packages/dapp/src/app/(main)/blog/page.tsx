@@ -1,8 +1,6 @@
+import { fetchAllTeamNotes } from '@/lib/hackMD';
+import { Note } from '@/utils/dev/frontEndInterfaces';
 import Link from 'next/link';
-import { fetchAllTeamNotes } from '../../../lib/hackMD'; 
-import { Note } from '@/utils/dev/frontEndInterfaces'; 
-import styles from './Blog.module.css';
-import Buttons from '@/app/components/button/Butons';
 
 const getExcerpt = (content: string, length: number = 100): string => {
   return content.length > length ? content.substring(0, length) + '...' : content;
@@ -24,7 +22,7 @@ const Blog = async () => {
           {notes.map((note) => (
             <li key={note.shortId} className={`w-full rounded-[8px] border border-primary-100/20 p-8 space-y-6`}>
               <div className='space-y-4'>
-              <h3 className={styles.title}>{note.title}</h3>
+              <h3>{note.title}</h3>
                 {note.tags.length > 0 && (
                   <div className={`w-full flex flex-wrap gap-1`}>
                     {note.tags.map((tag) => (

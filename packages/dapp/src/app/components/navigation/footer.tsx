@@ -6,15 +6,15 @@ import Inputs from '../inputs/Inputs'
 function footer() {
   return (
     <footer className='w-full space-y-2  '>
-      <section className='w-full flex flex-col gap-6 items-center md:flex-row md:justify-between p-6  md:px-4 lg:px-[20%]' >
-        <div className='text-center md:text-left'>
+      <section className='w-full flex flex-col gap-6 items-center lg:flex-row md:justify-between px-28  ' >
+        <div className='text-center lg:text-left'>
 <h3>Newsletter </h3>
 <p>join our news letter and get the latest updates</p>
 <Inputs type='input' state='active' rightIcon={<ArrowRightCircleIcon/>}/>
         </div>
 
-        <div className=''>
-          <ul className='flex flex-col gap-6 md:flex-row text-center '>
+        <div className=']'>
+          <ul className='flex flex-col gap-10 lg:flex-row text-center '>
         <li className='space-y-2'>
               <h3>Quick links</h3>
               <ul>

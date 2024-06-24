@@ -1,9 +1,11 @@
 "use client";
 import { useState, useEffect } from "react";
 import Buttons from "../components/button/Butons";
+import BlogList from "../(test)/test/page";
 
 
 export default function Home() {
+
 
   const [count, setCount] = useState({
     artifact: 0,
@@ -52,36 +54,32 @@ export default function Home() {
 
   const counter =
     <ul className="w-[70%] flex justify-center gap-6  md:w-full md:gap-0 md:justify-start font-black ">
-      <li className="space-y-3 text-center w-[1/3] md:w-fit lg:mr-3 ">
+      <li className="space-y-3 text-center w-[1/3] md:w-fit md:mr-3 ">
         <h3>Artifact</h3>
         <h2>{count.artifact.toFixed()}</h2>
       </li>
-      <li className="space-y-3 text-center w-1/3 lg:w-[20%]">
+      <li className="space-y-3 text-center w-1/3 md:w-[20%]">
         <h3>Visitors</h3>
         <h2>{count.visitors.toFixed(1)}k</h2>
       </li>
-      <li className="space-y-3 text-center w-1/3 lg:w-[20%]">
+      <li className="space-y-3 text-center w-1/3 md:w-[20%]">
         <h3>Donations</h3>
         <h2>{count.donations.toFixed(1)}k</h2>
       </li>
     </ul>
 
-  return (<div className=" space-y-12 mx-6 mt-[96px]">
-    <section className="border-b border-primary-900-5 space-y-[48px] pb-6">
-      <div className="w-full h-[342px] rounded-[8px] overflow-hidden">
-        <img
-          src="https://images.squarespace-cdn.com/content/v1/5878a307ebbd1ab23e1ed5a0/1650963860604-LGJSBAWOMLQIU9ZXUK1K/all-women.71ba3487f51cab4dc38a.png?format=2500w"
-          alt="women walking together in a group"
-          className="w-full h-full object-cover"
-        />
+  return (<div className=" space-y-24 mx-6 my-28">
+
+
+   <section className="border-b md:border-b-0 border-primary-900-5 space-y-[48px] pb-6 md:flex md:flex-row md:gap-4">
+      <div className="w-full md:w-[45%] h-[342px] rounded-[0.5rem] overflow-hidden bg-[url('https://images.squarespace-cdn.com/content/v1/5878a307ebbd1ab23e1ed5a0/1650963860604-mdJSBAWOMLQIU9ZXUK1K/all-women.71ba3487f51cab4dc38a.png?format=2500w')] bg-cover bg-primary-50 bg-center">
+
       </div>
-      <div className="space-y-6">
+      <div className="space-y-6 md:w-[45%] md:flex md:flex-col md:justify-between">
         <div className="space-y-2">
           <h2>The Leading Ladies</h2>
           <p>
-            Those who walked before us and those to come. Those who wore red
-            clay masks and rested their heads on bended knees. Those who
-            washed the cowry bead and swung the snuff cup.
+          Those who walked before us and those to come. Those who wore red clay masks and rested their heads on bended knees. Those who washed the cowry bead and swung the snuff cup.Those who weaved the baskets and wrapped the cloth. Those who fought for peace and danced to the drum.
           </p>
         </div>
         <Buttons type="primary" size="large">Explore</Buttons>
@@ -89,64 +87,41 @@ export default function Home() {
     </section>
 
     <section className="space-y-8">
-      <div className="space-y-2">      <h2>What is summitShare</h2>
-        <p>Figma ipsum component variant main layer. Arrange draft plugin community effect. Line stroke comment flows invite device.</p></div>
-      <div className="space-y-4">   <Buttons type="primary" size="large">Donate</Buttons>
+      <div className="space-y-2"><h2>What is summitShare</h2>
+        <p>SummitShare stands as a pioneering digital platform dedicated to the repatriation of African cultural artifacts. Bridging the past and present, it serves as a beacon of hope and a testament to the resilience of African heritage, utilizing the power of blockchain technology to reclaim, celebrate, and share the rich tapestry of Africa's history with the world.</p></div>
+      <div className="space-y-4 md:flex md:flex-row md:gap-4 md:w-[50%] md:items-center md:space-y-0">   <Buttons type="primary" size="large">Donate</Buttons>
         <Buttons type="secondary" size="large" >Star repo</Buttons></div>
-
-
     </section>
-
-    <section className="bg-primary-400 rounded-[8px] w-full h-[342px] flex flex-col items-center px-[45px] justify-center space-y-[48px]">
-
+   
+ 
+    <section className="bg-primary-400 rounded-[0.5rem] w-full h-[21.375rem] flex flex-col items-center px-[2.813rem] justify-center space-y-12 ">
       <div className="space-y-2 text-center">
         <h3 className="text-white">Collaborate with us</h3>
         <p className="text-center text-white">Figma ipsum component variant main layer. Arrange draft plugin community.</p>
       </div>
-
       <div className="w-[164px]">
         <Buttons type="tartary" size="large">Register today</Buttons>
       </div>
-
     </section>
 
-<section className="w-full">
-<h2>Get updates</h2>
-<p>Figma ipsum component variant main layer. Arrange draft plugin community.</p>
-<section className="flex flex-row gap-4 overflow-x-auto py-6">
-      <div className="min-w-[80%] h-fit rounded-[8px] bg-primary-50 px-[43px] py-6 space-y-6">
-        <div className="space-y-2">
-          <h3>Blog</h3>
-          <p>Figma ipsum component variant main layer. Arrange draft plugin community.</p>
-        </div>
-        <div className="w-[66px]">
-          <Buttons type="subTartary" size="small">Read</Buttons>
-        </div>
+    <section className="w-full space-y-6">
+      <div className="sapce-y-2">
+        <h2>Get updates</h2>
+        <p>Figma ipsum component variant main layer. Arrange draft plugin community.</p>
       </div>
-      <div className="min-w-[80%] h-fit rounded-[8px] bg-primary-50 px-[43px] py-6 space-y-6">
-        <div className="space-y-2">
-          <h3>Blog</h3>
-          <p>Figma ipsum component variant main layer. Arrange draft plugin community.</p>
-        </div>
-        <div className="w-[66px]">
-          <Buttons type="subTartary" size="small">Read</Buttons>
-        </div>
-      </div>
+      <BlogList />
     </section>
 
-</section>
 
-    <section className="bg-primary-400 rounded-[8px] w-full h-[342px] flex flex-col items-center px-[45px] justify-center space-y-[48px]">
 
+    <section className="bg-primary-400 rounded-[0.5rem] w-full h-[21.375rem] flex flex-col items-center px-[2.813rem] justify-center space-y-12 ">
       <div className="space-y-2 text-center">
-        <h3 className="text-white">Our Partners</h3>
+        <h3 className="text-white">Our Partnerss</h3>
         <p className="text-center text-white">Figma ipsum component variant main layer. Arrange draft plugin community.</p>
       </div>
-
-
-      <Buttons type="tartary" size="large">Learn more about them</Buttons>
-
-
+      <div className="w-[164px]">
+        <Buttons type="tartary" size="large">Learn more</Buttons>
+      </div>
     </section>
   </div>);
 }

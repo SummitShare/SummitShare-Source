@@ -34,7 +34,10 @@ export default function RootLayout({
         <ApolloWrapper>
           <Providers>
             <PrimaryNav />
+            <div className="lg:mx-[15%]">
             {children}
+            </div>
+           
             <Footer />
           </Providers>
         </ApolloWrapper>
