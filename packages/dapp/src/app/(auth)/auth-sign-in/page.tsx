@@ -5,11 +5,9 @@ import React from 'react'
 
 function Page() {
   return (
-    <div className="w-full px-6 my-[48px] flex flex-col justify-between min-h-screen">
-       <nav className="w-full flex flex-row justify-between items-center">
-        <p className="text-p2-m">
-          Step 3<span> of 3</span>
-        </p>
+    <div className="px-6 my-12  flex flex-col space-y-9 md:w-[50%] lg:w-[30%]">
+       <nav className="w-full flex flex-row justify-end items-center">
+        
         <p>Exit</p>
       </nav>
       <header className="text-center space-y-2">

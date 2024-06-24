@@ -7,34 +7,37 @@ function page() {
 
   return (
 
-    <div className=' mx-6 mt-[96px] space-y-[48px]'>
-      <header className='text-center space-y-2'>
+    <div className=' space-y-10 mx-6 my-28'>
+      <header className='text-left space-y-2'>
         <h2>Donate to  project</h2>
         <p>Figma ipsum component variant main layer. </p>
       </header>
-      <div className="w-full rounded-[8px] bg-primary-50 space-y-4 px-[45px] py-6">
-        <div className="w-full ">
-          <XMarkIcon className="w-6 float-end" />
+
+
+
+<div className='md:grid md:grid-cols-2 gap-4 '>
+<section className='space-y-6 md:flex md:flex-col md:justify-between md:h-full'>
+        <div className='space-y-6'>
+          <Inputs type="select" label="Chain" state="active" options={['Eth', 'Bitcoin', 'Base']} />
+          <div className='w-full h-[358px] lg:hidden md:hidden bg-blue-200'>
+            <img src="" alt="" />
+          </div>
         </div>
 
-        <div className="space-y-2">
-          <h3>How to donate</h3>
-          <p>Those who walked before us and those to come.</p>
+
+        <div className='space-y-4'>
+          <Inputs type="input" label="Wallet address" state="inactive" defaultValue="Value" />
+          <Buttons type='primary'>Copy wallet address</Buttons>
         </div>
 
+      </section>
 
-        <div className="w-[118px]">
-          <Buttons type="subTartary" size="small">Help me</Buttons>
-        </div>
-      </div> 
-
-      <Inputs type="select" label="Chain" state="active" options={['Eth', 'Bitcoin', 'Base']} />
-      <div className='w-full h-[358px]'>
-  <img src="" alt="" />
+      <div className='w-full h-[358px] sm:block hidden bg-blue-200'>
+        <img src="" alt="" />
+      </div>
 </div>
-      <Inputs type="input" label="Wallet address" state="inactive" defaultValue="Value" />
- 
-      <Buttons type='primary'>Copy wallet address</Buttons>
+
+      
 
     </div>
 

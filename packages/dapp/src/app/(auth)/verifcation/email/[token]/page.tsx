@@ -79,19 +79,17 @@ function Page({ params }: { params: { token: string } }) {
 
 
   return (
-    <div className=" flex flex-col justify-between min-h-screen my-[48px] mx-6">
-        <nav className="w-full flex flex-row justify-between items-center">
-        <p className="text-p2-m">
-          Step 1<span> of 3</span>
-        </p>
-        <p>Exit</p>
-      </nav>
-      <div className="w-full h-[322px]">
-
-      </div>
-      <Buttons type="primary" size="large">Continue</Buttons>
-
+ 
+      
+ <div className=" px-6 my-12  flex flex-col md:w-[30%] h-full justify-center ">
+  <div className="text-center space-y-2">
+  <h1><span className='text-primary-400'>Summit</span>Share</h1>
+  <p>Figma ipsum component variant main layer. Arrange draft plugin community.</p>
+  </div>
+   
     </div>
+   
+   
   );
 }
 

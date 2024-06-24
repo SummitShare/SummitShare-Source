@@ -14,7 +14,6 @@ const PrimaryNav: React.FC = () => {
   const items: { name: string, link: string }[] = [
     { name: 'Blog', link: '/blog' },
     { name: 'Partners', link: '/partners' },
-    { name: 'Profile', link: '/profile' },
     { name: 'Distribution', link: '/distribution' }
   ]
 

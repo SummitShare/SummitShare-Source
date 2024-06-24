@@ -19,7 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <div className="md:flex md:justify-center items-center h-screen">{children}</div>
+          </Providers>
       </body>
     </html>
   );
