@@ -1,7 +1,7 @@
 'use client'
 
-import Buttons from "@/app/components/common/button/Butons";
-import Inputs from "@/app/components/common/inputs/input/Inputs";
+import Buttons from "@/app/components/button/Butons";
+import Inputs from "@/app/components/inputs/Inputs";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 
 const Test = () => {

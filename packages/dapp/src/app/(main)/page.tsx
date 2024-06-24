@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import Buttons from "../components/common/button/Butons";
+import Buttons from "../components/button/Butons";
 
 
 export default function Home() {

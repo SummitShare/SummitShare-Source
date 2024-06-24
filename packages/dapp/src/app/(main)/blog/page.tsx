@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { fetchAllTeamNotes } from '../../../lib/hackMD'; 
 import { Note } from '@/utils/dev/frontEndInterfaces'; 
 import styles from './Blog.module.css';
-import Buttons from '@/app/components/common/button/Butons';
+import Buttons from '@/app/components/button/Butons';
 
 const getExcerpt = (content: string, length: number = 100): string => {
   return content.length > length ? content.substring(0, length) + '...' : content;

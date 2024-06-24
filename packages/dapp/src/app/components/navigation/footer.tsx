@@ -1,7 +1,7 @@
 import React from 'react'
 import { ArrowRightCircleIcon } from '@heroicons/react/24/outline'
 import { GitHubLogoIcon } from '@radix-ui/react-icons'
-import Inputs from '../common/inputs/input/Inputs'
+import Inputs from '../inputs/Inputs'
 
 function footer() {
   return (

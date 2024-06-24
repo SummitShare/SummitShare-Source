@@ -3,7 +3,7 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import React, { useState } from 'react'
 
 import { usePathname } from 'next/navigation'
-import Buttons from '../common/button/Butons'
+import Buttons from '../button/Butons'
 
 /**
  * PrimaryNav component represents the main navigation bar for the application.

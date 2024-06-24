@@ -2,7 +2,7 @@ import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkHtml from 'remark-html';
 import { fetchAllTeamNotes, fetchNoteContent, parseNoteContent } from '@/lib/hackMD';
-import Buttons from '@/app/components/common/button/Butons';
+import Buttons from '@/app/components/button/Butons';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
 

@@ -6,7 +6,7 @@ export const  Banner = () => {
   const [open, setOpen] = useState(true);
   return (
     <div
-      className={`w-full inset-0 flex relative justify-center bg-green-500 text-sm text-gray-50 underline  ${
+      className={`w-full inset-0 flex relative justify-center bg-ge-500 text-p3-r text-whote underline  ${
         open === false ? "hidden" : "bock"
       }`}
     >

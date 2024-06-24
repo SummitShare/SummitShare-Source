@@ -9,8 +9,7 @@
  */
 
 "use client";
-import ButtonOrange from "@/app/components/common/button/buttonOrange";
-import Input from "@/app/components/common/inputs/input/input";
+
 import Link from "next/link";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -98,7 +97,7 @@ const Register = () => {
 
           <div className="w-full space-y-3 ">
 
-            <Input
+            {/* <Input
               type="email"
               label="email"
               name="email"
@@ -113,10 +112,11 @@ const Register = () => {
               register={register}
               required
             />
-          </div>
+         
           <ButtonOrange text="text-[0.9rem]" width="w-full">
             Create Account
-          </ButtonOrange>
+          </ButtonOrange> */}
+           </div>
         </div>
 
         <div className="w-full text-center mt-20">

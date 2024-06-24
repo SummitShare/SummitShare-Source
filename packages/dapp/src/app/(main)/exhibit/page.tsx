@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import SummitShareCanvas from "@/app/components/3DCanvas/3dCanvas";
-import { Drum } from "@/app/components/3DCanvas/Drum";
-import Buttons from "@/app/components/common/button/Butons";
+import { Drum } from "@/app/components/3DCanvas/models/Drum";
+import Buttons from "@/app/components/button/Butons";
 
 export default function Home() {
 

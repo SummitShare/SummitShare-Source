@@ -1,10 +1,10 @@
 'use client'
 import SummitShareCanvas from '@/app/components/3DCanvas/3dCanvas';
-import { Drum } from '@/app/components/3DCanvas/Drum';
-import Buttons from '@/app/components/common/button/Butons';
+import { Drum } from '@/app/components/3DCanvas/models/Drum';
+import Buttons from '@/app/components/button/Butons';
 import React from 'react';
-import { Model } from '../../../../../Calabash';
-import { Mask } from '../../../../../Mask';
+import { Model } from '../../../components/3DCanvas/models/Calabash';
+import { Mask } from '../../../components/3DCanvas/models/Mask';
 
 interface ObjectDescription {
   title: string;
@@ -165,7 +165,7 @@ const Page = ({ params }: PageProps) => {
     <div className="mt-[100px] px-6 space-y-[48px]">
 
        <h2>{figure.title} & Artifct </h2>
-       <SummitShareCanvas><Drum/></SummitShareCanvas>
+       <SummitShareCanvas><Model/></SummitShareCanvas>
      
       <ul className='space-y-3'>
         {figure.Object_description.map((desc, index) => (
