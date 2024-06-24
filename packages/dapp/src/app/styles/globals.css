@@ -11,7 +11,7 @@ h4,
 h5 {
   font-family: "Martel", serif;
   line-height: 125%;
-  font-weight: 500;
+  font-weight: 700;
   color: #1A0D08;
 }
 
@@ -35,7 +35,7 @@ h5 {
   font-size: 0.875rem;
 }
 
-p {
+p,a,li{
   font-family: "Inter", sans-serif;
   line-height: 150%;
   color: #403B3A;

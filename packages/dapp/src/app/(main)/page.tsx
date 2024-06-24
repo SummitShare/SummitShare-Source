@@ -70,7 +70,7 @@ export default function Home() {
     <section className="border-b border-primary-900-5 space-y-[48px] pb-6">
       <div className="w-full h-[342px] rounded-[8px] overflow-hidden">
         <img
-          src="https://images.unsplash.com/photo-1515658323406-25d61c141a6e?q=80&w=2509&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          src="https://images.squarespace-cdn.com/content/v1/5878a307ebbd1ab23e1ed5a0/1650963860604-LGJSBAWOMLQIU9ZXUK1K/all-women.71ba3487f51cab4dc38a.png?format=2500w"
           alt="women walking together in a group"
           className="w-full h-full object-cover"
         />
