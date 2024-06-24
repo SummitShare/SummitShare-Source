@@ -1,5 +1,3 @@
-"use client";
-import { useState, useEffect } from "react";
 import Buttons from "../components/button/Butons";
 import BlogList from "../(test)/test/page";
 
@@ -7,66 +5,66 @@ import BlogList from "../(test)/test/page";
 export default function Home() {
 
 
-  const [count, setCount] = useState({
-    artifact: 0,
-    donations: 0,
-    visitors: 0,
-  });
+  // const [count, setCount] = useState({
+  //   artifact: 0,
+  //   donations: 0,
+  //   visitors: 0,
+  // });
 
-  const thresholds = {
-    artifact: 10,
-    donations: 20.5,
-    visitors: 30,
-  };
+  // const thresholds = {
+  //   artifact: 10,
+  //   donations: 20.5,
+  //   visitors: 30,
+  // };
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setCount((prevCount) => {
-        const newCount = {
-          artifact:
-            prevCount.artifact >= thresholds.artifact
-              ? prevCount.artifact
-              : prevCount.artifact + 0.1,
-          donations:
-            prevCount.donations >= thresholds.donations
-              ? prevCount.donations
-              : prevCount.donations + 0.1,
-          visitors:
-            prevCount.visitors >= thresholds.visitors
-              ? prevCount.visitors
-              : prevCount.visitors + 0.1,
-        };
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     setCount((prevCount) => {
+  //       const newCount = {
+  //         artifact:
+  //           prevCount.artifact >= thresholds.artifact
+  //             ? prevCount.artifact
+  //             : prevCount.artifact + 0.1,
+  //         donations:
+  //           prevCount.donations >= thresholds.donations
+  //             ? prevCount.donations
+  //             : prevCount.donations + 0.1,
+  //         visitors:
+  //           prevCount.visitors >= thresholds.visitors
+  //             ? prevCount.visitors
+  //             : prevCount.visitors + 0.1,
+  //       };
 
-        if (
-          newCount.artifact >= thresholds.artifact &&
-          newCount.donations >= thresholds.donations &&
-          newCount.visitors >= thresholds.visitors
-        ) {
-          clearInterval(intervalId);
-        }
-        return newCount;
-      });
-    }, 10);
+  //       if (
+  //         newCount.artifact >= thresholds.artifact &&
+  //         newCount.donations >= thresholds.donations &&
+  //         newCount.visitors >= thresholds.visitors
+  //       ) {
+  //         clearInterval(intervalId);
+  //       }
+  //       return newCount;
+  //     });
+  //   }, 10);
 
-    return () => clearInterval(intervalId);
-  }, []);
+  //   return () => clearInterval(intervalId);
+  // }, []);
 
 
-  const counter =
-    <ul className="w-[70%] flex justify-center gap-6  md:w-full md:gap-0 md:justify-start font-black ">
-      <li className="space-y-3 text-center w-[1/3] md:w-fit md:mr-3 ">
-        <h3>Artifact</h3>
-        <h2>{count.artifact.toFixed()}</h2>
-      </li>
-      <li className="space-y-3 text-center w-1/3 md:w-[20%]">
-        <h3>Visitors</h3>
-        <h2>{count.visitors.toFixed(1)}k</h2>
-      </li>
-      <li className="space-y-3 text-center w-1/3 md:w-[20%]">
-        <h3>Donations</h3>
-        <h2>{count.donations.toFixed(1)}k</h2>
-      </li>
-    </ul>
+  // const counter =
+  //   <ul className="w-[70%] flex justify-center gap-6  md:w-full md:gap-0 md:justify-start font-black ">
+  //     <li className="space-y-3 text-center w-[1/3] md:w-fit md:mr-3 ">
+  //       <h3>Artifact</h3>
+  //       <h2>{count.artifact.toFixed()}</h2>
+  //     </li>
+  //     <li className="space-y-3 text-center w-1/3 md:w-[20%]">
+  //       <h3>Visitors</h3>
+  //       <h2>{count.visitors.toFixed(1)}k</h2>
+  //     </li>
+  //     <li className="space-y-3 text-center w-1/3 md:w-[20%]">
+  //       <h3>Donations</h3>
+  //       <h2>{count.donations.toFixed(1)}k</h2>
+  //     </li>
+  //   </ul>
 
   return (<div className=" space-y-24 mx-6 my-28">
 
