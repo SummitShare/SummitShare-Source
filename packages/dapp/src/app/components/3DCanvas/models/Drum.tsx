@@ -27,7 +27,7 @@ type ContextType = Record<
 >;
 
 export function Drum(props: JSX.IntrinsicElements["group"]) {
-  const { nodes, materials } = useGLTF("/drum.glb") as GLTFResult;
+  const { nodes, materials } = useGLTF("/models/drum.glb") as GLTFResult;
   return (
     <group {...props} dispose={null} scale={2} position={[0, -2, 0]}>
       <mesh

@@ -22,7 +22,7 @@ type GLTFResult = GLTF & {
 
 type ContextType = Record<string, React.ForwardRefExoticComponent<JSX.IntrinsicElements['mesh']>>
 
-export function Model(props: JSX.IntrinsicElements['group']) {
+export function Calabash(props: JSX.IntrinsicElements['group']) {
   const { nodes, materials } = useGLTF('/models/Calabash.glb') as GLTFResult
   return (
     <group {...props} dispose={null}>
