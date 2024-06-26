@@ -34,8 +34,8 @@ export async function GET (request: Request , response : NextResponse) {
 
 
     // const allUsers = await prisma.users.findMany()
-    // console.log(allUsers)
-    // console.log("get")
+    // //console.log(allUsers)
+    // //console.log("get")
     return NextResponse.json({ 
       yes: 'great success' ,
       key : Key,

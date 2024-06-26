@@ -96,7 +96,7 @@ export async function POST(req: Request , res : NextResponse) {
             proposal_id: prop.id,
         },
         });
-        console.log(`newStakeholder = ${newStakeholder.stakeholder_id}`) 
+        //console.log(`newStakeholder = ${newStakeholder.stakeholder_id}`) 
 
         const newStakeholder_id = newStakeholder.stakeholder_id
       return NextResponse.json({ message: "success", prop,reqs,newStakeholder_id }, { status: 200 });

@@ -56,7 +56,7 @@ export async function POST(request: Request, response: NextResponse) {
     // Return a 200 response with the newly created wallet data.
     return NextResponse.json({ message: 'wallets found', "wallet": newWallet }, { status: 200 })
   } catch (error) {
-    console.log(error)
+    //console.log(error)
     // In case of any errors during the process, return a 500 response indicating an internal server error.
     return NextResponse.json({ message: 'internal server error' }, { status: 500 })
   }

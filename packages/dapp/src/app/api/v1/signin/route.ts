@@ -10,7 +10,7 @@
 
 // export async function POST(req: Request , response : NextResponse) {
 //     const { email, password } = await req.json();
-//     console.log(`\n ${email}  ${password}`)
+//     //console.log(`\n ${email}  ${password}`)
 
     
 //     try {
@@ -26,13 +26,13 @@
 //       if (error instanceof AuthError) {
 //          switch (error.type) {
 //           case "CredentialsSignin":
-//             console.log("cred error ", error)
+//             //console.log("cred error ", error)
 //             return NextResponse.json({error : " invalid credentials"},{ status: 401 })
 //           default: 
 //           return NextResponse.json({error : "something went wrong"},{ status: 500 })      
 //         }
 //       }
-//       console.log("server error ", error)
+//       //console.log("server error ", error)
       
 //       throw error
 //     }

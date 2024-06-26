@@ -123,14 +123,14 @@ export async function POST(req: Request) {
     try {
         // Validate and parse the request body
         const { event_id } : { event_id: string } = await req.json();
-        //console.log(event_id)
+        ////console.log(event_id)
 
         // Call API or function to get exhibit parameters based on the event_id
         const exhibitParams = await callDeployEventApi(event_id);
 
         // Deploy the exhibit using the retrieved parameters
         const receipt: TransactionReceipt = await deployExhibit(exhibitParams);
-        //console.log(receipt.logs[2].address);
+        ////console.log(receipt.logs[2].address);
         const contract_address = receipt.logs[2].address
 
         // posts to database deployed exhibitid/address

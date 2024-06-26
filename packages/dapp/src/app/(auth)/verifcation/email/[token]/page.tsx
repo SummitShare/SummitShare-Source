@@ -25,8 +25,8 @@ function Page({ params }: { params: { token: string } }) {
         });
         const { status } = response
         const { message } = await response.json()
-        console.log(`status ${status}`)
-        console.log(`message ${message}`)
+        // //console.log(`status ${status}`)
+        // //console.log(`message ${message}`)
 
         setVerificationMessage(message);
         setverificationStatus(response?.status)
@@ -65,7 +65,7 @@ function Page({ params }: { params: { token: string } }) {
 
       if (response.ok) {
         // Handle success
-        console.log('Verification email resent successfully.');
+        // //console.log('Verification email resent successfully.');
       } else {
         // Handle failure
         console.error('Failed to resend verification email.');

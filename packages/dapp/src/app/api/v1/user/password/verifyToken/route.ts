@@ -17,7 +17,7 @@ async function updateUser(user_id: string, hashedPassword: string): Promise<bool
       }
     });
 
-    console.log('Password updated successfully:', updateResponse.id);
+    //console.log('Password updated successfully:', updateResponse.id);
     return true;
   } catch (error) {
     console.error('Failed to update user password:', error);

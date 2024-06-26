@@ -29,7 +29,7 @@ import prisma from '../../../../../../config/db';
         },
       });
   
-      console.log(`Successfully updated ${result.count} stakeholders.`);
+      //console.log(`Successfully updated ${result.count} stakeholders.`);
       return true;
     } catch (error) {
       console.error("An error occurred during the update:", error);
@@ -55,7 +55,7 @@ async function ensureStakeholdersInTable(stakes: IStakes ,proposal_id : string) 
   const totalStakes = Object.values(stakes).reduce((total, stake) => total + stake, 0);
   // Validation for total stakes
   if (totalStakes !== 100) {
-    console.log(`The total stakes do not add up to 100. Current total: ${totalStakes}`);
+    //console.log(`The total stakes do not add up to 100. Current total: ${totalStakes}`);
     return false; // Return false if total stakes do not add up to 100
   }
 
@@ -90,10 +90,10 @@ async function ensureStakeholdersInTable(stakes: IStakes ,proposal_id : string) 
     });
 
     if (!stakeholder) {
-      console.log(`Stakeholder with ID ${CurrentStakeholder.stakeholder_id} not found in the database.`);
+      //console.log(`Stakeholder with ID ${CurrentStakeholder.stakeholder_id} not found in the database.`);
       return false; // Return false if a stakeholder is not found in the database
     } else {
-      console.log(`Stakeholder with ID ${CurrentStakeholder.stakeholder_id} exists in the database.`);
+      //console.log(`Stakeholder with ID ${CurrentStakeholder.stakeholder_id} exists in the database.`);
       // Continue checking other stakeholders
     }
   }
@@ -116,7 +116,7 @@ export async function POST(req: Request, res: NextResponse) {
         const stakeholderIds = Object.keys(stakes); 
 
         if (Object.keys(stakes).length === 0) {
-          console.log("The companyStakes object is empty.");
+          //console.log("The companyStakes object is empty.");
           return NextResponse.json({ error: 'no stakeholders sent' }, { status: 400 });
         }
 

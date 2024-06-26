@@ -43,7 +43,7 @@ export async function uploadMetadataS3(uploadData: UploadData) {
     try {
         const command = new PutObjectCommand(putObjectParams);
         const response = await s3Client.send(command);
-        console.log("Successfully uploaded:", name);
+        //console.log("Successfully uploaded:", name);
         return response;
     } catch (error) {
         console.error("Error uploading file:", error);

@@ -23,28 +23,28 @@ import  prisma from '../../../../../../../config/db';
 //     const token = queryParams.get('token')!;
   
 //     if (token){
-//         console.log(`token = ${token}`)
+//         //console.log(`token = ${token}`)
 //       try {
 //         // Retrieve the request from the database using the provided token
 //         const request = await prisma.requests.findFirst({
 //           where: { token: token },
 //       });
 
-//       console.log(`req ${request} email ${request?.email_address} prop ${request?.proposal_id}`)
+//       //console.log(`req ${request} email ${request?.email_address} prop ${request?.proposal_id}`)
 //       if (!request || !request.email_address || !request.proposal_id) {
-//           console.log(`Request or required fields missing for token: ${token}`);
+//           //console.log(`Request or required fields missing for token: ${token}`);
 //           return NextResponse.json({ error: 'Request not found or incomplete' }, { status: 404 });
 //       }
   
 //       const email = request.email_address;
 //       const proposal_id = request.proposal_id;
-//       console.log(`info = ${proposal_id} ${email}`);
+//       //console.log(`info = ${proposal_id} ${email}`);
   
 //       // Retrieve the user associated with the email address from the request
 //       const user = await prisma.users.findUnique({
 //           where: { email: email },
 //       });
-//       console.log(`user = ${user?.id}`);
+//       //console.log(`user = ${user?.id}`);
 //       const user_id = user?.id;
 
 //       // Update the request's status to "Accepted" in the database
@@ -53,7 +53,7 @@ import  prisma from '../../../../../../../config/db';
 //         data: { status: "Accepted" },
 //      });
 
-//      console.log(`updatedRequest = ${updatedRequest}`)
+//      //console.log(`updatedRequest = ${updatedRequest}`)
 
     
 //     const newStakeholder = await prisma.stakeholders.create({
@@ -62,15 +62,15 @@ import  prisma from '../../../../../../../config/db';
 //           proposal_id: proposal_id,
 //       },
 //       });
-//       console.log(`newStakeholder = ${newStakeholder}`) 
+//       //console.log(`newStakeholder = ${newStakeholder}`) 
  
 //         return NextResponse.json({ message: "Email verified successfully" },{status: 201});
 //       } catch (error) {
-//         console.log(`error = ${error}`)
+//         //console.log(`error = ${error}`)
 //         return NextResponse.json({ message: 'faliure', error : error}, { status: 400 })
 //       }
 //     } else {
-//       console.log("token error")
+//       //console.log("token error")
 //         return NextResponse.json({ message: 'faliure'}, { status: 400 })
         
 //     }
@@ -85,33 +85,33 @@ export async function  POST(req: Request , res : NextResponse) {
   const requestBody = await req.json();
   const  {token , response } = requestBody
   if (token){
-      console.log(`token = ${token}`)
+      //console.log(`token = ${token}`)
     try {
       // Retrieve the request from the database using the provided token
       const request = await prisma.requests.findFirst({
         where: { token: token },
     });
 
-    console.log(`req ${request} email ${request?.email_address} prop ${request?.proposal_id}`)
+    //console.log(`req ${request} email ${request?.email_address} prop ${request?.proposal_id}`)
     if (!request || !request.email_address || !request.proposal_id) {
-        console.log(`Request or required fields missing for token: ${token}`);
+        //console.log(`Request or required fields missing for token: ${token}`);
         return NextResponse.json({ message: 'Request not found or incomplete' }, { status: 404 });
     }
 
     if (!response ) {
-      console.log(`response missing for token: ${token}`);
+      //console.log(`response missing for token: ${token}`);
       return NextResponse.json({ message: 'Request not found or incomplete' }, { status: 404 });
     }
 
     const email = request.email_address;
     const proposal_id = request.proposal_id;
-    console.log(`info = ${proposal_id} ${email}`);
+    //console.log(`info = ${proposal_id} ${email}`);
 
     // Retrieve the user associated with the email address from the request
     const user = await prisma.users.findUnique({
         where: { email: email },
     });
-    console.log(`token user = ${user?.id}`);
+    //console.log(`token user = ${user?.id}`);
     const user_id = user?.id;
 
     // Update the request's status to "Accepted" in the database
@@ -120,7 +120,7 @@ export async function  POST(req: Request , res : NextResponse) {
       data: { status: response },
    });
 
-   console.log(`updatedRequest = ${updatedRequest}`)
+   //console.log(`updatedRequest = ${updatedRequest}`)
 
    if (response !== "Accepted") {
     return NextResponse.json({ message: "request rejected" },{status: 200});
@@ -131,15 +131,15 @@ export async function  POST(req: Request , res : NextResponse) {
         proposal_id: proposal_id,
     },
     });
-    console.log(`newStakeholder = ${newStakeholder}`) 
+    //console.log(`newStakeholder = ${newStakeholder}`) 
 
       return NextResponse.json({ message: "request accepted" },{status: 200});
     } catch (error) {
-      console.log(`error = ${error}`)
+      //console.log(`error = ${error}`)
       return NextResponse.json({ message: 'faliure', error : error}, { status: 400 })
     }
   } else {
-    console.log("token error")
+    //console.log("token error")
       return NextResponse.json({ message: 'faliure'}, { status: 400 })
       
   }

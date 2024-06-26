@@ -58,7 +58,7 @@ export async function GET(req: Request , res : NextResponse) {
     if (!token){
       return NextResponse.json({ message: 'no token sent',}, { status: 401 })
     }
-    console.log(`NT ${token}`)
+    //console.log(`NT ${token}`)
     const verificationRecord = await prisma.email_verification.findFirst({
       where: { token: token },  
     });

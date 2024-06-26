@@ -23,14 +23,14 @@ const prisma = new PrismaClient()
 async function ensureStakeholdersInTable(stakes: IStakes ,proposal_id : string) : Promise<boolean> {
   // Guard clause to check if companyStakes is empty
   if (Object.keys(stakes).length === 0) {
-    console.log("The companyStakes object is empty.");
+    //console.log("The companyStakes object is empty.");
     return false; // Return false if companyStakes is empty
   }
 
   const totalStakes = Object.values(stakes).reduce((total, stake) => total + stake, 0);
   // Validation for total stakes
   if (totalStakes !== 100) {
-    console.log(`The total stakes do not add up to 100. Current total: ${totalStakes}`);
+    //console.log(`The total stakes do not add up to 100. Current total: ${totalStakes}`);
     return false; // Return false if total stakes do not add up to 100
   }
 
@@ -64,10 +64,10 @@ async function ensureStakeholdersInTable(stakes: IStakes ,proposal_id : string) 
     });
 
     if (!stakeholder) {
-      console.log(`Stakeholder with ID ${CurrentStakeholder.stakeholder_id} not found in the database.`);
+      //console.log(`Stakeholder with ID ${CurrentStakeholder.stakeholder_id} not found in the database.`);
       return false; // Return false if a stakeholder is not found in the database
     } else {
-      console.log(`Stakeholder with ID ${CurrentStakeholder.stakeholder_id} exists in the database.`);
+      //console.log(`Stakeholder with ID ${CurrentStakeholder.stakeholder_id} exists in the database.`);
       // Continue checking other stakeholders
     }
   }

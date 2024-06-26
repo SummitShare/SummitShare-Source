@@ -43,9 +43,9 @@ interface IPropsal extends Object{}
 
 export async function POST(req: Request) {
     try {
-        console.log("Received request in deploy route");
+        // //console.log("Received request in deploy route");
         const requestBody = await req.json();
-        console.log("Request Body:", requestBody);
+        // //console.log("Request Body:", requestBody);
         const { event_id }: { event_id: string } = requestBody;
 
         const eventData = await prisma.events.findUnique({
@@ -71,7 +71,7 @@ export async function POST(req: Request) {
             id: eventData.id
         };
         
-        console.log("Returning exhibitParams:", exhibitParams);
+        // //console.log("Returning exhibitParams:", exhibitParams);
         return NextResponse.json(exhibitParams, { status: 200 });
     } catch (error) {
         console.error('Error in deploy POST endpoint:', error);

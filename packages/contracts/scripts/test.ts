@@ -5,11 +5,11 @@ async function main() {
   // Retrieve signers
   const [owner, controller, beneficiary1, beneficiary2, funder] = await ethers.getSigners();
 
-  console.log("owner", owner.address);
-  console.log("controller", controller.address);
-  console.log("beneficiary1", beneficiary1.address);
-  console.log("beneficiary2", beneficiary2.address);
-  console.log("funder", funder.address);
+  //console.log("owner", owner.address);
+  //console.log("controller", controller.address);
+  //console.log("beneficiary1", beneficiary1.address);
+  //console.log("beneficiary2", beneficiary2.address);
+  //console.log("funder", funder.address);
   //get a gas price estimate from the rpc
   // Hardcoded addresses
   const usdcTokenAddress = "0xC8eBF290a9B67c51d8EC65434fc477471fB9DF4e";
@@ -56,9 +56,9 @@ async function main() {
   const exhibit2NFTAddress = await organizerService.exhibits("exhibit2");
   // get usdcToken set on museum
   const exhibitMuseumAddress = await museum.exhibits("exhibit1");
-  console.log("ExhibitNFT deployed to:", exhibitNFTAddress)
-  console.log("ExhibitMuseum deployed to:", exhibitMuseumAddress)
-  console.log("ExhibitNFT deployed to:", exhibit2NFTAddress)
+  //console.log("ExhibitNFT deployed to:", exhibitNFTAddress)
+  //console.log("ExhibitMuseum deployed to:", exhibitMuseumAddress)
+  //console.log("ExhibitNFT deployed to:", exhibit2NFTAddress)
 
 
   // const ownerAddress = "<ownerAddress>";
@@ -69,15 +69,15 @@ async function main() {
   // // Testing something that should work...
   // //check funder usdc balance
   // const funderBalance = await usdcTokenContract.balanceOf(funder.address);
-  // console.log("funder balance", funderBalance.toString())
+  // //console.log("funder balance", funderBalance.toString())
   // //if funder balance is zero send some usdc tokens from owner
   // if (funderBalance == 0) {
   //   //load some usdc
-  //   console.log("loading funder with usdc")
+  //   //console.log("loading funder with usdc")
   //   const tx = await usdcTokenContract.transfer(funder.address, ethers.parseUnits("2000000", 18));
   //   //distribute some USDC to the funders
   //   await tx.wait();
-  //   console.log("done")
+  //   //console.log("done")
   // }
 
 }

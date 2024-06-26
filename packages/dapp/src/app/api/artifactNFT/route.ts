@@ -43,8 +43,8 @@ const deployArtifactNFT = async (artifactnftdeployment: ArtifactNFTDeployment) =
         const event = receipt0.events?.find((e: { event: string; }) => e.event ==="ArtifactNFTDeployed");
         const ArtifactNFTAddress = event?.args?.artifactNFTAddress;
 
-        console.log(`ArtifactNFT Contract Deployed to: ${ArtifactNFTAddress}`);
-        console.log(`Deployment Transaction Hash: ${deploymentTransactionHash}`);
+        // //console.log(`ArtifactNFT Contract Deployed to: ${ArtifactNFTAddress}`);
+        // //console.log(`Deployment Transaction Hash: ${deploymentTransactionHash}`);
 
         return {ArtifactNFTAddress, deploymentTransactionHash};
     } catch (error) {
@@ -91,12 +91,12 @@ const mintArtifactNFTs = async (ArtifactNFTAddress: string, artifactnftminting: 
     for (let tokenId = 1; tokenId <= artifactnftminting.mintQuantity; tokenId++) {
         try {
             const tokenURI = await artifactNFTContract.tokenURI(tokenId);
-            console.log(`Token URI for token ID ${tokenId}: ${tokenURI}`);
+            // //console.log(`Token URI for token ID ${tokenId}: ${tokenURI}`);
         } catch (error) {
             console.error(`Failed to fetch metadata for Token ID ${tokenId}:`, error);
         }
     }
-        console.log(`Minted ${artifactnftminting.mintQuantity} NFTs to: ${artifactnftminting.recipientAddress}. Transaction hash: ${receipt1.transactionHash}`);
+        // //console.log(`Minted ${artifactnftminting.mintQuantity} NFTs to: ${artifactnftminting.recipientAddress}. Transaction hash: ${receipt1.transactionHash}`);
         return {mintingTransactionHash, receipt: receipt1};
     } catch (error) {
         console.error(`Error minting NFTs to ${artifactnftminting.recipientAddress} with quantity ${artifactnftminting.mintQuantity}:`, error);

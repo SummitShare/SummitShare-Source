@@ -120,7 +120,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.20;
 &nbsp;
-// Uncomment this line to use console.log
+// Uncomment this line to use //console.log
 // import "hardhat/console.sol";
 &nbsp;
 contract Lock {
@@ -144,7 +144,7 @@ contract Lock {
 &nbsp;
 <span class="fstat-no" title="function not covered" >    function withdraw() public {</span>
         // Uncomment this line, and the import of "hardhat/console.sol", to print a log in your terminal
-        // console.log("Unlock time is %o and block timestamp is %o", unlockTime, block.timestamp);
+        // //console.log("Unlock time is %o and block timestamp is %o", unlockTime, block.timestamp);
 &nbsp;
 <span class="cstat-no" title="statement not covered" >        require(block.timestamp &gt;= unlockTime, "You can't withdraw yet")</span>;
 <span class="cstat-no" title="statement not covered" >        require(msg.sender == owner, "You aren't the owner")</span>;

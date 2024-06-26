@@ -14,12 +14,12 @@ export async function GET(req: Request, res: NextResponse) {
   }
 
   try {
-    console.log(`recieved token ${token}`)
+    //console.log(`recieved token ${token}`)
     const verificationRecord = await prisma.email_verification.findFirst({
       where: { token: token },
     });
 
-    console.log(`vrecord ${verificationRecord}`)
+    //console.log(`vrecord ${verificationRecord}`)
 
     if (!verificationRecord) {
       return NextResponse.json({ message: "Invalid token" }, { status: 400 });
@@ -37,8 +37,8 @@ export async function GET(req: Request, res: NextResponse) {
       // Check if the date parsed is valid
       return NextResponse.json({ message: "Invalid expiration date, request a new token." }, { status: 500 });
     }
-    // console.log(`expiration date ${JSON.stringify(expirationDate.getTime())}`)
-    // console.log(`new date ${JSON.stringify(new Date().getTime())}`)
+    // //console.log(`expiration date ${JSON.stringify(expirationDate.getTime())}`)
+    // //console.log(`new date ${JSON.stringify(new Date().getTime())}`)
     // Compare the current date (in UTC) to the expiration date
     if (new Date() > expirationDate) {
       return NextResponse.json({ message: "Token expired, request a new one" }, { status: 401 });

@@ -18,8 +18,8 @@
 //   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
 //   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 //   const isApiRoute = nextUrl.pathname.startsWith(apiRoute);
-//   console.log("Route :", req.nextUrl.pathname);
-//   console.log("Is Logged in: ", isLoggedIn);
+//   //console.log("Route :", req.nextUrl.pathname);
+//   //console.log("Is Logged in: ", isLoggedIn);
 
 //   if (isApiAuthRoute || isApiRoute) {
 //     return null;
@@ -56,10 +56,10 @@ import { withAuth } from "next-auth/middleware"
 export default withAuth(
   // `withAuth` augments your `Request` with the user's token.
   function middleware(req) {
-    // console.log("Route :", req.nextUrl.pathname)
+    // //console.log("Route :", req.nextUrl.pathname)
     const isLoggedIn = !!req.nextauth;
-    // console.log("Is Logged in: ", isLoggedIn);
-    // console.log(`token : ${req.nextauth.token}`)
+    // //console.log("Is Logged in: ", isLoggedIn);
+    // //console.log(`token : ${req.nextauth.token}`)
     return null;
   },
 //   {

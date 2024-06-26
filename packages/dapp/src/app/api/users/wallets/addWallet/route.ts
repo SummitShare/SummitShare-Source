@@ -20,7 +20,7 @@ export async function POST(req: Request, res: NextResponse) {
                 wallet_address: wallet_address
             }
         });
-        console.log(newUserWallet)
+        //console.log(newUserWallet)
 
         return NextResponse.json({ newUserWallet }, { status: 201 });
         

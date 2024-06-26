@@ -11,14 +11,14 @@ export async function GET(req: Request , res : NextResponse) {
   
     if (token) {
       // Perform your email verification logic here
-        console.log(`token = ${token}`)
+        //console.log(`token = ${token}`)
       try {
         
         const verificationRecord = await prisma.email_verification.findFirst({
           where: { token: token },  // Assuming token is a field in your userverification model
         });
 
-        console.log(`vrecord ${verificationRecord}`)
+        //console.log(`vrecord ${verificationRecord}`)
         
         if (!verificationRecord) {
           return NextResponse.json({ error: "Invalid token" });

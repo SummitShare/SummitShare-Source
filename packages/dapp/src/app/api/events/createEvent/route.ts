@@ -69,11 +69,11 @@ export async function POST(req: Request , res : NextResponse) {
             // ... other fields with their values
           }
       }); 
-      console.log(event.id)
+      // //console.log(event.id)
       return event
       
     } catch (error) {
-      console.log(`createEvent error : ${error}`)
+      // //console.log(`createEvent error : ${error}`);
       return 0
     }
   }
@@ -172,7 +172,7 @@ export async function POST(req: Request , res : NextResponse) {
           event_id: event_id,
       },
       });
-      console.log(`newStakeholder = ${newStakeholder.user_id}`) 
+      // //console.log(`newStakeholder = ${newStakeholder.user_id}`);
     
 
       const url = "http://localhost:3000/api/events/proposals";

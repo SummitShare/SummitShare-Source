@@ -12,7 +12,7 @@
 // export async function POST(req: Request , response : NextResponse) {
 
 //     const data = await req.json();
-//     console.log(`\n\n\n\n\n\n ${data.email}`)
+//     //console.log(`\n\n\n\n\n\n ${data.email}`)
 
 //     const { email, password } = data;
 //     try {
@@ -27,7 +27,7 @@
 //       if (error instanceof AuthError) {
 //          switch (error.type) {
 //           case "CredentialsSignin":
-//             console.log("cred error ", error)
+//             //console.log("cred error ", error)
 //             return {error : " invalid credentials",}
 //           default: 
 //             return{ error: " something went wrong"}

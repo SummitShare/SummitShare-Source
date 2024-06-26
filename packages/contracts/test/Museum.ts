@@ -127,7 +127,7 @@ describe("Museum Contract Tests", function() {
   it("should verify ticket ownership", async function() {
     const { museum, buyer, usdcToken, exhibit1NFTAddress } = await loadFixture(deployContracts);
 
-    console.log("exhibit: ", await museum.exhibits("WestWing"), exhibit1NFTAddress);
+    //console.log("exhibit: ", await museum.exhibits("WestWing"), exhibit1NFTAddress);
     await usdcToken.connect(buyer).approve(museum.target, ethers.parseUnits("50", 6));
     await museum.connect(buyer).purchaseTicket("WestWing", ethers.parseUnits("50", 6));
     // const hasTicket = ;

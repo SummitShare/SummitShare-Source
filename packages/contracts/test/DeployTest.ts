@@ -23,17 +23,17 @@ describe("EventOrganizerService Contract Tests", function () {
         const EventOrganizerService = await ethers.getContractFactory("EventOrganizerService");
         const organizerService = await EventOrganizerService.deploy(museum.target, usdcToken.target);
 
-        console.log("MUSDC deployed to:", usdcToken.target);
-        console.log("Museum deployed to:", museum.target);
-        console.log("EventOrganizerService deployed to:", organizerService.target);
+        //console.log("MUSDC deployed to:", usdcToken.target);
+        //console.log("Museum deployed to:", museum.target);
+        //console.log("EventOrganizerService deployed to:", organizerService.target);
 
         // Deploy ArtifactNFT
         const ArtifactNFT = await ethers.getContractFactory("ArtifactNFT");
         const artifactNFT1 = await ArtifactNFT.connect(owner).deploy("LusakaCollection", "LAGC", owner.address, "http://localhost:3000/api/nft/");
         const artifactNFT2 = await ArtifactNFT.connect(owner).deploy("WomenCollection", "WHMC", owner.address, "http://localhost:3000/api/nft/");
 
-        console.log("ArtifactNFT deployed to:", artifactNFT1.target);
-        console.log("ArtifactNFT deployed to:", artifactNFT2.target);
+        //console.log("ArtifactNFT deployed to:", artifactNFT1.target);
+        //console.log("ArtifactNFT deployed to:", artifactNFT2.target);
         // Organize an exhibit
         await organizerService.connect(owner).organizeExhibit(
 
@@ -48,7 +48,7 @@ describe("EventOrganizerService Contract Tests", function () {
             "Expressing the word with color", // details
             "exhibit1" //exhibit id
         );
-        console.log("Organized Exhibit 1")
+        //console.log("Organized Exhibit 1")
         await organizerService.connect(owner).organizeExhibit(
 
             "Womens History Museum",
@@ -62,13 +62,13 @@ describe("EventOrganizerService Contract Tests", function () {
             "Those who walked before us and those to come.", // collection
             "exhibit2"
         );
-        console.log("Organized Exhibit 2")
+        //console.log("Organized Exhibit 2")
 
         // Retrieve the ExhibitNFT contract
 
 
         const exhibitNFTAddress = await organizerService.getExhibitNFTAddress("exhibit1");
-        console.log("ExhibitNFT deployed to:", exhibitNFTAddress)
+        //console.log("ExhibitNFT deployed to:", exhibitNFTAddress)
         const ExhibitNFT = await ethers.getContractFactory("ExhibitNFT");
         const exhibitNFT = ExhibitNFT.attach(exhibitNFTAddress);
 
@@ -76,7 +76,7 @@ describe("EventOrganizerService Contract Tests", function () {
         const Escrow = await ethers.getContractFactory("EventEscrow");
         const escrow = Escrow.attach(escrowAddress);
 
-        console.log("ExhibitNFT deployed to:", exhibitNFT.target);
+        //console.log("ExhibitNFT deployed to:", exhibitNFT.target);
 
         // Register the exhibit with the museum
         await museum.connect(owner).curateExhibit("exhibit1", exhibitNFT.target);

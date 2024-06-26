@@ -8,7 +8,7 @@ function Page({ params }: { params: { email: string } }) {
     const mail = decodeURIComponent(params.email as string);
 
 
-    console.log(mail)
+    // //console.log(mail);
 
 
     return (

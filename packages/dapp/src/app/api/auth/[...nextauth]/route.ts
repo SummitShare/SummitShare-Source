@@ -30,7 +30,7 @@ const handler = NextAuth({
       const { compare, message, error, user: foundUser } = await passwordCompare(email, password);
       user = foundUser
 
-      console.log(`foundUser ${{ foundUser }}`)
+      //console.log(`foundUser ${{ foundUser }}`)
       if (!user) {
         return null;
       }
@@ -86,7 +86,7 @@ const handler = NextAuth({
   //     async jwt({ token, user }) {
   //       // If the user object exists, it means this is the initial sign in
   //       if (user) {
-  //         console.log(`jwt user ${JSON.stringify(user, null, 2)} `);
+  //         //console.log(`jwt user ${JSON.stringify(user, null, 2)} `);
   //         const customUser = user as ExtendedUser;
   //         // Add user info to the token, but exclude the password
   //         token.id = user.id;
@@ -98,11 +98,11 @@ const handler = NextAuth({
   //         token.user_wallets = customUser.user_wallets; // Assuming you have this info in your user object
   //         // Any other user properties you want to include, but avoid sensitive ones like password
   //       }
-  //       console.log(`jwt token ${JSON.stringify(token, null, 2)} `);
+  //       //console.log(`jwt token ${JSON.stringify(token, null, 2)} `);
   //       return token;
   //     },
   //     async session({ session, token }) {
-  //         console.log("Entering session callback");
+  //         //console.log("Entering session callback");
   //         const extendedSession: ExtendedSession = session as ExtendedSession;
   //         const extendedToken: ExtendedJWT = token as ExtendedJWT;
 
@@ -114,7 +114,7 @@ const handler = NextAuth({
   //         if (extendedToken.email_verified !== undefined) extendedSession.user.email_verified = extendedToken.email_verified;
   //         if (extendedToken.type) extendedSession.user.type = extendedToken.type;
   //         if (extendedToken.user_wallets) extendedSession.user.user_wallets = extendedToken.user_wallets;
-  //         console.log(`session ${JSON.stringify(session, null, 2)} `);
+  //         //console.log(`session ${JSON.stringify(session, null, 2)} `);
   //         return extendedSession;
   //       },
   //   },

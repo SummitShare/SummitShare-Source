@@ -9,10 +9,10 @@ import { NextResponse } from 'next/server';
 export async function POST(request: Request) {
   const { filename, contentType } = await request.json()
 
-  console.log('uploading filename', filename)
+  //console.log('uploading filename', filename)
 
   try {
-    console.log('uploading to bucket ', process.env.AWS_BUCKET_NAME)
+    //console.log('uploading to bucket ', process.env.AWS_BUCKET_NAME)
     ///const client = new S3Client({ region: process.env.AWS_REGION })
 
  
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
           secretAccessKey: accessKeySecret,
       },
       });
-    console.log('uploading client', client)
+    //console.log('uploading client', client)
     const { url, fields } = await createPresignedPost(client, {
       Bucket: bucketName,
       Key: crypto.randomUUID(),
@@ -42,11 +42,11 @@ export async function POST(request: Request) {
       },
       Expires: 3600, // Seconds before the presigned post expires. 3600 by default.
     })
-    console.log('uploading url', url) 
-    console.log(fields)
+    //console.log('uploading url', url) 
+    //console.log(fields)
     return NextResponse.json({ url, fields },{ status: 400 })
   } catch (error ) {
-    console.log('uploading error', error)
+    //console.log('uploading error', error)
     return NextResponse.json({ error: "error getting pre signed ur"},{ status: 500 }) 
   }
 }

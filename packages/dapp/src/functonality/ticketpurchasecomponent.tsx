@@ -27,11 +27,11 @@ const user_id = session.data?.user.id
   const createTicket = async () => {
     // Ensure HOST is read correctly, considering Next.js environment variables need to be prefixed with NEXT_PUBLIC_ if they are to be used on the client-side.
     const host = process.env.NEXT_PUBLIC_HOST;
-    console.log(`host ${host} `)
+    //console.log(`host ${host} `)
   const eventLink =`${host}/exhibit/0xe405b9c97656336ab949401bcd41ca3f50114725`
     // Construct the URL with the correct protocol (http or https) and ensure that the HOST variable includes the entire domain.
     const url = `${host}api/v1/event/ticket/create`;
-    console.log(`url ${url} ` ,user_id)
+    //console.log(`url ${url} ` ,user_id)
   
     try {
  
@@ -46,7 +46,7 @@ const user_id = session.data?.user.id
       // Check if the response is ok (status in the range 200-299)
       if (!response.ok) {
         // You could throw an error or handle it in another way depending on your error handling strategy
-       console.log(`Error: ${response.status} - ${response.statusText}`);
+       //console.log(`Error: ${response.status} - ${response.statusText}`);
       }
 
     

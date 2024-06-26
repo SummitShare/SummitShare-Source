@@ -2,19 +2,19 @@
 import { ApolloLink, HttpLink } from "@apollo/client";
 import {
   ApolloNextAppProvider,
-  NextSSRInMemoryCache,
-  NextSSRApolloClient,
+  InMemoryCache,
+  ApolloClient,
   SSRMultipartLink,
-} from "@apollo/experimental-nextjs-app-support/ssr";
+} from "@apollo/experimental-nextjs-app-support";
 
 function makeClient() {
   const httpLink = new HttpLink({
-    uri: "https://api.thegraph.com/subgraphs/name/daodesigner/revenue-sharing-source",
+    uri: "https://api.studio.thegraph.com/query/76738/summitshare-dev/version/latest",
     fetchOptions: { cache: "no-store" },
   });
 
-  return new NextSSRApolloClient({
-    cache: new NextSSRInMemoryCache(),
+  return new ApolloClient({
+    cache: new InMemoryCache(),
     link:
       typeof window === "undefined"
         ? ApolloLink.from([

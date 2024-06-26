@@ -18,10 +18,10 @@
 
 //                 const {compare, message, error, user: foundUser} = await passwordCompare(email, password);
 //                 if (compare && foundUser) {
-//                     console.log("auth config - user", foundUser)
+//                     //console.log("auth config - user", foundUser)
 //                     return foundUser as any;
 //                 }else{
-//                     console.log( "password error  - message: ", message, "error: ", error)
+//                     //console.log( "password error  - message: ", message, "error: ", error)
 //                     return null; 
 //                 }
 

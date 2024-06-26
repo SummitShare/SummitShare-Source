@@ -35,7 +35,7 @@ export async function POST(req: Request, res: NextResponse) {
      return NextResponse.json({verificationLinks},{ status: 200 });
     
   } catch (error) {
-    console.log(error)
+    //console.log(error)
     return NextResponse.json({message:"server error"},{ status: 500 });
     
   }

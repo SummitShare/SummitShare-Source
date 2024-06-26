@@ -19,7 +19,7 @@ import prisma from '../../../../../../config/db';
 
 async function updateEventIdForProposalAndStakeholders(eventId: string, proposal_id: string): Promise<boolean> {
   try {
-    console.log(`proposal to update ${proposal_id}`)
+    //console.log(`proposal to update ${proposal_id}`)
 
     // Start a transaction to ensure both updates are performed together
     await prisma.$transaction(async (prisma) => {
@@ -37,7 +37,7 @@ async function updateEventIdForProposalAndStakeholders(eventId: string, proposal
       });
     });
 
-    console.log('Successfully updated the proposal and associated stakeholders.');
+    //console.log('Successfully updated the proposal and associated stakeholders.');
     return true;
   } catch (error) {
     console.error('An error occurred during the update:', error);
@@ -68,7 +68,7 @@ async function mapEmailStakesToStakeholderStakes(
       });
 
       if (!user) continue;
-      console.log(`proposal recieved  by map email${proposalId}`)
+      //console.log(`proposal recieved  by map email${proposalId}`)
       // Find stakeholder by user ID and proposal ID
       const stakeholder = await prisma.stakeholders.findFirst({
         where: {
@@ -83,7 +83,7 @@ async function mapEmailStakesToStakeholderStakes(
       }
     }
 
-    console.log(`proposal after  by map email${proposalId}`)
+    //console.log(`proposal after  by map email${proposalId}`)
 
     return stakeholderStakes;
   } catch (error) {
@@ -158,7 +158,7 @@ export async function POST(req: Request, res: NextResponse) {
    // Extract relevant information from the request body
     const requestBody = await req.json();
     const { proposal_id, Vote, user_id }: { proposal_id: string; Vote: boolean; user_id: string } = requestBody;
-    console.log(`proposal recieved ${proposal_id}`)
+    //console.log(`proposal recieved ${proposal_id}`)
 
         /*
         The following operations are performed in this section of the script:

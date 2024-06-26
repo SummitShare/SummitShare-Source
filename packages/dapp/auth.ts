@@ -11,11 +11,11 @@
 // } =  NextAuth({
 //     // callbacks: {
 //     //     async session({session,}){
-//     //         console.log("auth ts",{sessionToken: session})
+//     //         //console.log("auth ts",{sessionToken: session})
 //     //         return session;
 //     //     },
 //     //     async jwt(token) {
-//     //         console.log("auth ts",  {token,})
+//     //         //console.log("auth ts",  {token,})
 //     //         return token;
 //     //     }
 //     // },

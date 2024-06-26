@@ -25,35 +25,35 @@ async function main() {
     const exhibitNFTAddress = await organizerService.exhibits("exhibit1");
     const exhibit2NFTAddress = await organizerService.exhibits("exhibit2");
     const exhibitMuseumAddress = await museum.exhibits("exhibit1");
-    console.log("ExhibitNFT deployed to:", exhibitNFTAddress)
-    console.log("ExhibitMuseum deployed to:", exhibitMuseumAddress)
-    console.log("ExhibitNFT deployed to:", exhibit2NFTAddress)
+    //console.log("ExhibitNFT deployed to:", exhibitNFTAddress)
+    //console.log("ExhibitMuseum deployed to:", exhibitMuseumAddress)
+    //console.log("ExhibitNFT deployed to:", exhibit2NFTAddress)
 
     //check funder usdc balance
     const funderBalance = await usdcToken.balanceOf(funder.address);
     //if funder balance is zero send some usdc tokens from owner
     if (funderBalance == 0) {
         //load some usdc
-        console.log("loading funder with usdc")
+        //console.log("loading funder with usdc")
         const tx = await usdcToken.transfer(funder.address, ethers.parseUnits("2000000", 18));
         //distribute some USDC to the funders
         await tx.wait(1);
         
     }
-    console.log("done")
+    //console.log("done")
     // // Purchase a few tickets
     const tx1 = await usdcToken.connect(funder).approve(museum.target, ethers.parseUnits("30", 18),); // Approve 3 USDC
     const receipt1 = await tx1.wait(2);
-    console.log("approve tx", receipt1.status)
+    //console.log("approve tx", receipt1.status)
     const tx2 = await museum.connect(funder).purchaseTicket("exhibit1", ethers.parseUnits("10", 18)); // Purchase 1 ticket
     const receipt2 = await tx2.wait(2);
-    console.log("purchase ticket 1", receipt2.status)
+    //console.log("purchase ticket 1", receipt2.status)
     const tx3 = await museum.connect(funder).purchaseTicket("exhibit1", ethers.parseUnits("10", 18)); // Purchase 1 ticket
     const receipt3 = await tx3.wait(2);
-    console.log("purchase ticket 2", receipt3.status)
+    //console.log("purchase ticket 2", receipt3.status)
     const tx4 = await museum.connect(funder).purchaseTicket("exhibit1", ethers.parseUnits("10", 18)); // Purchase 1 ticket
     const receipt4 = await tx4.wait(2);
-    console.log("purchase ticket 3", receipt4.status)
+    //console.log("purchase ticket 3", receipt4.status)
 
 
 }

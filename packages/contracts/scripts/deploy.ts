@@ -46,7 +46,7 @@ async function main() {
     artifact1.baseURI
   );
   const receipt0 = await tx0.wait(6);
-  console.log("Deployed ArtifactNFT 1", receipt0.status)
+  //console.log("Deployed ArtifactNFT 1", receipt0.status)
 
   const tx00 = await organizerService.connect(owner).deployArtifactNFT(
     artifact2.name,
@@ -55,12 +55,12 @@ async function main() {
     artifact2.baseURI
   );
   const receipt00 = await tx00.wait(6);
-  console.log("Deployed ArtifactNFT 2", receipt00.status)
+  //console.log("Deployed ArtifactNFT 2", receipt00.status)
 
   // log addresses
-  console.log("MUSDC deployed to:", usdcToken.target);
-  console.log("Museum deployed to:", museum.target);
-  console.log("EventOrganizerService deployed to:", organizerService.target);
+  //console.log("MUSDC deployed to:", usdcToken.target);
+  //console.log("Museum deployed to:", museum.target);
+  //console.log("EventOrganizerService deployed to:", organizerService.target);
 
 }
 
