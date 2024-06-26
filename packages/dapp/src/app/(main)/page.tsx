@@ -1,5 +1,7 @@
 import Buttons from "../components/button/Butons";
 import BlogList from "../(test)/test/page";
+import Link from "next/link";
+import { StarIcon } from "@radix-ui/react-icons";
 
 
 export default function Home() {
@@ -80,29 +82,33 @@ export default function Home() {
           Those who walked before us and those to come. Those who wore red clay masks and rested their heads on bended knees. Those who washed the cowry bead and swung the snuff cup.Those who weaved the baskets and wrapped the cloth. Those who fought for peace and danced to the drum.
           </p>
         </div>
-        <Buttons type="primary" size="large">Explore</Buttons>
+        <div>
+        <Link href={"/exhibit"}><Buttons type="primary" size="large">Explore</Buttons></Link>
+        </div>
       </div>
     </section>
 
     <section className="space-y-8">
       <div className="space-y-2"><h2>What Is SummitShare?</h2>
         <p>SummitShare stands as a pioneering digital platform dedicated to the repatriation of African cultural artifacts. Bridging the past and present, it serves as a beacon of hope and a testament to the resilience of African heritage, utilizing the power of blockchain technology to reclaim, celebrate, and share the rich tapestry of Africa's history with the world. Check our blogs to find out more.</p></div>
-      <div className="space-y-4 md:flex md:flex-row md:gap-4 md:w-[50%] md:items-center md:space-y-0">   <Buttons type="primary" size="large">Donate</Buttons>
-        <Buttons type="secondary" size="large" >Star repo</Buttons></div>
+      <div className="space-y-4 md:flex md:flex-row md:gap-4 md:w-[50%] md:items-center md:space-y-0"> 
+      <div>
+        <Link href={"/donate"}><Buttons type="primary" size="large">Donate</Buttons></Link>
+        </div>  
+        <div>
+        <Link href={'https://github.com/SummitShare'}> <Buttons type="secondary" size="large" >Star repo</Buttons></Link>
+        </div>
+        </div>
     </section>
    
  
     <section className="bg-primary-400 rounded-[0.5rem] w-full h-[21.375rem] flex flex-col items-center px-[2.813rem] justify-center space-y-12 ">
       <div className="space-y-2 text-center">
         <h3 className="text-white">Collaborate with us</h3>
-        <p className="text-center text-white">Our story is one crafted together. We aim to usher in a new narrative around African history and culture. But beyond that, we’re building a digital repatriation standard—a bridge connecting past, present, and future.
-
-                                              Learn more and contribute to shaping this narrative. Every voice matters, every insight adds to our shared heritage.
-
-                                              Join us on this transformative journey. Let’s shape history, pixel by pixel.</p>
+        <p className="text-center text-white">Learn more and contribute to shaping this narrative. Every voice matters, every insight adds to our shared heritage.</p>
       </div>
       <div className="w-[164px]">
-        <a href="https://forms.gle/rXvQy25pqEagxHoq9"><Buttons type="tartary" size="large">Register today</Buttons></a>
+        <Link href="https://forms.gle/rXvQy25pqEagxHoq9"><Buttons type="tartary" size="large">Register today</Buttons></Link>
       </div>
     </section>
 
@@ -119,11 +125,12 @@ export default function Home() {
     <section className="bg-primary-400 rounded-[0.5rem] w-full h-[21.375rem] flex flex-col items-center px-[2.813rem] justify-center space-y-12 ">
       <div className="space-y-2 text-center">
         <h3 className="text-white">Our Partners</h3>
-        <p className="text-center text-white">SummitShare is a collaborative canvas. Come read and learn about our partners aiding us in the creation of this canvas for where your contributions(brush strokes) are to rest. </p>
+        <p className="text-center text-white">Come read and learn about our partners aiding us in the creation of this canvas for where your contributions(brush strokes) are to rest. </p>
       </div>
       <div className="w-[164px]">
-        <Buttons type="tartary" size="large">Learn more</Buttons>
+        <Link href="partners"><Buttons type="tartary" size="large">Learn more</Buttons></Link>
       </div>
+     
     </section>
   </div>);
 }

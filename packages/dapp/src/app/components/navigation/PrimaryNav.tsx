@@ -23,7 +23,7 @@ const PrimaryNav: React.FC = () => {
 
   // Menu items for the responsive nav menu
   const menuItems: { title: string, items: { name: string, link: string }[] }[] = [
-    { title: 'Pages', items: [{ name: 'Blog', link: '/blog' }, { name: 'Partners', link: '/partners' }] },
+    { title: 'Pages', items: [{ name: 'Blog', link: '/blog' }, { name: 'Partners', link: '/partners' },{ name: 'Sapport us', link: '/donate' }] },
     { title: 'Dashboard', items: [{ name: 'Distribution', link: '/distribution' }] },
     { title: 'Settings', items: [{ name: 'Profile', link: '/profile' }, { name: 'Change Password', link: '/change-password' }, { name: 'Delete Account', link: '/delete-account' }, { name: 'Log Out', link: '/logout' }] }
   ]
@@ -53,8 +53,8 @@ const PrimaryNav: React.FC = () => {
         </li>
         <li className='sm:block hidden md:hidden lg:block w-fit'>
           <ul className='flex flex-row gap-4'>
-          <li className='relative'>  <Buttons type='primary' size='small'><span className='opacity-0 absolute inset-x-0'> <ConnectWallet /></span><span className=' py-3'>{userAddress?"Connected":"Connect"}</span></Buttons></li>
-          <li><Buttons type='secondary' size='small'>Log in</Buttons></li>
+            <li className='relative'>  <Buttons type='primary' size='small'><span className='opacity-0 absolute inset-x-0'> <ConnectWallet /></span><span className=' py-3'>{userAddress ? "Connected" : "Connect"}</span></Buttons></li>
+            <li><Buttons type='secondary' size='small'>Log in</Buttons></li>
           </ul>
         </li>
         <li onClick={() => setOpenMenu(!openMenu)} className='lg:hidden'><Bars3Icon className='w-4' /></li>
@@ -85,8 +85,8 @@ const PrimaryNav: React.FC = () => {
               </li>
             ))}
 
-                
-            <li className='relative'>  <Buttons type='primary' size='large'><span className='opacity-0 absolute inset-x-0'> <ConnectWallet /></span><span className=' py-3'>{userAddress?"Connected":"Connect"}</span></Buttons></li>
+
+            <li className='relative'>  <Buttons type='primary' size='large'><span className='opacity-0 absolute inset-x-0'> <ConnectWallet /></span><span className=' py-3'>{userAddress ? "Connected" : "Connect"}</span></Buttons></li>
 
           </ul>
         </nav>
