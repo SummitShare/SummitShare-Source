@@ -16,7 +16,7 @@ const user_id = process.env.NEXT_CLIENT_ID_THIRDWEB
     const sendApiRequest = async (address: string,user_id: string) => {
       try {
         const response = await axios.post('https://localhost:3000/v1/api/user/wallets/add', { address,user_id });
-        console.log('API Response:', response.data);
+        //console.log('API Response:', response.data);
         // Handle the response as needed
       } catch (error) {
         console.error('API Request Failed:', error);
@@ -28,7 +28,7 @@ const user_id = process.env.NEXT_CLIENT_ID_THIRDWEB
      useEffect(() => {
       if (userAddress) {
           setConnectedAddress(userAddress);
-          console.log("Connected Wallet Address:", userAddress);
+          //console.log("Connected Wallet Address:", userAddress);
           sendApiRequest(userAddress, user_id || '');
       }
   }, [userAddress]);

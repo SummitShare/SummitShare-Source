@@ -29,7 +29,7 @@ export const { getClient } = registerApolloClient(() => {
     link: from([
       errorLink, 
       new HttpLink({
-        uri: "https://api.thegraph.com/subgraphs/name/daodesigner/revenue-sharing-source",
+        uri: "https://api.studio.thegraph.com/query/76738/summitshare-dev/version/latest",
       })
     ]),
   });

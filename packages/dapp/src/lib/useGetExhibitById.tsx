@@ -70,6 +70,6 @@ export default useExhibit;
  *   const exhibit = useExhibit(id);
  * 
  *   // The exhibit data can now be accessed through the `exhibit` variable
- *   console.log(exhibit);
+ *   //console.log(exhibit);
  * }
  */

@@ -24,7 +24,7 @@ const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) 
   
   
   const httpLink = new HttpLink({ 
-    uri: 'https://thegraph.com/hosted-service/subgraph/daodesigner/revenue-sharing-source'
+    uri: 'https://api.studio.thegraph.com/query/76738/summitshare-dev/version/latest'
      });
   
   const client = new ApolloClient({
