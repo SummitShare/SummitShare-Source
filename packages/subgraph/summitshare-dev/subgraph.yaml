@@ -1,0 +1,32 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: EventOrganizerService
+    network: sepolia
+    source:
+      address: "0xdFB611127315848Fd0D53226eC886BbF6514B5D1"
+      abi: EventOrganizerService
+      startBlock: 4754335
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - ArtifactNFTDeployed
+        - ExhibitNFTDeployed
+        - OwnershipTransferred
+      abis:
+        - name: EventOrganizerService
+          file: ./abis/EventOrganizerService.json
+      eventHandlers:
+        - event: ArtifactNFTDeployed(indexed address,string,string,indexed address,string)
+          handler: handleArtifactNFTDeployed
+        - event: ExhibitNFTDeployed(string,indexed address,indexed address,indexed address)
+          handler: handleExhibitNFTDeployed
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+      file: ./src/event-organizer-service.ts

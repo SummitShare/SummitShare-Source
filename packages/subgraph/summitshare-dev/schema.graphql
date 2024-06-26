@@ -1,0 +1,31 @@
+type ArtifactNFTDeployed @entity(immutable: true) {
+  id: Bytes!
+  artifactNFTAddress: Bytes! # address
+  name: String! # string
+  symbol: String! # string
+  ownerAddress: Bytes! # address
+  baseURI: String! # string
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type ExhibitNFTDeployed @entity(immutable: true) {
+  id: Bytes!
+  exhibitId: String! # string
+  exhibitNFTAddress: Bytes! # address
+  escrowAddress: Bytes! # address
+  museumAddress: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type OwnershipTransferred @entity(immutable: true) {
+  id: Bytes!
+  previousOwner: Bytes! # address
+  newOwner: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
