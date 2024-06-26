@@ -9,7 +9,7 @@ const [openMenu,setOpenMenu] = useState<boolean>(false)
 const [openSecondaryMenu,setOpenSecondaryMenu] = useState<boolean>(false)
 
 const menuItems: { title: string, items: { name: string, link: string }[] }[] = [
-  { title: 'Pages', items: [{ name: 'What is summitshare?', link: '/blog' }, { name: 'Our goal as summitsahre', link: '/help' }, { name: 'Where is all started', link: '/partners' }] }
+  { title: 'Pages', items: [{ name: 'What Is SummitShare?', link: '/blog' }, { name: 'Our goal as SummitShare', link: '/help' }, { name: 'Where is all started', link: '/partners' }] }
 
 ]
 

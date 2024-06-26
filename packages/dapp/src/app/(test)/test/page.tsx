@@ -43,7 +43,7 @@ const BlogList = async () => {
     );
   } catch (error) {
     console.error('Error in Blog component:', error);
-    return <div className='w-full h-full text-center bg-re-100 text-re-500 py-2'>Error loading blog posts</div>;
+    return <div className='w-full h-full text-center bg-re-100 text-re-500 py-2'>Error loading blog posts... Please Refresh...</div>;
   }
 };
 
