@@ -1,10 +1,12 @@
 'use client'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { usePathname } from 'next/navigation'
 import Buttons from '../button/Butons'
-import { ConnectWallet } from '@thirdweb-dev/react'
+import { ConnectWallet, useAddress } from '@thirdweb-dev/react'
+
+
 
 /**
  * PrimaryNav component represents the main navigation bar for the application.
@@ -32,6 +34,10 @@ const PrimaryNav: React.FC = () => {
   // Get the current pathname to highlight the active link
   const pathname = usePathname()
 
+
+  const userAddress = useAddress();
+
+
   return (
     <nav className='w-full'>
       <ul className='fixed top-0 inset-x-0 px-6 py-4 lg:px-28 lg:py-6 flex flex-row justify-between items-center border-b border-primary-900-5 text-primary-900 z-10 bg-white'>
@@ -47,7 +53,7 @@ const PrimaryNav: React.FC = () => {
         </li>
         <li className='sm:block hidden md:hidden lg:block w-fit'>
           <ul className='flex flex-row gap-4'>
-          <li className='relative'>  <Buttons type='primary' size='small'><span className='opacity-0 absolute inset-x-0'> <ConnectWallet /></span><span className=' py-3'>Connect</span></Buttons></li>
+          <li className='relative'>  <Buttons type='primary' size='small'><span className='opacity-0 absolute inset-x-0'> <ConnectWallet /></span><span className=' py-3'>{userAddress?"Connected":"Connect"}</span></Buttons></li>
           <li><Buttons type='secondary' size='small'>Log in</Buttons></li>
           </ul>
         </li>
@@ -80,7 +86,7 @@ const PrimaryNav: React.FC = () => {
             ))}
 
                 
-            <li className='relative'>  <Buttons type='primary' size='large'><span className='opacity-0 absolute inset-x-0'> <ConnectWallet /></span><span className=' py-3'>Connect</span></Buttons></li>
+            <li className='relative'>  <Buttons type='primary' size='large'><span className='opacity-0 absolute inset-x-0'> <ConnectWallet /></span><span className=' py-3'>{userAddress?"Connected":"Connect"}</span></Buttons></li>
 
           </ul>
         </nav>
