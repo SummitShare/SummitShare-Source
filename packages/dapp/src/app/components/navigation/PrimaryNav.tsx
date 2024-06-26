@@ -6,24 +6,23 @@ import { usePathname } from 'next/navigation'
 import Buttons from '../button/Butons'
 import { ConnectWallet, useAddress } from '@thirdweb-dev/react'
 
-
-
 /**
  * PrimaryNav component represents the main navigation bar for the application.
  * It includes navigation links, action buttons, and a responsive menu for smaller screens.
  */
+
 const PrimaryNav: React.FC = () => {
   // Navigation items for the main nav bar
   const items: { name: string, link: string }[] = [
     { name: 'Blog', link: '/blog' },
     { name: 'Partners', link: '/partners' },
-    { name: 'Sapport us', link: '/donate' },
-    { name: 'Distrbtions', link: '/distribution' }
+    { name: 'Support Us', link: '/donate' },
+    { name: 'Distributions', link: '/distribution' }
   ]
 
   // Menu items for the responsive nav menu
   const menuItems: { title: string, items: { name: string, link: string }[] }[] = [
-    { title: 'Pages', items: [{ name: 'Blog', link: '/blog' }, { name: 'Partners', link: '/partners' },{ name: 'Sapport us', link: '/donate' }] },
+    { title: 'Pages', items: [{ name: 'Blog', link: '/blog' }, { name: 'Partners', link: '/partners' },{ name: 'Support Us', link: '/donate' }] },
     { title: 'Dashboard', items: [{ name: 'Distribution', link: '/distribution' }] },
     { title: 'Settings', items: [{ name: 'Profile', link: '/profile' }, { name: 'Change Password', link: '/change-password' }, { name: 'Delete Account', link: '/delete-account' }, { name: 'Log Out', link: '/logout' }] }
   ]

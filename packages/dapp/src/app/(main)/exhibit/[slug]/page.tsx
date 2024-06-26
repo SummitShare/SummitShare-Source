@@ -8,6 +8,7 @@ import React, { ReactNode } from 'react';
 interface ObjectDescription {
   title: string;
   object_URL?: string|ReactNode
+  object_name: string;
   Object_description: string[][];
   Figure_artifact_details: string;
   figure_images_URLs: string[];
@@ -19,6 +20,7 @@ const data: ObjectDescription[] = [
   {
     title: "Mwenya Mukulu",
     object_URL:<Drum/>,
+    object_name: "Double Sided Drum",
     Object_description: [
       ["A royal drum made out of wood, fibres, and python skin and decorated in black colour."],
       ["It was used when the chief is coming to or leaving a meeting."]
@@ -41,6 +43,7 @@ const data: ObjectDescription[] = [
   {
     title: "Julia Chikamoneka",
     object_URL: "https://s3.example.com/3d_objects/headrest.glb",
+    object_name: "Headrest",
     Object_description: [
       ["Made from one block of wood, with a support on top that has a depression to hold the neck of a sleeping person."],
       ["The headrest has decorations made by chipping out pieces of wood, completely cut out of wood pieces and also engravings in the wood."],
@@ -67,6 +70,7 @@ const data: ObjectDescription[] = [
   {
     title: "Loongo",
     object_URL: "https://s3.example.com/3d_objects/headmask.glb",
+    object_name: "Luvale Mask",
     Object_description: [
       ["The mask of Mwanapewo used in the Makishi masquerade. It is a female Likishi in an all male mask squad."],
       ["It represents beauty, fertility, and agility."],
@@ -94,6 +98,7 @@ const data: ObjectDescription[] = [
   {
     title: "Mukwae",
     object_URL: <Calabash/>,
+    object_name: "Calabash",
     Object_description: [
       ["Made from gourd, upper part decorated with engravings, braising, and chip offs darkened by burning."],
       ["Lower part knitted with fibres."],
@@ -118,8 +123,9 @@ const data: ObjectDescription[] = [
 
 
   {
-    title: "Lueji wa Nkonde",
+    title: "Lueji Wa Nkonde",
     object_URL: "https://s3.example.com/3d_objects/snuff_cup.glb",
+    object_name: "Snuff Cup",
     Object_description: [
       ["Used to store and carry snuff (Tobacco)."],
       ["It has three openings: on both ends for loading the snuff."],
@@ -163,12 +169,12 @@ const Page = ({ params }: PageProps) => {
   return (
     <div className="space-y-12 mx-6 my-28">
 
-<h2>{figure.title} & Artifct </h2>
-       <article className='space-y-12 md:grid md:grid-cols-2 gap-6 w-full'>
-      
+<h2>{figure.title}</h2>
+       <article className='space-y-8 md:space-y-0 md:grid md:grid-cols-2 gap-6 w-full'>
        <SummitShareCanvas>{figure.object_URL}</SummitShareCanvas>
      
      <ul className='flex flex-col gap-3'>
+      <h2>About the {figure.object_name}</h2>
        {figure.Object_description.map((desc, index) => (
          <li key={index}><p>{desc}</p></li>
        ))}

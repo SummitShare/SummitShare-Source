@@ -13,8 +13,8 @@ const [open,setOpen] = useState(false)
 const userAddress = useAddress();
   const women = [{ name: 'Julia Chikamoneka', img: '/women/julia.png', link: '/exhibit/julia-chikamoneka' },
      { name: 'Loongo', img: '/women/loongo.png', link: '/exhibit/loongo' },
-      { name: 'lueji wa nkonde', img: '/women/lueji.png', link: '/exhibit/lueji-wa-nkonde.png' },
-       { name: 'Mukwae', img: '/women/mukwae.png', link: '/exhibit/mukwae.png' },
+      { name: 'lueji wa nkonde', img: '/women/lueji.png', link: '/exhibit/lueji-wa-nkonde' },
+       { name: 'Mukwae', img: '/women/mukwae.png', link: '/exhibit/mukwae' },
         { name: 'Mwape', img: '/women/mwape.png', link: '/exhibit/mwape' },
          { name: 'Mwenya', img: '/women/mwenya.png', link: '/exhibit/mwenya-mukulu' }]
 
@@ -66,7 +66,7 @@ const userAddress = useAddress();
           </p>
         </div>
         <div onClick={()=>setOpen(!open)}>
-        <Buttons type="primary" size="large">Purchus</Buttons>
+        <Buttons type="primary" size="large">Purchase</Buttons>
 
 
         </div>
@@ -90,23 +90,38 @@ const userAddress = useAddress();
     </div> */}
 
     <section className="w-full space-y-6">
-      <h2>All Artefact</h2>
+      <h2>Meet the Leading Ladies and Explore Their Lives</h2>
 
       <section className="w-full grid grid-cols-2 md:grid-cols-3 gap-4">
-        {women.map((item) => (
-          <div className="bg-gradient-to-b from-orange-100 to-orange-50 relative flex flex-col gap-6 justify-end h-[18rem] md:h-[20rem] lg:h-[22rem] rounded-[0.5rem] px-4 py-6 overflow-hidden">
-            <div className="absolute inset-0 bg-primary-900/25 z-[4] rounded-[0.5rem]"></div>
-            <img className="absolute -bottom-10 inset-x-0 w-full h-full object-cover" src={item.img} alt={item.name} />
+      {women.map((item) => (
+      <Link href={item.link} key={item.name}>
+        <div 
+          className="bg-gradient-to-b from-orange-100 to-orange-50 relative flex flex-col gap-6 justify-end h-[18rem] md:h-[20rem] lg:h-[22rem] rounded-[0.5rem] px-4 py-6 overflow-hidden cursor-pointer"
+          style={{
+            transition: 'all 0.3s ease',
+            boxShadow: '0 6px 8px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)';
+            e.currentTarget.style.transform = 'scale(1.05)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.boxShadow = 'none';
+            e.currentTarget.style.transform = 'scale(1)';
+          }}
+        >
+          <div className="absolute inset-0 bg-primary-900/25 z-[4] rounded-[0.5rem]"></div>
+          <img className="absolute -bottom-10 inset-x-0 w-full h-full object-cover" src={item.img} alt={item.name} />
 
-            <div className="z-[5] space-y-2">
-              <h3 className="text-white">{item.name}</h3>
-              <div className="w-[66px]">
-                
-                <Link href={item.link}><Buttons type="tartary" size="small">View</Buttons></Link>
-              </div>
+          <div className="z-[5] space-y-2">
+            <h3 className="text-white">{item.name}</h3>
+            <div className="w-[66px]">
+              <Buttons type="tartary" size="small">View</Buttons>
             </div>
           </div>
-        ))}
+        </div>
+      </Link>
+    ))}
       </section>
 
 
