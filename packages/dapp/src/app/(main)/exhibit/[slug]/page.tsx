@@ -1,6 +1,7 @@
 'use client'
 import SummitShareCanvas from '@/app/components/3DCanvas/3dCanvas';
 import { Calabash } from '@/app/components/3DCanvas/models/Calabash';
+import { Drum } from '@/app/components/3DCanvas/models/Drum';
 import Buttons from '@/app/components/button/Butons';
 import React, { ReactNode } from 'react';
 
@@ -17,7 +18,7 @@ interface ObjectDescription {
 const data: ObjectDescription[] = [
   {
     title: "Mwenya Mukulu",
-    object_URL: "https://s3.example.com/3d_objects/drum.glb",
+    object_URL:<Drum/>,
     Object_description: [
       ["A royal drum made out of wood, fibres, and python skin and decorated in black colour."],
       ["It was used when the chief is coming to or leaving a meeting."]
