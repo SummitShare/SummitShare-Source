@@ -9,7 +9,7 @@ const Blog = async () => {
       <div className='space-y-6 mx-6 my-28 '>
         <header className='space-y-2'>
         <h2>Get updates</h2>
-        <p>Figma ipsum component variant main layer. Arrange draft plugin community.</p>
+        <p>Read up on our project updates, documentation and announcements to stay updated with SummitShare.</p>
         </header>
       
        <BlogList/>

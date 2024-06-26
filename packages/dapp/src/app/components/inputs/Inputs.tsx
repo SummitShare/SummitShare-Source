@@ -121,7 +121,7 @@ const Inputs: React.FC<SharedProps> = ({
               <ChevronDownIcon className="w-[20px]" />
             </div>
             {open && (
-              <ul className="absolute z-10 w-full max-h-[110px] p-[12px] rounded-[6px] border border-primary-100 text-primary-900 text-p1-r flex flex-col gap-2 bg-white">
+              <ul className="absolute z-10 w-full max-h-[110px] p-[12px] rounded-[6px] border border-primary-100 text-primary-900 text-p1-r flex flex-col gap-2 bg-white overflow-y-scroll">
                 {options.map((option) => (
                   <li key={option} onClick={() => handleInput(option)} className="cursor-pointer text-p1-r text-primary-900-75">
                     {option}
