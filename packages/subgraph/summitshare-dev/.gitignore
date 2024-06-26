@@ -32,3 +32,6 @@ typechain-types
 
 # Hardhat files
 cache
+
+#docker 
+docker-compose.yml

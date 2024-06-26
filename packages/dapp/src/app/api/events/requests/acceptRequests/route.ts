@@ -13,7 +13,7 @@ export async function  GET(req: Request , res : NextResponse) {
   
     if (token) {
       // Perform your email verification logic here
-        console.log(`token = ${token}`)
+        // //console.log(`token = ${token}`)
       try {
 
         const request = await prisma.requests.findFirst({
@@ -21,19 +21,19 @@ export async function  GET(req: Request , res : NextResponse) {
       });
   
       if (!request || !request.email_address || !request.event_id) {
-          console.log(`Request or required fields missing for token: ${token}`);
+          // //console.log(`Request or required fields missing for token: ${token}`);
           return NextResponse.json({ error: 'Request not found or incomplete' }, { status: 404 });
       }
   
       const email = request.email_address;
       const event_id = request.event_id;
-      console.log(`info = ${event_id} ${email}`);
+      // //console.log(`info = ${event_id} ${email}`);
   
       // Find user using email
       const user = await prisma.users.findUnique({
           where: { email: email },
       });
-      console.log(`user = ${user?.id}`);
+      // //console.log(`user = ${user?.id}`);
       const user_id = user?.id;
 
 
@@ -43,7 +43,7 @@ export async function  GET(req: Request , res : NextResponse) {
         data: { status: "Accepted" },
      });
 
-     console.log(`updatedRequest = ${updatedRequest}`)
+    //  //console.log(`updatedRequest = ${updatedRequest}`)
 
     // Create a new stakeholder record
     const newStakeholder = await prisma.stakeholders.create({
@@ -52,15 +52,15 @@ export async function  GET(req: Request , res : NextResponse) {
           event_id: event_id,
       },
       });
-      console.log(`newStakeholder = ${newStakeholder}`) 
+      // //console.log(`newStakeholder = ${newStakeholder}`);
  
         return NextResponse.json({ message: "Email verified successfully" },{status: 201});
       } catch (error) {
-        console.log(`error = ${error}`)
+        // //console.log(`error = ${error}`)
         return NextResponse.json({ message: 'faliure', error : error}, { status: 400 })
       }
     } else {
-      console.log("token error")
+      // //console.log("token error")
         return NextResponse.json({ message: 'faliure'}, { status: 400 })
         
     }
