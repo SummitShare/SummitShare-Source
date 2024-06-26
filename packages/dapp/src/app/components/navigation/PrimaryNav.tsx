@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 
 import { usePathname } from 'next/navigation'
 import Buttons from '../button/Butons'
+import { ConnectWallet } from '@thirdweb-dev/react'
 
 /**
  * PrimaryNav component represents the main navigation bar for the application.
@@ -14,7 +15,8 @@ const PrimaryNav: React.FC = () => {
   const items: { name: string, link: string }[] = [
     { name: 'Blog', link: '/blog' },
     { name: 'Partners', link: '/partners' },
-    { name: 'Distribution', link: '/distribution' }
+    { name: 'Sapport us', link: '/donate' },
+    { name: 'Distrbtions', link: '/distribution' }
   ]
 
   // Menu items for the responsive nav menu
@@ -32,57 +34,59 @@ const PrimaryNav: React.FC = () => {
 
   return (
     <nav className='w-full'>
-  <ul className='fixed top-0 inset-x-0 px-6 py-4 lg:px-28 lg:py-6 flex flex-row justify-between items-center border-b border-primary-900-5 text-primary-900 z-10 bg-white'>
-    <li> <a href="/"><h2><span className='text-primary-400'>Summit</span>Share</h2></a></li>
-      <li className='sm:block hidden md:hidden lg:block'>
-        <ul className='flex flex-row gap-6 text-p1-m text-primary-100'>
-          {items.map((item, index) => (
-            <li key={index} className={`hover:text-primary-600 hover:underline underline-offset-[0.625rem] cursor-pointer   ${pathname === item.link && 'text-primary-600 underline underline-offset-[0.625rem]'}`}>
-              <a href={item.link}>{item.name}</a>
-            </li>
-          ))}
-        </ul>
-      </li>
-      <li className='sm:block hidden md:hidden lg:block w-fit'>
-        <ul className='flex flex-row gap-4'>
-          <li><Buttons type='primary' size='small'>Connect</Buttons></li>
+      <ul className='fixed top-0 inset-x-0 px-6 py-4 lg:px-28 lg:py-6 flex flex-row justify-between items-center border-b border-primary-900-5 text-primary-900 z-10 bg-white'>
+        <li> <a href="/"><h2><span className='text-primary-400'>Summit</span>Share</h2></a></li>
+        <li className='sm:block hidden md:hidden lg:block'>
+          <ul className='flex flex-row gap-6 text-p1-m text-primary-100'>
+            {items.map((item, index) => (
+              <li key={index} className={`hover:text-primary-600 hover:underline underline-offset-[0.625rem] cursor-pointer   ${pathname === item.link && 'text-primary-600 underline underline-offset-[0.625rem]'}`}>
+                <a href={item.link}>{item.name}</a>
+              </li>
+            ))}
+          </ul>
+        </li>
+        <li className='sm:block hidden md:hidden lg:block w-fit'>
+          <ul className='flex flex-row gap-4'>
+          <li className='relative'>  <Buttons type='primary' size='small'><span className='opacity-0 absolute inset-x-0'> <ConnectWallet /></span><span className=' py-3'>Connect</span></Buttons></li>
           <li><Buttons type='secondary' size='small'>Log in</Buttons></li>
-        </ul>
-      </li>
-      <li onClick={() => setOpenMenu(!openMenu)} className='lg:hidden'><Bars3Icon className='w-4' /></li>
-      <nav className={`fixed inset-y-0 left-0  w-[70%] md:w-[40%] bg-white z-50 transform border-r border-primary-900-5 ${openMenu ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out`}>
-        <div className='border-b border-primary-900-5 py-4'>
-          <div className='px-6 flex flex-row justify-between text-primary-900'>
-            <h2 className='text-primary-400'>Menu</h2>
-            <XMarkIcon onClick={() => setOpenMenu(!openMenu)} className='w-4 cursor-pointer' />
+          </ul>
+        </li>
+        <li onClick={() => setOpenMenu(!openMenu)} className='lg:hidden'><Bars3Icon className='w-4' /></li>
+        <nav className={`fixed inset-y-0 left-0  w-[70%] md:w-[40%] bg-white z-50 transform border-r border-primary-900-5 ${openMenu ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out`}>
+          <div className='border-b border-primary-900-5 py-4'>
+            <div className='px-6 flex flex-row justify-between text-primary-900'>
+              <h2 className='text-primary-400'>Menu</h2>
+              <XMarkIcon onClick={() => setOpenMenu(!openMenu)} className='w-4 cursor-pointer' />
+            </div>
           </div>
-        </div>
-        <ul className='px-6 py-4 mt-12 max-h-[80%] flex flex-col gap-12 justify-between overflow-y-auto'>
-          {menuItems.map((menu, index) => (
-            <li
-              key={index}
-              className={`space-y-4 py-2 ${index !== menuItems.length - 1 ? 'border-b border-primary-900-5' : ''}`}
-            >
-              <h4 className='font-normal text-primary-100'>{menu.title}</h4>
-              <ul className='space-y-1'>
-                {menu.items.map((subItem, subIndex) => (
-                  <li
-                    key={subIndex}
-                    className={`text-[1.25rem] text-primary-700 font-normal ${pathname === subItem.link && 'text-primary-400'}`}
-                  >
-                    <a href={subItem.link}>{subItem.name}</a>
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ))}
-          <li>  <Buttons type='primary' size='large'>Connect My wallet</Buttons></li>
-        
-        </ul>
-      </nav>
-    </ul>
+          <ul className='px-6 py-4 mt-12 max-h-[80%] flex flex-col gap-12 justify-between overflow-y-auto'>
+            {menuItems.map((menu, index) => (
+              <li
+                key={index}
+                className={`space-y-4 py-2 ${index !== menuItems.length - 1 ? 'border-b border-primary-900-5' : ''}`}
+              >
+                <h4 className='font-normal text-primary-100'>{menu.title}</h4>
+                <ul className='space-y-1'>
+                  {menu.items.map((subItem, subIndex) => (
+                    <li
+                      key={subIndex}
+                      className={`text-[1.25rem] text-primary-700 font-normal ${pathname === subItem.link && 'text-primary-400'}`}
+                    >
+                      <a href={subItem.link}>{subItem.name}</a>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+
+                
+            <li className='relative'>  <Buttons type='primary' size='large'><span className='opacity-0 absolute inset-x-0'> <ConnectWallet /></span><span className=' py-3'>Connect</span></Buttons></li>
+
+          </ul>
+        </nav>
+      </ul>
     </nav>
-  
+
   )
 }
 
