@@ -166,3 +166,7 @@ p>img {
   height: auto;
   display: block;
 }
+
+.bg-women-image {
+  background-image: url('/women/all-women.png');
+}

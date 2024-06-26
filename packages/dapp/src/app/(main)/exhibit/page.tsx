@@ -55,7 +55,7 @@ const userAddress = useAddress();
 
       
 
-      <div className="w-full md:w-[45%] h-[342px] rounded-[0.5rem] overflow-hidden bg-[url('https://images.squarespace-cdn.com/content/v1/5878a307ebbd1ab23e1ed5a0/1650963860604-mdJSBAWOMLQIU9ZXUK1K/all-women.71ba3487f51cab4dc38a.png?format=2500w')] bg-cover bg-primary-50 bg-center">
+      <div className="w-full md:w-[45%] h-[342px] rounded-[0.5rem] overflow-hidden bg-[url('/all-women.png')]  bg-cover bg-primary-50 bg-center">
       </div>
 
       <div className="space-y-6 md:w-[45%] md:flex md:flex-col md:justify-between">
