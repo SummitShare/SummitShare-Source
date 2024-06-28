@@ -1,9 +1,6 @@
-/**
- * @file Buttons.tsx
- * @description This file defines a customizable button component for use in a React application. The component supports different types, sizes, and states (active/inactive).
- */
-
-import React, { ReactNode } from 'react';
+'use client';
+import React, { ReactNode, useEffect, useState } from 'react';
+import WalletConnectNav from '@/functonality/walletconnect';
 
 // Interface for ButtonProps defining the properties that can be passed to the Buttons component
 interface ButtonProps {
@@ -52,11 +49,19 @@ const Buttons: React.FC<ButtonProps> = ({
     type === 'subTartary' && subTartaryClass
   }  ${sizeClass} ${sizeClass}`;
 
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   return (
     <button className={className} {...props}>
       {children}
+      {isClient && <WalletConnectNav />}
     </button>
   );
 };
+
 
 export default Buttons;

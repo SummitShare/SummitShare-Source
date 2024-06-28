@@ -66,31 +66,33 @@ export default function WalletConnectNav() {
         }),
       ]}
     >
-      <ConnectWallet
-        theme={lightTheme({
-          colors: {
-            accentText: '#FF7324',
-            accentButtonBg: '#FF7324',
-            primaryText: '#1c0f08',
-            primaryButtonBg: '#FF7324',
-          },
-        })}
-        modalSize={'wide'}
-        welcomeScreen={{
-          img: {
-            src: 'https://summitshare3.s3.eu-north-1.amazonaws.com/IMG_3157.PNG',
-            width: 150,
-            height: 150,
-          },
-          title: 'Begin your Journey with SummitShare!',
-        }}
-        //Placement of Custom images and policy here
-        modalTitleIconUrl={
-          'https://summitshare3.s3.eu-north-1.amazonaws.com/IMG_3157.PNG'
-        }
-        termsOfServiceUrl={'https://termsofservicegoeshere.com'}
-        privacyPolicyUrl={'https://privacypolicygoeshere.com'}
-      />
+      <div style={{ opacity: 0, position: 'absolute', zIndex: -1 }}>
+        <ConnectWallet
+          theme={lightTheme({
+            colors: {
+              accentText: '#FF7324',
+              accentButtonBg: '#FF7324',
+              primaryText: '#1c0f08',
+              primaryButtonBg: '#FF7324',
+            },
+          })}
+          modalSize={'wide'}
+          welcomeScreen={{
+            img: {
+              src: 'https://summitshare3.s3.eu-north-1.amazonaws.com/IMG_3157.PNG',
+              width: 150,
+              height: 150,
+            },
+            title: 'Begin your Journey with SummitShare!',
+          }}
+          //Placement of Custom images and policy here
+          modalTitleIconUrl={
+            'https://summitshare3.s3.eu-north-1.amazonaws.com/IMG_3157.PNG'
+          }
+          termsOfServiceUrl={'https://termsofservicegoeshere.com'}
+          privacyPolicyUrl={'https://privacypolicygoeshere.com'}
+        />
+      </div>
     </ThirdwebProvider>
   );
 }
