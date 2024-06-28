@@ -96,13 +96,13 @@ const user_id = session.data?.user.id
 
             // Approve USDC transfer for ticket purchase
             setStatus('Approving USDC transfer...');
-            const gasLimitApprove = ethers.utils.hexlify(50000);
+            const gasLimitApprove = await usdcContract.estimateGas.approve(CONTRACT_ADDRESSES.MuseumAdd, ticketPrice)
             const approveTx = await usdcContract.approve(CONTRACT_ADDRESSES.MuseumAdd, ticketPrice, { gasLimit: gasLimitApprove })// { gasLimit });
             await approveTx.wait(2);
 
             // Execute ticket purchase transaction
             setStatus('Purchasing ticket...');
-            const gasLimitPurchase = ethers.utils.hexlify(5000);
+            const gasLimitPurchase = await museumContract.estimateGas.purchaseTicket(exhibitId, ticketPrice);
             const purchaseTx = await museumContract.purchaseTicket(exhibitId, ticketPrice, { gasLimit: gasLimitPurchase }) //{ gasLimit });
             await purchaseTx.wait(4);
 

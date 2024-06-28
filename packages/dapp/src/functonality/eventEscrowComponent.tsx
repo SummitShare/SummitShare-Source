@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { ethers } from "ethers";
 import { contracts, CONTRACT_ADDRESSES } from "@/utils/dev/contractInit";
@@ -8,6 +8,7 @@ import useExhibit from "@/lib/useGetExhibitById";
 import { BanknotesIcon } from "@heroicons/react/20/solid";
 import { initializeUserWallet } from "@/utils/dev/walletInit";
 
+
 const EventEscrowComponent = ({ userAddress }: any) => {
     // Hardcoded exhibit ID for demo
     const exhibitId = CONTRACT_ADDRESSES.exhibitId
@@ -15,7 +16,6 @@ const EventEscrowComponent = ({ userAddress }: any) => {
 
     // State for managing component data and UI
     const [status, setStatus] = useState<string>('');
-    const [escrowDetails, setEscrowDetails] = useState<any>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [distributionSuccessful, setDistributionSuccessful] = useState<boolean>(false);
     const [distributionFailed, setDistributionFailed] = useState<boolean>(false);
@@ -24,7 +24,7 @@ const EventEscrowComponent = ({ userAddress }: any) => {
     const exhibit = useExhibit(exhibitId);
 
     // Function to fetch escrow details from EventOrganizerService contract
-    const fetchEscrowDetails = async () => {
+    const fetchEscrowDetails = useCallback(async () => {
         if (!exhibit) {
             setStatus('No matching exhibit found.');
             return;
@@ -41,23 +41,23 @@ const EventEscrowComponent = ({ userAddress }: any) => {
             //     shares,
             //     beneficiaries
             // });
-            setStatus('');
+          setStatus('');
         } catch (error) {
             setStatus('Failed to fetch escrow details.');
             console.error(error);
         }
-    };
+    }, [exhibit, hardcodedEscrowAddress]);
 
     // Effect hook to fetch escrow details when the component mounts or exhibitId changes
     useEffect(() => {
         fetchEscrowDetails();
-    }, [exhibitId, exhibit]);
+    }, [fetchEscrowDetails]);
 
     // Function to distribute funds from the escrow contract
     const distributeFunds = async () => {
         setIsLoading(true);
 
-        // // Check if escrow details are available
+        //  Check if escrow details are available
         // if (!escrowDetails || !escrowDetails.id) {
         //     setStatus('No EventEscrow address found for the exhibit.');
         //     setIsLoading(false);
@@ -70,7 +70,7 @@ const EventEscrowComponent = ({ userAddress }: any) => {
             const escrowContract = contracts.getEventEscrow(hardcodedEscrowAddress).connect(signer);
 
             setStatus('Initiating fund distribution...');
-            const gasLimit = ethers.utils.hexlify(100000);
+            const gasLimit = escrowContract.estimateGas.distributePayments()
             const tx = await escrowContract.distributePayments({gasLimit});
             await tx.wait(4);
             setStatus('Funds distributed successfully.');
@@ -104,7 +104,7 @@ const EventEscrowComponent = ({ userAddress }: any) => {
                 </div>
             ) : (
                 <button className="w-full p-2 mt-5 font-bold bg-orange-500 rounded-lg text-white" onClick={distributeFunds}
-                disabled={isLoading} >Distrnute</button>
+                disabled={isLoading} >Distrbute</button>
             )}
             {/* Display current status */}
             {status && <p className='text-sm font-semibold'>{status}</p>}
