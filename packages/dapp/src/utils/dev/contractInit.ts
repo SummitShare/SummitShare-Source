@@ -19,8 +19,8 @@ export const CONTRACT_ADDRESSES = {
     EventOrganizerServiceAdd : '0xdFB611127315848Fd0D53226eC886BbF6514B5D1',
     MUSDCAdd : '0xDd4c60185608108D073C19432eef0ae50AB3830d',
     MuseumAdd : '0xF4857Efc226Bb39C6851Aa137347CFf8F8e050F9',
-    exhibitId : '0xe405b9c97656336ab949401bcd41ca3f50114725',
-    EscrowAdd : '0x741b12d361683edccaafe3d8ccc898eb6b52377b'
+    exhibitId : '0x9da59e03c4512d6b47f84522452b53d1250459d8',
+    EscrowAdd : '0x741b12d361683edccaafe3d8ccc898eb6b52377b',
 };
 
 // Export ABIs directly
