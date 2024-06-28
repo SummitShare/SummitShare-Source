@@ -2,7 +2,7 @@ import axios, { AxiosError } from 'axios';
 import matter from 'gray-matter';
 import { Note } from '@/utils/dev/frontEndInterfaces';
 
-const API_URL = 'https://api.hackmd.io/v1/notes';
+// const API_URL = 'https://api.hackmd.io/v1/notes'; uncomment to have blogs display on frontend - commented to conserve API calls
 const BEARER_TOKEN = process.env.HACKMD_API_TOKEN as string;
 
 /**
