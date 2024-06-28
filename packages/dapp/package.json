@@ -6,14 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint . --ext .ts,.tsx"
   },
   "dependencies": {
     "@apollo/client": "^3.10.5",
     "@apollo/experimental-nextjs-app-support": "^0.11.2",
     "@auth/prisma-adapter": "^1.0.14",
-    "@aws-sdk/client-s3": "^3.470.0",
-    "@aws-sdk/s3-presigned-post": "^3.470.0",
     "@heroicons/react": "^2.0.18",
     "@heroicons/vue": "^2.0.18",
     "@prisma/client": "^5.3.1",
@@ -39,7 +37,6 @@
     "@types/bcryptjs": "^2.4.5",
     "@types/three": "^0.165.0",
     "alchemy-sdk": "^2.10.1",
-    "aws-sdk": "^2.1473.0",
     "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
@@ -56,6 +53,7 @@
     "next": "^13.5.4",
     "next-auth": "^4.24.7",
     "nodemailer": "^6.9.7",
+    "pino-pretty": "^11.2.1",
     "prisma": "^5.6.0",
     "react": "latest",
     "react-day-picker": "^8.8.2",
@@ -86,8 +84,9 @@
     "eslint": "^8.54.0",
     "eslint-config-next": "latest",
     "postcss": "latest",
+    "postinstall-postinstall": "^2.1.0",
     "prettier": "^2.5.1",
     "tailwindcss": "latest",
-    "typescript": "^4.9.5"
+    "typescript": "^5.0.4"
   }
 }
