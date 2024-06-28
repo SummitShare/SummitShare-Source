@@ -1,6 +1,4 @@
 import Inputs from "@/app/components/inputs/Inputs";
-import Details from "../../components/details/details";
-import ProfileForm from "../../components/profile/components/from";
 import Buttons from "@/app/components/button/Butons";
 
 

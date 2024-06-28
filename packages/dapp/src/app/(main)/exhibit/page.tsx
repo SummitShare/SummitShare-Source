@@ -5,19 +5,21 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useAddress } from "@thirdweb-dev/react";
 import Link from "next/link";
 import { useState } from "react";
+import Image from "next/image";
 
 
 export default function Home() {
 
 const [open,setOpen] = useState(false)
 const userAddress = useAddress();
-  const women = [{ name: 'Julia Chikamoneka', img: '/women/julia.png', link: '/exhibit/julia-chikamoneka' },
-     { name: 'Loongo', img: '/women/loongo.png', link: '/exhibit/loongo' },
-      { name: 'lueji wa nkonde', img: '/women/lueji.png', link: '/exhibit/lueji-wa-nkonde' },
-       { name: 'Mukwae', img: '/women/mukwae.png', link: '/exhibit/mukwae' },
-        { name: 'Mwape', img: '/women/mwape.png', link: '/exhibit/mwape' },
-         { name: 'Mwenya', img: '/women/mwenya.png', link: '/exhibit/mwenya-mukulu' }]
-
+const women = [
+  { name: 'Julia Chikamoneka', img: '/women/julia.png', link: '/exhibit/julia-chikamoneka' },
+  { name: 'Loongo', img: '/women/loongo.png', link: '/exhibit/loongo' },
+  { name: 'lueji wa nkonde', img: '/women/lueji.png', link: '/exhibit/lueji-wa-nkonde' },
+  { name: 'Mukwae', img: '/women/mukwae.png', link: '/exhibit/mukwae' },
+  { name: 'Mwape', img: '/women/mwape.png', link: '/exhibit/mwape' },
+  { name: 'Mwenya', img: '/women/mwenya.png', link: '/exhibit/mwenya-mukulu' }
+];
 
   return (<div className="space-y-24 mx-6 my-28">
     {/* <Paymentcard/> */}
@@ -111,7 +113,8 @@ const userAddress = useAddress();
           }}
         >
           <div className="absolute inset-0 bg-primary-900/25 z-[4] rounded-[0.5rem]"></div>
-          <img className="absolute -bottom-10 inset-x-0 w-full h-full object-cover" src={item.img} alt={item.name} />
+          <Image className="absolute -bottom-10 inset-x-0 w-full h-full object-cover" src={item.img} alt={item.name} layout="fill" objectFit="cover" />
+
 
           <div className="z-[5] space-y-2">
             <h3 className="text-white">{item.name}</h3>

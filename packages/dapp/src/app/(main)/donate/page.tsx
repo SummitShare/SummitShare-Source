@@ -2,6 +2,7 @@ import Buttons from '@/app/components/button/Butons'
 import Inputs from '@/app/components/inputs/Inputs'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import React from 'react'
+import Image from 'next/image'
 
 function page() {
 
@@ -23,7 +24,7 @@ function page() {
         <div className='space-y-6'>
           <Inputs type="select" label="Chain" state="active" options={['Ethereum Mainet', 'Bitcoin', 'Base', 'Optimism']} />
           <div className='w-full h-[358px] lg:hidden md:hidden bg-blue-200'>
-            <img src="" alt="" />
+          <Image src="" alt="Description" width={500} height={358} />
           </div>
         </div>
 
@@ -36,7 +37,7 @@ function page() {
       </section>
 
       <div className='w-full h-[358px] sm:block hidden bg-blue-200'>
-        <img src="" alt="" />
+      <Image src="/path/to/image.jpg" alt="Description" width={500} height={358} />
       </div>
 </div>
 

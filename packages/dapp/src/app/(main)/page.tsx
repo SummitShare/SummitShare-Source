@@ -88,7 +88,7 @@ export default function Home() {
 
     <section className="space-y-8">
       <div className="space-y-2"><h2>What Is SummitShare?</h2>
-        <p>SummitShare stands as a pioneering digital platform dedicated to the repatriation of African cultural artifacts. Bridging the past and present, it serves as a beacon of hope and a testament to the resilience of African heritage, utilizing the power of blockchain technology to reclaim, celebrate, and share the rich tapestry of Africa's history with the world. Check our blogs to find out more.</p></div>
+        <p> SummitShare stands as a pioneering digital platform dedicated to the repatriation of African cultural artifacts. Bridging the past and present, it serves as a beacon of hope and a testament to the resilience of African heritage, utilizing the power of blockchain technology to reclaim, celebrate, and share the rich tapestry of Africa&apos;s history with the world. Check our blogs to find out more.</p></div>
       <div className="space-y-4 md:flex md:flex-row md:gap-4 md:w-[50%] md:items-center md:space-y-0"> 
       <div>
         <Link href={"/donate"}><Buttons type="primary" size="large">Donate</Buttons></Link>
@@ -113,7 +113,7 @@ export default function Home() {
     <section className="w-full space-y-6">
       <div className="sapce-y-2">
         <h2>Get updates</h2>
-        <p>Read more about the project and the core team's updates </p>
+        <p> Read more about the project and the core team&apos;s updates </p>
       </div>
       <BlogList />
     </section>
@@ -123,7 +123,7 @@ export default function Home() {
     <section className="bg-primary-400 rounded-[0.5rem] w-full h-[21.375rem] flex flex-col items-center px-[2.813rem] justify-center space-y-12 ">
       <div className="space-y-2 text-center">
         <h3 className="text-white">Our Partners</h3>
-        <p className="text-center text-white">Come read and learn about our partners aiding us in the creation of this canvas for where your contributions(brush strokes) are to rest. </p>
+        <p className="text-center text-white">Come read and learn about our partners aiding us in the creation of this canvas for where your contributions[brush strokes] are to rest.</p>
       </div>
       <div className="w-[164px]">
         <Link href="partners"><Buttons type="tartary" size="large">Learn more</Buttons></Link>

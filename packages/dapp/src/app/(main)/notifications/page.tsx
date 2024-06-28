@@ -35,7 +35,7 @@ const notifications: notificationProps[] = [
   },
 ];
 
-const page = () => {
+const Page = () => {
   return (
     <div className="w-full">
       <div className="py-6 text-center md:text-left  md:px-6">
@@ -44,7 +44,7 @@ const page = () => {
 
       <div>
         {notifications.map((note, index) => (
-          <div className="border-b border-gray-100 p-6 space-y-2 hover:bg-gray-100/50 cursor-pointer">
+          <div key={index} className="border-b border-gray-100 p-6 space-y-2 hover:bg-gray-100/50 cursor-pointer">
             <h3 className="font-medium text-gray-950">{note.title}</h3>
             <p className="text-sm text-gray-700">{note.message}</p>
             <p className="text-xs text-gray-700">{note.dateTime}</p>
@@ -55,4 +55,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

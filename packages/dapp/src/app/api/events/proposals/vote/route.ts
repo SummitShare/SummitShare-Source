@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client';
-import { ISwapRouter__factory } from '@/utils/typechain-types';
+
 const prisma = new PrismaClient();
 
 interface IStakes {

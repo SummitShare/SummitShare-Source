@@ -4,8 +4,6 @@ import { Inter } from "next/font/google";
 import "../styles/globals.css";
 import { Providers } from "@/redux/provider";
 import { ApolloWrapper } from "../(main)/apolloWrapper";
-import Footer from "../components/common/nav/footer/footer";
-import Navbar from "../components/common/nav/navbar/navbar";
 import { SessionProvider } from "next-auth/react";
 
 

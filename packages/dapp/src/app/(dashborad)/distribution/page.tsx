@@ -5,18 +5,18 @@ import Inputs from '@/app/components/inputs/Inputs';
 import { sendData } from '@/functonality/eventData';
 import EventEscrowComponent from '@/functonality/eventEscrowComponent';
 import React, { useEffect, useState } from 'react';
+import { CONTRACT_ADDRESSES } from '@/utils/dev/contractInit';
+import { EVENTS } from 'react-hook-form/dist/constants';
 
-const event_id = 'a65306ad-571f-484e-9985-929a4a0310ba';
+const event_id = CONTRACT_ADDRESSES.exhibitId
 const user_id = "227a4cbb-e8c0-40c3-91d1-db44116cf9eb";
 
 const Page: React.FC = () => {
   const [eventData, setEventData] = useState<any>(null);
 
   useEffect(() => {
-    if (user_id) {
       sendData(user_id, event_id).then(data => setEventData(data));
-    }
-  }, [user_id]);
+  }, []);
 
   return (
     <div className='min-h-screen flex flex-col justify-between mx-6 mt-6 mb-[48px]'>
@@ -47,10 +47,12 @@ const Page: React.FC = () => {
           100<span className='font-normal'> of 300</span>
         </p></div>
   <div className='flex felx-row justify-between '><p>Distribution Amount</p> <p className="text-p2-m font-semibold text-ge-500">
-          ETh 20
+          ETH 20
         </p></div>
 </div>
-<Buttons type="primary" size="large">Distrbute</Buttons>
+<Buttons type="primary" size="large">
+  <EventEscrowComponent userAdress="" />
+  </Buttons>
     </div>
 
 
