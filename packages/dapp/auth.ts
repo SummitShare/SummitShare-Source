@@ -29,8 +29,6 @@
 // import NextAuth from "next-auth"
 // import Credentials from "next-auth/providers/credentials"
 
-
-
 // export const { handlers,  signIn, signOut, auth } = NextAuth({
 //   providers: [
 //     Credentials({
@@ -44,11 +42,10 @@
 //         let user = null
 
 //         if (!credentials || !credentials.email || !credentials.password) {
-//             return null;  
+//             return null;
 //         }
 //         const email  =  String(credentials.email) ;
 //         const password = String(credentials.password);
-
 
 //         const {compare, message, error, user: foundUser} = await passwordCompare(email, password);
 //         user = foundUser
@@ -63,4 +60,3 @@
 //     }),
 //   ],
 // })
-

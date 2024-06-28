@@ -1,16 +1,16 @@
-'use client'
-import { XMarkIcon } from "@heroicons/react/16/solid";
-import { useState } from "react";
+'use client';
+import { XMarkIcon } from '@heroicons/react/16/solid';
+import { useState } from 'react';
 
-export const  Banner = () => {
+export const Banner = () => {
   const [open, setOpen] = useState(true);
   return (
     <div
       className={`w-full inset-0 flex relative justify-center bg-ge-500 text-p3-r text-whote underline  ${
-        open === false ? "hidden" : "bock"
+        open === false ? 'hidden' : 'bock'
       }`}
     >
-      Donate and help us support more counties{" "}
+      Donate and help us support more counties{' '}
       <XMarkIcon
         onClick={() => {
           setOpen(!open);
@@ -19,4 +19,4 @@ export const  Banner = () => {
       />
     </div>
   );
-}
+};

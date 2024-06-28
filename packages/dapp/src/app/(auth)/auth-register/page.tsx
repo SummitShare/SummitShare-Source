@@ -1,11 +1,9 @@
-
-import Buttons from '@/app/components/button/Butons'
-import Inputs from '@/app/components/inputs/Inputs'
-import React from 'react'
+import Buttons from '@/app/components/button/Butons';
+import Inputs from '@/app/components/inputs/Inputs';
+import React from 'react';
 
 function Page() {
   return (
-  
     <div className=" px-6 my-12  flex flex-col space-y-9 md:w-[50%] lg:w-[30%] ">
       <nav className="w-full flex flex-row justify-between items-center">
         <p className="text-p2-m">
@@ -26,29 +24,29 @@ function Page() {
         </section>
       </form>
       <section className="text-center space-y-6">
-        <Buttons type="primary" size="large">Create my account</Buttons>
+        <Buttons type="primary" size="large">
+          Create my account
+        </Buttons>
         <p>
-          By continuing you accept our standard{" "}
+          By continuing you accept our standard{' '}
           <a className="underline" href="">
             terms and conditions
-          </a>{" "}
-          and{" "}
+          </a>{' '}
+          and{' '}
           <a className="underline" href="">
             our privacy policy
           </a>
           .
         </p>
         <p>
-          Already have an account?{" "}
+          Already have an account?{' '}
           <a className="underline" href="">
             Log in
           </a>
         </p>
       </section>
     </div>
-
-
-  )
+  );
 }
 
-export default Page
+export default Page;

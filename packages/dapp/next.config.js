@@ -7,15 +7,15 @@ const nextConfig = {
   },
   images: {
     domains: [
-      "images.unsplash.com",
-      "unsplash.com",
-      "plus.unsplash.com",
-      "loremflickr.com",
-      "images.squarespace-cdn.com",
+      'images.unsplash.com',
+      'unsplash.com',
+      'plus.unsplash.com',
+      'loremflickr.com',
+      'images.squarespace-cdn.com',
       'source.unsplash.com',
       'hackmd.io',
       'amazonaws.com',
-      'ethereum.org'
+      'ethereum.org',
     ],
   },
   env: {

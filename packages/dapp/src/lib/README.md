@@ -18,7 +18,6 @@ The directory includes custom hooks that leverage Apollo Client's `useQuery` and
 - [**`client.tsx`**](https://github.com/bicos-io01/Revenue-Sharing-Source/blob/Central/packages/dapp/src/lib/client.tsx): Configures the Apollo Client specific to Next.js environments, including SSR (Server-Side Rendering) support, and registers the client for use within the Next.js application.
 - [**`apolloErrorHandler.ts`**](https://github.com/bicos-io01/Revenue-Sharing-Source/blob/Central/packages/dapp/src/lib/apolloErrorHandler.ts): Contains a custom error handling setup for Apollo Client, which logs GraphQL and network errors to the console, ensuring that errors are properly managed and debugged during development.
 
-
 ### File Hierarchy 🗂️
 
 The directory is structured to separate concerns between data fetching (hooks), client setup, and utility functions, ensuring clarity and maintainability:

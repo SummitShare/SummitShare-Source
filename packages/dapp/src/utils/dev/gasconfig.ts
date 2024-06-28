@@ -13,25 +13,36 @@ export const applyGasConfig = (
   overrides: providers.TransactionRequest = {},
   maxFeePerGas?: string,
   maxPriorityFeePerGas?: string
-) : providers.TransactionRequest => {
+): providers.TransactionRequest => {
   try {
     // Set the maximum fee per gas if provided
     if (maxFeePerGas) {
       try {
         const maxFeePerGasInWei = utils.parseUnits(maxFeePerGas, 'gwei');
         overrides.maxFeePerGas = utils.hexlify(maxFeePerGasInWei);
-      } catch (error : any) { 
-        throw new Error(`Invalid maxFeePerGas value: ${maxFeePerGas}. ${error!.message}`);
+      } catch (error: any) {
+        throw new Error(
+          `Invalid maxFeePerGas value: ${maxFeePerGas}. ${error!.message}`
+        );
       }
     }
 
     // Set the maximum priority fee per gas if provided
     if (maxPriorityFeePerGas) {
       try {
-        const maxPriorityFeePerGasInWei = utils.parseUnits(maxPriorityFeePerGas, 'gwei');
-        overrides.maxPriorityFeePerGas = utils.hexlify(maxPriorityFeePerGasInWei);
-      } catch (error : any) {
-        throw new Error(`Invalid maxPriorityFeePerGas value: ${maxPriorityFeePerGas}. ${error!.message}`);
+        const maxPriorityFeePerGasInWei = utils.parseUnits(
+          maxPriorityFeePerGas,
+          'gwei'
+        );
+        overrides.maxPriorityFeePerGas = utils.hexlify(
+          maxPriorityFeePerGasInWei
+        );
+      } catch (error: any) {
+        throw new Error(
+          `Invalid maxPriorityFeePerGas value: ${maxPriorityFeePerGas}. ${
+            error!.message
+          }`
+        );
       }
     }
 
@@ -39,7 +50,7 @@ export const applyGasConfig = (
     overrides.gasLimit = utils.hexlify(1140000); // Set a high gas limit to avoid "cannot estimate gas" errors - average of max gas spent see `/contracts/readme.md` for gas chart
 
     return overrides;
-  } catch (error : any) {
+  } catch (error: any) {
     throw new Error(`Failed to apply gas configuration: ${error!.message}`);
   }
 };

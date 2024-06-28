@@ -1,14 +1,14 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "../styles/globals.css";
-import { Providers } from "@/redux/provider";
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import '../styles/globals.css';
+import { Providers } from '@/redux/provider';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: "SummitShare",
+  title: 'SummitShare',
   description:
-    "A pioneering digital platform dedicated to the repatriation of African cultural artifacts. ",
+    'A pioneering digital platform dedicated to the repatriation of African cultural artifacts. ',
 };
 
 export default function RootLayout({
@@ -20,8 +20,10 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Providers>
-          <div className="md:flex md:justify-center items-center h-screen">{children}</div>
-          </Providers>
+          <div className="md:flex md:justify-center items-center h-screen">
+            {children}
+          </div>
+        </Providers>
       </body>
     </html>
   );

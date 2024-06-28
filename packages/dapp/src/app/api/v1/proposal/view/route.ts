@@ -14,33 +14,29 @@ import prisma from '../../../../../../config/db';
 
 export async function POST(req: Request, res: NextResponse) {
   const requestBody = await req.json();
-  const {  user_id}: {   user_id: string } = requestBody;
+  const { user_id }: { user_id: string } = requestBody;
 
-  if (!user_id){
-    return NextResponse.json({ "message": "no user id sent"}, { status: 404 });
+  if (!user_id) {
+    return NextResponse.json({ message: 'no user id sent' }, { status: 404 });
   }
   try {
     const stakeholders = await prisma.stakeholders.findMany({
-        where: {
-          user_id: user_id
-        },
-        select: {
-          proposal_id: true  // Only select the proposal_id from the relation
-        }
-      });
-    
-      // Extract the proposal IDs into a flat array, filtering out any nulls
-      const proposalIds = stakeholders.map(stakeholder => stakeholder.proposal_id).filter(id => id !== null);
-     proposalIds;
-     return NextResponse.json({proposalIds},{ status: 200 });
-    
+      where: {
+        user_id: user_id,
+      },
+      select: {
+        proposal_id: true, // Only select the proposal_id from the relation
+      },
+    });
+
+    // Extract the proposal IDs into a flat array, filtering out any nulls
+    const proposalIds = stakeholders
+      .map((stakeholder) => stakeholder.proposal_id)
+      .filter((id) => id !== null);
+    proposalIds;
+    return NextResponse.json({ proposalIds }, { status: 200 });
   } catch (error) {
     //console.log(error)
-    return NextResponse.json({message:"server error"},{ status: 500 });
-    
+    return NextResponse.json({ message: 'server error' }, { status: 500 });
   }
-  
-
-
-
 }

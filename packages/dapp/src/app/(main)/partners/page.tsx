@@ -17,29 +17,32 @@ const Partners = async () => {
       .process(parsedNote.content);
     const contentHtml = processedContent.toString();
 
-
     return (
-      <div className='space-y-24 mx-6 my-28'>
+      <div className="space-y-24 mx-6 my-28">
         <h1>{parsedNote.data.title}</h1>
-        <div className='space-y-6' dangerouslySetInnerHTML={{ __html: contentHtml }} />
+        <div
+          className="space-y-6"
+          dangerouslySetInnerHTML={{ __html: contentHtml }}
+        />
         <div className="w-full rounded-[8px] bg-primary-50 space-y-4 px-[45px] py-6">
+          <div className="space-y-2">
+            <h3>Was this page informative?</h3>
+            <p>Those who walked before us and those to come.</p>
+          </div>
 
-
-<div className="space-y-2">
-  <h3>Was this page informative?</h3>
-  <p>Those who walked before us and those to come.</p>
-</div>
-
-<div className='flex flex-row gap-4'>
-  <div className="w-[73px]">
-    <Buttons type="primary" size="small">Yes</Buttons>
-  </div>
-  <div className="w-[73px]">
-    <Buttons type="secondary" size="small">No</Buttons>
-  </div>
-</div>
-
-</div>
+          <div className="flex flex-row gap-4">
+            <div className="w-[73px]">
+              <Buttons type="primary" size="small">
+                Yes
+              </Buttons>
+            </div>
+            <div className="w-[73px]">
+              <Buttons type="secondary" size="small">
+                No
+              </Buttons>
+            </div>
+          </div>
+        </div>
       </div>
     );
   } catch (error) {

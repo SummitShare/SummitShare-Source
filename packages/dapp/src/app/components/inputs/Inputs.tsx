@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { ChevronDownIcon } from '@radix-ui/react-icons';
 import React, { ReactNode, useState, useRef, useEffect } from 'react';
@@ -75,7 +75,10 @@ const Inputs: React.FC<SharedProps> = ({
    * @param {MouseEvent} event - The mouse event.
    */
   const handleClickOutside = (event: MouseEvent) => {
-    if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
+    if (
+      selectRef.current &&
+      !selectRef.current.contains(event.target as Node)
+    ) {
       setOpen(false);
     }
   };
@@ -97,19 +100,29 @@ const Inputs: React.FC<SharedProps> = ({
       success: 'border-green-500 focus:outline-green-500',
       failure: 'border-red-500 focus:outline-red-500',
       inactive: 'border-gray-300 bg-gray-100 cursor-not-allowed',
-      active: 'border-primary-100 focus:outline-primary-100 hover:border-primary-300',
+      active:
+        'border-primary-100 focus:outline-primary-100 hover:border-primary-300',
     };
     const stateClass = stateClasses[state];
 
     const sharedProps = {
-      className: `${commonClasses} ${stateClass} ${leftIcon ? 'pl-[32px]' : 'pl-[12px]'} ${rightIcon ? 'pr-[32px]' : 'pr-[12px]'} h-[44px]`,
+      className: `${commonClasses} ${stateClass} ${
+        leftIcon ? 'pl-[32px]' : 'pl-[12px]'
+      } ${rightIcon ? 'pr-[32px]' : 'pr-[12px]'} h-[44px]`,
       disabled: state === 'inactive',
       ...props,
     };
 
     switch (type) {
       case 'input':
-        return <input type="text" value={value} onChange={(e) => setValue(e.target.value)} {...sharedProps} />;
+        return (
+          <input
+            type="text"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            {...sharedProps}
+          />
+        );
       case 'select':
         return (
           <div className="relative space-y-[8px]" ref={selectRef}>
@@ -123,7 +136,11 @@ const Inputs: React.FC<SharedProps> = ({
             {open && (
               <ul className="absolute z-10 w-full max-h-[110px] p-[12px] rounded-[6px] border border-primary-100 text-primary-900 text-p1-r flex flex-col gap-2 bg-white overflow-y-scroll">
                 {options.map((option) => (
-                  <li key={option} onClick={() => handleInput(option)} className="cursor-pointer text-p1-r text-primary-900-75">
+                  <li
+                    key={option}
+                    onClick={() => handleInput(option)}
+                    className="cursor-pointer text-p1-r text-primary-900-75"
+                  >
                     {option}
                   </li>
                 ))}
@@ -150,14 +167,24 @@ const Inputs: React.FC<SharedProps> = ({
       <div className="w-full p-1 flex flex-row justify-between">
         {label && <label className="text-p2-m text-primary-900">{label}</label>}
         <div className="flex flex-row gap-[8px]">
-          {helpIcon && <div className="text-primary-100 flex items-center">{helpIcon}</div>}
+          {helpIcon && (
+            <div className="text-primary-100 flex items-center">{helpIcon}</div>
+          )}
           {help && <div className="text-p2-r text-primary-100">{help}</div>}
         </div>
       </div>
       <div className="relative w-full">
-        {leftIcon && <span className="absolute top-3.5 pl-[12px] w-[16px] text-primary-900">{leftIcon}</span>}
+        {leftIcon && (
+          <span className="absolute top-3.5 pl-[12px] w-[16px] text-primary-900">
+            {leftIcon}
+          </span>
+        )}
         {renderInput()}
-        {rightIcon && <span className="absolute top-3.5 right-5 w-[16px] text-primary-900">{rightIcon}</span>}
+        {rightIcon && (
+          <span className="absolute top-3.5 right-5 w-[16px] text-primary-900">
+            {rightIcon}
+          </span>
+        )}
       </div>
     </div>
   );

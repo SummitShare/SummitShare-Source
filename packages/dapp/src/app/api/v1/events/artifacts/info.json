@@ -42,10 +42,7 @@
     "collector_info": {
       "name": "Eric von Rosen",
       "lifetime": "1879 - 1948",
-      "roles": [
-        "Explorer",
-        "Ethnographer"
-      ],
+      "roles": ["Explorer", "Ethnographer"],
       "background": "Eric von Rosen was a notable figure in early 20th-century exploration and ethnography. His contributions to the documentation of African cultures, including the Bisa people's way of life, have provided valuable insights into the diverse cultural heritage of Zambia. The collection and donation of artifacts like this gourd water bottle to museums have allowed for the preservation and study of African material culture."
     },
     "event_info": {
@@ -101,10 +98,7 @@
     "collector_info": {
       "name": "Emil Holub",
       "lifetime": "1847 - 1902",
-      "roles": [
-        "Explorer",
-        "Ethnographer"
-      ],
+      "roles": ["Explorer", "Ethnographer"],
       "background": "Known for his travels across Africa, Holub contributed significantly to the understanding of African cultures. His work, including a notable expedition to the Zambezi and Congo rivers' sources, has left a lasting legacy in ethnographic studies."
     },
     "event_info": [

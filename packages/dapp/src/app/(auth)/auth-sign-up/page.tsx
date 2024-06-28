@@ -8,35 +8,27 @@
  * a user-friendly interface for account registration within a web application.
  */
 
-"use client";
+'use client';
 
-import Link from "next/link";
-import React from "react";
-import { useForm } from "react-hook-form";
-import { authUserProps } from "@/utils/dev/frontEndInterfaces";
-import { useRouter } from "next/navigation";
-
-
-
+import Link from 'next/link';
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { authUserProps } from '@/utils/dev/frontEndInterfaces';
+import { useRouter } from 'next/navigation';
 
 const Register = () => {
-
-  const router = useRouter()
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
     defaultValues: {
-
-      email: "mariomaguyasjere@gmail.com",
-      type: "visitor",
-      password: "12345678",
+      email: 'mariomaguyasjere@gmail.com',
+      type: 'visitor',
+      password: '12345678',
     },
   });
-
-
-
 
   const createUser = async ({ email, password, username }: any) => {
     // Ensure HOST is read correctly, considering Next.js environment variables need to be prefixed with NEXT_PUBLIC_ if they are to be used on the client-side.
@@ -48,11 +40,11 @@ const Register = () => {
     //console.log(`url ${url} `)
 
     try {
-      const type = "visitor"
+      const type = 'visitor';
       const response = await fetch(url, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, password, username, type }),
       });
@@ -63,23 +55,21 @@ const Register = () => {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }
 
-      { response.status === 201 ? router.push(`/verifcation/sign-up/${email}`) : alert('error') }
+      {
+        response.status === 201
+          ? router.push(`/verifcation/sign-up/${email}`)
+          : alert('error');
+      }
 
       return response.json(); // Assuming the server responds with JSON.
     } catch (error) {
-      console.error("Failed to create user:", error);
-
+      console.error('Failed to create user:', error);
     }
-  
-  }
-
+  };
 
   const onSubmit = async (data: any) => {
-    const response = await createUser(data)
+    const response = await createUser(data);
     //console.log(response.status);
- 
-
-
   };
 
   return (
@@ -96,7 +86,6 @@ const Register = () => {
           </div>
 
           <div className="w-full space-y-3 ">
-
             {/* <Input
               type="email"
               label="email"
@@ -116,7 +105,7 @@ const Register = () => {
           <ButtonOrange text="text-[0.9rem]" width="w-full">
             Create Account
           </ButtonOrange> */}
-           </div>
+          </div>
         </div>
 
         <div className="w-full text-center mt-20">

@@ -34,7 +34,10 @@ export const fetchAllTeamNotes = async (): Promise<Note[]> => {
     return notesWithContent;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.error('Error fetching all team notes:', error.response?.data || error.message);
+      console.error(
+        'Error fetching all team notes:',
+        error.response?.data || error.message
+      );
     } else {
       console.error('Error fetching all team notes:', error);
     }
@@ -57,7 +60,10 @@ export const fetchNoteContent = async (noteId: string): Promise<any> => {
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.error(`Error fetching note with ID ${noteId}:`, error.response?.data || error.message);
+      console.error(
+        `Error fetching note with ID ${noteId}:`,
+        error.response?.data || error.message
+      );
     } else {
       console.error(`Error fetching note with ID ${noteId}:`, error);
     }
@@ -70,7 +76,9 @@ export const fetchNoteContent = async (noteId: string): Promise<any> => {
  * @param {string} content - Raw content of the note
  * @returns {object} Parsed front matter and content
  */
-export const parseNoteContent = (content: string): { data: any; content: string } => {
+export const parseNoteContent = (
+  content: string
+): { data: any; content: string } => {
   const parsed = matter(content);
   return {
     data: parsed.data,
