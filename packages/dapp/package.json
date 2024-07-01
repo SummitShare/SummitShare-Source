@@ -32,6 +32,7 @@
     "@react-three/gltfjsx": "^4.3.4",
     "@reduxjs/toolkit": "^2.2.2",
     "@tailwindcss/typography": "^0.5.10",
+    "@tanstack/react-query": "^5.49.2",
     "@tanstack/react-table": "^8.10.7",
     "@thirdweb-dev/chains": "^0.1.98",
     "@thirdweb-dev/react": "^4.0.2",
@@ -44,6 +45,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "cmdk": "^0.2.0",
+    "connectkit": "^1.8.2",
     "date-fns": "^2.30.0",
     "dotenv": "^16.3.1",
     "ethers": "^5.7.2",
@@ -70,7 +72,9 @@
     "thirdweb": "^5.10.0",
     "three": "^0.165.0",
     "three-stdlib": "^2.30.3",
-    "unified": "^11.0.4"
+    "unified": "^11.0.4",
+    "viem": "~2.10.9",
+    "wagmi": "^2.10.8"
   },
   "devDependencies": {
     "@hookform/devtools": "^4.3.1",
