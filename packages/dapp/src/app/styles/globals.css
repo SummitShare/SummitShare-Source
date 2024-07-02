@@ -113,52 +113,14 @@ p,a,li{
   font-weight: 600;
 }
 
-.primary-50 {
-  color: #F6F3F2
+
+.primary-500 {
+  color: #1F58EB
 }
 
-.primary-100 {
-  color: #746D6A
-}
 
-.primary-400 {
-  color: #794228
-}
-
-.primary-600 {
-  color: #352218
-}
-
-.primary-700 {
-  color: #352218
-}
-
-.primary-900 {
-  color: #1A0D08
-}
-
-.primary-900-75 {
-  color: rgb(26, 13, 8, 75%)
-}
-
-.primary-900-5 {
-  color: rgb(26, 13, 8, 5%)
-}
-
-re-100 {
-  color: #F7DEDE;
-}
-
-re-500 {
-  color: #8B2020;
-}
-
-ge-100 {
-  color: #D7F5E2;
-}
-
-ge-500 {
-  color: #207F42;
+.secondary-900{
+  color: #161616
 }
 
 p>img {
