@@ -1,18 +1,22 @@
 
 import Buttons from '@/app/components/button/Butons'
 import Inputs from '@/app/components/inputs/Inputs'
+import Link from 'next/link'
 import React from 'react'
 
 function Page() {
   return (
   
-    <div className=" px-6 my-12  flex flex-col space-y-9 md:w-[50%] lg:w-[30%] ">
+    <div className=" flex flex-col justify-between px-6 py-10 bg-white h-screen md:w-[50%] lg:w-[30%] md:float-right">
       <nav className="w-full flex flex-row justify-between items-center">
         <p className="text-p2-m">
-          Step 1<span> of 3</span>
+          Step 1<span> of 2</span>
         </p>
-        <p>Exit</p>
+        <Link href="/">Exit</Link>
       </nav>
+
+      <section className="space-y-4">
+
       <header className="text-center space-y-2">
         <h2>Create account</h2>
         <p>Learn about the history you love!</p>
@@ -25,6 +29,8 @@ function Page() {
           <Inputs type="input" state="active" label="Password" />
         </section>
       </form>
+      </section>
+      
       <section className="text-center space-y-6">
         <Buttons type="primary" size="large">Create my account</Buttons>
         <p>

@@ -18,9 +18,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className="bg-primary-600">
         <Providers>
-          <div className="md:flex md:justify-center items-center h-screen">{children}</div>
+       {children}
           </Providers>
       </body>
     </html>
