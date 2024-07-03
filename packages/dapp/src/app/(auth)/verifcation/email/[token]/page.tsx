@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
 function Page({ params }: { params: { token: string } }) {
-  const router = useRouter()
-  const [verificationStatus, setVerificationStatus] = useState<number>()
+  const router = useRouter();
+  const [verificationStatus, setVerificationStatus] = useState<number>();
   const [verificationMessage, setVerificationMessage] = useState<number>();
   const hasFetched = useRef(false);
 
@@ -31,8 +31,7 @@ function Page({ params }: { params: { token: string } }) {
         // //console.log(`message ${message}`)
 
         setVerificationMessage(message);
-        setVerificationStatus(response?.status)
-
+        setVerificationStatus(response?.status);
       } catch (error) {
         console.error('Verification request failed:', error);
       }
@@ -40,8 +39,6 @@ function Page({ params }: { params: { token: string } }) {
 
     verifyEmail();
   }, [params.token]);
-
-
 
   const resendVerificationEmail = async () => {
     try {
@@ -67,24 +64,37 @@ function Page({ params }: { params: { token: string } }) {
     }
   };
 
-  return (<div className=" flex flex-col items-center justify-between px-6 py-10 bg-white h-screen md:w-[50%] lg:w-[30%] md:float-right ">
-    <nav className="w-full flex flex-row justify-between items-center">
-      <p> Step 2<span> of 2</span></p>
-      <Link href="/">Exit</Link>
-    </nav>
-    <div className="text-center space-y-2">
-      <h1> {
-        verificationStatus === 200 ? 'Woohoo!' : 'whoops!'}</h1>
-      <p>{verificationMessage}</p>
-    </div>
-    <img src={
-      verificationStatus === 200 ?'/swinging.svg' :'/petting.svg'} alt="" />
-      <div className="w-full" onClick={()=>{verificationStatus === 200? router.push('/auth-sign-in') : resendVerificationEmail}}>
-      <Buttons  type="primary" size="large" >{
-      verificationStatus === 200 ?'Continue' :'Resend'}</Buttons>
+  return (
+    <div className=" flex flex-col items-center justify-between px-6 py-10 bg-white h-screen md:w-[50%] lg:w-[30%] md:float-right ">
+      <nav className="w-full flex flex-row justify-between items-center">
+        <p>
+          {' '}
+          Step 2<span> of 2</span>
+        </p>
+        <Link href="/">Exit</Link>
+      </nav>
+      <div className="text-center space-y-2">
+        <h1> {verificationStatus === 200 ? 'Woohoo!' : 'whoops!'}</h1>
+        <p>{verificationMessage}</p>
       </div>
-   
-  </div>);
+      <img
+        src={verificationStatus === 200 ? '/swinging.svg' : '/petting.svg'}
+        alt=""
+      />
+      <div
+        className="w-full"
+        onClick={() => {
+          verificationStatus === 200
+            ? router.push('/auth-sign-in')
+            : resendVerificationEmail;
+        }}
+      >
+        <Buttons type="primary" size="large">
+          {verificationStatus === 200 ? 'Continue' : 'Resend'}
+        </Buttons>
+      </div>
+    </div>
+  );
 }
 
 export default Page;

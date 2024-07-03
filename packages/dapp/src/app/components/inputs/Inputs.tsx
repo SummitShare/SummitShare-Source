@@ -20,7 +20,6 @@ export interface InputProps {
   onChange?: (e: any) => void;
 }
 
-
 /**
  * SharedProps interface defines the properties that can be passed to the Inputs component.
  * @property {'input' | 'select' | 'textarea' | 'pill'} type - The type of input element to render.
@@ -171,7 +170,11 @@ const Input: React.FC<InputProps> = ({
             {open && (
               <ul className="absolute z-10 w-full max-h-[110px] p-[12px] rounded-[6px] border border-primary-100 text-primary-900 text-p1-r flex flex-col gap-2 bg-white">
                 {options.map((option) => (
-                  <li key={option} onClick={() => handleInput(option)} className="cursor-pointer text-p1-r text-primary-900-75">
+                  <li
+                    key={option}
+                    onClick={() => handleInput(option)}
+                    className="cursor-pointer text-p1-r text-primary-900-75"
+                  >
                     {option}
                   </li>
                 ))}

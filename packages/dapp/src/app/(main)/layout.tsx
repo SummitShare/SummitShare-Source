@@ -25,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={``}>
+      <body className={`lg:mx-[15%]`}>
         <SessionProvider>
           <ApolloWrapper>
             <Web3Provider>

@@ -3,38 +3,25 @@ import Line from '@/app/components/Line';
 import Buttons from '@/app/components/button/Butons';
 import Input from '@/app/components/inputs/Inputs';
 
-
-
-
 function ProfileSettings() {
   return (
     <div className="m-6 lg:mx-[20%] space-y-8">
       <form className="space-y-4 md:grid md:grid-cols-2 md:gap-20">
         <section className="space-y-4">
           <div className="space-y-1">
-            <h3 className='font-inter'>Your Profile</h3>
+            <h3 className="font-inter">Your Profile</h3>
 
             <p>Choose how you are displayed.</p>
           </div>
-      
-          <Input
-            type="input"
-            state="active"
-            label="Username"
-            
-          />
 
-<div className='w-fit'>
-<Buttons
-            type="primary"
-            size="small"
-          >
-            Save changes
-          </Buttons>
-</div>
-         
+          <Input type="input" state="active" label="Username" />
+
+          <div className="w-fit">
+            <Buttons type="primary" size="small">
+              Save changes
+            </Buttons>
+          </div>
         </section>
-       
       </form>
 
       <Line />
@@ -55,17 +42,16 @@ function ProfileSettings() {
               </p>
             </div>
             <Input type="input" state="active" />
-            <div className='w-fit'>
-            <Buttons type="primary" size="small">
-              Update
-            </Buttons>
+            <div className="w-fit">
+              <Buttons type="primary" size="small">
+                Update
+              </Buttons>
             </div>
-           
           </div>
         </Container>
       </form>
       <Line />
-      
+
       <form className="space-y-4">
         <div className="space-y-1">
           <h3>Password</h3>
@@ -85,12 +71,11 @@ function ProfileSettings() {
                 </p>
               </div>
               <Input type="input" state="active" />
-              <div className='w-fit'>
-              <Buttons type="primary" size="small">
-                Change password
-              </Buttons>
+              <div className="w-fit">
+                <Buttons type="primary" size="small">
+                  Change password
+                </Buttons>
               </div>
-              
             </div>
           </div>
         </Container>
@@ -102,15 +87,11 @@ function ProfileSettings() {
 
           <p>you can permanently delete your account at any time.</p>
         </div>
-        <div className='w-fit'>
-        <Buttons
-          type="primary"
-          size="small"
-        >
-          Delete my account
-        </Buttons>
+        <div className="w-fit">
+          <Buttons type="primary" size="small">
+            Delete my account
+          </Buttons>
         </div>
-      
       </form>
     </div>
   );

@@ -41,8 +41,6 @@ const PrimaryNav: React.FC = () => {
       title: 'Settings',
       items: [
         { name: 'Profile', link: '/profile' },
-        { name: 'Change Password', link: '/change-password' },
-        { name: 'Delete Account', link: '/delete-account' },
         { name: 'Log Out', link: '/logout' },
       ],
     },
