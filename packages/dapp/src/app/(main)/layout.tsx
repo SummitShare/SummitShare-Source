@@ -24,15 +24,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={``}>
+      <body className={`lg:mx-[15%]`}>
         <SessionProvider>
         <ApolloWrapper>
           <ThirdwebProvider>
           <Providers>
             <PrimaryNav />
-            <div className="lg:mx-[15%]">
             {children}
-            </div>
             <Footer />
           </Providers>
           </ThirdwebProvider>

@@ -33,7 +33,7 @@
     "@react-three/gltfjsx": "^4.3.4",
     "@reduxjs/toolkit": "^2.2.2",
     "@tailwindcss/typography": "^0.5.10",
-    "@tanstack/react-table": "^8.10.7",
+    "@tanstack/react-table": "^8.17.3",
     "@thirdweb-dev/chains": "^0.1.98",
     "@thirdweb-dev/react": "^4.0.2",
     "@types/bcryptjs": "^2.4.5",

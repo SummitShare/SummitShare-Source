@@ -24,7 +24,7 @@ const PrimaryNav: React.FC = () => {
   const menuItems: { title: string, items: { name: string, link: string }[] }[] = [
     { title: 'Pages', items: [{ name: 'Blog', link: '/blog' }, { name: 'Partners', link: '/partners' },{ name: 'Support Us', link: '/donate' }] },
     { title: 'Dashboard', items: [{ name: 'Distribution', link: '/distribution' }] },
-    { title: 'Settings', items: [{ name: 'Profile', link: '/profile' }, { name: 'Change Password', link: '/change-password' }, { name: 'Delete Account', link: '/delete-account' }, { name: 'Log Out', link: '/logout' }] }
+    { title: 'Settings', items: [{ name: 'Profile', link: '/profile' }, { name: 'Log Out', link: '/logout' }] }
   ]
 
   // State to manage the open/close state of the responsive menu

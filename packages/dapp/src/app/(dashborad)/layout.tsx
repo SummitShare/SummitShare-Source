@@ -4,9 +4,10 @@ import { Inter } from "next/font/google";
 import "../styles/globals.css";
 import { Providers } from "@/redux/provider";
 import { ApolloWrapper } from "../(main)/apolloWrapper";
-import Footer from "../components/common/nav/footer/footer";
-import Navbar from "../components/common/nav/navbar/navbar";
 import { SessionProvider } from "next-auth/react";
+import PrimaryNav from "../components/navigation/PrimaryNav";
+import Footer from "../components/navigation/footer";
+import { ThirdwebProvider } from "@thirdweb-dev/react";
 
 
 
@@ -25,15 +26,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={` `}>
+      <body className={`h-screen mt-32`}>
  <SessionProvider>
-
  <ApolloWrapper>
+ <ThirdwebProvider>
           <Providers>
+            <PrimaryNav/>
             {children} 
             </Providers>
+            </ThirdwebProvider>
         </ApolloWrapper>
-
  </SessionProvider>
      
      
