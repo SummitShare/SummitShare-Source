@@ -3,8 +3,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../styles/globals.css";
-import { NavBar } from "../components/navigation/navBar";
 import { SessionProvider } from "next-auth/react";
+import SecondaryNavBar from "../components/secondaryNavBar";
+import PrimaryNav from "../components/navigation/PrimaryNav";
+import { ThirdwebProvider } from "@thirdweb-dev/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,8 +24,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={``}>
       <SessionProvider>
- 
+      <ThirdwebProvider>
+        <PrimaryNav/>
+        <SecondaryNavBar/>
       {children}
+      </ThirdwebProvider>
       </SessionProvider>
       </body>
     </html>
