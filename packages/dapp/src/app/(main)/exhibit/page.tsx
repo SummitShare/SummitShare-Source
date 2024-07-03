@@ -71,8 +71,12 @@ export default function Home() {
         </div>
       )}
 
-      <section className="border-b md:border-b-0 border-primary-900-5 space-y-[48px] pb-6 md:flex md:flex-row md:gap-4">
-        <div className="w-full md:w-[45%] h-[342px] rounded-[0.5rem] overflow-hidden bg-[url('/all-women.png')]  bg-cover bg-primary-50 bg-center"></div>
+    <section className="border-b md:border-b-0 border-primary-900-5 space-y-[48px] pb-6 md:flex md:flex-row md:gap-4">
+
+      
+
+      <div className="w-full md:w-[45%] h-[342px] rounded-[0.5rem] overflow-hidden bg-[url('https://images.squarespace-cdn.com/content/v1/5878a307ebbd1ab23e1ed5a0/1650963860604-LGJSBAWOMLQIU9ZXUK1K/all-women.71ba3487f51cab4dc38a.png?format=2500w')] bg-cover bg-primary-50 bg-center">
+      </div>
 
         <div className="space-y-6 md:w-[45%] md:flex md:flex-col md:justify-between">
           <div className="space-y-2">
