@@ -32,7 +32,8 @@ const Page: React.FC = () => {
   const community = {
     name: 'Gwembe Valley',
     linked_exhibit: 'The Leading Ladies Exhibit',
-    description: "Our goal is to create a new value addition cycle through the exhibits on our platform. Through the Women's History Museum of Zambia, we connected with A heritage community, the Gwembe Valley community in the Southern Province of Zambia. Proceeds from the exhibits and your donations will fund community-voted SDG development projects within these communities, starting with Gwembe Valley. If you would like to make a donation, please visit our Support Us page."
+    description:
+      "Our goal is to create a new value addition cycle through the exhibits on our platform. Through the Women's History Museum of Zambia, we connected with A heritage community, the Gwembe Valley community in the Southern Province of Zambia. Proceeds from the exhibits and your donations will fund community-voted SDG development projects within these communities, starting with Gwembe Valley. If you would like to make a donation, please visit our Support Us page.",
   };
 
   const tableData = [
