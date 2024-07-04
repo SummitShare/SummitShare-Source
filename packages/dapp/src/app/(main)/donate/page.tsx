@@ -1,14 +1,67 @@
+"use client";
+
 import Buttons from '@/app/components/button/Butons';
 import Inputs from '@/app/components/inputs/Inputs';
-import { XMarkIcon } from '@heroicons/react/24/outline';
-import React from 'react';
-import Image from 'next/image';
+import React, { useState, useRef, useEffect } from 'react';
+import QRCode from 'qrcode.react';
 
-function page() {
+type WalletAddresses = {
+  Ethereum: string;
+  Bitcoin: string;
+  Solana: string;
+};
+
+const walletAddresses: WalletAddresses = {
+  Ethereum: '0x3B6b0Ba44Ef20324c99F5A152C2fF19a13369498',
+  Bitcoin: 'bc1qfvcrmh6e68tsy8w4n0s0xyefgfuh8dysh9wd4s',
+  Solana: '8Kx6RsXtbH3oEyCefPoaFgidfekCcLx4oEJwuSEk53ZV',
+};
+
+function Page() {
+  const [selectedChain, setSelectedChain] = useState<keyof WalletAddresses>('Ethereum');
+  const [qrSize, setQrSize] = useState(200);
+  const [copySuccess, setCopySuccess] = useState(false);
+  const qrContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const updateQRSize = () => {
+      if (qrContainerRef.current) {
+        const { width, height } = qrContainerRef.current.getBoundingClientRect();
+        setQrSize(Math.min(width, height) - 40); // Subtract padding
+      }
+    };
+
+    updateQRSize();
+    window.addEventListener('resize', updateQRSize);
+    return () => window.removeEventListener('resize', updateQRSize);
+  }, []);
+
+  const handleChainChange = (e: React.ChangeEvent<HTMLSelectElement> | string) => {
+    let value: string;
+    if (typeof e === 'string') {
+      value = e;
+    } else if (e && e.target && typeof e.target.value === 'string') {
+      value = e.target.value;
+    } else {
+      console.error('Unexpected input in handleChainChange:', e);
+      return;
+    }
+
+    if (value in walletAddresses) {
+      setSelectedChain(value as keyof WalletAddresses);
+    }
+  };
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(walletAddresses[selectedChain]);
+    setCopySuccess(true);
+    setTimeout(() => setCopySuccess(false), 2000);
+  };
+
   return (
-    <div className=" space-y-10 mx-6 my-28">
+    <div className="space-y-10 mx-6 my-28">
       <header className="text-left space-y-2">
-        <h2> Support Our Multidisciplinary Project</h2>
+        <h2>Support Our Multidisciplinary Project</h2>
         <p>
           Our project is a vibrant fusion of art, science, and community
           engagement. We strive to create meaningful change and experiences.
@@ -17,43 +70,42 @@ function page() {
           pushing boundaries and inspiring change.
         </p>
       </header>
-
-      <div className="md:grid md:grid-cols-2 gap-4 ">
+      <div className="md:grid md:grid-cols-2 gap-4">
         <section className="space-y-6 md:flex md:flex-col md:justify-between md:h-full">
           <div className="space-y-6">
             <Inputs
               type="select"
               label="Chain"
               state="active"
-              options={['Ethereum Mainet', 'Bitcoin', 'Base', 'Optimism']}
+              options={['Ethereum', 'Bitcoin', 'Solana']}
+              onChange={handleChainChange}
             />
-            <div className="w-full h-[358px] lg:hidden md:hidden bg-blue-200">
-              <Image src="" alt="Description" width={500} height={358} />
+            <div ref={qrContainerRef} className="w-full h-[358px] lg:hidden md:hidden flex justify-center items-center">
+              <QRCode value={walletAddresses[selectedChain]} size={qrSize} />
             </div>
           </div>
-
           <div className="space-y-4">
             <Inputs
               type="input"
               label="Wallet address"
               state="inactive"
-              defaultValue="Value"
+              value={walletAddresses[selectedChain]}
+              readOnly
             />
-            <Buttons type="primary">Copy wallet address</Buttons>
+            <Buttons type="primary" onClick={handleCopy}>
+              {copySuccess ? 'Copied!' : 'Copy wallet address'}
+            </Buttons>
           </div>
         </section>
-
-        <div className="w-full h-[358px] sm:block hidden bg-blue-200">
-          <Image
-            src="/path/to/image.jpg"
-            alt="Description"
-            width={500}
-            height={358}
-          />
+        <div ref={qrContainerRef} className="w-full h-[358px] sm:block hidden flex justify-center items-center">
+          <QRCode value={walletAddresses[selectedChain]} size={qrSize} />
         </div>
       </div>
+      <p className="text-sm mt-4">
+        Read our <a href="https://hackmd.io/@SummitShare/SytJp4VvC" className="text-blue-500 underline">donations policy</a> for more info.
+      </p>
     </div>
   );
 }
 
-export default page;
+export default Page;

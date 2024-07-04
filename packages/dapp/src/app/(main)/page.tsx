@@ -124,7 +124,7 @@ export default function Home() {
 
       <section className="bg-primary-400 rounded-[0.5rem] w-full h-[21.375rem] flex flex-col items-center px-[2.813rem] justify-center space-y-12 ">
         <div className="space-y-2 text-center">
-          <h3 className="text-white">Collaborate with us</h3>
+          <h3 className="text-white">Collaborate With Us</h3>
           <p className="text-center text-white">
             Learn more and contribute to shaping this narrative. Every voice
             matters, every insight adds to our shared heritage.
