@@ -135,8 +135,8 @@ const PrimaryNav: React.FC = () => {
               </li>
             ))}
             <li className="relative">
-                <ConnectKitButton />
-              </li>
+              <ConnectKitButton />
+            </li>
           </ul>
         </nav>
       </ul>

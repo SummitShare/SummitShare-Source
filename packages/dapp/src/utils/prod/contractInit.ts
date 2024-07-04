@@ -11,8 +11,7 @@ import MuseumABI from '../artifacts/contracts/Museum.sol/Museum.json';
 import ArtifactNFTABI from '../artifacts/contracts/ArtifactNFT.sol/ArtifactNFT.json';
 import EventEscrowABI from '../artifacts/contracts/EventEscrow.sol/EventEscrow.json';
 import ExhibitNFTABI from '../artifacts/contracts/ExhibitNFT.sol/ExhibitNFT.json';
-import USDTABI from "../artifacts/contracts/USDT_OP/usdtoptimism.json"
-
+import USDTABI from '../artifacts/contracts/USDT_OP/usdtoptimism.json';
 
 export const CONTRACT_ADDRESSES = {
   EventOrganizerServiceAdd: '',
@@ -84,4 +83,4 @@ export const contracts = {
       wallet
     );
   },
-}
+};
