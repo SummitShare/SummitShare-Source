@@ -1,11 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { ethers } from 'ethers';
 import { contracts, CONTRACT_ADDRESSES } from '@/utils/dev/contractInit';
 import { handleContractError } from '@/utils/dev/handleContractError';
 import { EventEscrowComponentProps } from '@/utils/dev/typeInit';
 import useExhibit from '@/lib/useGetExhibitById';
-import { BanknotesIcon } from '@heroicons/react/20/solid';
 import { initializeUserWallet } from '@/utils/dev/walletInit';
 
 const EventEscrowComponent = ({ userAddress }: any) => {

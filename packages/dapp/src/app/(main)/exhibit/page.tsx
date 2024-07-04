@@ -2,14 +2,16 @@
 import Buttons from '@/app/components/button/Butons';
 import TicketPurchaseComponent from '@/functonality/ticketpurchasecomponent';
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import { useAddress } from '@thirdweb-dev/react';
 import Link from 'next/link';
 import { useState } from 'react';
 import Image from 'next/image';
+import WalletStatus from '@/functonality/walletStatus';
+import { useAccount } from 'wagmi';
 
 export default function Home() {
   const [open, setOpen] = useState(false);
-  const userAddress = useAddress();
+  const { address } = useAccount();
+  const userAddress = address;
   const women = [
     {
       name: 'Julia Chikamoneka',

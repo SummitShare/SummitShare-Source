@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useAccount } from 'wagmi';
 
 const WalletStatus: React.FC = () => {
-  const { address, addresses, isConnecting, isDisconnected } = useAccount();
+  const { address, isConnecting, isDisconnected } = useAccount();
   console.log('Connected User Address', address);
 
   if (isConnecting) return <div>Connecting...</div>;

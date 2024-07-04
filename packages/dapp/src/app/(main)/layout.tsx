@@ -31,7 +31,7 @@ export default function RootLayout({
             <Web3Provider>
               <Providers>
                 <PrimaryNav />
-                <div className="lg:mx-[15%]">{children}</div>
+                <div className="">{children} </div>
                 <Footer />
               </Providers>
             </Web3Provider>
