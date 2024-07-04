@@ -9,6 +9,7 @@ import {
   sepolia,
   optimismSepolia,
 } from 'wagmi/chains';
+import { customTheme } from './customTheme';
 
 const config = createConfig(
   getDefaultConfig({
@@ -31,7 +32,7 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <ConnectKitProvider debugMode>{children}</ConnectKitProvider>
+        <ConnectKitProvider customTheme={customTheme} debugMode>{children}</ConnectKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
   );

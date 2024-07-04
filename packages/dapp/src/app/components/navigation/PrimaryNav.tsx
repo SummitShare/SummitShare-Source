@@ -1,10 +1,10 @@
 'use client';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import React, { useEffect, useState } from 'react';
-
+import React, { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Buttons from '../button/Butons';
-import { ConnectWallet, useAddress } from '@thirdweb-dev/react';
+import { useAccount } from 'wagmi';
+import { ConnectKitButton } from 'connectkit';
 
 /**
  * PrimaryNav component represents the main navigation bar for the application.
@@ -53,14 +53,12 @@ const PrimaryNav: React.FC = () => {
 
   // Get the current pathname to highlight the active link
   const pathname = usePathname();
-
-  const userAddress = useAddress();
+  const { address } = useAccount();
 
   return (
     <nav className="w-full">
       <ul className="fixed top-0 inset-x-0 px-6 py-4 lg:px-28 lg:py-6 flex flex-row justify-between items-center border-b border-primary-900-5 text-primary-900 z-10 bg-white">
         <li>
-          {' '}
           <a href="/">
             <h2>
               <span className="text-primary-400">Summit</span>Share
@@ -72,7 +70,7 @@ const PrimaryNav: React.FC = () => {
             {items.map((item, index) => (
               <li
                 key={index}
-                className={`hover:text-primary-600 hover:underline underline-offset-[0.625rem] cursor-pointer   ${
+                className={`hover:text-primary-600 hover:underline underline-offset-[0.625rem] cursor-pointer ${
                   pathname === item.link &&
                   'text-primary-600 underline underline-offset-[0.625rem]'
                 }`}
@@ -85,16 +83,7 @@ const PrimaryNav: React.FC = () => {
         <li className="sm:block hidden md:hidden lg:block w-fit">
           <ul className="flex flex-row gap-4">
             <li className="relative">
-              {' '}
-              <Buttons type="primary" size="small">
-                <span className="opacity-0 absolute inset-x-0">
-                  {' '}
-                  <ConnectWallet />
-                </span>
-                <span className=" py-3">
-                  {userAddress ? 'Connected' : 'Connect'}
-                </span>
-              </Buttons>
+              <Buttons type="primary" size="small" isConnectButton />
             </li>
             <li>
               <Buttons type="secondary" size="small">
@@ -107,7 +96,7 @@ const PrimaryNav: React.FC = () => {
           <Bars3Icon className="w-4" />
         </li>
         <nav
-          className={`fixed inset-y-0 left-0  w-[70%] md:w-[40%] bg-white z-50 transform border-r border-primary-900-5 ${
+          className={`fixed inset-y-0 left-0 w-[70%] md:w-[40%] bg-white z-50 transform border-r border-primary-900-5 ${
             openMenu ? 'translate-x-0' : '-translate-x-full'
           } transition-transform duration-300 ease-in-out`}
         >
@@ -145,19 +134,9 @@ const PrimaryNav: React.FC = () => {
                 </ul>
               </li>
             ))}
-
             <li className="relative">
-              {' '}
-              <Buttons type="primary" size="large">
-                <span className="opacity-0 absolute inset-x-0">
-                  {' '}
-                  <ConnectWallet />
-                </span>
-                <span className=" py-3">
-                  {userAddress ? 'Connected' : 'Connect'}
-                </span>
-              </Buttons>
-            </li>
+                <ConnectKitButton />
+              </li>
           </ul>
         </nav>
       </ul>

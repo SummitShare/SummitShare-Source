@@ -7,7 +7,8 @@ import { ApolloWrapper } from './apolloWrapper';
 import { SessionProvider } from 'next-auth/react';
 import Footer from '../components/navigation/footer';
 import PrimaryNav from '../components/navigation/PrimaryNav';
-import { ThirdwebProvider } from '@thirdweb-dev/react';
+import { Web3Provider } from '@/functonality/Web3Provider';
+import { ConnectKitProvider } from 'connectkit';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -27,13 +28,13 @@ export default function RootLayout({
       <body className={``}>
         <SessionProvider>
           <ApolloWrapper>
-            <ThirdwebProvider>
+            <Web3Provider>
               <Providers>
                 <PrimaryNav />
                 <div className="lg:mx-[15%]">{children}</div>
                 <Footer />
               </Providers>
-            </ThirdwebProvider>
+            </Web3Provider>
           </ApolloWrapper>
         </SessionProvider>
       </body>
