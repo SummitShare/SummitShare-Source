@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
-
+        
 const Table = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement>
@@ -20,6 +20,7 @@ const TableHeader = React.forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
 >(({ className, ...props }, ref) => (
+
   <thead ref={ref} className={cn('[&_tr]:border-b', className)} {...props} />
 ));
 TableHeader.displayName = 'TableHeader';
@@ -48,9 +49,10 @@ const TableFooter = React.forwardRef<
     )}
     {...props}
   />
-));
+)
+ )
+;
 TableFooter.displayName = 'TableFooter';
-
 const TableRow = React.forwardRef<
   HTMLTableRowElement,
   React.HTMLAttributes<HTMLTableRowElement>
@@ -102,11 +104,14 @@ const TableCaption = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <caption
     ref={ref}
+
     className={cn('mt-4 text-sm text-muted-foreground', className)}
     {...props}
   />
 ));
+
 TableCaption.displayName = 'TableCaption';
+
 
 export {
   Table,
@@ -118,3 +123,4 @@ export {
   TableCell,
   TableCaption,
 };
+

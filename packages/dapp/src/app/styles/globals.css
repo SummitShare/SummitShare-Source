@@ -113,7 +113,6 @@ li {
   font-size: 0.75rem;
   font-weight: 600;
 }
-
 .primary-50 {
   color: #f6f3f2;
 }
@@ -160,6 +159,7 @@ ge-100 {
 
 ge-500 {
   color: #207f42;
+
 }
 
 p > img {

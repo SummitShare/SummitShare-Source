@@ -12,7 +12,6 @@ function Page() {
         </p>
         <Link href="/">Exit</Link>
       </nav>
-
       <section className="space-y-4">
         <header className="text-center space-y-2">
           <h2>Create account</h2>
@@ -27,7 +26,6 @@ function Page() {
           </section>
         </form>
       </section>
-
       <section className="text-center space-y-6">
         <Buttons type="primary" size="large">
           Create my account

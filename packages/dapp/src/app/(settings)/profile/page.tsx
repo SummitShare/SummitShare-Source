@@ -13,7 +13,6 @@ function ProfileSettings() {
 
             <p>Choose how you are displayed.</p>
           </div>
-
           <Input type="input" state="active" label="Username" />
 
           <div className="w-fit">
@@ -51,7 +50,6 @@ function ProfileSettings() {
         </Container>
       </form>
       <Line />
-
       <form className="space-y-4">
         <div className="space-y-1">
           <h3>Password</h3>

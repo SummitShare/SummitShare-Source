@@ -39,7 +39,6 @@ function Page({ params }: { params: { token: string } }) {
 
     verifyEmail();
   }, [params.token]);
-
   const resendVerificationEmail = async () => {
     try {
       const response = await fetch(
@@ -63,7 +62,6 @@ function Page({ params }: { params: { token: string } }) {
       console.error('Resend verification request failed:', error);
     }
   };
-
   return (
     <div className=" flex flex-col items-center justify-between px-6 py-10 bg-white h-screen md:w-[50%] lg:w-[30%] md:float-right ">
       <nav className="w-full flex flex-row justify-between items-center">
