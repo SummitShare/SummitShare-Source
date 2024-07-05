@@ -6,6 +6,15 @@ const prisma = new PrismaClient();
 interface IStakes {
   [stakeholder: string]: number;
 }
+
+interface Vote {
+  id: string;
+  proposal_id: string | null;
+  user_id: string | null;
+  decision: boolean;
+  created_at: Date;
+}
+
 export async function POST(req: Request, res: NextResponse) {
   try {
     const requestBody = await req.json();
@@ -60,7 +69,7 @@ export async function POST(req: Request, res: NextResponse) {
 
     // Check if the event creator voted positively
     const eventCreatorVotedPositively = allVotes.some(
-      (vote) => vote.user_id === event_creator_id && vote.decision === true
+      (vote: Vote) => vote.user_id === event_creator_id && vote.decision === true
     );
 
     // Fetch all stakeholders for the event
@@ -71,7 +80,7 @@ export async function POST(req: Request, res: NextResponse) {
     // Check if all stakeholders voted positively
     const allStakeholdersVotedPositively = stakeholders.every((stakeholder) =>
       allVotes.some(
-        (vote) => vote.user_id === stakeholder.user_id && vote.decision === true
+        (vote: Vote) => vote.user_id === stakeholder.user_id && vote.decision === true
       )
     );
 
