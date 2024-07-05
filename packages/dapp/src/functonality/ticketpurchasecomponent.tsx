@@ -153,33 +153,31 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
 
   const url = 'localhost:3000/api/v1/events/tickets/create';
 
-  
- 
 
-  useEffect(() => {
-    const sendData = async () => {
-      try {
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          // body: JSON.stringify(wallet_address,event_id,user_id,eventLink)
-        });
+  // useEffect(() => {
+  //   const sendData = async () => {
+  //     try {
+  //       const response = await fetch(url, {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-Type': 'application/json'
+  //         },
+  //         body: JSON.stringify(wallet_address,event_id,user_id,eventLink)
+  //       });
     
-        if (!response.ok) {
-          throw new Error(`Error: ${response.status} - ${response.statusText}`);
-        }
+  //       if (!response.ok) {
+  //         throw new Error(`Error: ${response.status} - ${response.statusText}`);
+  //       }
     
-        const responseData = await response.json();
-        console.log('Success:', responseData);
-      } catch (error) {
-        console.error('Failed to send data:', error);
-      }
-    };
+  //       const responseData = await response.json();
+  //       console.log('Success:', responseData);
+  //     } catch (error) {
+  //       console.error('Failed to send data:', error);
+  //     }
+  //   };
     
-    sendData();
-  }, [purchaseSuccessful]);
+  //   sendData();
+  // }, [purchaseSuccessful]);
 
 
   // Render component UI

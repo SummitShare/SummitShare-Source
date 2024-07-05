@@ -21,13 +21,20 @@ function Page() {
   const [selectedChain, setSelectedChain] = useState<keyof WalletAddresses>('Ethereum');
   const [qrSize, setQrSize] = useState(200);
   const [copySuccess, setCopySuccess] = useState(false);
-  const qrContainerRef = useRef<HTMLDivElement>(null);
+  const mobileQrContainerRef = useRef<HTMLDivElement>(null);
+  const desktopQrContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const updateQRSize = () => {
-      if (qrContainerRef.current) {
-        const { width, height } = qrContainerRef.current.getBoundingClientRect();
-        setQrSize(Math.min(width, height) - 40); // Subtract padding
+      const mobileContainer = mobileQrContainerRef.current;
+      const desktopContainer = desktopQrContainerRef.current;
+      
+      if (window.innerWidth < 640 && mobileContainer) { // sm breakpoint
+        const { width, height } = mobileContainer.getBoundingClientRect();
+        setQrSize(Math.min(width, height) - 40);
+      } else if (desktopContainer) {
+        const { width, height } = desktopContainer.getBoundingClientRect();
+        setQrSize(Math.min(width, height) - 40);
       }
     };
 
@@ -59,7 +66,7 @@ function Page() {
   };
 
   return (
-    <div className="space-y-10 mx-6 my-28 lg:mx-[15%]">
+    <div className="space-y-10 mx-6 my-28">
       <header className="text-left space-y-2">
         <h2>Support Our Multidisciplinary Project</h2>
         <p>
@@ -72,19 +79,17 @@ function Page() {
       </header>
       <div className="md:grid md:grid-cols-2 gap-4">
         <section className="space-y-6 md:flex md:flex-col md:justify-between md:h-full">
-          <div className="space-y-6 w-full">
+          <div className="space-y-6">
             <Inputs
               type="select"
               label="Chain"
               state="active"
-              value={'Ethereum'}
               options={['Ethereum', 'Bitcoin', 'Solana']}
               onChange={handleChainChange}
             />
-            <div ref={qrContainerRef} className="w-full h-full md:hidden ">
+            <div ref={mobileQrContainerRef} className="w-full h-[358px] sm:hidden flex justify-center items-center">
               <QRCode value={walletAddresses[selectedChain]} size={qrSize} />
             </div>
-           
           </div>
           <div className="space-y-4">
             <Inputs
@@ -99,12 +104,12 @@ function Page() {
             </Buttons>
           </div>
         </section>
-        <div ref={qrContainerRef} className="w-full h-full sm:block hidden">
+        <div ref={desktopQrContainerRef} className="w-full h-[358px] hidden sm:flex justify-center items-center">
           <QRCode value={walletAddresses[selectedChain]} size={qrSize} />
         </div>
       </div>
       <p className="text-sm mt-4">
-        Read our <a href="https://hackmd.io/@SummitShare/SytJp4VvC" className="text-blue-500 underline">donations policy</a> for more info.
+        Read our <a href="https://hackmd.io/e5h31Xw3Q-Su2tzJrVN98g" className="text-blue-500 underline">donations policy</a> for more info.
       </p>
     </div>
   );
