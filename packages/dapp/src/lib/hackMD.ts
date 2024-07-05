@@ -2,7 +2,7 @@ import axios, { AxiosError } from 'axios';
 import matter from 'gray-matter';
 import { Note } from '@/utils/dev/frontEndInterfaces';
 
-// const BEARER_TOKEN = 'https://api.hackmd.io/v1/notes'; uncomment to have blogs display on frontend - commented to conserve API calls
+const API_URL = 'https://api.hackmd.io/v1/notes';
 const BEARER_TOKEN = process.env.HACKMD_API_TOKEN as string;
 
 /**
@@ -11,7 +11,7 @@ const BEARER_TOKEN = process.env.HACKMD_API_TOKEN as string;
  */
 export const fetchAllTeamNotes = async (): Promise<Note[]> => {
   try {
-    const response = await axios.get(BEARER_TOKEN, {
+    const response = await axios.get(API_URL, {
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
       },
@@ -21,7 +21,7 @@ export const fetchAllTeamNotes = async (): Promise<Note[]> => {
 
     const notesWithContent = await Promise.all(
       notes.map(async (note) => {
-        const contentResponse = await axios.get(`${BEARER_TOKEN}/${note.id}`, {
+        const contentResponse = await axios.get(`${API_URL}/${note.id}`, {
           headers: {
             Authorization: `Bearer ${BEARER_TOKEN}`,
           },
@@ -52,7 +52,7 @@ export const fetchAllTeamNotes = async (): Promise<Note[]> => {
  */
 export const fetchNoteContent = async (noteId: string): Promise<any> => {
   try {
-    const response = await axios.get(`${BEARER_TOKEN}/${noteId}`, {
+    const response = await axios.get(`${API_URL}/${noteId}`, {
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
       },
