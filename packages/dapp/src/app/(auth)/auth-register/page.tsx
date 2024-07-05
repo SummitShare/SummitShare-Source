@@ -124,7 +124,7 @@ function Page() {
         <p>
           Already have an account?{' '}
           <a className="underline" href="/`/auth-sign-up">
-           Sign in
+            Sign in
           </a>
         </p>
       </section>

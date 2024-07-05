@@ -146,7 +146,7 @@ async function createVisitor(
 ) {
   try {
     if (!username) {
-      username= randomUUID()
+      username = randomUUID();
     }
 
     const user = await prisma.users.create({
@@ -157,7 +157,7 @@ async function createVisitor(
         type: type,
       },
     });
-   
+
     const verification = await createSendTokens(user, email);
 
     return { user, verification };
