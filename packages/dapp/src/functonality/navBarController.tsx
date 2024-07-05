@@ -1,5 +1,5 @@
-"use client";
-import { useState } from "react";
+'use client';
+import { useState } from 'react';
 
 export const useToggle = (): [boolean, () => void] => {
   const [isOpen, setIsOpen] = useState<boolean>(false);

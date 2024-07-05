@@ -1,4 +1,4 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 interface Props {
   value: number;
@@ -9,7 +9,7 @@ const initialState: Props = {
 };
 
 export const count = createSlice({
-  name: "count",
+  name: 'count',
   initialState,
   reducers: {
     increment: (state) => {

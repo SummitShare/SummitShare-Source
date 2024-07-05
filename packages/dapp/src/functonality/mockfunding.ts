@@ -1,4 +1,4 @@
-import {ethers} from 'ethers';
+import { ethers } from 'ethers';
 import usdcABI from '../utils/artifacts/contracts/MUSDC.sol/MUSDC.json';
 const musdcABI = usdcABI as unknown as ethers.ContractInterface;
 

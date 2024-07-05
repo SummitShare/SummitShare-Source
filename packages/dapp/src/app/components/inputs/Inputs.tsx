@@ -1,5 +1,4 @@
 'use client';
-
 import { ChevronDownIcon } from '@radix-ui/react-icons';
 import { useState, useRef, useEffect, KeyboardEvent } from 'react';
 import * as React from 'react';
@@ -18,7 +17,6 @@ export interface InputProps {
   options?: string[];
   onChange?: (e: any) => void;
 }
-
 
 /**
  * SharedProps interface defines the properties that can be passed to the Inputs component.

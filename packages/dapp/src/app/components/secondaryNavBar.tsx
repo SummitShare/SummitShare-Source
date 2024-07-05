@@ -1,11 +1,8 @@
 import { usePathname } from 'next/navigation';
 import * as React from 'react';
 
-
-
 function SecondaryNavBar() {
- 
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   return (
     <>
@@ -14,16 +11,13 @@ function SecondaryNavBar() {
           <li>
             <h2>Settings</h2>
           </li>
-        <li>
-        <ul className="flex gap-6 w-full pb-1">
-          
-       <li><p className='underline underline-offset-[10px]'>Profile</p></li>
-          </ul>
-        </li>
-        
-              
-     
-        
+          <li>
+            <ul className="flex gap-6 w-full pb-1">
+              <li>
+                <p className="underline underline-offset-[10px]">Profile</p>
+              </li>
+            </ul>
+          </li>
         </ul>
       </nav>
     </>

@@ -20,9 +20,9 @@
  * to pass the image URL dynamically.
  */
 
-import Link from "next/link";
-import React from "react";
-import { productCardsTypes } from "@/utils/dev/frontEndInterfaces";
+import Link from 'next/link';
+import React from 'react';
+import { productCardsTypes } from '@/utils/dev/frontEndInterfaces';
 
 const ProductCard: React.FC<productCardsTypes> = ({
   author,

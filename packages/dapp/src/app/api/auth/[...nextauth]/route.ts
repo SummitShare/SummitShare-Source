@@ -1,7 +1,10 @@
-import { passwordCompare } from "@/utils/methods/auth/passwordCompare";
-import NextAuth, { ExtendedJWT, ExtendedSession, ExtendedUser } from "next-auth"
-import CredentialsProvider from "next-auth/providers/credentials"
-
+import { passwordCompare } from '@/utils/methods/auth/passwordCompare';
+import NextAuth, {
+  ExtendedJWT,
+  ExtendedSession,
+  ExtendedUser,
+} from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
 
 // export const { handlers, signIn, signOut, auth } = NextAuth({
 //   providers: [],
@@ -9,45 +12,52 @@ import CredentialsProvider from "next-auth/providers/credentials"
 
 const handler = NextAuth({
   session: {
-    strategy: "jwt"
+    strategy: 'jwt',
   },
-  providers: [CredentialsProvider({
-    credentials: {
-      email: {},
-      password: {},
-    },
-    async authorize(credentials, req) {
-      //
+  providers: [
+    CredentialsProvider({
+      credentials: {
+        email: {},
+        password: {},
+      },
+      async authorize(credentials, req) {
+        //
 
-      let user = null
+        let user = null;
 
-      if (!credentials || !credentials.email || !credentials.password) {
-        return null;
-      }
-      const email = String(credentials.email);
-      const password = String(credentials.password);
+        if (!credentials || !credentials.email || !credentials.password) {
+          return null;
+        }
+        const email = String(credentials.email);
+        const password = String(credentials.password);
 
-      const { compare, message, error, user: foundUser } = await passwordCompare(email, password);
-      user = foundUser
+        const {
+          compare,
+          message,
+          error,
+          user: foundUser,
+        } = await passwordCompare(email, password);
+        user = foundUser;
 
-      //console.log(`foundUser ${{ foundUser }}`)
-      if (!user) {
-        return null;
-      }
+        //console.log(`foundUser ${{ foundUser }}`)
+        if (!user) {
+          return null;
+        }
 
-      // return json object with the user data
-      return {
-        id: user.id,
-        email: user.email,
-        username: user.username,
-        bio: user.bio,
-        email_verified: user.email_verified,
-        type: user.type,
-        user_wallets: user.user_wallets,
-      };
-    },
-  }),
-  ], callbacks: {
+        // return json object with the user data
+        return {
+          id: user.id,
+          email: user.email,
+          username: user.username,
+          bio: user.bio,
+          email_verified: user.email_verified,
+          type: user.type,
+          user_wallets: user.user_wallets,
+        };
+      },
+    }),
+  ],
+  callbacks: {
     async jwt({ token, user }) {
       // If user is defined, it's an initial sign-in
       if (user) {
@@ -68,7 +78,6 @@ const handler = NextAuth({
       return token;
     },
     async session({ session, token, user }) {
-
       session.user = {
         ...session.user, // Retain existing session.user fields
         id: token.id,
@@ -118,6 +127,6 @@ const handler = NextAuth({
   //         return extendedSession;
   //       },
   //   },
-})
+});
 
 export { handler as GET, handler as POST };

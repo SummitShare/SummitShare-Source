@@ -51,7 +51,7 @@
 // };
 
 // export { default } from 'next-auth/middleware';
-import { withAuth } from "next-auth/middleware"
+import { withAuth } from 'next-auth/middleware';
 
 export default withAuth(
   // `withAuth` augments your `Request` with the user's token.
@@ -61,12 +61,14 @@ export default withAuth(
     // //console.log("Is Logged in: ", isLoggedIn);
     // //console.log(`token : ${req.nextauth.token}`)
     return null;
-  },
-//   {
-//     callbacks: {
-//       authorized: ({ token }) => token?.role === "admin",
-//     },
-//   }
-)
+  }
+  //   {
+  //     callbacks: {
+  //       authorized: ({ token }) => token?.role === "admin",
+  //     },
+  //   }
+);
 
-export const config = { matcher: ['["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"]'] };
+export const config = {
+  matcher: ['["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"]'],
+};

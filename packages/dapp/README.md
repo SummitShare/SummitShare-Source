@@ -11,7 +11,7 @@ The SummitShare Dapp Directory houses the platform's frontend, built on `Next.js
 
 - **Key Scripts and APIs**:
   - **Event Organizer Smart Contract**: Serves as the controller for other contracts, with frontend interactions managed through dedicated scripts.
-  - **Apollo Wrapper**: Integrates Apollo Client for querying the subgraph, linking frontend components to blockchain data. See the [apolloWrapper](https://github.com/bicos-io01/Revenue-Sharing-Source/blob/Central/packages/dapp/src/app/(UserPages)/apolloWrapper.tsx) script and the other react hooks utilising [apollo](https://github.com/bicos-io01/Revenue-Sharing-Source/tree/Central/packages/dapp/src/lib) for more information.
+  - **Apollo Wrapper**: Integrates Apollo Client for querying the subgraph, linking frontend components to blockchain data. See the [apolloWrapper](<https://github.com/bicos-io01/Revenue-Sharing-Source/blob/Central/packages/dapp/src/app/(UserPages)/apolloWrapper.tsx>) script and the other react hooks utilising [apollo](https://github.com/bicos-io01/Revenue-Sharing-Source/tree/Central/packages/dapp/src/lib) for more information.
 
 ## API Breakdown 🎨
 
@@ -21,8 +21,9 @@ The SummitShare Dapp Directory houses the platform's frontend, built on `Next.js
 - **Key Scripts and APIs**:
   - **Api**:The api [dapp/src/app/api](https://github.com/bicos-io01/Revenue-Sharing-Source/tree/Central/packages/dapp/src/app/api) has the following functions
   - facilitating user creation and verification
-  - facilitating event creation, proposal creation and voting 
-  - facilitating [exhibit deployment](https://github.com/bicos-io01/Revenue-Sharing-Source/blob/Central/packages/dapp/src/app/api/deployExhibit/route.ts) once all contidions are met 
+  - facilitating event creation, proposal creation and voting
+  - facilitating [exhibit deployment](https://github.com/bicos-io01/Revenue-Sharing-Source/blob/Central/packages/dapp/src/app/api/deployExhibit/route.ts) once all contidions are met
+
 ### Development Commands 🛠️
 
 To get started with development, use the following `pnpm` commands:

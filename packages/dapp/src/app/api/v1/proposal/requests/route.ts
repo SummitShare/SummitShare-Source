@@ -15,32 +15,26 @@ import prisma from '../../../../../../config/db';
 export async function POST(req: Request, res: NextResponse) {
   const requestBody = await req.json();
   const host = req.headers.get('host');
-  const {  email_address}: {   email_address: string } = requestBody;
+  const { email_address }: { email_address: string } = requestBody;
 
-  if (!email_address){
-    return NextResponse.json({ "message": "no user id sent"}, { status: 404 });
+  if (!email_address) {
+    return NextResponse.json({ message: 'no user id sent' }, { status: 404 });
   }
   try {
     const requests = await prisma.requests.findMany({
-        where: {
-            email_address:email_address,
-            status: "Pending"
-        },
-      });
-    
-      // Extract the proposal IDs into a flat array, filtering out any nulls
-      const verificationLinks = requests.map(request => {
-        return `http://${host}/verification/request/${request.token}`;
+      where: {
+        email_address: email_address,
+        status: 'Pending',
+      },
     });
-     return NextResponse.json({verificationLinks},{ status: 200 });
-    
+
+    // Extract the proposal IDs into a flat array, filtering out any nulls
+    const verificationLinks = requests.map((request) => {
+      return `http://${host}/verification/request/${request.token}`;
+    });
+    return NextResponse.json({ verificationLinks }, { status: 200 });
   } catch (error) {
     //console.log(error)
-    return NextResponse.json({message:"server error"},{ status: 500 });
-    
+    return NextResponse.json({ message: 'server error' }, { status: 500 });
   }
-  
-
-
-
 }

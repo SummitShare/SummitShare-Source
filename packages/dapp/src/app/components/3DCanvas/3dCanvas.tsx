@@ -1,8 +1,8 @@
-'use client'
-import React, { ReactNode } from "react";
-import { Canvas } from '@react-three/fiber'
-import { OrbitControls } from "@react-three/drei";
-import { DirectionalLight } from "three";
+'use client';
+import React, { ReactNode } from 'react';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls } from '@react-three/drei';
+import { DirectionalLight } from 'three';
 
 interface SummitShareCanvasProps {
   children: ReactNode;

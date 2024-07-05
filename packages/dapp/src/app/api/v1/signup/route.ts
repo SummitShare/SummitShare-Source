@@ -2,61 +2,63 @@ import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import prisma from '../../../../../config/db';
 import { emailServer, transporter } from '../../../../../config/nodemailer';
-import { PrismaClient, users} from '@prisma/client';
+import { PrismaClient, users } from '@prisma/client';
+import { randomUUID } from 'crypto';
 
-async function createSendTokens(user:users,email:string) {
-  
+async function createSendTokens(user: users, email: string) {
   try {
     // Create verification token and expiry time
-  const token = crypto.randomUUID(); // Generate a token
-  const now = new Date();
+    const token = crypto.randomUUID(); // Generate a token
+    const now = new Date();
 
-  //
-  const expires = new Date(now.getTime() + 60* 60 * 1000 ); // adds 1 hour to the current time
+    //
+    const expires = new Date(now.getTime() + 60 * 60 * 1000); // adds 1 hour to the current time
 
-  const nowISO = now.toISOString();
-  const expiresISO = expires.toISOString();
+    const nowISO = now.toISOString();
+    const expiresISO = expires.toISOString();
 
-  // Store verification data in UserVerification table
-  const id = crypto.randomUUID();
+    // Store verification data in UserVerification table
+    const id = crypto.randomUUID();
 
-  const verification = await prisma.email_verification.create({
-    data: {
-      id: id,
-      user_id: user.id,
-      token: token,
-      created_at: nowISO,
-      expires: expiresISO,
-    },
+    const verification = await prisma.email_verification.create({
+      data: {
+        id: id,
+        user_id: user.id,
+        token: token,
+        created_at: nowISO,
+        expires: expiresISO,
+      },
+    });
 
-  });
+    // const host = req.headers.get('host');
+    const host = process.env.HOST;
+    //${host}api/v1/user/verification/verifyEmail?token=${token}
+    const verificationLink = `${host}verifcation/email/${token}`;
 
-  // const host = req.headers.get('host');
-  const host = process.env.HOST
-  //${host}api/v1/user/verification/verifyEmail?token=${token}
-  const verificationLink = `${host}verifcation/email/${token}`;
+    const mailOptions = {
+      from: emailServer,
+      to: email,
+      subject: 'Email Verification',
+      text: `Click on this link to verify your account: ${verificationLink}`,
+    };
 
-  const mailOptions = {
-    from: emailServer,
-    to: email,
-    subject: 'Email Verification',
-    text: `Click on this link to verify your account: ${verificationLink}`,
-  };
-
-  await transporter.sendMail(mailOptions);
-  return verification
+    await transporter.sendMail(mailOptions);
+    return verification;
   } catch (error) {
-    throw error
+    throw error;
   }
 }
 
-async function userWithUsername(email:string, hashedPassword:string, username:string) {
-
+async function userWithUsername(
+  email: string,
+  hashedPassword: string,
+  username: string
+) {
   const user = await prisma.users.create({
     data: {
       email,
       password: hashedPassword,
-      username
+      username,
     },
   });
 
@@ -79,11 +81,10 @@ async function userWithUsername(email:string, hashedPassword:string, username:st
       created_at: nowISO,
       expires: expiresISO,
     },
-
   });
 
   // const host = req.headers.get('host');
-  const host = process.env.HOST
+  const host = process.env.HOST;
   const verificationLink = `${host}api/verifyEmail?token=${token}`;
 
   const mailOptions = {
@@ -96,10 +97,15 @@ async function userWithUsername(email:string, hashedPassword:string, username:st
   transporter.sendMail(mailOptions);
 
   return user;
-  
 }
 
-async function createExhibitor(email: string, hashedPassword: string, username: string, type: string, wallet_address: string) {
+async function createExhibitor(
+  email: string,
+  hashedPassword: string,
+  username: string,
+  type: string,
+  wallet_address: string
+) {
   try {
     const result = await prisma.$transaction(async (prisma) => {
       const user = await prisma.users.create({
@@ -115,7 +121,7 @@ async function createExhibitor(email: string, hashedPassword: string, username: 
         data: {
           user_id: user.id,
           wallet_address: wallet_address,
-          index: 1
+          index: 1,
         },
       });
 
@@ -127,13 +133,22 @@ async function createExhibitor(email: string, hashedPassword: string, username: 
 
     return { user, wallet, verification };
   } catch (error) {
-    console.error("Error creating exhibitor:", error);
+    console.error('Error creating exhibitor:', error);
     throw error;
   }
 }
 
-async function createVisitor(email: string, hashedPassword: string, username: string, type: string) {
+async function createVisitor(
+  email: string,
+  hashedPassword: string,
+  username: string,
+  type: string
+) {
   try {
+    if (!username) {
+      username = randomUUID();
+    }
+
     const user = await prisma.users.create({
       data: {
         email,
@@ -142,45 +157,67 @@ async function createVisitor(email: string, hashedPassword: string, username: st
         type: type,
       },
     });
+
     const verification = await createSendTokens(user, email);
 
     return { user, verification };
   } catch (error) {
-    console.error("Error creating visitor:", error);
+    console.error('Error creating visitor:', error);
     throw error;
   }
 }
 
-
 export async function POST(req: Request, res: NextResponse) {
   try {
-    const { email, password, username , type, wallet_address } = await req.json();
+    const { email, password, username, type, wallet_address } =
+      await req.json();
     // Check if user already exists
-
 
     const existingUser = await prisma.users.findUnique({ where: { email } });
     if (existingUser) {
-      return NextResponse.json({ message: 'User already exists' }, { status: 409 });
+      return NextResponse.json(
+        { message: 'User already exists' },
+        { status: 409 }
+      );
     }
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10); // 10 is the number of salt rounds
 
-    if(!type){
+    if (!type) {
       return NextResponse.json({ message: 'no user type' }, { status: 400 });
     }
 
     switch (type) {
-      case "exhibitor":
-        const exhibitor = await createExhibitor(email, hashedPassword, username, type, wallet_address);
-        return NextResponse.json({ success: 'User created and email sent', "user": exhibitor }, { status: 201 });
-      case "visitor":
-        const visitor = await createVisitor(email, hashedPassword, username, type);
-        return NextResponse.json({ success: 'User created and email sent', "user": visitor }, { status: 201 });
+      case 'exhibitor':
+        const exhibitor = await createExhibitor(
+          email,
+          hashedPassword,
+          username,
+          type,
+          wallet_address
+        );
+        return NextResponse.json(
+          { success: 'User created and email sent', user: exhibitor },
+          { status: 201 }
+        );
+      case 'visitor':
+        const visitor = await createVisitor(
+          email,
+          hashedPassword,
+          username,
+          type
+        );
+        return NextResponse.json(
+          { success: 'User created and email sent', user: visitor },
+          { status: 201 }
+        );
       default:
-        return NextResponse.json({ success: 'user type error' }, { status: 400 });
+        return NextResponse.json(
+          { success: 'user type error' },
+          { status: 400 }
+        );
     }
-
   } catch (error) {
     console.error(error);
     return NextResponse.json({ failure: error }, { status: 500 });

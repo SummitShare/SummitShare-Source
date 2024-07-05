@@ -4,9 +4,9 @@ export const sendData = async (user_id: string, event_id: string) => {
   //console.log(`host ${host} `)
   try {
     const response = await fetch(url, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({ event_id, user_id }),
     });
@@ -19,9 +19,8 @@ export const sendData = async (user_id: string, event_id: string) => {
     const data = await response.json();
     //console.log(data);
     return data;
-
   } catch (error) {
-    console.error("Failed to send data:", error);
+    console.error('Failed to send data:', error);
     return null;
   }
 };

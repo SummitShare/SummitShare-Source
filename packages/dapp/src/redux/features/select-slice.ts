@@ -1,5 +1,5 @@
 // store/selectSlice.ts
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface SelectState {
   eventType: string;
@@ -7,23 +7,20 @@ interface SelectState {
   event_timezone: string;
   event_category: string;
   event_location: string;
-  event_type:string
+  event_type: string;
 }
 
 const initialState: SelectState = {
-  eventType: "",
-  eventCountryType: "",
-  event_timezone: "",
-  event_category: "",
-  event_location: "",
-  event_type:"",
+  eventType: '',
+  eventCountryType: '',
+  event_timezone: '',
+  event_category: '',
+  event_location: '',
+  event_type: '',
 };
 
-
-
-
 export const selectSlice = createSlice({
-  name: "select",
+  name: 'select',
   initialState,
   reducers: {
     setEventType: (state, action: PayloadAction<string>) => {
@@ -53,7 +50,7 @@ export const {
   setEvent_category,
   setEvent_location,
   setEvent_timezone,
-  setEvent_Type
+  setEvent_Type,
 } = selectSlice.actions;
 
 export default selectSlice.reducer;

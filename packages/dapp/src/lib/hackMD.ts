@@ -2,7 +2,7 @@ import axios, { AxiosError } from 'axios';
 import matter from 'gray-matter';
 import { Note } from '@/utils/dev/frontEndInterfaces';
 
-const API_URL = 'https://api.hackmd.io/v1/notes';
+// const API_URL = 'https://api.hackmd.io/v1/notes'; uncomment to have blogs display on frontend - commented to conserve API calls
 const BEARER_TOKEN = process.env.HACKMD_API_TOKEN as string;
 
 /**
@@ -34,7 +34,10 @@ export const fetchAllTeamNotes = async (): Promise<Note[]> => {
     return notesWithContent;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.error('Error fetching all team notes:', error.response?.data || error.message);
+      console.error(
+        'Error fetching all team notes:',
+        error.response?.data || error.message
+      );
     } else {
       console.error('Error fetching all team notes:', error);
     }
@@ -57,7 +60,10 @@ export const fetchNoteContent = async (noteId: string): Promise<any> => {
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.error(`Error fetching note with ID ${noteId}:`, error.response?.data || error.message);
+      console.error(
+        `Error fetching note with ID ${noteId}:`,
+        error.response?.data || error.message
+      );
     } else {
       console.error(`Error fetching note with ID ${noteId}:`, error);
     }
@@ -70,7 +76,9 @@ export const fetchNoteContent = async (noteId: string): Promise<any> => {
  * @param {string} content - Raw content of the note
  * @returns {object} Parsed front matter and content
  */
-export const parseNoteContent = (content: string): { data: any; content: string } => {
+export const parseNoteContent = (
+  content: string
+): { data: any; content: string } => {
   const parsed = matter(content);
   return {
     data: parsed.data,

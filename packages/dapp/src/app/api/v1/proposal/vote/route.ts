@@ -5,8 +5,12 @@ Purpose: Manages the voting process on proposals by stakeholders, updates event 
          ensuring the seamless update of event and stakeholder records upon proposal acceptance.
 */
 
-import { NextResponse } from 'next/server'
-import { PrismaClient, event_category_enum, event_type_enum } from '@prisma/client';
+import { NextResponse } from 'next/server';
+import {
+  PrismaClient,
+  event_category_enum,
+  event_type_enum,
+} from '@prisma/client';
 import { EventData, IStakes, StakeholderStakes } from '@/utils/dev/typeInit';
 import prisma from '../../../../../../config/db';
 
@@ -17,13 +21,15 @@ import prisma from '../../../../../../config/db';
  * @returns A boolean indicating the success of the update operation.
  */
 
-async function updateEventIdForProposalAndStakeholders(eventId: string, proposal_id: string): Promise<boolean> {
+async function updateEventIdForProposalAndStakeholders(
+  eventId: string,
+  proposal_id: string
+): Promise<boolean> {
   try {
     //console.log(`proposal to update ${proposal_id}`)
 
     // Start a transaction to ensure both updates are performed together
     await prisma.$transaction(async (prisma) => {
-
       // Update the proposal with the new event ID
       await prisma.proposals.update({
         where: { id: proposal_id },
@@ -87,7 +93,7 @@ async function mapEmailStakesToStakeholderStakes(
 
     return stakeholderStakes;
   } catch (error) {
-    console.error("Failed to map email stakes to stakeholder stakes:", error);
+    console.error('Failed to map email stakes to stakeholder stakes:', error);
     return null; // Return null if the process fails
   }
 }
@@ -141,11 +147,11 @@ async function updateWalletsAndStakes(
 
     return updated; // Return true if any updates were made, false otherwise
   } catch (error) {
-    console.error("An error occurred during update:", error);
+    console.error('An error occurred during update:', error);
     return false; // Explicitly return false in case of error
   }
 }
-    // Iterate over each stakeholderStakes entry
+// Iterate over each stakeholderStakes entry
 
 /**
  * POST handler for casting votes on proposals, creating events based on accepted proposals, and updating stakeholders.
@@ -155,12 +161,16 @@ async function updateWalletsAndStakes(
 
 export async function POST(req: Request, res: NextResponse) {
   try {
-   // Extract relevant information from the request body
+    // Extract relevant information from the request body
     const requestBody = await req.json();
-    const { proposal_id, Vote, user_id }: { proposal_id: string; Vote: boolean; user_id: string } = requestBody;
+    const {
+      proposal_id,
+      Vote,
+      user_id,
+    }: { proposal_id: string; Vote: boolean; user_id: string } = requestBody;
     //console.log(`proposal recieved ${proposal_id}`)
 
-        /*
+    /*
         The following operations are performed in this section of the script:
 
         1. **Proposal Validation**: It checks if the specified proposal exists and if it has a linked previous proposal ID. This step ensures that the proposal is valid and ready for voting.
@@ -184,7 +194,10 @@ export async function POST(req: Request, res: NextResponse) {
     });
 
     if (!proposal || !proposal.previous_proposal_id) {
-      return NextResponse.json({ error: 'Proposal or event not found' }, { status: 500 });
+      return NextResponse.json(
+        { error: 'Proposal or event not found' },
+        { status: 500 }
+      );
     }
 
     const user = await prisma.users.findUnique({
@@ -206,7 +219,10 @@ export async function POST(req: Request, res: NextResponse) {
     });
 
     if (existingVote) {
-      return NextResponse.json({ error: 'user has voted already' }, { status: 401 });
+      return NextResponse.json(
+        { error: 'user has voted already' },
+        { status: 401 }
+      );
     }
 
     const vote = await prisma.votes.create({
@@ -217,36 +233,45 @@ export async function POST(req: Request, res: NextResponse) {
       },
     });
 
-    const allVotes = await prisma.votes.findMany({ where: { proposal_id: proposal_id } });
-    const stakeholders = await prisma.stakeholders.findMany({ where: { proposal_id: proposal_id } });
+    const allVotes = await prisma.votes.findMany({
+      where: { proposal_id: proposal_id },
+    });
+    const stakeholders = await prisma.stakeholders.findMany({
+      where: { proposal_id: proposal_id },
+    });
 
     const allStakeholdersVotedPositively =
-      stakeholders.length > 0
-      && allVotes.length === stakeholders.length
-      && allVotes.every(vote => vote.decision === true);
+      stakeholders.length > 0 &&
+      allVotes.length === stakeholders.length &&
+      allVotes.every((vote) => vote.decision === true);
 
     // Evaluate if all stakeholders voted positively
     if (allStakeholdersVotedPositively) {
       // Proceed with event creation and record updates:
       if (typeof proposal.content === 'string' && proposal.content !== null) {
-    
         const propData: EventData = JSON.parse(proposal.content);
 
-        const stakeholderStakes = await mapEmailStakesToStakeholderStakes(proposal_id,propData.stakes)
-        if(stakeholderStakes){
-          const status = await updateWalletsAndStakes(stakeholderStakes)
+        const stakeholderStakes = await mapEmailStakesToStakeholderStakes(
+          proposal_id,
+          propData.stakes
+        );
+        if (stakeholderStakes) {
+          const status = await updateWalletsAndStakes(stakeholderStakes);
 
-          if(status == false ){
-            return  NextResponse.json({ "message": "failed to update stake holders", proposal,status }, { status: 200 });
+          if (status == false) {
+            return NextResponse.json(
+              { message: 'failed to update stake holders', proposal, status },
+              { status: 200 }
+            );
           }
-          
         }
-        
-        const eventType: event_type_enum = propData.event_type as event_type_enum
-        const event_category: event_category_enum = propData.event_category as event_category_enum;
+
+        const eventType: event_type_enum =
+          propData.event_type as event_type_enum;
+        const event_category: event_category_enum =
+          propData.event_category as event_category_enum;
 
         const event = await prisma.events.create({
-          
           data: {
             user_id: proposal.user_id,
             event_type: eventType,
@@ -258,25 +283,44 @@ export async function POST(req: Request, res: NextResponse) {
             description: propData.description,
             event_end_time: new Date(propData.event_end_time),
             cost: propData.cost,
-            total_number_tickets: propData.total_number_tickets
-          }
+            total_number_tickets: propData.total_number_tickets,
+          },
         });
 
-        const statusUpdate = await updateEventIdForProposalAndStakeholders(event.id,proposal.id)
-        return NextResponse.json({ message: "Proposal accepted and event updated", event, "updateStatus": statusUpdate , user, vote, }, { status: 200 });
+        const statusUpdate = await updateEventIdForProposalAndStakeholders(
+          event.id,
+          proposal.id
+        );
+        return NextResponse.json(
+          {
+            message: 'Proposal accepted and event updated',
+            event,
+            updateStatus: statusUpdate,
+            user,
+            vote,
+          },
+          { status: 200 }
+        );
       }
 
-      return NextResponse.json({ message: "Proposal accepted and event updated", proposal, user, vote, }, { status: 200 });
-    } else {                                                                                                                                                       
+      return NextResponse.json(
+        {
+          message: 'Proposal accepted and event updated',
+          proposal,
+          user,
+          vote,
+        },
+        { status: 200 }
+      );
+    } else {
       // return NextResponse.json({ message: "Not all parties have voted positively" }, { status: 200 });
       return NextResponse.json({ proposal, Vote, user, vote }, { status: 200 });
     }
-
-
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: 'An error occurred while processing your request' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'An error occurred while processing your request' },
+      { status: 500 }
+    );
   }
 }
-
-

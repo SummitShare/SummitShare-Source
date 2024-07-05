@@ -1,6 +1,6 @@
-import { configureStore } from "@reduxjs/toolkit";
-import increment from "./features/count-slice";
-import selectSlice from "./features/select-slice";
+import { configureStore } from '@reduxjs/toolkit';
+import increment from './features/count-slice';
+import selectSlice from './features/select-slice';
 
 export const store = configureStore({
   reducer: {

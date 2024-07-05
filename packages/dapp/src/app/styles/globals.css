@@ -9,10 +9,10 @@ h2,
 h3,
 h4,
 h5 {
-  font-family: "Martel", serif;
+  font-family: 'Martel', serif;
   line-height: 125%;
   font-weight: 700;
-  color: #1A0D08;
+  color: #1a0d08;
 }
 
 h1 {
@@ -35,10 +35,12 @@ h5 {
   font-size: 0.875rem;
 }
 
-p,a,li{
-  font-family: "Inter", sans-serif;
+p,
+a,
+li {
+  font-family: 'Inter', sans-serif;
   line-height: 150%;
-  color: #403B3A;
+  color: #403b3a;
 }
 
 .p1-r {
@@ -59,7 +61,6 @@ p,a,li{
 .p1-m {
   font-size: 1rem;
   font-weight: 500;
-
 }
 
 .p2-m {
@@ -78,9 +79,9 @@ p,a,li{
 .l1-m,
 .l2-m,
 .l3-m {
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   line-height: 125%;
-  color: #1A0D08;
+  color: #1a0d08;
 }
 
 .l1-r {
@@ -112,18 +113,55 @@ p,a,li{
   font-size: 0.75rem;
   font-weight: 600;
 }
-
-
-.primary-500 {
-  color: #1F58EB
+.primary-50 {
+  color: #f6f3f2;
 }
 
-
-.secondary-900{
-  color: #161616
+.primary-100 {
+  color: #746d6a;
 }
 
-p>img {
+.primary-400 {
+  color: #794228;
+}
+
+.primary-600 {
+  color: #352218;
+}
+
+.primary-700 {
+  color: #352218;
+}
+
+.primary-900 {
+  color: #1a0d08;
+}
+
+.primary-900-75 {
+  color: rgb(26, 13, 8, 75%);
+}
+
+.primary-900-5 {
+  color: rgb(26, 13, 8, 5%);
+}
+
+re-100 {
+  color: #f7dede;
+}
+
+re-500 {
+  color: #8b2020;
+}
+
+ge-100 {
+  color: #d7f5e2;
+}
+
+ge-500 {
+  color: #207f42;
+}
+
+p > img {
   max-width: 100%;
   height: auto;
   display: block;

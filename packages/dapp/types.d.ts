@@ -20,16 +20,16 @@ export interface inputProps {
   reg: any;
 }
 
-import NextAuth from "next-auth";
+import NextAuth from 'next-auth';
 
-declare module "next-auth" {
+declare module 'next-auth' {
   interface User {
     email: string;
     id: string; // Add the id field to the User interface
   }
 
   interface Session {
-    user: User & DefaultSession["user"];
+    user: User & DefaultSession['user'];
     token: {
       email: string;
       id: string;
@@ -55,38 +55,34 @@ declare module "next-auth" {
       index: number | null;
     }[];
   }
-  
-   // Extend the Session type to include additional user properties
-interface ExtendedSession extends Session {
-  user: {
-    id: string;
-    name?: string;
-    email: string;
-    image?: string;
+
+  // Extend the Session type to include additional user properties
+  interface ExtendedSession extends Session {
+    user: {
+      id: string;
+      name?: string;
+      email: string;
+      image?: string;
+      username?: string;
+      bio?: string;
+      email_verified?: boolean;
+      type?: string;
+      user_wallets?: ExtendedJWT['user_wallets'];
+    };
+  }
+
+  // Extend the JWT type to include your custom claims
+  interface ExtendedJWT extends JWT {
+    id?: string;
     username?: string;
+    email?: string;
     bio?: string;
     email_verified?: boolean;
     type?: string;
-    user_wallets?: ExtendedJWT["user_wallets"];
+    user_wallets?: Array<{
+      id: string;
+      wallet_address: string;
+      index?: number;
+    }>;
   }
 }
-
-
-// Extend the JWT type to include your custom claims
-interface ExtendedJWT extends JWT {
-  id?: string;
-  username?: string;
-  email?:string;
-  bio?: string;
-  email_verified?: boolean;
-  type?: string;
-  user_wallets?: Array<{
-    id: string;
-    wallet_address: string;
-    index?: number;
-  }>;
-}
-
-}
-
-
