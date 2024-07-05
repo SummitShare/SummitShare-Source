@@ -1,5 +1,8 @@
 import Buttons from '@/app/components/button/Butons';
+import { fetchAllTeamNotes } from '@/lib/hackMD';
+import { Note } from '@/utils/dev/frontEndInterfaces';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
 import React from 'react';
 
 const getExcerpt = (content: string, length: number = 100): string => {

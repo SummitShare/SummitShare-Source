@@ -23,6 +23,14 @@ const nextConfig = {
     RPC_URL: process.env.RPC_URL,
     DEV_PRIVATE_KEY: process.env.DEV_PRIVATE_KEY,
   },
+  webpack: (config, { isServer }) => {
+    config.ignoreWarnings = [
+      { message: /Attempted import error: 'sRGBEncoding' is not exported from 'three'/ },
+      { message: /Attempted import error: 'PlaneBufferGeometry' is not exported from 'three'/ },
+      { message: /Attempted import error: 'CylinderBufferGeometry' is not exported from 'three'/ },
+    ];
+    return config;
+  },
 };
 
 module.exports = nextConfig;

@@ -106,6 +106,7 @@ function Page() {
         <Buttons
           type="primary"
           size="large"
+          //@ts-ignore
           onClick={() => onSubmit({ email, password, username })}
         >
           Create my account

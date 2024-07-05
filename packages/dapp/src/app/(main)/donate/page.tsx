@@ -104,11 +104,16 @@ function Page() {
               label="Wallet address"
               state="inactive"
               value={walletAddresses[selectedChain]}
+              //@ts-ignore
               readOnly
             />
-            <Buttons type="primary" onClick={handleCopy}>
-              {copySuccess ? 'Copied!' : 'Copy wallet address'}
-            </Buttons>
+            <Buttons 
+            type="primary" 
+            onClick={handleCopy} 
+            {...({ onClick: handleCopy } as any)}
+          >
+            {copySuccess ? 'Copied!' : 'Copy wallet address'}
+          </Buttons>
           </div>
         </section>
         <div

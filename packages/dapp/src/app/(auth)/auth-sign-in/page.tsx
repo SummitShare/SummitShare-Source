@@ -60,6 +60,7 @@ function Page() {
 
       <section className="text-center space-y-6">
         <div onClick={() => onSubmit()} className="w-full">
+          
           <Buttons type="primary" size="large">
             Sign into my account
           </Buttons>
