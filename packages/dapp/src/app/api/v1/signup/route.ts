@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import prisma from '../../../../../config/db';
 import { emailServer, transporter } from '../../../../../config/nodemailer';
-import { PrismaClient, users } from '@prisma/client';
+import { users } from '@prisma/client';
 import { randomUUID } from 'crypto';
 
 async function createSendTokens(user: users, email: string) {
