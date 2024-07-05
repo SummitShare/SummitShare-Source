@@ -41,6 +41,10 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
     }
   }, [status]);
 
+
+
+  
+
   const createTicket = async () => {
     // Ensure HOST is read correctly, considering Next.js environment variables need to be prefixed with NEXT_PUBLIC_ if they are to be used on the client-side.
     const host = process.env.NEXT_PUBLIC_HOST;
@@ -146,6 +150,37 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
       setStatus(friendlyMessage);
     }
   };
+
+  const url = 'localhost:3000/api/v1/events/tickets/create';
+
+  
+ 
+
+  useEffect(() => {
+    const sendData = async () => {
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          // body: JSON.stringify(wallet_address,event_id,user_id,eventLink)
+        });
+    
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status} - ${response.statusText}`);
+        }
+    
+        const responseData = await response.json();
+        console.log('Success:', responseData);
+      } catch (error) {
+        console.error('Failed to send data:', error);
+      }
+    };
+    
+    sendData();
+  }, [purchaseSuccessful]);
+
 
   // Render component UI
   return (

@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import Buttons from '../button/Butons';
 import { useAccount } from 'wagmi';
 import { ConnectKitButton } from 'connectkit';
+import Link from 'next/link';
 
 /**
  * PrimaryNav component represents the main navigation bar for the application.
@@ -84,9 +85,10 @@ const PrimaryNav: React.FC = () => {
               <ConnectKitButton />
             </li>
             <li>
-              <Buttons type="secondary" size="small">
-                Log in
-              </Buttons>
+              <Link href="/auth-sign-in"> <Buttons type="secondary" size="small">
+                Sign in
+              </Buttons></Link>
+             
             </li>
           </ul>
         </li>
