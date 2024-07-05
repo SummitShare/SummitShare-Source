@@ -66,7 +66,7 @@ export default function Home() {
 
 
   return (
-    <div className=" space-y-24 mx-6 my-28">
+    <div className=" space-y-24 mx-6 my-28 lg:mx-[15%]">
       <section className="border-b md:border-b-0 border-primary-900-5 space-y-[48px] pb-6 md:flex md:flex-row md:gap-4">
         <div className="w-full md:w-[45%] h-[342px] rounded-[0.5rem] overflow-hidden bg-[url('/all-women.png')] bg-cover bg-primary-50 bg-center"></div>
         <div className="space-y-6 md:space-y-0 md:w-[45%] md:flex md:flex-col md:justify-between">

@@ -7,10 +7,16 @@ import { CONTRACT_ADDRESSES, contracts } from '@/utils/dev/contractInit';
 import { handleContractError } from '@/utils/dev/handleContractError';
 import useExhibit from '@/lib/useGetExhibitById';
 import { useSession } from 'next-auth/react';
+import Buttons from '@/app/components/button/Butons';
+import { useAccount } from 'wagmi';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 
 const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
   const session = useSession();
-  const user_id = session.data?.user.id;
+  const [isVisible, setIsVisible] = useState(false)
+    const user_id = session.data?.user.id;
+
+   
 
   // Hardcoded exhibit ID for demo
   const exhibitId = CONTRACT_ADDRESSES.exhibitId;
@@ -22,6 +28,18 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
   const [purchaseSuccessful, setPurchaseSuccessful] = useState<boolean>(false);
   const [purchaseFailed, setPurchaseFailed] = useState<boolean>(false);
   const exhibit = useExhibit(exhibitId);
+
+
+  useEffect(() => {
+    if (status) {
+      setIsVisible(true);
+      const timer = setTimeout(() => {
+        setIsVisible(false);
+      }, 4000); // 2 seconds
+
+      return () => clearTimeout(timer);
+    }
+  }, [status]);
 
   const createTicket = async () => {
     // Ensure HOST is read correctly, considering Next.js environment variables need to be prefixed with NEXT_PUBLIC_ if they are to be used on the client-side.
@@ -131,24 +149,36 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
 
   // Render component UI
   return (
-    <div className="flex flex-col gap-2">
-      {purchaseSuccessful ? (
-        <div>
-          <p>Thank you for your purchase!</p>
-          {/*actions post-purchase */}
-        </div>
-      ) : (
-        <button
-          className="w-fit flex gap-3 items-center px-6 py-3 rounded-lg bg-orange-500 font-bold dark:bg-950 text-gray-50 dark:text-gray-50"
-          onClick={purchaseTicket}
-        >
-          Purchase
-        </button>
-      )}
-      {/* Display current status */}
-      {status && <p className="text-sm font-semibold">{status}</p>}
+      
+      <>
+       <Buttons type='primary' size='large' onClick={purchaseTicket} >
+        
+        {purchaseSuccessful ? (
+          
+            
+         'Subscribed'
+        
+        ) : (
+          
+          'Subscribe'  )}</Buttons>
+      
+        {/* Display current status */}
+       <div
+      className={`bg-green-500 border w-[90%] md:w-fit rounded-md p-3 fixed right-5 z-10 transition-transform duration-500 border-green-300 ${
+        isVisible ? 'translate-y-0 bottom-5' : 'translate-y-full -bottom-20'
+      }`}
+    >
+      {status && <p className="text-sm text-white font-semibold">{status}</p>}
     </div>
+       
+      </>
+     
+   
+    
   );
 };
 
 export default TicketPurchaseComponent;
+
+
+

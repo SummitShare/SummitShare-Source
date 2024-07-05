@@ -34,47 +34,13 @@ export default function Home() {
   ];
 
   return (
-    <div className="space-y-24 mx-6 my-28">
-      {/* <Paymentcard/> */}
+    <div className="space-y-24 mx-6 my-28 lg:mx-[15%]">
+     
 
-      {open && (
-        <div className="fixed inset-x-0 top-0 bottom-0 bg-primary-900/50 flex items-center justify-center z-10">
-          <div className="space-y-6 p-6 rounded-[0.8rem] border border-primary-100 bg-white w-[90%] lg:w-[30%]">
-            <div className="w-full">
-              <XMarkIcon
-                onClick={() => setOpen(!open)}
-                className="float-end w-6"
-              />
-            </div>
-
-            <h3>The Leading Ladies</h3>
-
-            <p className="text-2xl font-bold text-ge-500">20USDT</p>
-
-            <div className="space-y-4">
-              <div className="space-y-3">
-                <p className="p1-m font-semibold">From</p>
-                <p className="w-full rounded-[6px] border text-primary-900 text-p1-r p border-gray-300 bg-gray-100 cursor-not-allowed  px-4 py-3 truncate ">
-                  {userAddress}
-                </p>
-              </div>
-              <div className="space-y-3">
-                <p className="p1-m font-semibold">To</p>
-                <p className="w-full rounded-[6px] border text-primary-900 text-p1-r p border-gray-300 bg-gray-100 cursor-not-allowed  px-4 py-3 truncate ">
-                  {userAddress}
-                </p>
-              </div>
-            </div>
-            <TicketPurchaseComponent userAddress="" />
-            <Buttons type="primary" size="large">
-              Buy for 20USDT
-            </Buttons>
-          </div>
-        </div>
-      )}
+     
 
       <section className="border-b md:border-b-0 border-primary-900-5 space-y-[48px] pb-6 md:flex md:flex-row md:gap-4">
-        <div className="w-full md:w-[45%] h-[342px] rounded-[0.5rem] overflow-hidden bg-[url('https://images.squarespace-cdn.com/content/v1/5878a307ebbd1ab23e1ed5a0/1650963860604-LGJSBAWOMLQIU9ZXUK1K/all-women.71ba3487f51cab4dc38a.png?format=2500w')] bg-cover bg-primary-50 bg-center"></div>
+        <div className="w-full md:w-[45%] h-[342px] rounded-[0.5rem] overflow-hidden bg-[url('https://images.squarespace-cdn.com/content/v1/5878a307ebbd1ab23e1ed5a0/1650963860604-LGJSBAWOMLQIU9ZXUK1K/all-women.71ba3487f51cab4dc38a.png?format=2500w')] bg-cover bg-primary-50 bg-center "></div>
 
         <div className="space-y-6 md:w-[45%] md:flex md:flex-col md:justify-between">
           <div className="space-y-2">
@@ -87,11 +53,7 @@ export default function Home() {
               danced to the drum.
             </p>
           </div>
-          <div onClick={() => setOpen(!open)}>
-            <Buttons type="primary" size="large">
-              Purchase
-            </Buttons>
-          </div>
+          <TicketPurchaseComponent userAddress={''} />
         </div>
       </section>
 

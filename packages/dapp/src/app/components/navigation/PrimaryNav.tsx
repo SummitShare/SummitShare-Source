@@ -80,8 +80,8 @@ const PrimaryNav: React.FC = () => {
         </li>
         <li className="sm:block hidden md:hidden lg:block w-fit">
           <ul className="flex flex-row gap-4">
-            <li className="relative">
-              <Buttons type="primary" size="small" isConnectButton />
+            <li>              
+              <ConnectKitButton />
             </li>
             <li>
               <Buttons type="secondary" size="small">
@@ -132,9 +132,10 @@ const PrimaryNav: React.FC = () => {
                 </ul>
               </li>
             ))}
-            <li className="relative">
-              <ConnectKitButton />
-            </li>
+          <li>              
+            <ConnectKitButton/>
+          </li>
+           
           </ul>
         </nav>
       </ul>
