@@ -59,7 +59,7 @@ function Page() {
   };
 
   return (
-    <div className="space-y-10 mx-6 my-28">
+    <div className="space-y-10 mx-6 my-28 lg:mx-[15%]">
       <header className="text-left space-y-2">
         <h2>Support Our Multidisciplinary Project</h2>
         <p>
@@ -72,17 +72,19 @@ function Page() {
       </header>
       <div className="md:grid md:grid-cols-2 gap-4">
         <section className="space-y-6 md:flex md:flex-col md:justify-between md:h-full">
-          <div className="space-y-6">
+          <div className="space-y-6 w-full">
             <Inputs
               type="select"
               label="Chain"
               state="active"
+              value={'Ethereum'}
               options={['Ethereum', 'Bitcoin', 'Solana']}
               onChange={handleChainChange}
             />
-            <div ref={qrContainerRef} className="w-full h-[358px] lg:hidden md:hidden flex justify-center items-center">
+            <div ref={qrContainerRef} className="w-full h-full md:hidden ">
               <QRCode value={walletAddresses[selectedChain]} size={qrSize} />
             </div>
+           
           </div>
           <div className="space-y-4">
             <Inputs
@@ -97,7 +99,7 @@ function Page() {
             </Buttons>
           </div>
         </section>
-        <div ref={qrContainerRef} className="w-full h-[358px] sm:block hidden flex justify-center items-center">
+        <div ref={qrContainerRef} className="w-full h-full sm:block hidden">
           <QRCode value={walletAddresses[selectedChain]} size={qrSize} />
         </div>
       </div>
