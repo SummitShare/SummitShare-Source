@@ -23,8 +23,6 @@ function ProfileSettings() {
         </section>
       </form>
 
-     
-      
       <Line />
       <form className="space-y-4">
         <div className="space-y-1">

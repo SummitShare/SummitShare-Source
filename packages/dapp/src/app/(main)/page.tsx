@@ -64,7 +64,6 @@ export default function Home() {
   //     </li>
   //   </ul>
 
-
   return (
     <div className=" space-y-24 mx-6 my-28 lg:mx-[15%]">
       <section className="border-b md:border-b-0 border-primary-900-5 space-y-[48px] pb-6 md:flex md:flex-row md:gap-4">

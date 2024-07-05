@@ -1,3 +1,4 @@
+'use client';
 import Buttons from '@/app/components/button/Butons';
 import Inputs from '@/app/components/inputs/Inputs';
 import React, { useState } from 'react';
@@ -58,7 +59,7 @@ function Page() {
       </section>
 
       <section className="text-center space-y-6">
-        <div onClick={() => onSubmit} className="w-full">
+        <div onClick={() => onSubmit()} className="w-full">
           <Buttons type="primary" size="large">
             Sign into my account
           </Buttons>
@@ -76,7 +77,7 @@ function Page() {
         </p>
         <p>
           I don’t have an account{' '}
-          <a className="underline" href="">
+          <a className="underline" href="/auth-sign-in">
             Register
           </a>
         </p>

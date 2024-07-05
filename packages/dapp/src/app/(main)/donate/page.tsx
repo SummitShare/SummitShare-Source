@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import Buttons from '@/app/components/button/Butons';
 import Inputs from '@/app/components/inputs/Inputs';
@@ -18,7 +18,8 @@ const walletAddresses: WalletAddresses = {
 };
 
 function Page() {
-  const [selectedChain, setSelectedChain] = useState<keyof WalletAddresses>('Ethereum');
+  const [selectedChain, setSelectedChain] =
+    useState<keyof WalletAddresses>('Ethereum');
   const [qrSize, setQrSize] = useState(200);
   const [copySuccess, setCopySuccess] = useState(false);
   const mobileQrContainerRef = useRef<HTMLDivElement>(null);
@@ -28,8 +29,9 @@ function Page() {
     const updateQRSize = () => {
       const mobileContainer = mobileQrContainerRef.current;
       const desktopContainer = desktopQrContainerRef.current;
-      
-      if (window.innerWidth < 640 && mobileContainer) { // sm breakpoint
+
+      if (window.innerWidth < 640 && mobileContainer) {
+        // sm breakpoint
         const { width, height } = mobileContainer.getBoundingClientRect();
         setQrSize(Math.min(width, height) - 40);
       } else if (desktopContainer) {
@@ -43,7 +45,9 @@ function Page() {
     return () => window.removeEventListener('resize', updateQRSize);
   }, []);
 
-  const handleChainChange = (e: React.ChangeEvent<HTMLSelectElement> | string) => {
+  const handleChainChange = (
+    e: React.ChangeEvent<HTMLSelectElement> | string
+  ) => {
     let value: string;
     if (typeof e === 'string') {
       value = e;
@@ -87,7 +91,10 @@ function Page() {
               options={['Ethereum', 'Bitcoin', 'Solana']}
               onChange={handleChainChange}
             />
-            <div ref={mobileQrContainerRef} className="w-full h-[358px] sm:hidden flex justify-center items-center">
+            <div
+              ref={mobileQrContainerRef}
+              className="w-full h-[358px] sm:hidden flex justify-center items-center"
+            >
               <QRCode value={walletAddresses[selectedChain]} size={qrSize} />
             </div>
           </div>
@@ -104,12 +111,22 @@ function Page() {
             </Buttons>
           </div>
         </section>
-        <div ref={desktopQrContainerRef} className="w-full h-[358px] hidden sm:flex justify-center items-center">
+        <div
+          ref={desktopQrContainerRef}
+          className="w-full h-[358px] hidden sm:flex justify-center items-center"
+        >
           <QRCode value={walletAddresses[selectedChain]} size={qrSize} />
         </div>
       </div>
       <p className="text-sm mt-4">
-        Read our <a href="https://hackmd.io/e5h31Xw3Q-Su2tzJrVN98g" className="text-blue-500 underline">donations policy</a> for more info.
+        Read our{' '}
+        <a
+          href="https://hackmd.io/e5h31Xw3Q-Su2tzJrVN98g"
+          className="text-blue-500 underline"
+        >
+          donations policy
+        </a>{' '}
+        for more info.
       </p>
     </div>
   );

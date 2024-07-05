@@ -6,6 +6,7 @@ import Buttons from '../button/Butons';
 import { useAccount } from 'wagmi';
 import { ConnectKitButton } from 'connectkit';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 
 /**
  * PrimaryNav component represents the main navigation bar for the application.
@@ -13,6 +14,8 @@ import Link from 'next/link';
  */
 
 const PrimaryNav: React.FC = () => {
+  const session = useSession();
+
   // Navigation items for the main nav bar
   const items: { name: string; link: string }[] = [
     { name: 'Blog', link: '/blog' },
@@ -81,14 +84,16 @@ const PrimaryNav: React.FC = () => {
         </li>
         <li className="sm:block hidden md:hidden lg:block w-fit">
           <ul className="flex flex-row gap-4">
-            <li>              
+            <li>
               <ConnectKitButton />
             </li>
             <li>
-              <Link href="/auth-sign-in"> <Buttons type="secondary" size="small">
-                Sign in
-              </Buttons></Link>
-             
+              <Link href="/auth-sign-in">
+                {' '}
+                <Buttons type="secondary" size="small">
+                  {session.status ? 'Sign out' : 'Sign in'}
+                </Buttons>
+              </Link>
             </li>
           </ul>
         </li>
@@ -134,10 +139,9 @@ const PrimaryNav: React.FC = () => {
                 </ul>
               </li>
             ))}
-          <li>              
-            <ConnectKitButton/>
-          </li>
-           
+            <li>
+              <ConnectKitButton />
+            </li>
           </ul>
         </nav>
       </ul>

@@ -117,7 +117,7 @@ const Page: React.FC = () => {
           </TableBody>
         </Table>
         <div className="w-fit">
-            <EventEscrowComponent userAdress="" />
+          <EventEscrowComponent userAdress="" />
         </div>
       </section>
     </div>

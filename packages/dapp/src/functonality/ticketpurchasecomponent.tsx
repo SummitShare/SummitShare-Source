@@ -13,10 +13,8 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 
 const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
   const session = useSession();
-  const [isVisible, setIsVisible] = useState(false)
-    const user_id = session.data?.user.id;
-
-   
+  const [isVisible, setIsVisible] = useState(false);
+  const user_id = session.data?.user.id;
 
   // Hardcoded exhibit ID for demo
   const exhibitId = CONTRACT_ADDRESSES.exhibitId;
@@ -29,7 +27,6 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
   const [purchaseFailed, setPurchaseFailed] = useState<boolean>(false);
   const exhibit = useExhibit(exhibitId);
 
-
   useEffect(() => {
     if (status) {
       setIsVisible(true);
@@ -40,10 +37,6 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
       return () => clearTimeout(timer);
     }
   }, [status]);
-
-
-
-  
 
   const createTicket = async () => {
     // Ensure HOST is read correctly, considering Next.js environment variables need to be prefixed with NEXT_PUBLIC_ if they are to be used on the client-side.
@@ -153,7 +146,6 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
 
   const url = 'localhost:3000/api/v1/events/tickets/create';
 
-
   // useEffect(() => {
   //   const sendData = async () => {
   //     try {
@@ -164,54 +156,38 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
   //         },
   //         body: JSON.stringify(wallet_address,event_id,user_id,eventLink)
   //       });
-    
+
   //       if (!response.ok) {
   //         throw new Error(`Error: ${response.status} - ${response.statusText}`);
   //       }
-    
+
   //       const responseData = await response.json();
   //       console.log('Success:', responseData);
   //     } catch (error) {
   //       console.error('Failed to send data:', error);
   //     }
   //   };
-    
+
   //   sendData();
   // }, [purchaseSuccessful]);
 
-
   // Render component UI
   return (
-      
-      <>
-       <Buttons type='primary' size='large' onClick={purchaseTicket} >
-        
-        {purchaseSuccessful ? (
-          
-            
-         'Subscribed'
-        
-        ) : (
-          
-          'Subscribe'  )}</Buttons>
-      
-        {/* Display current status */}
-       <div
-      className={`bg-green-500 border w-[90%] md:w-fit rounded-md p-3 fixed right-5 z-10 transition-transform duration-500 border-green-300 ${
-        isVisible ? 'translate-y-0 bottom-5' : 'translate-y-full -bottom-20'
-      }`}
-    >
-      {status && <p className="text-sm text-white font-semibold">{status}</p>}
-    </div>
-       
-      </>
-     
-   
-    
+    <>
+      <Buttons type="primary" size="large" onClick={purchaseTicket}>
+        {purchaseSuccessful ? 'Subscribed' : 'Subscribe'}
+      </Buttons>
+
+      {/* Display current status */}
+      <div
+        className={`bg-green-500 border w-[90%] md:w-fit rounded-md p-3 fixed right-5 z-10 transition-transform duration-500 border-green-300 ${
+          isVisible ? 'translate-y-0 bottom-5' : 'translate-y-full -bottom-20'
+        }`}
+      >
+        {status && <p className="text-sm text-white font-semibold">{status}</p>}
+      </div>
+    </>
   );
 };
 
 export default TicketPurchaseComponent;
-
-
-

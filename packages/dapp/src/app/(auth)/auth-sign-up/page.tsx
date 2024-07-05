@@ -109,12 +109,15 @@ const Register = () => {
         </div>
 
         <div className="w-full text-center mt-20">
+          <p className='text-gray-800 underline text-sm  font-semibold'>Already have an account?
           <Link
-            className="text-gray-800 underline text-sm  font-semibold"
-            href={`#`}
+            className="underline"
+            href={`/auth-sign-up`}
           >
-            Already have an account? Sign in!
+           Sign in!
           </Link>
+          </p>
+         
         </div>
       </form>
     </main>

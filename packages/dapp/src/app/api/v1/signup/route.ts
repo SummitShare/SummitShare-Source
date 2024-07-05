@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import prisma from '../../../../../config/db';
 import { emailServer, transporter } from '../../../../../config/nodemailer';
 import { PrismaClient, users } from '@prisma/client';
+import { randomUUID } from 'crypto';
 
 async function createSendTokens(user: users, email: string) {
   try {
@@ -144,6 +145,10 @@ async function createVisitor(
   type: string
 ) {
   try {
+    if (!username) {
+      username= randomUUID()
+    }
+
     const user = await prisma.users.create({
       data: {
         email,
@@ -152,6 +157,7 @@ async function createVisitor(
         type: type,
       },
     });
+   
     const verification = await createSendTokens(user, email);
 
     return { user, verification };

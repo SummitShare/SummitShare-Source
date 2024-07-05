@@ -1,6 +1,6 @@
-import Buttons from '@/app/components/button/Butons'
-import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline'
-import React from 'react'
+import Buttons from '@/app/components/button/Butons';
+import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
+import React from 'react';
 
 const getExcerpt = (content: string, length: number = 100): string => {
   return content.length > length
@@ -64,4 +64,3 @@ const BlogList = async () => {
 };
 
 export default BlogList;
-
