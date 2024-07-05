@@ -5,6 +5,7 @@ import { handleContractError } from '@/utils/dev/handleContractError';
 import { EventEscrowComponentProps } from '@/utils/dev/typeInit';
 import useExhibit from '@/lib/useGetExhibitById';
 import { initializeUserWallet } from '@/utils/dev/walletInit';
+import Buttons from '@/app/components/button/Butons';
 
 const EventEscrowComponent = ({ userAddress }: any) => {
   // Hardcoded exhibit ID for demo
@@ -17,7 +18,19 @@ const EventEscrowComponent = ({ userAddress }: any) => {
   const [distributionSuccessful, setDistributionSuccessful] =
     useState<boolean>(false);
   const [distributionFailed, setDistributionFailed] = useState<boolean>(false);
+  const [isVisible, setIsVisible] = useState(false)
 
+
+  useEffect(() => {
+    if (status) {
+      setIsVisible(true);
+      const timer = setTimeout(() => {
+        setIsVisible(false);
+      }, 2000); // 2 seconds
+
+      return () => clearTimeout(timer);
+    }
+  }, [status]);
   // Fetch exhibit details
   const exhibit = useExhibit(exhibitId);
 
@@ -98,24 +111,49 @@ const EventEscrowComponent = ({ userAddress }: any) => {
 
   // Render component UI
   return (
-    <div className="flex flex-col gap-2">
-      {distributionSuccessful ? (
-        <div>
-          <p>Funds distributed successfully!</p>
-          {/* Actions post-distribution */}
-        </div>
-      ) : (
-        <button
-          className="w-full p-2 mt-5 font-bold bg-orange-500 rounded-lg text-white"
-          onClick={distributeFunds}
-          disabled={isLoading}
-        >
-          Distrbute
-        </button>
-      )}
-      {/* Display current status */}
-      {status && <p className="text-sm font-semibold">{status}</p>}
+
+<>
+       <Buttons type='primary' size='large' onClick={distributeFunds} >
+       Distribute
+       </Buttons>
+      
+        {/* Display current status */}
+       <div
+      className={`bg-green-500 border w-[90%] md:w-fit rounded-md p-3 fixed right-5 z-10 transition-transform duration-500 border-green-300 ${
+        isVisible ? 'translate-y-0 bottom-5' : 'translate-y-full -bottom-20'
+      }`}
+    >
+      {status && <p className="text-sm text-white font-semibold">{status}</p>}
     </div>
+
+    {distributionSuccessful && <div
+      className={`bg-green-500 border w-[90%] md:w-fit rounded-md p-3 fixed right-5 z-10 transition-transform duration-500 border-green-300 ${
+        isVisible ? 'translate-y-0 bottom-5' : 'translate-y-full -bottom-20'
+      }`}
+    >
+      <p className="text-sm text-white font-semibold">Funds distributed successfully!</p>
+    </div>}
+       
+      </>
+
+    // <div className="flex flex-col gap-2">
+    //   {distributionSuccessful ? (
+    //     <div>
+    //       <p>Funds distributed successfully!</p>
+    //       {/* Actions post-distribution */}
+    //     </div>
+    //   ) : (
+    //     <button
+    //       className="w-full p-2 mt-5 font-bold bg-orange-500 rounded-lg text-white"
+    //       onClick={distributeFunds}
+    //       disabled={isLoading}
+    //     >
+    //       Distrbute
+    //     </button>
+    //   )}
+    //   {/* Display current status */}
+    //   {status && <p className="text-sm font-semibold">{status}</p>}
+    // </div>
   );
 };
 //     return (
