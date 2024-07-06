@@ -16,6 +16,7 @@ const nextConfig = {
       'hackmd.io',
       'amazonaws.com',
       'ethereum.org',
+      's3.tebi.io'
     ],
   },
   env: {
