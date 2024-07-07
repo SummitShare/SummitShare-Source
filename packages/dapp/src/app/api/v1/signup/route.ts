@@ -33,7 +33,7 @@ async function createSendTokens(user: users, email: string) {
     // const host = req.headers.get('host');
     const host = process.env.HOST;
     //${host}api/v1/user/verification/verifyEmail?token=${token}
-    const verificationLink = `${host}verifcation/email/${token}`;
+    const verificationLink = `${host}/verifcation/email/${token}`;
 
     const mailOptions = {
       from: emailServer,
@@ -85,7 +85,7 @@ async function userWithUsername(
 
   // const host = req.headers.get('host');
   const host = process.env.HOST;
-  const verificationLink = `${host}api/verifyEmail?token=${token}`;
+  const verificationLink = `${host}/api/verifyEmail?token=${token}`;
 
   const mailOptions = {
     from: emailServer,

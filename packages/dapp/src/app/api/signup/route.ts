@@ -56,7 +56,7 @@ export async function POST(req: Request, res: NextResponse) {
 
     // const host = req.headers.get('host');
     const host = process.env.HOST;
-    const verificationLink = `${host}api/verifyEmail?token=${token}`;
+    const verificationLink = `${host}/api/verifyEmail?token=${token}`;
 
     const mailOptions = {
       from: emailServer,

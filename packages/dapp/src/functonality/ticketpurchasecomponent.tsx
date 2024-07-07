@@ -44,7 +44,7 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
     //console.log(`host ${host} `)
     const eventLink = `${host}/exhibit/0xe405b9c97656336ab949401bcd41ca3f50114725`;
     // Construct the URL with the correct protocol (http or https) and ensure that the HOST variable includes the entire domain.
-    const url = `${host}api/v1/event/ticket/create`;
+    const url = `${host}/api/v1/event/ticket/create`;
     //console.log(`url ${url} ` ,user_id)
 
     try {
