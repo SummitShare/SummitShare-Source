@@ -9,3 +9,7 @@ codeql-custom-queries-javascript/codeql-pack.lock.yml
 codeql-custom-queries-javascript/codeql-pack.yml
 codeql-custom-queries-javascript
 .DS_Store
+packages/dapp/prisma/ 
+packages/dapp/src/app/api/ 
+packages/dapp/auth.config.ts 
+packages/dapp/middleware.ts

@@ -2,9 +2,6 @@
 require('dotenv').config();
 
 const nextConfig = {
-  experimental: {
-    serverActions: true,
-  },
   images: {
     domains: [
       'images.unsplash.com',
@@ -16,7 +13,8 @@ const nextConfig = {
       'hackmd.io',
       'amazonaws.com',
       'ethereum.org',
-      's3.tebi.io'
+      's3.tebi.io',
+      'summitshare3.s3.eu-north-1.amazonaws.com'
     ],
   },
   env: {
