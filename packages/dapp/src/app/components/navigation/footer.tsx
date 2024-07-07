@@ -23,13 +23,13 @@ function footer() {
               <h3>Quick links</h3>
               <ul>
                 <li>
-                  <a href="">Blog</a>
+                  <a href="/blog">Blog</a>
                 </li>
                 <li>
-                  <a href="">Help</a>
+                  <a href="https://www.kraken.com/learn/web3-wallets">Help</a>
                 </li>
                 <li>
-                  <a href="">Partners</a>
+                  <a href="/partners">Partners</a>
                 </li>
               </ul>
             </li>
@@ -37,13 +37,13 @@ function footer() {
               <h3>Other links</h3>
               <ul>
                 <li>
-                  <a href="">Donate</a>
+                  <a href="/donate">Donate</a>
                 </li>
                 <li>
-                  <a href="">Exhibit</a>
+                  <a href="/distribution">Exhibit</a>
                 </li>
                 <li>
-                  <a href="">Profile</a>
+                  <a href="/profile">Profile</a>
                 </li>
               </ul>
             </li>
@@ -51,16 +51,13 @@ function footer() {
               <h3>Social links</h3>
               <ul className="flex flex-col items-center">
                 <li>
-                  <a href="">x</a>
+                  <a href="https://x.com/summitshare_zm">X</a>
                 </li>
                 <li>
-                  <a className="flex flex-row gap-2 items-center" href="">
+                  <a className="flex flex-row gap-2 items-center" href="https://github.com/SummitShare/SummitShare">
                     <GitHubLogoIcon className="w-4" />
                     Github
                   </a>
-                </li>
-                <li>
-                  <a href="">Instagram</a>
                 </li>
               </ul>
             </li>

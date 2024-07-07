@@ -2,6 +2,16 @@ import Buttons from '../components/button/Butons';
 import BlogList from '../(test)/test/page';
 import Link from 'next/link';
 import { StarIcon } from '@radix-ui/react-icons';
+import { Metadata } from 'next';
+
+const metadata: Metadata = {
+  title: 'SummitShare',
+  description:
+    'A pioneering digital platform dedicated to the repatriation of African cultural artifacts. ',
+  icons: {
+      icon: '/favicon.ico',
+    },
+};
 
 export default function Home() {
   // const [count, setCount] = useState({
@@ -80,9 +90,9 @@ export default function Home() {
             </p>
           </div>
           <div>
-            <Link href={'/exhibit'}>
+            <Link href={'/cya'}>
               <Buttons type="primary" size="large">
-                Explore
+                Coming Soon!
               </Buttons>
             </Link>
           </div>
