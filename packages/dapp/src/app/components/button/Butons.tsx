@@ -8,7 +8,8 @@ interface ButtonProps {
   type?: 'primary' | 'secondary' | 'tartary' | 'subTartary'; // The style type of the button, default is 'primary'
   size?: 'large' | 'small'; // The size of the button, default is 'small'
   active?: boolean; // The state of the button, default is false (inactive)
-  isConnectButton?: boolean; // Indicates if this button should be the Connect Wallet button
+  isConnectButton?: boolean; 
+  onClick?:any// Indicates if this button should be the Connect Wallet button
 }
 
 /**

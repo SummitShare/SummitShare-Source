@@ -26,7 +26,7 @@ const Note = async ({ params }: { params: { id: string } }) => {
     const contentHtml = processedContent.toString();
 
     return (
-      <div className="space-y-24 mx-6 my-28">
+      <div className="space-y-24 mx-6 my-28 lg:mx-[15%] ">
         <h1>{parsedNote.data.title}</h1>
 
         <div

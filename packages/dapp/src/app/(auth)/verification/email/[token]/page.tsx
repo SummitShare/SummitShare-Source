@@ -67,7 +67,7 @@ function Page({ params }: { params: { token: string } }) {
       <nav className="w-full flex flex-row justify-between items-center">
         <p>
           {' '}
-          Step 2<span> of 2</span>
+          Step 3<span> of 3</span>
         </p>
         <Link href="/">Exit</Link>
       </nav>
@@ -87,7 +87,7 @@ function Page({ params }: { params: { token: string } }) {
             : resendVerificationEmail;
         }}
       >
-        <Buttons type="primary" size="large">
+        <Buttons type="primary" size="large" onClick={ verificationStatus === 200 ? router.push('/auth-sign-in') :resendVerificationEmail() } >
           {verificationStatus === 200 ? 'Continue' : 'Resend'}
         </Buttons>
       </div>

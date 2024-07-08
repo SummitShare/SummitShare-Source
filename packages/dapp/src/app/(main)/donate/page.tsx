@@ -70,7 +70,7 @@ function Page() {
   };
 
   return (
-    <div className="space-y-10 mx-6 my-28">
+    <div className="space-y-10 mx-6 my-28 lg:mx-[15%] ">
       <header className="text-left space-y-2">
         <h2>Support Our Multidisciplinary Project</h2>
         <p>

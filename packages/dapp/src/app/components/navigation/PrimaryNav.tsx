@@ -91,7 +91,7 @@ const PrimaryNav: React.FC = () => {
               <Link href="/auth-sign-in">
                 {' '}
                 <Buttons type="secondary" size="small">
-                  {session.status ? 'Sign out' : 'Sign in'}
+                  {session.data?.token ? 'Sign out' : 'Sign in'}
                 </Buttons>
               </Link>
             </li>

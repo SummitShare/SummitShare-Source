@@ -11,23 +11,22 @@ function Page() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState();
+  const [status,setStatus]= useState<number>()
 
   const createUser = async ({
     email,
     password,
     username,
-    wallet_address,
   }: any) => {
     // Ensure HOST is read correctly, considering Next.js environment variables need to be prefixed with NEXT_PUBLIC_ if they are to be used on the client-side.
-    const host = process.env.NEXT_PUBLIC_HOST;
+    const host = process.env.HOST;
     console.log(`host ${host} `);
 
     // Construct the URL with the correct protocol (http or https) and ensure that the HOST variable includes the entire domain.
-    const url = `${host}api/v1/signup`;
+    const url = `${host}/api/v1/signup`;
     console.log(`url ${url} `);
 
     try {
-      const type = 'exhibitor';
       const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -46,8 +45,9 @@ function Page() {
         // You could throw an error or handle it in another way depending on your error handling strategy
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }
-
-      return response.json(); // Assuming the server responds with JSON.
+      setStatus(response.status)
+      return response.json();
+       // Assuming the server responds with JSON.
     } catch (error) {
       console.error('Failed to create user:', error);
       // Depending on how you want to handle errors, you might want to re-throw the error or handle it here
@@ -56,9 +56,10 @@ function Page() {
   };
 
   const onSubmit = async (data: any) => {
+    console.log(data)
     const response = await createUser(data);
     console.log(response);
-    router.push('/auth-sign-in');
+    router.push('/verification/email');
     console.log(data);
   };
 
@@ -66,7 +67,7 @@ function Page() {
     <div className=" flex flex-col justify-between px-6 py-10 bg-white h-screen md:w-[50%] lg:w-[30%] md:float-right">
       <nav className="w-full flex flex-row justify-between items-center">
         <p className="text-p2-m">
-          Step 1<span> of 2</span>
+          Step 1<span> of 3</span>
         </p>
         <Link href="/">Exit</Link>
       </nav>
@@ -112,18 +113,18 @@ function Page() {
         </Buttons>
         <p>
           By continuing you accept our standard{' '}
-          <a className="underline" href="">
+          <a className="underline" href="#">
             terms and conditions
           </a>{' '}
           and{' '}
-          <a className="underline" href="">
+          <a className="underline" href="#">
             our privacy policy
           </a>
           .
         </p>
         <p>
           Already have an account?{' '}
-          <a className="underline" href="/`/auth-sign-up">
+          <a className="underline" href="/`/auth-sign-in">
             Sign in
           </a>
         </p>
