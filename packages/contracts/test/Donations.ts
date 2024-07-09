@@ -18,10 +18,10 @@ async function deployContracts() {
    const [owner, donor, projectWallet, communityWallet] = await ethers.getSigners();
 
      // Log signer addresses
-     //console.log("Owner address:", owner.address);
-     //console.log("Donor address:", donor.address);
-     //console.log("Project Wallet address:", projectWallet.address);
-     //console.log("Community Wallet address:", communityWallet.address);
+     ////console.log("Owner address:", owner.address);
+     ////console.log("Donor address:", donor.address);
+     ////console.log("Project Wallet address:", projectWallet.address);
+     ////console.log("Community Wallet address:", communityWallet.address);
 
        // Deploy a mock USDC token and set initial balances - any ERC20 token would work
         const MockUSD = await ethers.getContractFactory("MUSDC");
@@ -40,8 +40,8 @@ async function deployContracts() {
         const Donations = await ethers.getContractFactory("Donations");
         const donations = await Donations.connect(owner).deploy(projectWallet.address, communityWallet.address);
     
-        //console.log("MUSDC Token deployed at:", usdcToken.target);
-        //console.log("Donations contract deployed at:", donations.target);
+        ////console.log("MUSDC Token deployed at:", usdcToken.target);
+        ////console.log("Donations contract deployed at:", donations.target);
 
     // Approve the Donations contract to spend the donor's tokens
     await usdcToken.connect(donor).approve(donations.target, ethers.parseUnits("50", 18));

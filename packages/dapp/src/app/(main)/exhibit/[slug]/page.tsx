@@ -234,7 +234,7 @@ const Page = ({ params }: PageProps) => {
   }
 
   return (
-    <div className="space-y-12 mx-6 my-28">
+    <div className="space-y-12 mx-6 my-28 lg:mx-[15%]">
       <h2>{figure.title}</h2>
       <article className="space-y-8 md:space-y-0 md:grid md:grid-cols-2 gap-6 w-full">
         <SummitShareCanvas>{figure.object_URL}</SummitShareCanvas>

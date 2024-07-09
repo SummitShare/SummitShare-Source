@@ -111,7 +111,6 @@ const EventEscrowComponent = ({ userAddress }: any) => {
   // Render component UI
   return (
     <>
- 
       <Buttons type="primary" size="large" onClick={distributeFunds}>
         Distribute
       </Buttons>

@@ -24,7 +24,7 @@ const Partners = async () => {
           className="space-y-6"
           dangerouslySetInnerHTML={{ __html: contentHtml }}
         />
-        <div className="w-full rounded-[8px] bg-primary-50 space-y-4 px-[45px] py-6">
+        <div className="w-full rounded-[8px] bg-primary-50 space-y-4 mx-6 py-6  lg:mx-[15%]">
           <div className="space-y-2">
             <h3>Was this page informative?</h3>
             <p>Those who walked before us and those to come.</p>

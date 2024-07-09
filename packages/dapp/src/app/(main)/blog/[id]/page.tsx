@@ -13,7 +13,7 @@ const Note = async ({ params }: { params: { id: string } }) => {
   const noteId = params.id;
 
   // Log the noteId to ensure it is correctly captured -- only for dev
-  // console.log('Fetching note with ID---:', noteId);
+  // //console.log('Fetching note with ID---:', noteId);
 
   try {
     const note = await fetchNoteContent(noteId);
@@ -26,7 +26,7 @@ const Note = async ({ params }: { params: { id: string } }) => {
     const contentHtml = processedContent.toString();
 
     return (
-      <div className="space-y-24 mx-6 my-28">
+      <div className="space-y-24 mx-6 my-28 lg:mx-[15%] ">
         <h1>{parsedNote.data.title}</h1>
 
         <div

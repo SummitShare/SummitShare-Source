@@ -70,7 +70,7 @@ function Page() {
   };
 
   return (
-    <div className="space-y-10 mx-6 my-28">
+    <div className="space-y-10 mx-6 my-28 lg:mx-[15%] ">
       <header className="text-left space-y-2">
         <h2>Support Our Multidisciplinary Project</h2>
         <p>
@@ -107,13 +107,13 @@ function Page() {
               //@ts-ignore
               readOnly
             />
-            <Buttons 
-            type="primary" 
-            onClick={handleCopy} 
-            {...({ onClick: handleCopy } as any)}
-          >
-            {copySuccess ? 'Copied!' : 'Copy wallet address'}
-          </Buttons>
+            <Buttons
+              type="primary"
+              onClick={handleCopy}
+              {...({ onClick: handleCopy } as any)}
+            >
+              {copySuccess ? 'Copied!' : 'Copy wallet address'}
+            </Buttons>
           </div>
         </section>
         <div

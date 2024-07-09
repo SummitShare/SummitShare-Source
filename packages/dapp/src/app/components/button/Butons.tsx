@@ -9,7 +9,7 @@ interface ButtonProps {
   size?: 'large' | 'small'; // The size of the button, default is 'small'
   active?: boolean; // The state of the button, default is false (inactive)
   isConnectButton?: boolean;
-  onClick?: any, // Indicates if this button should be the Connect Wallet button
+  onClick?: any; // Indicates if this button should be the Connect Wallet button
 }
 
 /**
@@ -24,7 +24,7 @@ const Buttons: React.FC<ButtonProps> = ({
   size = 'small',
   active = true,
   isConnectButton = false,
-  
+
   ...props
 }) => {
   // Base class for all buttons

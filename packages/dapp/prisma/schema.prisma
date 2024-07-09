@@ -187,7 +187,7 @@ model ticket_transaction {
   price            Decimal  @db.Decimal(10, 2)
   transaction_time DateTime @default(now()) @db.Timestamp(6)
   user_id          String   @db.Uuid
-  users            users    @relation(fields: [user_id], references: [id], onDelete: SetNull)
+  users            users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
   events           events?  @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tickets_transactions_event_id_fkey")
 }
 
@@ -199,7 +199,7 @@ model tickets {
   id             Int       @id @default(autoincrement())
   user_id        String    @db.Uuid
   events         events?   @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  users          users     @relation(fields: [user_id], references: [id], onDelete: SetNull)
+  users          users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 model user_images {
@@ -235,7 +235,7 @@ model user_wallets {
   wallet_address String         @unique(map: "wallet_address_unique")
   index          Int?           @db.SmallInt
   stakeholders   stakeholders[]
-  users          users          @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users          users          @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 model artifacts {
@@ -281,7 +281,7 @@ model password_reset_tokens {
   id         String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   user_id    String    @db.Uuid
   created_at DateTime? @default(now()) @db.Timestamptz(6)
-  users      users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users      users     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
 enum decision {

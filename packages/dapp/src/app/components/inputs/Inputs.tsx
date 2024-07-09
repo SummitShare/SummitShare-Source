@@ -16,6 +16,8 @@ export interface InputProps {
   children?: React.ReactNode;
   options?: string[];
   onChange?: (e: any) => void;
+  placeholder?: string;
+  readOnly?: any;
 }
 
 /**
@@ -184,7 +186,6 @@ const Input: React.FC<InputProps> = ({
         return (
           <textarea
             value={internalValue}
-            placeholder={defaultValue}
             onChange={(e) => handleInput(e.target.value)}
             className={`${commonClasses} ${stateClass} min-h-[100px] p-3`}
             {...props}
