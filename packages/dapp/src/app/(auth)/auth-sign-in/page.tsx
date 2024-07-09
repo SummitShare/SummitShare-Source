@@ -20,19 +20,31 @@ function Page() {
       password,
       redirect: false,
     });
-
-    if (response?.status !== 200) {
-      setStatus(401);
-      setIsVisible(!isVisible);
+  
+    if (response) {
+      const statusCode = response.status ?? null;
+      setStatus(statusCode);
+  
+      if (statusCode !== 200) {
+        setIsVisible(true);
+        const timer = setTimeout(() => {
+          setIsVisible(false);
+        }, 4000);
+  
+        return () => clearTimeout(timer);
+      } else {
+        router.push('/');
+      }
+    } else {
+      // Handle the case where response is undefined
+      setStatus(null);
+      setIsVisible(true);
       const timer = setTimeout(() => {
         setIsVisible(!isVisible);
       }, 4000);
-
+  
       return () => clearTimeout(timer);
     }
-
-    setStatus(response.status);
-    response.status === 200 && router.push('/');
   }, [email, password, router]);
 
   useEffect(() => {
