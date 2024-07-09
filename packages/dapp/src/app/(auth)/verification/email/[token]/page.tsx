@@ -32,6 +32,7 @@ function Page({ params }: { params: { token: string } }) {
 
         setVerificationMessage(message);
         setVerificationStatus(response?.status);
+
       } catch (error) {
         console.error('Verification request failed:', error);
       }
@@ -87,7 +88,7 @@ function Page({ params }: { params: { token: string } }) {
             : resendVerificationEmail;
         }}
       >
-        <Buttons type="primary" size="large" onClick={ verificationStatus === 200 ? router.push('/auth-sign-in') :resendVerificationEmail() } >
+        <Buttons type="primary" size="large" onClick={ verificationStatus === 200 ? router.push('/auth-sign-in') :()=>resendVerificationEmail() } >
           {verificationStatus === 200 ? 'Continue' : 'Resend'}
         </Buttons>
       </div>

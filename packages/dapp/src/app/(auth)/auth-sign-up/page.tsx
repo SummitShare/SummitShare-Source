@@ -57,7 +57,7 @@ const Register = () => {
 
       {
         response.status === 201
-          ? router.push(`/verifcation/sign-up/${email}`)
+          ? router.push(`/verification/sign-up/${email}`)
           : alert('error');
       }
 
