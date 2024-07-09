@@ -6,6 +6,7 @@ import crypto from 'node:crypto';
 
 const prisma = new PrismaClient();
 
+
 export async function POST(req: Request, res: NextResponse) {
   try {
     const { data } = await req.json();

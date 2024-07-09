@@ -36,7 +36,7 @@ const Register = () => {
     //console.log(`host ${host} `)
 
     // Construct the URL with the correct protocol (http or https) and ensure that the HOST variable includes the entire domain.
-    const url = `${host}api/v1/signup`;
+    const url = `${host}/api/v1/signup`;
     //console.log(`url ${url} `)
 
     try {

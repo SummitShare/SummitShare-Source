@@ -22,10 +22,10 @@ function Page() {
     });
 
     if (response?.status !== 200) {
-      setStatus(response?.status);
-      setIsVisible(true);
+      setStatus(401);
+      setIsVisible(!isVisible);
       const timer = setTimeout(() => {
-        setIsVisible(false);
+        setIsVisible(!isVisible);
       }, 4000);
 
       return () => clearTimeout(timer);
@@ -108,6 +108,7 @@ function Page() {
             .
           </p>
           <p>
+            I dont have an account{' '}
             I don&apos;t have an account{' '}
             <a className="underline" href="/auth-register">
               Register
