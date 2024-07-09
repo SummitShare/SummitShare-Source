@@ -16,8 +16,8 @@ export interface InputProps {
   children?: React.ReactNode;
   options?: string[];
   onChange?: (e: any) => void;
-  placeholder?:string;
-  readOnly?:any
+  placeholder?: string;
+  readOnly?: any;
 }
 
 /**

@@ -12,13 +12,9 @@ function Page() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState();
-  const [status,setStatus]= useState<number>()
+  const [status, setStatus] = useState<number>();
 
-  const createUser = async ({
-    email,
-    password,
-    username,
-  }: any) => {
+  const createUser = async ({ email, password, username }: any) => {
     // Ensure HOST is read correctly, considering Next.js environment variables need to be prefixed with NEXT_PUBLIC_ if they are to be used on the client-side.
     const host = process.env.NEXT_PUBLIC_HOST;
     ////console.log(`host ${host} `);
@@ -47,8 +43,8 @@ function Page() {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }
 
-      setStatus(response.status)
-               // Assuming the server responds with JSON.
+      setStatus(response.status);
+      // Assuming the server responds with JSON.
       return response.json();
     } catch (error) {
       console.error('Failed to create user:', error);
@@ -78,8 +74,7 @@ function Page() {
 
         <section className="space-y-4">
           <header className="text-center space-y-2">
-          <div className="relative mx-auto h-12 w-12">
-
+            <div className="relative mx-auto h-12 w-12">
               <Image
                 src="https://summitshare3.s3.eu-north-1.amazonaws.com/IMG_3157.PNG"
                 alt="Logo"

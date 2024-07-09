@@ -14,7 +14,7 @@ const nextConfig = {
       'amazonaws.com',
       'ethereum.org',
       's3.tebi.io',
-      'summitshare3.s3.eu-north-1.amazonaws.com'
+      'summitshare3.s3.eu-north-1.amazonaws.com',
     ],
   },
   env: {
@@ -24,9 +24,18 @@ const nextConfig = {
   },
   webpack: (config, { isServer }) => {
     config.ignoreWarnings = [
-      { message: /Attempted import error: 'sRGBEncoding' is not exported from 'three'/ },
-      { message: /Attempted import error: 'PlaneBufferGeometry' is not exported from 'three'/ },
-      { message: /Attempted import error: 'CylinderBufferGeometry' is not exported from 'three'/ },
+      {
+        message:
+          /Attempted import error: 'sRGBEncoding' is not exported from 'three'/,
+      },
+      {
+        message:
+          /Attempted import error: 'PlaneBufferGeometry' is not exported from 'three'/,
+      },
+      {
+        message:
+          /Attempted import error: 'CylinderBufferGeometry' is not exported from 'three'/,
+      },
     ];
     return config;
   },

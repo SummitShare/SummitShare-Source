@@ -14,7 +14,7 @@ export async function GET(req: Request, res: NextResponse) {
   }
 
   try {
-   // //console.log(`recieved token ${token}`)
+    // //console.log(`recieved token ${token}`)
     const verificationRecord = await prisma.email_verification.findFirst({
       where: { token: token },
     });

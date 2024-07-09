@@ -13,7 +13,11 @@ const axiosInstance = axios.create({
   timeout: 10000, // 10 seconds timeout
 });
 
-const retryRequest = async (fn: () => Promise<any>, retries: number = 3, delay: number = 1000): Promise<any> => {
+const retryRequest = async (
+  fn: () => Promise<any>,
+  retries: number = 3,
+  delay: number = 1000
+): Promise<any> => {
   try {
     return await fn();
   } catch (error) {
@@ -24,7 +28,7 @@ const retryRequest = async (fn: () => Promise<any>, retries: number = 3, delay: 
       // If rate-limited, wait a bit longer before retrying
       delay = delay * 2;
     }
-    await new Promise(resolve => setTimeout(resolve, delay));
+    await new Promise((resolve) => setTimeout(resolve, delay));
     return retryRequest(fn, retries - 1, delay * 2);
   }
 };
@@ -54,7 +58,9 @@ export const fetchAllTeamNotes = async (): Promise<Note[]> => {
     const notesWithContent = await Promise.all(
       notes.map(async (note) => {
         // //console.log(`Fetching content for note ID ${note.id}...`);
-        const contentResponse = await retryRequest(() => axiosInstance.get(`/${note.id}`));
+        const contentResponse = await retryRequest(() =>
+          axiosInstance.get(`/${note.id}`)
+        );
         note.content = contentResponse.data.content;
         // //console.log(`Fetched content for note ID ${note.id}`);
         return note;

@@ -20,17 +20,17 @@ function Page() {
       password,
       redirect: false,
     });
-  
+
     if (response) {
       const statusCode = response.status ?? null;
       setStatus(statusCode);
-  
+
       if (statusCode !== 200) {
         setIsVisible(true);
         const timer = setTimeout(() => {
           setIsVisible(false);
         }, 4000);
-  
+
         return () => clearTimeout(timer);
       } else {
         router.push('/');
@@ -42,7 +42,7 @@ function Page() {
       const timer = setTimeout(() => {
         setIsVisible(!isVisible);
       }, 4000);
-  
+
       return () => clearTimeout(timer);
     }
   }, [email, password, router]);
@@ -120,18 +120,21 @@ function Page() {
             .
           </p>
           <p>
-            I dont have an account{' '}
-            I don&apos;t have an account{' '}
+            I dont have an account I don&apos;t have an account{' '}
             <a className="underline" href="/auth-register">
               Register
             </a>
           </p>
           <div
             className={`bg-red-500 border w-[90%] rounded-md p-3 absolute right-5 z-10 transition-transform duration-500 border-red-300 text-center ${
-              isVisible ? 'translate-y-0 bottom-5' : 'translate-y-full -bottom-20'
+              isVisible
+                ? 'translate-y-0 bottom-5'
+                : 'translate-y-full -bottom-20'
             }`}
           >
-            <p className="text-sm text-white font-semibold">wrong password or email</p>
+            <p className="text-sm text-white font-semibold">
+              wrong password or email
+            </p>
           </div>
         </section>
       </div>

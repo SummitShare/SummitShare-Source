@@ -36,7 +36,6 @@ function Page({ params }: { params: { token: string } }) {
 
         //console.log("First token received:", params.token)
         //console.log("Second token received:", response)
-
       } catch (error) {
         console.error('Verification request failed:', error);
       }
@@ -46,10 +45,9 @@ function Page({ params }: { params: { token: string } }) {
   }, [params.token]);
   const resendVerificationEmail = async () => {
     try {
-      
       const response = await fetch(
         `${host}/api/v1/user/verification/requestVerification?token=${params.token}`,
-        
+
         {
           method: 'GET',
           headers: {
@@ -94,7 +92,15 @@ function Page({ params }: { params: { token: string } }) {
             : resendVerificationEmail;
         }}
       >
-        <Buttons type="primary" size="large" onClick={ verificationStatus === 200 ? router.push('/auth-sign-in') :()=>resendVerificationEmail() } >
+        <Buttons
+          type="primary"
+          size="large"
+          onClick={
+            verificationStatus === 200
+              ? router.push('/auth-sign-in')
+              : () => resendVerificationEmail()
+          }
+        >
           {verificationStatus === 200 ? 'Continue' : 'Resend'}
         </Buttons>
       </div>

@@ -107,13 +107,13 @@ function Page() {
               //@ts-ignore
               readOnly
             />
-            <Buttons 
-            type="primary" 
-            onClick={handleCopy} 
-            {...({ onClick: handleCopy } as any)}
-          >
-            {copySuccess ? 'Copied!' : 'Copy wallet address'}
-          </Buttons>
+            <Buttons
+              type="primary"
+              onClick={handleCopy}
+              {...({ onClick: handleCopy } as any)}
+            >
+              {copySuccess ? 'Copied!' : 'Copy wallet address'}
+            </Buttons>
           </div>
         </section>
         <div

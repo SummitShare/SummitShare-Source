@@ -8,12 +8,10 @@ import { ConnectKitButton } from 'connectkit';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 
-
 /**
  * PrimaryNav component represents the main navigation bar for the application.
  * It includes navigation links, action buttons, and a responsive menu for smaller screens.
  */
-
 
 const PrimaryNav: React.FC = () => {
   const session = useSession();

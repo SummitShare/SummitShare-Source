@@ -6,8 +6,6 @@ import { useEffect, useRef, useState } from 'react';
 
 function Page({ params }: { params: { token: string } }) {
   const router = useRouter();
- 
-
 
   return (
     <div className=" flex flex-col items-center gap-[35%] px-6 py-10 bg-white h-screen md:w-[50%] lg:w-[30%] md:float-right ">

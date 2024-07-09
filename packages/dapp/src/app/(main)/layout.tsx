@@ -17,8 +17,8 @@ const metadata: Metadata = {
   description:
     'A pioneering digital platform dedicated to the repatriation of African cultural artifacts. ',
   icons: {
-      icon: '/favicon.ico',
-    },
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({
