@@ -17,27 +17,36 @@ function footer() {
           <ul className='w-full  flex flex-col  md:flex-row text-center gap-10'>
             <li className='space-y-2'>
               <h3>Quick links</h3>
+
               <ul className='text-stone-600'>
-                <li><a href="">Blogs</a></li>
-                <li><a href="">Help</a></li>
-                <li><a href="">Partners</a></li>
+                <li><a href="/blog">Blogs</a></li>
+                <li><a href="https://www.kraken.com/learn/web3-wallets">Help</a></li>
+                <li><a href="/partners">Partners</a></li>
               </ul>
             </li>
+            
             <li className='space-y-2'>
               <h3>Other links</h3>
               <ul>
-                <li><a href="">Donate</a></li>
-                <li><a href="">Exhibit</a></li>
-                <li><a href="">Profile</a></li>
+                
+                <li><a href="/donate">Donate</a></li>
+                <li><a href="/distribution">Exhibit</a></li>
+                <li><a href="/profile">Profile</a></li>
 
               </ul>
             </li>
             <li className='space-y-2'>
               <h3>Social links</h3>
-              <ul className='flex flex-col items-center'>
-                <li><a href="">x</a></li>
-                <li  ><a className='flex flex-row gap-2 items-center' href=""><GitHubLogoIcon className="w-4" />Github</a></li>
-                <li><a href="">Instagram</a></li>
+              <ul className="flex flex-col items-center">
+                <li>
+                  <a href="https://x.com/summitshare_zm">X</a>
+                </li>
+                <li>
+                  <a className="flex flex-row gap-2 items-center" href="https://github.com/SummitShare/SummitShare">
+                    <GitHubLogoIcon className="w-4" />
+                    Github
+                  </a>
+                </li>
               </ul>
             </li>
 

@@ -30,7 +30,7 @@ async function createSendTokens(user_id: string, email: string) {
     });
 
     const host = process.env.HOST;
-    const verificationLink = `${host}verifcation/email/${token}`;
+    const verificationLink = `${host}/verifcation/email/${token}`;
 
     const mailOptions = {
       from: emailServer,

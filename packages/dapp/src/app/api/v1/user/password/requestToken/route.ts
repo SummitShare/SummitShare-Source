@@ -21,8 +21,8 @@ async function createSendTokens(user_id: string, email: string) {
     });
 
     const host = process.env.HOST;
-    const verificationLink = `${host}verifcation/email/${verification.id}`;
-    const apiLink = `${host}api/v1/user/password/verifytoken?token=${verification.id}`;
+    const verificationLink = `${host}/verifcation/email/${verification.id}`;
+    const apiLink = `${host}/api/v1/user/password/verifytoken?token=${verification.id}`;
 
     const mailOptions = {
       from: emailServer,
