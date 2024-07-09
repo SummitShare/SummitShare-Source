@@ -144,7 +144,9 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
     }
   };
 
-  const url = 'localhost:3000/api/v1/events/tickets/create';
+  const host = process.env.NEXT_PUBLIC_HOST;
+
+  const url = '${host}/api/v1/events/tickets/create';
 
   // useEffect(() => {
   //   const sendData = async () => {

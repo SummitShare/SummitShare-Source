@@ -56,8 +56,9 @@ function Page({ params }: { params: { token: string } }) {
     if (!token || hasFetched.current) return;
     hasFetched.current = true;
     try {
+      const host = process.env.NEXT_PUBLIC_HOST;
       await fetch(
-        `http://localhost:3000/api/v1/proposal/requests/acceptRequests?token=${token}`,
+        `${host}/api/v1/proposal/requests/acceptRequests?token=${token}`,
         {
           method: 'POST',
           headers: {

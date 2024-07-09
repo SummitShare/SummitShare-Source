@@ -6,25 +6,29 @@ export async function GET(req: Request, res: NextResponse) {
   const url = new URL(req.url!, `http://${host}`);
   const queryParams = new URLSearchParams(url.search);
   const token = queryParams.get('token');
+  console.log("url being sent, ", url)
 
   if (!token) {
+    console.log("Token not sent");
     return NextResponse.json({ message: 'token not sent' }, { status: 403 });
   }
 
   try {
-    //console.log(`recieved token ${token}`)
+    console.log(`recieved token ${token}`)
     const verificationRecord = await prisma.email_verification.findFirst({
       where: { token: token },
     });
 
-    //console.log(`vrecord ${verificationRecord}`)
+    console.log(`vrecord ${verificationRecord}`)
 
     if (!verificationRecord) {
+      console.log("Invalid token v1");
       return NextResponse.json({ message: 'Invalid token' }, { status: 400 });
     }
 
     // Assuming verificationRecord.expires is in a consistent format, e.g., ISO 8601
     if (!verificationRecord.expires) {
+      console.log("Invalid token v2");
       // Handle cases where expires data might be missing or invalid
       return NextResponse.json(
         { message: 'Invalid token data, cannot verify expiration.' },
@@ -43,6 +47,7 @@ export async function GET(req: Request, res: NextResponse) {
     }
     // //console.log(`expiration date ${JSON.stringify(expirationDate.getTime())}`)
     // //console.log(`new date ${JSON.stringify(new Date().getTime())}`)
+    console.log("Expired")
     // Compare the current date (in UTC) to the expiration date
     if (new Date() > expirationDate) {
       return NextResponse.json(
@@ -69,6 +74,7 @@ export async function GET(req: Request, res: NextResponse) {
       { status: 200 }
     );
   } catch (error) {
+    console.error(error);
     return NextResponse.json(
       { message: 'faliure', error: error },
       { status: 500 }

@@ -169,9 +169,9 @@ async function createVisitor(
 
 export async function POST(req: Request, res: NextResponse) {
   try {
-    if (!req.body || Object.keys(req.body).length === 0) {
-      return NextResponse.json({ error: 'No data provided' }, { status: 400 });
-    }
+    // if (!req.body || Object.keys(req.body).length === 0) {
+    //   return NextResponse.json({ error: 'No data provided' }, { status: 400 });
+    // }
     const { email, password, username, type, wallet_address } =
       await req.json();
     // Check if user already exists

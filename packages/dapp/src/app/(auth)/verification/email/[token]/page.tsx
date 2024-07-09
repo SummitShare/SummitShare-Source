@@ -9,6 +9,7 @@ function Page({ params }: { params: { token: string } }) {
   const [verificationStatus, setVerificationStatus] = useState<number>();
   const [verificationMessage, setVerificationMessage] = useState<number>();
   const hasFetched = useRef(false);
+  const host = process.env.NEXT_PUBLIC_HOST;
 
   useEffect(() => {
     const verifyEmail = async () => {
@@ -17,7 +18,7 @@ function Page({ params }: { params: { token: string } }) {
 
       try {
         const response = await fetch(
-          `http://localhost:3000/api/v1/user/verification/verifyEmail?token=${params.token}`,
+          `${host}/api/v1/user/verification/verifyEmail?token=${params.token}`,
           {
             method: 'GET',
             headers: {
@@ -33,6 +34,9 @@ function Page({ params }: { params: { token: string } }) {
         setVerificationMessage(message);
         setVerificationStatus(response?.status);
 
+        console.log("First token received:", params.token)
+        console.log("Second token received:", response)
+
       } catch (error) {
         console.error('Verification request failed:', error);
       }
@@ -42,8 +46,10 @@ function Page({ params }: { params: { token: string } }) {
   }, [params.token]);
   const resendVerificationEmail = async () => {
     try {
+      
       const response = await fetch(
-        `http://localhost:3000/api/v1/user/verification/requestVerification?token=${params.token}`,
+        `${host}/api/v1/user/verification/requestVerification?token=${params.token}`,
+        
         {
           method: 'GET',
           headers: {
