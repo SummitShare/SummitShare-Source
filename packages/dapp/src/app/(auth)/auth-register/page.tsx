@@ -11,20 +11,17 @@ function Page() {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [email, setEmail] = useState();
+  const [email, setEmail] = useState('');
   const [status, setStatus] = useState<number>();
+  const [usernameError, setUsernameError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const createUser = async ({ email, password, username }: any) => {
-    // Ensure HOST is read correctly, considering Next.js environment variables need to be prefixed with NEXT_PUBLIC_ if they are to be used on the client-side.
     const host = process.env.NEXT_PUBLIC_HOST;
-    ////console.log(`host ${host} `);
-
-    // Construct the URL with the correct protocol (http or https) and ensure that the HOST variable includes the entire domain.
     const url = `${host}/api/v1/signup`;
-    ////console.log(`url ${url} `);
 
     try {
-      //console.log(url)
       const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -38,14 +35,8 @@ function Page() {
         }),
       });
 
-      // Check if the response is ok (status in the range 200-299)
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status} - ${response.statusText}`);
-      }
-
       setStatus(response.status);
-      // Assuming the server responds with JSON.
-      return response.json();
+      return response;
     } catch (error) {
       console.error('Failed to create user:', error);
       throw error;
@@ -53,13 +44,23 @@ function Page() {
   };
 
   const onSubmit = async (data: any) => {
-    //console.log(data)
-    const response = await createUser(data);
-    //console.log(response);
-    router.push('/verification/email');
-    //console.log(data);
+    try {
+      const response = await createUser(data);
+      if (response.status === 409) {
+        const errorData = await response.json();
+        setErrorMessage('Username or email already exists');
+        setUsernameError(true);
+        setEmailError(true);
+      } else if (response.ok) {
+        router.push('/verification/email');
+      } else {
+        setErrorMessage('An error occurred. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error during submission:', error);
+      setErrorMessage('An error occurred. Please try again.');
+    }
   };
-
   return (
     <main className="h-screen flex flex-col justify-end items-center bg-[url('https://images.unsplash.com/photo-1621419203897-20b66b98d495?q=80&w=2342&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-cover bg-center md:flex-row">
       <div className="bg-gray-950/35 fixed inset-0"></div>
@@ -93,17 +94,27 @@ function Page() {
             <section className="space-y-4">
               <Inputs
                 type="input"
-                state="active"
+                //@ts-ignore
+                state={usernameError ? 'error' : 'active'}
                 label="Username"
                 value={username}
-                onChange={(value) => setUsername(value)}
+                onChange={(value) => {
+                  setUsername(value);
+                  setUsernameError(false);
+                  setErrorMessage('');
+                }}
               />
               <Inputs
                 type="input"
-                state="active"
+                //@ts-ignore
+                state={emailError ? 'error' : 'active'}
                 label="Email"
                 value={email}
-                onChange={(value) => setEmail(value)}
+                onChange={(value) => {
+                  setEmail(value);
+                  setEmailError(false);
+                  setErrorMessage('');
+                }}
               />
               <Inputs
                 type="input"
@@ -114,12 +125,14 @@ function Page() {
               />
             </section>
           </form>
+          {errorMessage && (
+            <p className="text-red-500 text-sm mt-2">{errorMessage}</p>
+          )}
         </section>
         <section className="text-center space-y-6">
           <Buttons
             type="primary"
             size="large"
-            //@ts-ignore
             onClick={() => onSubmit({ email, password, username })}
           >
             Create my account

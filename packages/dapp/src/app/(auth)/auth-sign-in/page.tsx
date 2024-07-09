@@ -1,7 +1,7 @@
 'use client';
 import Buttons from '@/app/components/button/Butons';
 import Inputs from '@/app/components/inputs/Inputs';
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -10,7 +10,7 @@ import Image from 'next/image';
 function Page() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [status, setStatus] = useState<number | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const [isVisible, setIsVisible] = useState(false);
   const router = useRouter();
 
@@ -22,10 +22,13 @@ function Page() {
     });
 
     if (response) {
-      const statusCode = response.status ?? null;
-      setStatus(statusCode);
-
-      if (statusCode !== 200) {
+      if (response.error) {
+        // Handle different error types
+        if (response.status === 401) {
+          setErrorMessage('Username or email incorrect');
+        } else {
+          setErrorMessage('An error occurred. Please try again.');
+        }
         setIsVisible(true);
         const timer = setTimeout(() => {
           setIsVisible(false);
@@ -33,22 +36,12 @@ function Page() {
 
         return () => clearTimeout(timer);
       } else {
+        // Successful login
         router.push('/');
       }
     } else {
       // Handle the case where response is undefined
-      setStatus(null);
-      setIsVisible(true);
-      const timer = setTimeout(() => {
-        setIsVisible(!isVisible);
-      }, 4000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [email, password, router]);
-
-  useEffect(() => {
-    if (status !== null && status !== 200) {
+      setErrorMessage('An error occurred. Please try again.');
       setIsVisible(true);
       const timer = setTimeout(() => {
         setIsVisible(false);
@@ -56,7 +49,7 @@ function Page() {
 
       return () => clearTimeout(timer);
     }
-  }, [status]);
+  }, [email, password, router]);
 
   return (
     <main className="h-screen flex flex-col justify-end items-center bg-[url('https://images.unsplash.com/photo-1606885118474-c8baf907e998?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YWZyaWNhbiUyMGFydHxlbnwwfHwwfHx8MA%3D%3D')] bg-cover bg-center md:flex-row">
@@ -120,7 +113,7 @@ function Page() {
             .
           </p>
           <p>
-            I dont have an account I don&apos;t have an account{' '}
+            I don&apos;t have an account{' '}
             <a className="underline" href="/auth-register">
               Register
             </a>
@@ -132,9 +125,7 @@ function Page() {
                 : 'translate-y-full -bottom-20'
             }`}
           >
-            <p className="text-sm text-white font-semibold">
-              wrong password or email
-            </p>
+            <p className="text-sm text-white font-semibold">{errorMessage}</p>
           </div>
         </section>
       </div>
