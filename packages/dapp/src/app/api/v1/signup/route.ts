@@ -33,7 +33,7 @@ async function createSendTokens(user: users, email: string) {
     // const host = req.headers.get('host');
     const host = process.env.HOST;
     //${host}api/v1/user/verification/verifyEmail?token=${token}
-    const verificationLink = `${host}/verifcation/email/${token}`;
+    const verificationLink = `${host}/verification/email/${token}`;
 
     const mailOptions = {
       from: emailServer,
@@ -169,6 +169,9 @@ async function createVisitor(
 
 export async function POST(req: Request, res: NextResponse) {
   try {
+    if (!req.body || Object.keys(req.body).length === 0) {
+      return NextResponse.json({ error: 'No data provided' }, { status: 400 });
+    }
     const { email, password, username, type, wallet_address } =
       await req.json();
     // Check if user already exists
