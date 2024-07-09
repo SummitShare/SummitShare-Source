@@ -108,7 +108,7 @@ function Page() {
             .
           </p>
           <p>
-            I don't have an account{' '}
+            I don&apos;t have an account{' '}
             <a className="underline" href="/auth-register">
               Register
             </a>
