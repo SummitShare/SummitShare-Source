@@ -71,8 +71,8 @@ function Page({ params }: { params: { token: string } }) {
       console.error('Verification request failed:', error);
     }
 
-    // //console.log(`token ${token}`)
-    // //console.log(`choice ${response}`)
+    // ////console.log(`token ${token}`)
+    // ////console.log(`choice ${response}`)
 
     router.push('/');
   };
@@ -84,8 +84,8 @@ function Page({ params }: { params: { token: string } }) {
   //   // });
   //     // const { status } = response
   //     // const { message } = await response.json()
-  //     //console.log(`token ${dataToken}`)
-  //     //console.log(`choice ${response}`)
+  //     ////console.log(`token ${dataToken}`)
+  //     ////console.log(`choice ${response}`)
 
   //     // setVerificationMessage(message);
   //     // setverificationStatus(response?.status)

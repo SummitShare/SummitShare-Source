@@ -23,7 +23,7 @@ export async function sendEmail(
 
   try {
     await transporter.sendMail(mailOptions);
-    //console.log('Email sent successfully');
+    ////console.log('Email sent successfully');
     return true;
   } catch (error) {
     console.error('Failed to send email:', error);

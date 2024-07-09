@@ -46,17 +46,17 @@ export const fetchAllTeamNotes = async (): Promise<Note[]> => {
   }
 
   try {
-    // console.log('Fetching all team notes...');
+    // //console.log('Fetching all team notes...');
     const response = await retryRequest(() => axiosInstance.get('/'));
-    // console.log('Fetched notes:', response.data);
+    // //console.log('Fetched notes:', response.data);
     const notes: Note[] = response.data;
 
     const notesWithContent = await Promise.all(
       notes.map(async (note) => {
-        // console.log(`Fetching content for note ID ${note.id}...`);
+        // //console.log(`Fetching content for note ID ${note.id}...`);
         const contentResponse = await retryRequest(() => axiosInstance.get(`/${note.id}`));
         note.content = contentResponse.data.content;
-        // console.log(`Fetched content for note ID ${note.id}`);
+        // //console.log(`Fetched content for note ID ${note.id}`);
         return note;
       })
     );
@@ -95,9 +95,9 @@ export const fetchNoteContent = async (noteId: string): Promise<any> => {
   }
 
   try {
-    // console.log(`Fetching content for note ID ${noteId}...`);
+    // //console.log(`Fetching content for note ID ${noteId}...`);
     const response = await retryRequest(() => axiosInstance.get(`/${noteId}`));
-    // console.log(`Fetched content for note ID ${noteId}:`, response.data);
+    // //console.log(`Fetched content for note ID ${noteId}:`, response.data);
 
     // Cache the data
     cache[cacheKey] = {

@@ -28,14 +28,14 @@ function Page({ params }: { params: { token: string } }) {
         );
         const { status } = response;
         const { message } = await response.json();
-        // //console.log(`status ${status}`)
-        // //console.log(`message ${message}`)
+        // ////console.log(`status ${status}`)
+        // ////console.log(`message ${message}`)
 
         setVerificationMessage(message);
         setVerificationStatus(response?.status);
 
-        console.log("First token received:", params.token)
-        console.log("Second token received:", response)
+        //console.log("First token received:", params.token)
+        //console.log("Second token received:", response)
 
       } catch (error) {
         console.error('Verification request failed:', error);
@@ -60,7 +60,7 @@ function Page({ params }: { params: { token: string } }) {
 
       if (response.ok) {
         // Handle success
-        // //console.log('Verification email resent successfully.');
+        // ////console.log('Verification email resent successfully.');
       } else {
         // Handle failure
         console.error('Failed to resend verification email.');

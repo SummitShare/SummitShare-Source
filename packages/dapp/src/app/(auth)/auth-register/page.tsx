@@ -21,14 +21,14 @@ function Page() {
   }: any) => {
     // Ensure HOST is read correctly, considering Next.js environment variables need to be prefixed with NEXT_PUBLIC_ if they are to be used on the client-side.
     const host = process.env.NEXT_PUBLIC_HOST;
-    //console.log(`host ${host} `);
+    ////console.log(`host ${host} `);
 
     // Construct the URL with the correct protocol (http or https) and ensure that the HOST variable includes the entire domain.
     const url = `${host}/api/v1/signup`;
-    //console.log(`url ${url} `);
+    ////console.log(`url ${url} `);
 
     try {
-      console.log(url)
+      //console.log(url)
       const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -57,11 +57,11 @@ function Page() {
   };
 
   const onSubmit = async (data: any) => {
-    console.log(data)
+    //console.log(data)
     const response = await createUser(data);
-    console.log(response);
+    //console.log(response);
     router.push('/verification/email');
-    console.log(data);
+    //console.log(data);
   };
 
   return (

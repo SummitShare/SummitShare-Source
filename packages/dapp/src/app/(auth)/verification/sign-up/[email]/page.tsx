@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 function Page({ params }: { params: { email: string } }) {
   const mail = decodeURIComponent(params.email as string);
 
-  // //console.log(mail);
+  // ////console.log(mail);
 
   return (
     <div className=" w-full flex items-center justify-center fixed inset-0 bg-gray-50 z-20 ">

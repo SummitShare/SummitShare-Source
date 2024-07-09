@@ -61,6 +61,6 @@ export default useRecentExhibits;
  *   const recentExhibits = useRecentExhibits();
  *
  *   // The recent exhibits data can now be accessed through the `recentExhibits` variable
- *   //console.log(recentExhibits);
+ *   ////console.log(recentExhibits);
  * }
  */
