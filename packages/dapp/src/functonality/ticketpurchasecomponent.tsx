@@ -94,12 +94,13 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
   }
   // set ticket price from object pulled from subgraph
   const ticketPrice = exhibit.exhibitDetails[0]?.ticketPrice || '';
-  //console.log("details", exhibit);
+  console.log("details:", exhibit);
 
   // human readable ticket price for frontend
   const ticketPriceWei = BigInt(ticketPrice);
-  const ticketPriceFormatted = ethers.utils.formatUnits(ticketPriceWei, 18);
+  const ticketPriceFormatted = ethers.utils.formatUnits(ticketPriceWei, 6);
   const ticketPriceWithToken = `${ticketPriceFormatted} USDT`;
+  console.log("ticketPrice:", ticketPriceWithToken);
 
   // Function to handle ticket purchase
   const purchaseTicket = async () => {
