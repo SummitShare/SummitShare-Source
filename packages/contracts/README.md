@@ -23,7 +23,6 @@ Museum
 ExhibitNFT
 └──► EventEscrow        - Managed by EventEscrow for ticket sales and revenue handling.
 
-Donations               - Facilitates donations of ERC20tokens to either the project multisig or a particular heritage                  commmunity
 ```
 
 ---
@@ -35,7 +34,6 @@ Donations               - Facilitates donations of ERC20tokens to either the pro
 
 - **Purpose:** Facilitates the representation of digital or physical artifacts as unique, indivisible tokens on the blockchain.
 - **Key Contracts:** [`ArtifactNFT.sol`](https://github.com/bicos-io01/Revenue-Sharing-Source/blob/Central/packages/contracts/contracts/ArtifactNFT.sol)
-- **Interaction Script within Dapp:** [`artifactNFT/route.ts`](https://github.com/bicos-io01/Revenue-Sharing-Source/blob/Central/packages/dapp/src/app/api/artifactNFT/route.ts)
 - **Application Context:** This contract is responsible for minting NFTs that represent artifacts within the platform. Each token encapsulates metadata detailing the artifact's attributes, provenance, and ownership history.
 - **Execution Flow:** Initiation of the `mint` function within `ArtifactNFT.sol` generates a new token. This process involves specifying the token's metadata, which includes details about the artifact it represents. Once minted, these tokens can be transferred between addresses, representing changes in ownership or loans to exhibitions.
 
@@ -43,7 +41,6 @@ Donations               - Facilitates donations of ERC20tokens to either the pro
 
 - **Purpose:** Enables the platform to manage virtual exhibitions and engage stakeholders in democratic decision-making processes.
 - **Key Contracts:** [`EventOrganizerService.sol`](https://github.com/bicos-io01/Revenue-Sharing-Source/blob/Central/packages/contracts/contracts/EventOrganizerService.sol)
-- **Interaction Script within Dapp:** [`deployExhibit/route.ts`](https://github.com/bicos-io01/Revenue-Sharing-Source/blob/Central/packages/dapp/src/app/api/deployExhibit/route.ts)
 - **Application Context:** Utilized to organize exhibits, manage stakeholder proposals, and facilitate consensus-driven decisions. It acts as the central controller, coordinating between different components of the platform.
 - **Execution Flow:** Stakeholders submit proposals that have succesfully been voted on and have reached consensus **(100%)** via the `EventOrganizerService`, which facilitates the posting of exhibtions onto chain as well as the management of contract events for data aggregation via the [subgraph](https://github.com/bicos-io01/Revenue-Sharing-Source/tree/Central/packages/subgraph).
 
