@@ -95,3 +95,19 @@ export const contracts = {
     );
   },
 };
+
+
+export async function estimateGas(
+  contract: ethers.Contract,
+  method: string,
+  args: any[]
+): Promise<bigint> {
+  try {
+    const estimatedGas = await contract.estimateGas[method](...args);
+    // Add a buffer to the estimated gas (e.g., 20% more)
+    return BigInt(Math.floor(Number(estimatedGas) * 1.2));
+  } catch (error) {
+    console.error(`Error estimating gas for ${method}:`, error);
+    throw error;
+  }
+}
