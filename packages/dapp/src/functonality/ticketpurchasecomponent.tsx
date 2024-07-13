@@ -2,14 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { ethers } from 'ethers';
 import { TicketPurchaseProps, EthereumWindow } from '@/utils/dev/typeInit';
-import { createTicketProps } from '@/utils/dev/frontEndInterfaces';
-import { CONTRACT_ADDRESSES, contracts } from '@/utils/dev/contractInit';
+import { CONTRACT_ADDRESSES, contracts, estimateGas } from '@/utils/dev/contractInit';
 import { handleContractError } from '@/utils/dev/handleContractError';
 import useExhibit from '@/lib/useGetExhibitById';
 import { useSession } from 'next-auth/react';
 import Buttons from '@/app/components/button/Butons';
-import { useAccount } from 'wagmi';
-import { XMarkIcon } from '@heroicons/react/24/outline';
 
 const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
   const session = useSession();
@@ -18,6 +15,7 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
 
   // Hardcoded exhibit ID for demo
   const exhibitId = CONTRACT_ADDRESSES.exhibitId;
+  const eventId = CONTRACT_ADDRESSES.eventId;
 
   // State hooks for managing component state
   const [status, setStatus] = useState<string>('');
@@ -94,7 +92,15 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
   if (!exhibit) {
     return <div>Loading or no Matching Exhibit Found.</div>;
   }
+  // set ticket price from object pulled from subgraph
   const ticketPrice = exhibit.exhibitDetails[0]?.ticketPrice || '';
+  //console.log("details:", exhibit);
+
+  // human readable ticket price for frontend
+  const ticketPriceWei = BigInt(ticketPrice);
+  const ticketPriceFormatted = ethers.utils.formatUnits(ticketPriceWei, 6);
+  const ticketPriceWithToken = `${ticketPriceFormatted} USDT`;
+ // console.log("ticketPrice:", ticketPriceWithToken);
 
   // Function to handle ticket purchase
   const purchaseTicket = async () => {
@@ -108,31 +114,25 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
       const usdcContract = contracts.getMUSDC();
       const museumContract = contracts.getMuseum();
 
-      // Approve USDC transfer for ticket purchase
-      setStatus('Approving USDC transfer...');
-      const gasLimitApprove = await usdcContract.estimateGas.approve(
-        CONTRACT_ADDRESSES.MuseumAdd,
-        ticketPrice
-      );
+      // Execute token approval 
+      setStatus('Approving token transfer...');
+      const gasLimitApprove = await estimateGas(usdcContract, 'approve', [CONTRACT_ADDRESSES.MuseumAdd, ticketPrice]);
       const approveTx = await usdcContract.approve(
         CONTRACT_ADDRESSES.MuseumAdd,
         ticketPrice,
         { gasLimit: gasLimitApprove }
-      ); // { gasLimit });
+      );
       await approveTx.wait(2);
-
+      
       // Execute ticket purchase transaction
       setStatus('Purchasing ticket...');
-      const gasLimitPurchase = await museumContract.estimateGas.purchaseTicket(
-        exhibitId,
-        ticketPrice
-      );
+      const gasLimitPurchase = await estimateGas(museumContract, 'purchaseTicket', [eventId, ticketPrice]);
       const purchaseTx = await museumContract.purchaseTicket(
-        exhibitId,
+        eventId,
         ticketPrice,
         { gasLimit: gasLimitPurchase }
-      ); //{ gasLimit });
-      await purchaseTx.wait(4);
+      );
+      await purchaseTx.wait(2);
 
       //State update after successful ticket purchase
       setPurchaseSuccessful(true);

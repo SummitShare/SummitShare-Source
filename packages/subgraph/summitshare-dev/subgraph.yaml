@@ -9,8 +9,8 @@ dataSources:
     network: sepolia
     source:
       abi: EventOrganizerService
-      address: "0xdFB611127315848Fd0D53226eC886BbF6514B5D1"
-      startBlock: 4751265
+      address: "0x844188D0E7CAfCf4183714f48150223a11AdE341"
+      startBlock: 6302990
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -41,8 +41,8 @@ dataSources:
     network: sepolia
     source:
       abi: Museum
-      address: "0xF4857Efc226Bb39C6851Aa137347CFf8F8e050F9"
-      startBlock: 4751264
+      address: "0x45804953C8C7e8C261cB1269039C8CE6700D56C7"
+      startBlock: 6302989
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7

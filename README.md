@@ -2,7 +2,9 @@
 **Follow** [SummitShare](https://twitter.com/summitshare_zm) on X/Twitter for the latest updates and discussions.
 [**Email**](mailto:summitshare.eth@gmail.com) the building team for collaborations, PRs, issues, bugs, etc. 
 
+![summitsharep](https://github.com/bicos-io01/Revenue-Sharing-Source/assets/83420013/649df241-e29c-404f-aafb-409153cac786)
 
+**note:** this is the development/working repository. The official github organization can be found [here](https://github.com/SummitShare)
 ## Introduction
 
 **SummitShare** stands as a pioneering digital platform dedicated to the repatriation of African cultural artifacts. Bridging the past and present, it serves as a beacon of hope and a testament to the resilience of African heritage, utilizing the power of blockchain technology to reclaim, celebrate, and share the rich tapestry of Africa's history with the world.

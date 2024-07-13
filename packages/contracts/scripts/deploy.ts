@@ -26,18 +26,17 @@ async function main() {
 
   // Deploy ArtifactNFT
   const artifact1 = {
-    name: "LusakaCollection",
-    symbol: "LAGC",
+    name: "",
+    symbol: "",
     owner: owner.address,
-    baseURI: "http://localhost:3000/api/nft/",
+    baseURI: "",
   }
   const artifact2 = {
-    name: "WomenCollection",
-    symbol: "WHMC",
+    name: "",
+    symbol: "",
     owner: owner.address,
-    baseURI: "http://localhost:3000/api/nft/",
+    baseURI: "",
   }
-
 
   const tx0 = await organizerService.connect(owner).deployArtifactNFT(
     artifact1.name,
@@ -46,7 +45,12 @@ async function main() {
     artifact1.baseURI
   );
   const receipt0 = await tx0.wait(6);
-  ////console.log("Deployed ArtifactNFT 1", receipt0.status)
+  console.log("Deployed ArtifactNFT 1", receipt0.status)
+
+  console.log("Events from ArtifactNFT 1 deployment:");
+  receipt0.logs.forEach((log, index) => {
+    console.log(`Event ${index}:`, log.eventName, log.args);
+  });
 
   const tx00 = await organizerService.connect(owner).deployArtifactNFT(
     artifact2.name,
@@ -55,13 +59,17 @@ async function main() {
     artifact2.baseURI
   );
   const receipt00 = await tx00.wait(6);
-  ////console.log("Deployed ArtifactNFT 2", receipt00.status)
+  console.log("Deployed ArtifactNFT 2", receipt00.status)
+
+  console.log("\nEvents from ArtifactNFT 2 deployment:");
+  receipt00.logs.forEach((log, index) => {
+    console.log(`Event ${index}:`, log.eventName, log.args);
+  });
 
   // log addresses
-  ////console.log("MUSDC deployed to:", usdcToken.target);
-  ////console.log("Museum deployed to:", museum.target);
-  ////console.log("EventOrganizerService deployed to:", organizerService.target);
-
+  console.log("MUSDC deployed to:", usdcToken.target);
+  console.log("Museum deployed to:", museum.target);
+  console.log("EventOrganizerService deployed to:", organizerService.target);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
