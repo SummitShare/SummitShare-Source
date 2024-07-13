@@ -13,28 +13,28 @@ async function main() {
 
   
     const exhibit1 ={
-        name: "Kizumonogatari III: Reiketsu-hen",
-        symbol: "KMGIII",
-        ticketPrice: ethers.parseUnits("10", 6),
+        name: "",
+        symbol: "",
+        ticketPrice: ethers.parseUnits("0", 6),
         beneficiaries: [beneficiary1.address, beneficiary2.address],
         shares: [50, 50],
-        baseURI: "https://s3.tebi.io/summitsharemetadata/leadingLadies",
-        location: "Lusaka,Zambia",
-        artifactNFT: artifactNFT1,
-        details: "Expressing the word with color",
-        id: "KMGIII"
+        baseURI: "",
+        location: "",
+        artifactNFT: "",
+        details: "",
+        id: ""
     }
     const exhibit2 ={
-        name: "Kizumonogatari II: Nekketsu-hen",
-        symbol: "KMGII",
-        ticketPrice: ethers.parseUnits("10", 6),
+        name: "",
+        symbol: "",
+        ticketPrice: ethers.parseUnits("0", 6),
         beneficiaries: [beneficiary1.address, beneficiary2.address],
         shares: [50, 50],
-        baseURI: "https://s3.tebi.io/summitsharemetadata/leadingLadies",
-        location: "New York,USA",
-        artifactNFT: artifactNFT2,
-        details: "Those who walked before us and those to come.",
-        id: "KMGII"
+        baseURI: "",
+        location: "",
+        artifactNFT: "",
+        details: "",
+        id: ""
     }
 
     // Connect to the contracts
@@ -47,6 +47,7 @@ async function main() {
     const museum = Museum.attach(museumAddress).connect(owner);
     const usdcToken = UsdcToken.attach(usdcTokenAddress).connect(owner);
     const artifactNFT = ArtifactNFT.attach(artifactNFT1).connect(owner);
+    const artifactNFTD = ArtifactNFT.attach(artifactNFT2).connect(owner)
     
     // Organize an exhibit
     const tx1 = await organizerService.connect(owner).organizeExhibit( 
@@ -80,26 +81,37 @@ async function main() {
  
  
     // Read the contract state
-    const exhibitNFTAddress = await organizerService.exhibits("KMGIII");
-    const exhibit2NFTAddress = await organizerService.exhibits("KMGII");
-    console.log("ExhibitNFT deployed to:", exhibitNFTAddress)
+    const exhibitNFTAddress = await organizerService.exhibits("eventID");
+    const exhibit2NFTAddress = await organizerService.exhibits("eventID2");
+    console.log("ExhibitNFT 1 deployed to:", exhibitNFTAddress)
+    console.log("ExhibitNFT 2 deployed to:", exhibit2NFTAddress)
 
-    const tx3 =  await museum.curateExhibit("KMGIII", exhibitNFTAddress);
+    const tx3 =  await museum.curateExhibit("eventID", exhibitNFTAddress);
     const receipt3 = await tx3.wait(6);
     console.log("Curated Exhibit 1", receipt3.status)
 
-    // get usdcToken set on museum
-    const exhibitMuseumAddress = await museum.exhibits("KMGIII");
-    console.log("ExhibitNFT deployed to:", exhibitNFTAddress)
-    console.log("ExhibitMuseum deployed to:", exhibitMuseumAddress)
-    console.log("ExhibitNFT deployed to:", exhibit2NFTAddress)
+    const tx6 =  await museum.curateExhibit("eventID2", exhibitNFTAddress);
+    const receipt6 = await tx6.wait(6);
+    console.log("Curated Exhibit 2", receipt6.status)
 
-    //mint artifactNFTs
+    // get usdcToken set on museum exhibits
+    const exhibitMuseumAddress = await museum.exhibits("eventID");
+    const exhibit2MuseumAddress = await museum.exhibits("eventID2");
+
+    console.log("ExhibitNFT 1 deployed to:", exhibitNFTAddress)
+    console.log("Exhibit1 Museum deployed to:", exhibitMuseumAddress)
+    console.log("ExhibitNFT 2 deployed to:", exhibit2NFTAddress)
+    console.log("Exhibit 2 Museum deployed to:", exhibit2MuseumAddress)
+
+    //mint artifactNFTs - exhibit 1
     const tx4 = await artifactNFT.mint(owner.address, 4);
     const receipt4 = await tx4.wait(6);
     console.log("Minted ArtifactNFT 1", receipt4.status)
 
-
+    //mint artifactNFTs - exhibit 2
+    const tx5 = await artifactNFTD.mint(owner.address, 4);
+    const receipt5 = await tx4.wait(6);
+    console.log("Minted ArtifactNFT 1", receipt5.status)
     
   
   // // Purchase a few tickets
