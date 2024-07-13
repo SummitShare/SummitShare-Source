@@ -38,7 +38,6 @@ async function main() {
     baseURI: "",
   }
 
-
   const tx0 = await organizerService.connect(owner).deployArtifactNFT(
     artifact1.name,
     artifact1.symbol,
@@ -48,11 +47,10 @@ async function main() {
   const receipt0 = await tx0.wait(6);
   console.log("Deployed ArtifactNFT 1", receipt0.status)
 
-    // Find the event that contains the deployed ArtifactNFT address
-    const artifactNFT1Address = receipt0.logs.find(
-      log => log.fragment && log.fragment.name === 'ArtifactNFTDeployed'
-    ).args.artifactNFT;
-    
+  console.log("Events from ArtifactNFT 1 deployment:");
+  receipt0.logs.forEach((log, index) => {
+    console.log(`Event ${index}:`, log.eventName, log.args);
+  });
 
   const tx00 = await organizerService.connect(owner).deployArtifactNFT(
     artifact2.name,
@@ -63,18 +61,15 @@ async function main() {
   const receipt00 = await tx00.wait(6);
   console.log("Deployed ArtifactNFT 2", receipt00.status)
 
-    // Find the event that contains the deployed ArtifactNFT address
-    const artifactNFT2Address = receipt00.logs.find(
-      log => log.fragment && log.fragment.name === 'ArtifactNFTDeployed'
-    ).args.artifactNFT;
+  console.log("\nEvents from ArtifactNFT 2 deployment:");
+  receipt00.logs.forEach((log, index) => {
+    console.log(`Event ${index}:`, log.eventName, log.args);
+  });
 
   // log addresses
   console.log("MUSDC deployed to:", usdcToken.target);
   console.log("Museum deployed to:", museum.target);
   console.log("EventOrganizerService deployed to:", organizerService.target);
-  console.log("ArtifactNFT 1 deployed to:", artifactNFT1Address);
-  console.log("ArtifactNFT 2 deployed to:", artifactNFT2Address);
-
 }
 
 // We recommend this pattern to be able to use async/await everywhere
