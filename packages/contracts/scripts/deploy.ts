@@ -26,16 +26,16 @@ async function main() {
 
   // Deploy ArtifactNFT
   const artifact1 = {
-    name: "LusakaCollection",
-    symbol: "LAGC",
+    name: "",
+    symbol: "",
     owner: owner.address,
-    baseURI: "http://localhost:3000/api/nft/",
+    baseURI: "",
   }
   const artifact2 = {
-    name: "WomenCollection",
-    symbol: "WHMC",
+    name: "",
+    symbol: "",
     owner: owner.address,
-    baseURI: "http://localhost:3000/api/nft/",
+    baseURI: "",
   }
 
 
@@ -46,7 +46,13 @@ async function main() {
     artifact1.baseURI
   );
   const receipt0 = await tx0.wait(6);
-  ////console.log("Deployed ArtifactNFT 1", receipt0.status)
+  console.log("Deployed ArtifactNFT 1", receipt0.status)
+
+    // Find the event that contains the deployed ArtifactNFT address
+    const artifactNFT1Address = receipt0.logs.find(
+      log => log.fragment && log.fragment.name === 'ArtifactNFTDeployed'
+    ).args.artifactNFT;
+    
 
   const tx00 = await organizerService.connect(owner).deployArtifactNFT(
     artifact2.name,
@@ -55,12 +61,19 @@ async function main() {
     artifact2.baseURI
   );
   const receipt00 = await tx00.wait(6);
-  ////console.log("Deployed ArtifactNFT 2", receipt00.status)
+  console.log("Deployed ArtifactNFT 2", receipt00.status)
+
+    // Find the event that contains the deployed ArtifactNFT address
+    const artifactNFT2Address = receipt00.logs.find(
+      log => log.fragment && log.fragment.name === 'ArtifactNFTDeployed'
+    ).args.artifactNFT;
 
   // log addresses
-  ////console.log("MUSDC deployed to:", usdcToken.target);
-  ////console.log("Museum deployed to:", museum.target);
-  ////console.log("EventOrganizerService deployed to:", organizerService.target);
+  console.log("MUSDC deployed to:", usdcToken.target);
+  console.log("Museum deployed to:", museum.target);
+  console.log("EventOrganizerService deployed to:", organizerService.target);
+  console.log("ArtifactNFT 1 deployed to:", artifactNFT1Address);
+  console.log("ArtifactNFT 2 deployed to:", artifactNFT2Address);
 
 }
 
