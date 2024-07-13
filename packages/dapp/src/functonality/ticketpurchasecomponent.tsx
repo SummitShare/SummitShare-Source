@@ -15,7 +15,7 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
 
   // Hardcoded exhibit ID for demo
   const exhibitId = CONTRACT_ADDRESSES.exhibitId;
-  const eventId = "exhibit1"
+  const eventId = CONTRACT_ADDRESSES.eventId;
 
   // State hooks for managing component state
   const [status, setStatus] = useState<string>('');
