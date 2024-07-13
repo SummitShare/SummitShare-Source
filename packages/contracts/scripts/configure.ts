@@ -5,36 +5,36 @@ async function main() {
     // Get the signers
     const [controller, owner, beneficiary1, beneficiary2, funder] = await ethers.getSigners();
     // Hardcoded addresses
-    const usdcTokenAddress = "0xDd4c60185608108D073C19432eef0ae50AB3830d";
-    const museumAddress = "0xF4857Efc226Bb39C6851Aa137347CFf8F8e050F9";
-    const organizerServiceAddress = "0xdFB611127315848Fd0D53226eC886BbF6514B5D1";
-    const artifactNFT1 = "0x160f48cad57bf2a4f537df5fbb24277619f34ac5";
-    const artifactNFT2 = "0x5851195868fdc91585cc2308595c2b8c992c06f2";
+    const usdcTokenAddress = "0xF4Fa9d3d03A946Ae032Ca5f94CFe11e4B33340d7";
+    const museumAddress = "0x45804953C8C7e8C261cB1269039C8CE6700D56C7";
+    const organizerServiceAddress = "0x844188D0E7CAfCf4183714f48150223a11AdE341";
+    const artifactNFT1 = "0x5A9c008A6fFd63ca591369DF8c5DB987f359d7c8";
+    const artifactNFT2 = "0x4bCd14f57B4591E99A3689fC669932F40FD64aD5";
 
   
     const exhibit1 ={
-        name: "Demo 3",
-        symbol: "DE3",
-        ticketPrice: ethers.parseUnits("10", 18),
+        name: "Kizumonogatari III: Reiketsu-hen",
+        symbol: "KMGIII",
+        ticketPrice: ethers.parseUnits("10", 6),
         beneficiaries: [beneficiary1.address, beneficiary2.address],
         shares: [50, 50],
-        baseURI: "http://localhost:3000/api/ticket/",
+        baseURI: "https://s3.tebi.io/summitsharemetadata/leadingLadies",
         location: "Lusaka,Zambia",
         artifactNFT: artifactNFT1,
         details: "Expressing the word with color",
-        id: "DE30"
-    } 
+        id: "KMGIII"
+    }
     const exhibit2 ={
-        name: "Demo 4",
-        symbol: "DE4",
-        ticketPrice: ethers.parseUnits("10", 18),
+        name: "Kizumonogatari II: Nekketsu-hen",
+        symbol: "KMGII",
+        ticketPrice: ethers.parseUnits("10", 6),
         beneficiaries: [beneficiary1.address, beneficiary2.address],
         shares: [50, 50],
-        baseURI: "http://localhost:3000/api/ticket/",
+        baseURI: "https://s3.tebi.io/summitsharemetadata/leadingLadies",
         location: "New York,USA",
         artifactNFT: artifactNFT2,
         details: "Those who walked before us and those to come.",
-        id: "DE40"
+        id: "KMGII"
     }
 
     // Connect to the contracts
@@ -62,8 +62,7 @@ async function main() {
             exhibit1.id //exhibit id
         );
     const receipt1 = await tx1.wait(6);
-    ////console.log("Organized Exhibit 1", receipt1.status)
-
+    console.log("Organized Exhibit 1", receipt1.status)
     const tx2 = await organizerService.connect(owner).organizeExhibit(
             exhibit2.name,
             exhibit2.symbol,
@@ -77,28 +76,29 @@ async function main() {
             exhibit2.id //exhibit id
         );
     const receipt2 = await tx2.wait(6);
-    ////console.log("Organized Exhibit 2", receipt2.status)
-
-  
+    console.log("Organized Exhibit 2", receipt2.status)
+ 
+ 
     // Read the contract state
-    const exhibitNFTAddress = await organizerService.exhibits("exhibit1");
-    const exhibit2NFTAddress = await organizerService.exhibits("exhibit2");
-    ////console.log("ExhibitNFT deployed to:", exhibitNFTAddress)
+    const exhibitNFTAddress = await organizerService.exhibits("KMGIII");
+    const exhibit2NFTAddress = await organizerService.exhibits("KMGII");
+    console.log("ExhibitNFT deployed to:", exhibitNFTAddress)
 
-    const tx3 =  await museum.curateExhibit("exhibit1", exhibitNFTAddress);
+    const tx3 =  await museum.curateExhibit("KMGIII", exhibitNFTAddress);
     const receipt3 = await tx3.wait(6);
-    ////console.log("Curated Exhibit 1", receipt3.status)
+    console.log("Curated Exhibit 1", receipt3.status)
 
     // get usdcToken set on museum
-    const exhibitMuseumAddress = await museum.exhibits("exhibit1");
-    ////console.log("ExhibitNFT deployed to:", exhibitNFTAddress)
-    ////console.log("ExhibitMuseum deployed to:", exhibitMuseumAddress)
-    ////console.log("ExhibitNFT deployed to:", exhibit2NFTAddress)
+    const exhibitMuseumAddress = await museum.exhibits("KMGIII");
+    console.log("ExhibitNFT deployed to:", exhibitNFTAddress)
+    console.log("ExhibitMuseum deployed to:", exhibitMuseumAddress)
+    console.log("ExhibitNFT deployed to:", exhibit2NFTAddress)
 
     //mint artifactNFTs
-    const tx4 = await artifactNFT.mint(owner.address, 10);
+    const tx4 = await artifactNFT.mint(owner.address, 4);
     const receipt4 = await tx4.wait(6);
-    ////console.log("Minted ArtifactNFT 1", receipt4.status)
+    console.log("Minted ArtifactNFT 1", receipt4.status)
+
 
     
   
@@ -114,9 +114,9 @@ async function main() {
     // try {
 
     //     let tx2 = await museum.connect(funder).purchaseTicket("exhibit1", ethers.parseUnits("20", 18)); // Purchase 1 ticket
-    //     ////console.log("purchase ticket 1", tx2)
+    //     console.log("purchase ticket 1", tx2)
     // } catch (e) {
-    //     ////console.log(e)
+    //     console.log(e)
     // }
     // let tx3= await museum.connect(funder).purchaseTicket("exhibit1", ethers.parseUnits("10", 18)); // Purchase 1 ticket
     // await tx3.wait();
@@ -130,4 +130,3 @@ main()
         console.error(error);
         process.exit(1);
     });
- 
