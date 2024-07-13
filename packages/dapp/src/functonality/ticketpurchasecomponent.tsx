@@ -94,13 +94,13 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
   }
   // set ticket price from object pulled from subgraph
   const ticketPrice = exhibit.exhibitDetails[0]?.ticketPrice || '';
-  console.log("details:", exhibit);
+  //console.log("details:", exhibit);
 
   // human readable ticket price for frontend
   const ticketPriceWei = BigInt(ticketPrice);
   const ticketPriceFormatted = ethers.utils.formatUnits(ticketPriceWei, 6);
   const ticketPriceWithToken = `${ticketPriceFormatted} USDT`;
-  console.log("ticketPrice:", ticketPriceWithToken);
+ // console.log("ticketPrice:", ticketPriceWithToken);
 
   // Function to handle ticket purchase
   const purchaseTicket = async () => {
@@ -122,7 +122,7 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
         ticketPrice,
         { gasLimit: gasLimitApprove }
       );
-      await approveTx.wait(4);
+      await approveTx.wait(2);
       
       // Execute ticket purchase transaction
       setStatus('Purchasing ticket...');
@@ -132,7 +132,7 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
         ticketPrice,
         { gasLimit: gasLimitPurchase }
       );
-      await purchaseTx.wait(4);
+      await purchaseTx.wait(2);
 
       //State update after successful ticket purchase
       setPurchaseSuccessful(true);
