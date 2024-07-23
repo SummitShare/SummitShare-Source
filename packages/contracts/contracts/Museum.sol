@@ -57,11 +57,11 @@ contract Museum is Ownable {
         require(address(exhibit) != address(0), "Exhibit does not exist.");
 
         uint256 ticketPrice = exhibit.ticketPrice();
-        require(usdcAmount >= ticketPrice, "Insufficient USDC sent.");
 
         // Transfer the USDC directly from the buyer to the ExhibitNFT's escrow
         address escrowAddress = address(exhibit.escrow());
-        require(usdcToken.transferFrom(msg.sender, escrowAddress, ticketPrice));
+        require(usdcToken.transferFrom(msg.sender, escrowAddress, ticketPrice), "Transfer Failed");
+        
         // Mint the ticket to the buyer
         uint256 tokenId = exhibit.mintTicket(msg.sender);
 
