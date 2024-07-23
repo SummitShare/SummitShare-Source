@@ -67,9 +67,8 @@ contract ExhibitNFT is ERC721, Ownable {
     }
 
     function mintTicket(address to) external onlyOwner returns (uint256) {
-        uint256 tokenId = totalMinted;
-        totalMinted++;
-        _safeMint(to, tokenId);
+        uint256 tokenId = totalMinted++;
+        _mint(to, tokenId);
         emit TicketMinted(address(this), to, tokenId);
         return tokenId;
     }
