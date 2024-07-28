@@ -9,6 +9,8 @@ import { useSession } from 'next-auth/react';
 import Buttons from '@/app/components/button/Butons';
 import WalletStatus from './walletStatus';
 import Image from 'next/image';
+import 'src/utils/dev/blinks.css'
+
 
 const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
   const session = useSession();
@@ -17,6 +19,7 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
   const [gasFees, setGasFees] = useState('0.00');
   const [buttonType, setButtonType] = useState<'primary' | 'secondary' | 'tartary' | 'subTartary'>('primary');
   const [buttonText, setButtonText] = useState('Pay');
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const user_id = session.data?.user.id;
 
@@ -136,7 +139,9 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
 
       // Execute token approval 
       setStatus('Approving token transfer...');
+      setIsProcessing(true);
       setButtonText('processing...');
+
       const gasLimitApprove = await estimateGas(usdcContract, 'approve', [CONTRACT_ADDRESSES.MuseumAdd, ticketPrice]);
       const approveTx = await usdcContract.approve(
         CONTRACT_ADDRESSES.MuseumAdd,
