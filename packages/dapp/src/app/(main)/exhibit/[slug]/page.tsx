@@ -2,19 +2,10 @@
 import SummitShareCanvas from '@/app/components/3DCanvas/3dCanvas';
 import { Calabash } from '@/app/components/3DCanvas/models/Calabash';
 import { Drum } from '@/app/components/3DCanvas/models/Drum';
+import { Mask } from '@/app/components/3DCanvas/models/Mask';
 import Buttons from '@/app/components/button/Butons';
+import { ObjectDescription } from '@/utils/dev/frontEndInterfaces'
 import React, { ReactNode } from 'react';
-
-interface ObjectDescription {
-  title: string;
-  object_URL?: string | ReactNode;
-  object_name: string;
-  Object_description: string[][];
-  Figure_artifact_details: string;
-  figure_images_URLs: string[];
-  figure_details: string[][];
-  figure_biography: string[][];
-}
 
 const data: ObjectDescription[] = [
   {
@@ -45,6 +36,10 @@ const data: ObjectDescription[] = [
         'She then divided this area amongst her four sisters and made them rulers over the people they found there, founding the Lungu nation in the present day Mbala/Mpulungu areas of Zambia.',
       ],
     ],
+    figure_references: [
+
+    ],
+
   },
 
   {
@@ -87,11 +82,14 @@ const data: ObjectDescription[] = [
         'She also took up a leading role in planning protest marches and organizing boycotts of shops that discriminated based on race. Julia Chikamoneka’s led protests had such profound effects and ultimately led to the independence of Zambia in 1964.',
       ],
     ],
+    figure_references: [
+
+    ]
   },
 
   {
     title: 'Loongo',
-    object_URL: 'https://s3.example.com/3d_objects/headmask.glb',
+    object_URL: <Mask />,
     object_name: 'Luvale Mask',
     Object_description: [
       [
@@ -132,6 +130,9 @@ const data: ObjectDescription[] = [
         'Due to her unusual courage and powers, the Makololo respected her and even though the Sala were conquered, they were never made to pay tribute by the Makololo like other conquered peoples.',
       ],
     ],
+    figure_references: [
+      
+    ]
   },
 
   {
@@ -171,11 +172,14 @@ const data: ObjectDescription[] = [
         'The Italians were forced to demarcate the boundary of her province along the 38th parallel of Longitude, which is the boundary line of Zambia that still stands today.',
       ],
     ],
+    figure_references: [
+      
+    ]
   },
 
   {
     title: 'Lueji Wa Nkonde',
-    object_URL: 'https://s3.example.com/3d_objects/snuff_cup.glb',
+    object_URL: 'example.com',
     object_name: 'Snuff Cup',
     Object_description: [
       ['Used to store and carry snuff (Tobacco).'],
@@ -212,6 +216,9 @@ const data: ObjectDescription[] = [
         'The migration also spread to adjacent areas in The Democratic Republic of Congo, Namibia, and Angola. Which has now become most of the population of Northwestern Province.',
       ],
     ],
+    figure_references: [
+      
+    ]
   },
 ];
 
