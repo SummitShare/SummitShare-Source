@@ -3,13 +3,16 @@ import SummitShareCanvas from '@/app/components/3DCanvas/3dCanvas';
 import { Calabash } from '@/app/components/3DCanvas/models/Calabash';
 import { Drum } from '@/app/components/3DCanvas/models/Drum';
 import { Mask } from '@/app/components/3DCanvas/models/Mask';
+import { Snuff } from '@/app/components/3DCanvas/models/Snuff';
+import { Cowry } from '@/app/components/3DCanvas/models/Cowry';
+import { Headrest } from '@/app/components/3DCanvas/models/Headrest';
 import Buttons from '@/app/components/button/Butons';
 import { ObjectDescription } from '@/utils/dev/frontEndInterfaces'
 import { X } from 'lucide-react';
-import { useRouter } from 'next/router';
 import React, { ReactNode, useState } from 'react';
 
 const data: ObjectDescription[] = [
+  // Double Sided Drum - Mwenya Mukulu
   {
     title: 'Mwenya Mukulu',
     object_URL: <Drum />,
@@ -39,14 +42,17 @@ const data: ObjectDescription[] = [
       ],
     ],
     figure_references: [
+      ['https://collections.smvk.se/carlotta-em/web/object/1996946'],
+      ['https://youtu.be/xzCoP4NEbTg']
 
     ],
 
   },
 
+  // Headrest - Julia Chikamoneka
   {
     title: 'Julia Chikamoneka',
-    object_URL: 'https://s3.example.com/3d_objects/headrest.glb',
+    object_URL: <Headrest />,
     object_name: 'Headrest',
     Object_description: [
       [
@@ -85,10 +91,13 @@ const data: ObjectDescription[] = [
       ],
     ],
     figure_references: [
+      ['https://collections.smvk.se/carlotta-em/web/object/1261202'],
+      ['https://youtu.be/Ytc_wKNzows']
 
     ]
   },
 
+  // Mask - Loongo
   {
     title: 'Loongo',
     object_URL: <Mask />,
@@ -133,10 +142,12 @@ const data: ObjectDescription[] = [
       ],
     ],
     figure_references: [
-      
+      ['https://collections.smvk.se/carlotta-em/web/object/2042752'],
+      ['https://youtu.be/_wQ21pmFYZY']
     ]
   },
 
+  // Calabash - Mukwae
   {
     title: 'Mukwae',
     object_URL: <Calabash />,
@@ -175,13 +186,15 @@ const data: ObjectDescription[] = [
       ],
     ],
     figure_references: [
-      
+      ['https://collections.smvk.se/carlotta-em/web/object/1996935'],
+      ['https://www.youtube.com/watch?v=VwOAMAnLJQw']      
     ]
   },
 
+  // Snuff Cup - Lueji Wa Nkonde
   {
     title: 'Lueji Wa Nkonde',
-    object_URL: 'example.com',
+    object_URL: <Snuff />,
     object_name: 'Snuff Cup',
     Object_description: [
       ['Used to store and carry snuff (Tobacco).'],
@@ -219,9 +232,48 @@ const data: ObjectDescription[] = [
       ],
     ],
     figure_references: [
+      ['https://collections.smvk.se/carlotta-em/web/object/1304494'],
+      ['https://youtu.be/A1HEPtkt8P4']
       
     ]
   },
+
+  //Cowry Beads - Mwape 
+  {
+    title: "Mwape",
+    object_URL: <Cowry />,
+    object_name: "Cowry Beads",
+    Object_description: [
+      [
+        "A belt made of leather and cowry shells. Cowries were expensive in places far away from the sea like Zambia and could only be acquired by people of influence."
+      ],
+      [
+        "To possess such an item with such a large number of cowries meant the person that owned this belt was very wealthy."
+      ],
+      [
+        "The shells were also used as a medium of exchange and are also an indicator of the presence of long distance trade in the interior of Zambia."
+      ]
+    ],
+    Figure_artifact_details: "She was a ruler of a Kingdom that comprised the middle Luangwa and the Chuambira valley and further east, Mulilo, and Chisenga respectively at Chinshumbu and Kaundi who owed her allegiance.",
+    figure_images_URLs: [
+      "https://s3.example.com/images/mwenya_1.jpg",
+      "https://s3.example.com/images/mwenya_2.jpg"
+    ],
+    figure_details: [
+      ["A fearless warrior and ruler of middle Luangwa and Chuambira valley"],
+      ["(1910 - 1986)"]
+    ],
+     figure_biography: [
+      [
+        "Being a fierce warrior, Mwape fought battles with the Chikunda slave traders and other Chiefs, extended her influence, protected her people, and imposed control over the trade routes in her land."
+      ]
+    ],
+    figure_references: [
+      ["https://collections.smvk.se/carlotta-em/web/object/1600518"],
+      ["https://youtu.be/VjXktuYSgfQ"]
+    ]
+  }
+  
 ];
 
 // Fetch the data based on the slug

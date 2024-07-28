@@ -18,14 +18,28 @@ export default function Home() {
       img: '/women/julia.png',
       link: '/exhibit/julia-chikamoneka',
     },
-    { name: 'Loongo', img: '/women/loongo.png', link: '/exhibit/loongo' },
+
+    { name: 'Loongo', 
+      img: '/women/loongo.png',
+      link: '/exhibit/loongo' 
+    },
+
     {
       name: 'lueji wa nkonde',
       img: '/women/lueji.png',
       link: '/exhibit/lueji-wa-nkonde',
     },
-    { name: 'Mukwae', img: '/women/mukwae.png', link: '/exhibit/mukwae' },
-    { name: 'Mwape', img: '/women/mwape.png', link: '/exhibit/mwape' },
+
+    { name: 'Mukwae',
+      img: '/women/mukwae.png', 
+      link: '/exhibit/mukwae' 
+    },
+
+    { name: 'Mwape', 
+      img: '/women/mwape.png', 
+      link: '/exhibit/mwape' 
+    },
+    
     {
       name: 'Mwenya',
       img: '/women/mwenya.png',
