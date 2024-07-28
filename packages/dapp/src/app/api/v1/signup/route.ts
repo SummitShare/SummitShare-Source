@@ -4,6 +4,17 @@ import prisma from '../../../../../config/db';
 import { emailServer, transporter } from '../../../../../config/nodemailer';
 import { users } from '@prisma/client';
 import { randomUUID } from 'crypto';
+import * as fs from 'fs/promises';
+import * as path from 'path';
+
+async function readHtmlTemplate(filePath: string): Promise<string> {
+  try {
+    const htmlContent = await fs.readFile(filePath, 'utf-8');
+    return htmlContent;
+  } catch (error) {
+    throw new Error('Error reading HTML template');
+  }
+}
 
 async function createSendTokens(user: users, email: string) {
   try {
@@ -30,16 +41,25 @@ async function createSendTokens(user: users, email: string) {
       },
     });
 
+    // Read the HTML template
+    const templatePath = path.join(process.cwd(), 'src/functonality/emailNewsletter/main.html');
+    let htmlTemplate = await readHtmlTemplate(templatePath);
+
     // const host = req.headers.get('host');
     const host = process.env.HOST;
     //${host}api/v1/user/verification/verifyEmail?token=${token}
     const verificationLink = `${host}/verification/email/${token}`;
 
+        // Replace placeholders in the template with actual data
+        htmlTemplate = htmlTemplate.replace('{{title}}', 'Email Verification');
+        htmlTemplate = htmlTemplate.replace('{{subtitle}}', 'Verify Your Account');
+        htmlTemplate = htmlTemplate.replace('{{message}}', `Click on this link to verify your account: <a href="${verificationLink}">${verificationLink}</a>`);
+
     const mailOptions = {
       from: emailServer,
       to: email,
       subject: 'Email Verification',
-      text: `Click on this link to verify your account: ${verificationLink}`,
+      html: htmlTemplate,
     };
 
     await transporter.sendMail(mailOptions);
