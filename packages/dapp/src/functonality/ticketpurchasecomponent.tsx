@@ -9,7 +9,6 @@ import { useSession } from 'next-auth/react';
 import Buttons from '@/app/components/button/Butons';
 import WalletStatus from './walletStatus';
 import Image from 'next/image';
-import 'src/utils/dev/blinks.css'
 
 
 const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
