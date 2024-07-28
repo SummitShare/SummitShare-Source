@@ -188,7 +188,7 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
         type={buttonType} 
         size="large" 
         onClick={purchaseSuccessful ? () => window.open("https://oncyber.io/spaces/89cp8FpYgF5hgrHk1i3N", "_blank") : togglePopup} 
-        disabled={purchaseSuccessful}
+        disabled={false}
       >
         {purchaseSuccessful ? 'View Exhibit' : 'Purchase'}
       </Buttons>
