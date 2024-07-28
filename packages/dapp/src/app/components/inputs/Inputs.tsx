@@ -1,5 +1,6 @@
 'use client';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
+import { Eye, EyeOff } from 'lucide-react';
 import { useState, useRef, useEffect, KeyboardEvent } from 'react';
 import * as React from 'react';
 
@@ -18,6 +19,7 @@ export interface InputProps {
   onChange?: (e: any) => void;
   placeholder?: string;
   readOnly?: any;
+  isPassword?: boolean; // New prop to indicate if the input is a password field
 }
 
 /**
@@ -52,12 +54,14 @@ const Input: React.FC<InputProps> = ({
   onChange,
   children,
   options = [],
+  isPassword = false,
   ...props
 }) => {
   const [internalValue, setInternalValue] = useState(defaultValue || '');
   const [pills, setPills] = useState<string[]>([]);
   const [open, setOpen] = useState(false);
   const selectRef = useRef<HTMLDivElement>(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     if (value !== undefined) {
@@ -80,6 +84,11 @@ const Input: React.FC<InputProps> = ({
     setInternalValue(value);
     setOpen(false);
     if (onChange) onChange(value);
+  };
+
+  // Handles password visibility
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   /**
@@ -149,13 +158,25 @@ const Input: React.FC<InputProps> = ({
     switch (type) {
       case 'input':
         return (
-          <input
-            type="text"
-            value={internalValue}
-            onChange={(e) => handleInput(e.target.value)}
-            {...sharedProps}
-            placeholder={defaultValue}
-          />
+          <div className="relative">
+            <input
+              type={isPassword ? (showPassword ? "text" : "password") : "text"}
+              value={internalValue}
+              onChange={(e) => handleInput(e.target.value)}
+              {...sharedProps}
+              placeholder={defaultValue}
+              className={`${sharedProps.className} ${isPassword ? 'pr-[40px]' : ''}`}
+            />
+            {isPassword && (
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2"
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            )}
+          </div>
         );
       case 'select':
         return (

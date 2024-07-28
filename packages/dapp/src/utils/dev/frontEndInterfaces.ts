@@ -89,6 +89,7 @@ export interface InputProps
   message?: any;
   register: UseFormRegister<any>;
   need?: boolean; // Demonstrates an optional prop for additional validation or UI indication
+  showPassword?: boolean;
 }
 
 // common/inputs/input/teaxtArea.tsx
