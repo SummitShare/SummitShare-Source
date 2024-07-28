@@ -5,7 +5,9 @@ import { Drum } from '@/app/components/3DCanvas/models/Drum';
 import { Mask } from '@/app/components/3DCanvas/models/Mask';
 import Buttons from '@/app/components/button/Butons';
 import { ObjectDescription } from '@/utils/dev/frontEndInterfaces'
-import React, { ReactNode } from 'react';
+import { X } from 'lucide-react';
+import { useRouter } from 'next/router';
+import React, { ReactNode, useState } from 'react';
 
 const data: ObjectDescription[] = [
   {
@@ -233,15 +235,44 @@ interface PageProps {
   params: { slug: string };
 }
 
-const Page = ({ params }: PageProps) => {
-  const figure = getData(params.slug);
+const Page = ({ params }: { params: { slug: string } }) => {
+  const [currentIndex, setCurrentIndex] = useState(() => 
+    data.findIndex(item => item.title.toLowerCase().replace(/ /g, '-') === params.slug)
+  );
+
+  const figure = data[currentIndex];
 
   if (!figure) {
     return <div>Figure not found</div>;
   }
 
+  const handleBack = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+    }
+  };
+
+  const handleNext = () => {
+    if (currentIndex < data.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    }
+  };
+
+  const handleClose = () => {
+    // Since we can't use the router, we'll use a simple redirect
+    window.location.href = '/exhibit';
+  };
+
   return (
-    <div className="space-y-12 mx-6 my-28 lg:mx-[15%]">
+    <div className="space-y-12 mx-6 my-28 lg:mx-[15%] relative">
+      <button 
+        onClick={handleClose}
+        className="absolute top-[-20px] right-0 text-brown-500 hover:text-brown-700"
+        aria-label="Close and return to exhibit"
+      >
+        <X size={24} />
+      </button>
+
       <h2>{figure.title}</h2>
       <article className="space-y-8 md:space-y-0 md:grid md:grid-cols-2 gap-6 w-full">
         <SummitShareCanvas>{figure.object_URL}</SummitShareCanvas>
@@ -261,7 +292,6 @@ const Page = ({ params }: PageProps) => {
         <ul className="space-y-3">
           <li>
             <ul className="space-y-4 ">
-              {' '}
               {figure.figure_details.map((desc, index) => (
                 <li key={index}>
                   <p className="text-primary-100">{desc}</p>
@@ -298,10 +328,20 @@ const Page = ({ params }: PageProps) => {
       </div>
 
       <div className="space-y-4 md:flex md:flex-row md:gap-4 md:space-y-0">
-        <Buttons type="secondary" active={true}>
+        <Buttons 
+          type="secondary" 
+          active={currentIndex > 0} 
+          onClick={handleBack}
+          disabled={currentIndex === 0}
+        >
           Back
         </Buttons>
-        <Buttons type="primary" active={true}>
+        <Buttons 
+          type="primary" 
+          active={currentIndex < data.length - 1} 
+          onClick={handleNext}
+          disabled={currentIndex === data.length - 1}
+        >
           Next
         </Buttons>
       </div>
