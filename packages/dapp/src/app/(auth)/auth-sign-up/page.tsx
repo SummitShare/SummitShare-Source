@@ -24,7 +24,7 @@ const Register = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      email: 'mariomaguyasjere@gmail.com',
+      email: 'gavin@hooli.com',
       type: 'visitor',
       password: '12345678',
     },

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import Image from 'next/image';
+import { Eye, EyeOff } from 'lucide-react'; 
 
 function Page() {
   const router = useRouter();
@@ -16,6 +17,7 @@ function Page() {
   const [usernameError, setUsernameError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const createUser = async ({ email, password, username }: any) => {
     const host = process.env.NEXT_PUBLIC_HOST;
@@ -61,6 +63,11 @@ function Page() {
       setErrorMessage('An error occurred. Please try again.');
     }
   };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <main className="h-screen flex flex-col justify-end items-center bg-[url('https://images.unsplash.com/photo-1621419203897-20b66b98d495?q=80&w=2342&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-cover bg-center md:flex-row">
       <div className="bg-gray-950/35 fixed inset-0"></div>
@@ -116,13 +123,15 @@ function Page() {
                   setErrorMessage('');
                 }}
               />
-              <Inputs
-                type="input"
-                state="active"
-                label="Password"
-                value={password}
-                onChange={(value) => setPassword(value)}
-              />
+          <Inputs
+            type="input"
+            label="Password"
+            state="active"
+            isPassword={true}
+            value={password}
+            onChange={(value) => setPassword(value)}
+          />
+              
             </section>
           </form>
           {errorMessage && (
