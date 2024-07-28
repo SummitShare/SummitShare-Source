@@ -96,8 +96,8 @@ export default function Home() {
                   className="absolute -bottom-10 inset-x-0 w-full h-full object-cover"
                   src={item.img}
                   alt={item.name}
-                  layout="fill"
-                  objectFit="cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
 
                 <div className="z-[5] space-y-2">
