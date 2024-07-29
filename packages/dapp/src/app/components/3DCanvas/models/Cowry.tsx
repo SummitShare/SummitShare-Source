@@ -10,13 +10,11 @@ import { GLTF } from 'three-stdlib'
 
 type GLTFResult = GLTF & {
   nodes: {
-    Beads_Stand: THREE.Mesh
     band: THREE.Mesh
     beeds: THREE.Mesh
     rope: THREE.Mesh
   }
   materials: {
-    Wood: THREE.MeshStandardMaterial
     ['MAT_Cowery Beads']: THREE.MeshStandardMaterial
   }
 }
@@ -27,10 +25,9 @@ export function Cowry(props: JSX.IntrinsicElements['group']) {
   const { nodes, materials } = useGLTF('/models/cowry.glb') as GLTFResult
   return (
     <group {...props} dispose={null}>
-      <mesh geometry={nodes.Beads_Stand.geometry} material={materials.Wood} />
-      <mesh geometry={nodes.band.geometry} material={materials['MAT_Cowery Beads']} position={[0, 0.722, 0]} scale={0.016} />
-      <mesh geometry={nodes.beeds.geometry} material={materials['MAT_Cowery Beads']} position={[0, 0.722, 0]} scale={0.016} />
-      <mesh geometry={nodes.rope.geometry} material={materials['MAT_Cowery Beads']} position={[0, 0.722, 0]} scale={0.016} />
+      <mesh geometry={nodes.band.geometry} material={materials['MAT_Cowery Beads']} scale={0.016} />
+      <mesh geometry={nodes.beeds.geometry} material={materials['MAT_Cowery Beads']} scale={0.016} />
+      <mesh geometry={nodes.rope.geometry} material={materials['MAT_Cowery Beads']} scale={0.016} />
     </group>
   )
 }
