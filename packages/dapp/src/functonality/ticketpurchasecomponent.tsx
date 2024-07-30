@@ -22,6 +22,8 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
   const [isProcessing, setIsProcessing] = useState(false);
 
   const user_id = session.data?.user.id;
+  const host = process.env.NEXT_PUBLIC_HOST;
+  const url = '${host}/api/v1/events/tickets/create';
 
   // Hardcoded exhibit ID for demo
   const exhibitId = CONTRACT_ADDRESSES.exhibitId;
@@ -34,6 +36,7 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
   const [purchaseFailed, setPurchaseFailed] = useState<boolean>(false);
   const exhibit = useExhibit(exhibitId);
 
+  // Effect hook for timeouts
   useEffect(() => {
     if (status) {
       setIsVisible(true);
@@ -45,42 +48,13 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
     }
   }, [status]);
 
+  // Effect hook to trigger actions post successful ticketPurchase
   useEffect(() => {
     if (purchaseSuccessful) {
       setIsPopupVisible(false);
       setButtonType('secondary');
     }
   }, [purchaseSuccessful]);
-
-  const createTicket = async () => {
-    // Ensure HOST is read correctly, considering Next.js environment variables need to be prefixed with NEXT_PUBLIC_ if they are to be used on the client-side.
-    const host = process.env.NEXT_PUBLIC_HOST;
-    ////console.log(`host ${host} `)
-    const eventLink = `${host}/exhibit/0xe405b9c97656336ab949401bcd41ca3f50114725`;
-    // Construct the URL with the correct protocol (http or https) and ensure that the HOST variable includes the entire domain.
-    const url = `${host}/api/v1/event/ticket/create`;
-    ////console.log(`url ${url} ` ,user_id)
-
-    try {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userAddress, exhibitId, user_id, eventLink }),
-      });
-
-      // Check if the response is ok (status in the range 200-299)
-      if (!response.ok) {
-        // You could throw an error or handle it in another way depending on your error handling strategy
-        ////console.log(`Error: ${response.status} - ${response.statusText}`);
-      }
-
-      return response.json(); // Assuming the server responds with JSON.
-    } catch (error) {
-      console.error('Failed to create ticket:', error);
-    }
-  };
 
   // Effect hook to initialize the Web3 provider when the component mounts or exhibitId changes
   useEffect(() => {
@@ -105,29 +79,35 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
     }
   }, [exhibitId]);
 
+  // Check for exhibitID from query client
   if (!exhibit) {
     return <div>Loading or no Matching Exhibit Found.</div>;
   }
 
   // set ticket price from object pulled from subgraph
   const ticketPrice = exhibit.exhibitDetails[0]?.ticketPrice || '';
+
+  // Exhibit Details
   //console.log("details:", exhibit);
 
-  // human readable ticket price for frontend
+  // Assign ticekt price  from exhibit object and format to human readable (normal) integers
   const ticketPriceWei = BigInt(ticketPrice);
   const ticketPriceFormatted = ethers.utils.formatUnits(ticketPriceWei, 6);
   const ticketPriceWithToken = `${ticketPriceFormatted} USDT`;
- // console.log("ticketPrice:", ticketPriceWithToken);
 
 
+// Estimate gas fees function for app. and purchase to display on total tickt amount on purchase component
 const estimateGasFees = async () => {
   if (!provider) {
-    setStatus('Web3 provider is not initialized.');
+    setStatus('Please conenct your web3 wallet.');
     return;
   }
 
+  // set state to true to begin gas estimation
   setIsEstimating(true);
   try {
+
+    // get contracts from utility script
     const usdcContract = contracts.getMUSDC();
     const museumContract = contracts.getMuseum();
 
@@ -157,10 +137,11 @@ const estimateGasFees = async () => {
     console.error('Error estimating gas fees:', error);
     setEstimatedGasFees('Unable to estimate');
   } finally {
+    // update state to stop estimation once variables are assigned
     setIsEstimating(false);
   }
 };
-
+    // function to calculate total price incl. gas fees
     const calculateTotalPrice = () => {
       const ticketPrice = parseFloat(ticketPriceFormatted);
       const gasFees = parseFloat(estimatedGasFees);
@@ -168,6 +149,14 @@ const estimateGasFees = async () => {
       return total.toFixed(6);
     };
 
+    // pop up component
+    const togglePopup = async () => {
+      if (!isPopupVisible) {
+        // Estimate gas fees when opening the popup
+        await estimateGasFees();
+      }
+      setIsPopupVisible(!isPopupVisible);
+    };
 
   // Function to handle ticket purchase
   const purchaseTicket = async () => {
@@ -181,11 +170,12 @@ const estimateGasFees = async () => {
       const usdcContract = contracts.getMUSDC();
       const museumContract = contracts.getMuseum();
 
-      // Execute token approval 
+      // Update states
       setStatus('Approving token transfer...');
       setIsProcessing(true);
       setButtonText('processing...');
 
+      // approve method execution
       const gasLimitApprove = await estimateGas(usdcContract, 'approve', [CONTRACT_ADDRESSES.MuseumAdd, ticketPrice]);
       const approveTx = await usdcContract.approve(
         CONTRACT_ADDRESSES.MuseumAdd,
@@ -217,17 +207,6 @@ const estimateGasFees = async () => {
     }
   };
 
-  const host = process.env.NEXT_PUBLIC_HOST;
-
-  const url = '${host}/api/v1/events/tickets/create';
-
-  const togglePopup = async () => {
-    if (!isPopupVisible) {
-      // Estimate gas fees when opening the popup
-      await estimateGasFees();
-    }
-    setIsPopupVisible(!isPopupVisible);
-  };
 
   // Render component UI
   return (
