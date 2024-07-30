@@ -29,15 +29,13 @@ export function Snuff(props: JSX.IntrinsicElements['group']) {
   const { nodes, materials } = useGLTF('/models/snuff.glb') as GLTFResult
   return (
     <group {...props} dispose={null}>
-      <group scale={0.469}>
-        <mesh geometry={nodes.CLOTHE_KNOT1.geometry} material={materials['MAT - Snuff Cup']} rotation={[-2.445, 1.38, 1.023]} scale={2.132} />
-        <mesh geometry={nodes.GLOBE.geometry} material={materials['MAT - Snuff Cup']} rotation={[-2.445, 1.38, 1.023]} scale={2.132} />
-        <mesh geometry={nodes.NEW_KNOT_MID1.geometry} material={materials['MAT - Snuff Cup']} rotation={[-2.445, 1.38, 1.023]} scale={2.132} />
-        <mesh geometry={nodes.ROPE.geometry} material={materials['MAT - Snuff Cup']} rotation={[-2.445, 1.38, 1.023]} scale={2.132} />
-        <mesh geometry={nodes.STRAP.geometry} material={materials['MAT - Snuff Cup']} rotation={[-2.445, 1.38, 1.023]} scale={2.132} />
-        <mesh geometry={nodes.THREADS2.geometry} material={materials['MAT - Snuff Cup']} rotation={[-2.445, 1.38, 1.023]} scale={2.132} />
-        <mesh geometry={nodes.TOP_WOOD2.geometry} material={materials['MAT - Snuff Cup']} rotation={[-2.445, 1.38, 1.023]} scale={2.132} />
-      </group>
+      <mesh geometry={nodes.CLOTHE_KNOT1.geometry} material={materials['MAT - Snuff Cup']} rotation={[-2.445, 1.38, 1.023]} />
+      <mesh geometry={nodes.GLOBE.geometry} material={materials['MAT - Snuff Cup']} rotation={[-2.445, 1.38, 1.023]} />
+      <mesh geometry={nodes.NEW_KNOT_MID1.geometry} material={materials['MAT - Snuff Cup']} rotation={[-2.445, 1.38, 1.023]} />
+      <mesh geometry={nodes.ROPE.geometry} material={materials['MAT - Snuff Cup']} rotation={[-2.445, 1.38, 1.023]} />
+      <mesh geometry={nodes.STRAP.geometry} material={materials['MAT - Snuff Cup']} rotation={[-2.445, 1.38, 1.023]} />
+      <mesh geometry={nodes.THREADS2.geometry} material={materials['MAT - Snuff Cup']} rotation={[-2.445, 1.38, 1.023]} />
+      <mesh geometry={nodes.TOP_WOOD2.geometry} material={materials['MAT - Snuff Cup']} rotation={[-2.445, 1.38, 1.023]} />
     </group>
   )
 }

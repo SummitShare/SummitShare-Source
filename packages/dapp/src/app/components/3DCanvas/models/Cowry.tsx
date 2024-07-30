@@ -25,9 +25,9 @@ export function Cowry(props: JSX.IntrinsicElements['group']) {
   const { nodes, materials } = useGLTF('/models/cowry.glb') as GLTFResult
   return (
     <group {...props} dispose={null}>
-      <mesh geometry={nodes.band.geometry} material={materials['MAT_Cowery Beads']} scale={0.016} />
-      <mesh geometry={nodes.beeds.geometry} material={materials['MAT_Cowery Beads']} scale={0.016} />
-      <mesh geometry={nodes.rope.geometry} material={materials['MAT_Cowery Beads']} scale={0.016} />
+      <mesh geometry={nodes.band.geometry} material={materials['MAT_Cowery Beads']} scale={0.9} />
+      <mesh geometry={nodes.beeds.geometry} material={materials['MAT_Cowery Beads']} scale={0.9} />
+      <mesh geometry={nodes.rope.geometry} material={materials['MAT_Cowery Beads']} scale={0.9} />
     </group>
   )
 }
