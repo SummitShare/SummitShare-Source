@@ -15,7 +15,8 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
   const session = useSession();
   const [isVisible, setIsVisible] = useState(false);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
-  const [gasFees, setGasFees] = useState('0.00');
+  const [estimatedGasFees, setEstimatedGasFees] = useState('0.00');
+  const [isEstimating, setIsEstimating] = useState(false);
   const [buttonType, setButtonType] = useState<'primary' | 'secondary' | 'tartary' | 'subTartary'>('primary');
   const [buttonText, setButtonText] = useState('Pay');
   const [isProcessing, setIsProcessing] = useState(false);
@@ -118,10 +119,54 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
   const ticketPriceWithToken = `${ticketPriceFormatted} USDT`;
  // console.log("ticketPrice:", ticketPriceWithToken);
 
- const calculateTotalPrice = () => {
-  const total = (parseFloat(ticketPriceFormatted) + parseFloat(gasFees));
-  return total.toFixed(2);
+
+const estimateGasFees = async () => {
+  if (!provider) {
+    setStatus('Web3 provider is not initialized.');
+    return;
+  }
+
+  setIsEstimating(true);
+  try {
+    const usdcContract = contracts.getMUSDC();
+    const museumContract = contracts.getMuseum();
+
+    // Estimate gas for approval
+    const gasLimitApprove = await estimateGas(usdcContract, 'approve', [CONTRACT_ADDRESSES.MuseumAdd, ticketPrice]);
+    const gasPriceApprove = await provider.getGasPrice();
+    
+    // Convert BigInt to BigNumber if necessary
+    const gasLimitApproveBN = ethers.BigNumber.from(gasLimitApprove.toString());
+    const estimatedGasFeesApprove = ethers.utils.formatEther(gasLimitApproveBN.mul(gasPriceApprove));
+
+    // Estimate gas for purchase
+    const gasLimitPurchase = await estimateGas(museumContract, 'purchaseTicket', [eventId, ticketPrice]);
+    const gasPricePurchase = await provider.getGasPrice();
+    
+    // Convert BigInt to BigNumber if necessary
+    const gasLimitPurchaseBN = ethers.BigNumber.from(gasLimitPurchase.toString());
+    const estimatedGasFeesPurchase = ethers.utils.formatEther(gasLimitPurchaseBN.mul(gasPricePurchase));
+    console.log("Purchase estimate:", estimatedGasFeesPurchase)
+    console.log("Approval estimate:", estimatedGasFeesApprove)
+
+    // Sum up the estimated gas fees
+    const totalEstimatedGasFees = (parseFloat(estimatedGasFeesApprove) + parseFloat(estimatedGasFeesPurchase)).toFixed(6);
+    console.log("Total gas estimate:", totalEstimatedGasFees)
+    setEstimatedGasFees(totalEstimatedGasFees);
+  } catch (error) {
+    console.error('Error estimating gas fees:', error);
+    setEstimatedGasFees('Unable to estimate');
+  } finally {
+    setIsEstimating(false);
+  }
 };
+
+    const calculateTotalPrice = () => {
+      const ticketPrice = parseFloat(ticketPriceFormatted);
+      const gasFees = parseFloat(estimatedGasFees);
+      const total = ticketPrice + gasFees;
+      return total.toFixed(6);
+    };
 
 
   // Function to handle ticket purchase
@@ -147,8 +192,7 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
         ticketPrice,
         { gasLimit: gasLimitApprove }
       );
-      const approveReceipt =  await approveTx.wait();
-      const gasFeesApprove = ethers.utils.formatUnits(approveReceipt.gasUsed.mul(approveTx.gasPrice), 'ether')
+       await approveTx.wait();
       
       // Execute ticket purchase transaction
       setStatus('Purchasing ticket...');
@@ -158,11 +202,7 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
         ticketPrice,
         { gasLimit: gasLimitPurchase }
       );
-      const purchaseReceipt = await purchaseTx.wait();
-      const gasFeesPurchase = ethers.utils.formatUnits(purchaseReceipt.gasUsed.mul(purchaseTx.gasPrice), 'ether');
-
-      const totalGasFees = parseFloat(gasFeesApprove) + parseFloat(gasFeesPurchase);
-      setGasFees(totalGasFees.toFixed(6));
+      await purchaseTx.wait();
 
       //State update after successful ticket purchase
       setPurchaseSuccessful(true);
@@ -181,7 +221,11 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
 
   const url = '${host}/api/v1/events/tickets/create';
 
-  const togglePopup = () => {
+  const togglePopup = async () => {
+    if (!isPopupVisible) {
+      // Estimate gas fees when opening the popup
+      await estimateGasFees();
+    }
     setIsPopupVisible(!isPopupVisible);
   };
 
@@ -264,7 +308,7 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
                 >
                   <div><b>Breakdown:</b> </div>
                   {`Ticket Price: ${ticketPriceFormatted} USDT
-  Gas Fees: ${gasFees} USDT
+  Gas Fees Estimate: ${estimatedGasFees} USDT
   (Gas fees are used to process the purchase onchain and do not go to us.)`}
                 </div>
               </div>
