@@ -1,3 +1,4 @@
+
 'use client';
 import SummitShareCanvas from '@/app/components/3DCanvas/3dCanvas';
 import { Calabash } from '@/app/components/3DCanvas/models/Calabash';
@@ -301,12 +302,14 @@ const Page = ({ params }: { params: { slug: string } }) => {
   const handleBack = () => {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
+      window.scrollTo(0, 0);
     }
   };
 
   const handleNext = () => {
     if (currentIndex < data.length - 1) {
       setCurrentIndex(currentIndex + 1);
+      window.scrollTo(0, 0);
     }
   };
 
@@ -359,6 +362,27 @@ const Page = ({ params }: { params: { slug: string } }) => {
         ))}
       </ul>
 
+        <div className="space-y-3">
+    <h2>References</h2>
+    <ul className="space-y-2">
+      {figure.figure_references.map((refArray, index) => (
+        <li key={index}>
+          {refArray.map((ref, subIndex) => (
+            <a
+              key={subIndex}
+              href={ref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-white text-gray-800 border border-gray-300 rounded-full px-3 py-1 text-sm font-medium shadow-sm"
+            >
+              {ref}
+            </a>
+          ))}
+        </li>
+      ))}
+    </ul>
+  </div>
+
       <div className="w-full rounded-[8px] bg-primary-50 space-y-4 px-[45px] py-6">
         <div className="space-y-2">
           <h3>Was this page informative?</h3>
@@ -402,3 +426,4 @@ const Page = ({ params }: { params: { slug: string } }) => {
 };
 
 export default Page;
+
