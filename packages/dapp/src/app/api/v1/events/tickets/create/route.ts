@@ -18,7 +18,7 @@ import { sendEmail } from '@/utils/methods/email/email';
 
 export async function POST(req: Request, res: NextResponse) {
   try {
-    const { wallet_address, event_id, user_id, eventLink } = await req.json();
+    const { wallet_address, event_id, user_id, eventLink, transaction_id } = await req.json();
 
     if (!wallet_address) {
       return NextResponse.json(
@@ -44,6 +44,7 @@ export async function POST(req: Request, res: NextResponse) {
         wallet_address: wallet_address,
         event_id: event_id,
         user_id: user_id,
+        
       },
     });
     if (!ticket) {
@@ -87,6 +88,9 @@ export async function POST(req: Request, res: NextResponse) {
         event_id,
         user_id,
         price,
+        wallet_address,
+        transaction_id
+        
       },
     });
 

@@ -187,6 +187,8 @@ model ticket_transaction {
   price            Decimal  @db.Decimal(10, 2)
   transaction_time DateTime @default(now()) @db.Timestamp(6)
   user_id          String   @db.Uuid
+  wallet_address   String?  @db.VarChar(255)
+  transaction_id   String?  @db.VarChar(255)
   users            users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
   events           events?  @relation(fields: [event_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tickets_transactions_event_id_fkey")
 }
