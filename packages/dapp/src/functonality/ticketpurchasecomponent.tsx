@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
 import { ethers } from 'ethers';
 import { TicketPurchaseProps, EthereumWindow } from '@/utils/dev/typeInit';
 import { CONTRACT_ADDRESSES, contracts, estimateGas } from '@/utils/dev/contractInit';
@@ -9,6 +8,8 @@ import { useSession } from 'next-auth/react';
 import Buttons from '@/app/components/button/Butons';
 import WalletStatus from './walletStatus';
 import Image from 'next/image';
+import { concatPagination } from '@apollo/client/utilities';
+import axios from 'axios';
 
 
 const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
@@ -182,7 +183,7 @@ const estimateGasFees = async () => {
         ticketPrice,
         { gasLimit: gasLimitApprove }
       );
-       await approveTx.wait();
+       await approveTx.wait(1);
       
       // Execute ticket purchase transaction
       setStatus('Purchasing ticket...');
@@ -192,20 +193,56 @@ const estimateGasFees = async () => {
         ticketPrice,
         { gasLimit: gasLimitPurchase }
       );
-      await purchaseTx.wait();
+      const receipt00 = await purchaseTx.wait();
 
       //State update after successful ticket purchase
       setPurchaseSuccessful(true);
       setStatus('Ticket purchased successfully!');
-      setButtonText('Pay');
-    } catch (error: any) {
-      console.error('Smart Contract Interaction Failed:', error);
-      const friendlyMessage = handleContractError(error as any); // Typecasting
-      setStatus(friendlyMessage);
-      setButtonText('Pay');
 
+      // assign user ticket details post successful ticketPurchase
+      const walletAddress = receipt00.from;
+      const event_Id = exhibit.id
+      const userId = "USERID"
+      const HOST = process.env.NEXT_PUBLIC_HOST
+      const eventLink = `${HOST}/exhibit`
+      const transactionId = receipt00.transactionHash
+
+      // prepare object for API call
+      const userTicketData = {
+        wallet_address : walletAddress,
+        event_id : event_Id,
+        user_id : userId,
+        eventLink : eventLink,
+        trasaction_id : transactionId
+      }
+      
+      console.log("Success01", userTicketData);
+
+      const response = await axios.post('api/v1/events/tickets/create', userTicketData);
+
+      if (response.status === 200) {
+        console.log("Ticket created successfully!");
+      } else {
+        console.error(`Wife and kids have no home:`, response.data.message);
+      }
+
+      return response.data;
+
+    } catch (error) {
+      console.error("Catch block error:", error);
     }
+
+  
+      setButtonText('Pay');
+    // } catch (error: any) {
+    //   console.error('Smart Contract Interaction Failed:', error);
+    //   const friendlyMessage = handleContractError(error as any); // Typecasting
+    //   setStatus(friendlyMessage);
+    //   setButtonText('Pay');
+
+    // }
   };
+
 
 
   // Render component UI
