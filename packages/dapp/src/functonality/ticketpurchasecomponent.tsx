@@ -199,48 +199,42 @@ const estimateGasFees = async () => {
       setPurchaseSuccessful(true);
       setStatus('Ticket purchased successfully!');
 
-      // assign user ticket details post successful ticketPurchase
-      const walletAddress = receipt00.from;
-      const event_Id = exhibit.id
-      const userId = "USERID"
-      const HOST = process.env.NEXT_PUBLIC_HOST
-      const eventLink = `${HOST}/exhibit`
-      const transactionId = receipt00.transactionHash
-
-      // prepare object for API call
-      const userTicketData = {
-        wallet_address : walletAddress,
-        event_id : event_Id,
-        user_id : userId,
-        eventLink : eventLink,
-        trasaction_id : transactionId
-      }
-      
-      console.log("Success01", userTicketData);
-
-      const response = await axios.post('api/v1/events/tickets/create', userTicketData);
-
-      if (response.status === 200) {
-        console.log("Ticket created successfully!");
-      } else {
-        console.error(`Wife and kids have no home:`, response.data.message);
-      }
-
-      return response.data;
-
-    } catch (error) {
-      console.error("Catch block error:", error);
-    }
-
+    try {
+        // assign user ticket details post successful ticketPurchase
+        const walletAddress = receipt00.from;
+        const event_Id = exhibit.id
+        const userId = "USERID"
+        const HOST = process.env.NEXT_PUBLIC_HOST
+        const eventLink = `${HOST}/exhibit`
+        const transactionId = receipt00.transactionHash
   
+        // prepare object for API call
+        const userTicketData = {
+          wallet_address : walletAddress,
+          event_id : event_Id,
+          user_id : userId,
+          eventLink : eventLink,
+          trasaction_id : transactionId
+        }
+  
+        const response = await axios.post('api/v1/events/tickets/create', userTicketData);
+  
+        if (response.status === 200) {
+          console.log("Ticket created successfully!");
+        } else {
+          console.error(`Wife and kids have no home:`, response.data.message);
+        }
+        return response.data;
+        } catch (error) { 
+}
       setButtonText('Pay');
-    // } catch (error: any) {
-    //   console.error('Smart Contract Interaction Failed:', error);
-    //   const friendlyMessage = handleContractError(error as any); // Typecasting
-    //   setStatus(friendlyMessage);
-    //   setButtonText('Pay');
+     } catch (error: any) {
+       console.error('Smart Contract Interaction Failed:', error);
+       const friendlyMessage = handleContractError(error as any); // Typecasting
+       setStatus(friendlyMessage);
+     setButtonText('Pay');
 
-    // }
+    }
   };
 
 
