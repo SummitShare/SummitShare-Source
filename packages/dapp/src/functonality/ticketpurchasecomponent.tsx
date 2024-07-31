@@ -8,7 +8,7 @@ import { useSession } from 'next-auth/react';
 import Buttons from '@/app/components/button/Butons';
 import WalletStatus from './walletStatus';
 import Image from 'next/image';
-import { concatPagination } from '@apollo/client/utilities';
+import { fetchEthUsdtPrice } from '@/utils/methods/ticketPurchase/eth_usd_price';
 import axios from 'axios';
 
 
@@ -100,15 +100,12 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
 // Estimate gas fees function for app. and purchase to display on total tickt amount on purchase component
 const estimateGasFees = async () => {
   if (!provider) {
-    setStatus('Please conenct your web3 wallet.');
+    setStatus('Please connect your web3 wallet.');
     return;
   }
 
-  // set state to true to begin gas estimation
   setIsEstimating(true);
   try {
-
-    // get contracts from utility script
     const usdcContract = contracts.getMUSDC();
     const museumContract = contracts.getMuseum();
 
@@ -116,32 +113,39 @@ const estimateGasFees = async () => {
     const gasLimitApprove = await estimateGas(usdcContract, 'approve', [CONTRACT_ADDRESSES.MuseumAdd, ticketPrice]);
     const gasPriceApprove = await provider.getGasPrice();
     
-    // Convert BigInt to BigNumber if necessary
     const gasLimitApproveBN = ethers.BigNumber.from(gasLimitApprove.toString());
-    const estimatedGasFeesApprove = ethers.utils.formatEther(gasLimitApproveBN.mul(gasPriceApprove));
+    const gasPriceApproveBN = ethers.BigNumber.from(gasPriceApprove.toString());
+    const estimatedGasFeesApproveWei = gasLimitApproveBN.mul(gasPriceApproveBN);
 
     // Estimate gas for purchase
     const gasLimitPurchase = await estimateGas(museumContract, 'purchaseTicket', [eventId, ticketPrice]);
     const gasPricePurchase = await provider.getGasPrice();
     
-    // Convert BigInt to BigNumber if necessary
     const gasLimitPurchaseBN = ethers.BigNumber.from(gasLimitPurchase.toString());
-    const estimatedGasFeesPurchase = ethers.utils.formatEther(gasLimitPurchaseBN.mul(gasPricePurchase));
-    console.log("Purchase estimate:", estimatedGasFeesPurchase)
-    console.log("Approval estimate:", estimatedGasFeesApprove)
+    const gasPricePurchaseBN = ethers.BigNumber.from(gasPricePurchase.toString());
+    const estimatedGasFeesPurchaseWei = gasLimitPurchaseBN.mul(gasPricePurchaseBN);
 
-    // Sum up the estimated gas fees
-    const totalEstimatedGasFees = (parseFloat(estimatedGasFeesApprove) + parseFloat(estimatedGasFeesPurchase)).toFixed(6);
-    console.log("Total gas estimate:", totalEstimatedGasFees)
-    setEstimatedGasFees(totalEstimatedGasFees);
+    // Sum up the estimated gas fees in Wei
+    const totalEstimatedGasFeesWei = estimatedGasFeesApproveWei.add(estimatedGasFeesPurchaseWei);
+
+    // Convert Wei to ETH
+    const totalEstimatedGasFeesETH = ethers.utils.formatEther(totalEstimatedGasFeesWei);
+
+    // Fetch the current ETH/USDT price
+    const ethUsdtPrice = await fetchEthUsdtPrice()
+    // Convert ETH to USDT
+    const totalEstimatedGasFeesUSDT = (parseFloat(totalEstimatedGasFeesETH) * ethUsdtPrice).toFixed(6);
+
+    console.log("Total gas estimate in USDT:", totalEstimatedGasFeesUSDT);
+    setEstimatedGasFees(totalEstimatedGasFeesUSDT);
   } catch (error) {
     console.error('Error estimating gas fees:', error);
     setEstimatedGasFees('Unable to estimate');
   } finally {
-    // update state to stop estimation once variables are assigned
     setIsEstimating(false);
   }
 };
+
     // function to calculate total price incl. gas fees
     const calculateTotalPrice = () => {
       const ticketPrice = parseFloat(ticketPriceFormatted);
