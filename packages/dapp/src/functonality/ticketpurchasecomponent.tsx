@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
-import { TicketPurchaseProps, EthereumWindow } from '@/utils/dev/typeInit';
+import { TicketPurchaseProps, EthereumWindow, TransactionReceipt} from '@/utils/dev/typeInit';
 import { CONTRACT_ADDRESSES, contracts, estimateGas } from '@/utils/dev/contractInit';
+import { fetchEthUsdtPrice } from '@/utils/methods/ticketPurchase/eth_usd_price';
 import { handleContractError } from '@/utils/dev/handleContractError';
 import useExhibit from '@/lib/useGetExhibitById';
 import { useSession } from 'next-auth/react';
 import Buttons from '@/app/components/button/Butons';
 import WalletStatus from './walletStatus';
 import Image from 'next/image';
-import { fetchEthUsdtPrice } from '@/utils/methods/ticketPurchase/eth_usd_price';
 import axios from 'axios';
 
 
@@ -103,12 +103,12 @@ const estimateGasFees = async () => {
     setStatus('Please connect your web3 wallet.');
     return;
   }
-
+  
   setIsEstimating(true);
   try {
     const usdcContract = contracts.getMUSDC();
     const museumContract = contracts.getMuseum();
-
+    
     // Estimate gas for approval
     const gasLimitApprove = await estimateGas(usdcContract, 'approve', [CONTRACT_ADDRESSES.MuseumAdd, ticketPrice]);
     const gasPriceApprove = await provider.getGasPrice();
@@ -116,42 +116,56 @@ const estimateGasFees = async () => {
     const gasLimitApproveBN = ethers.BigNumber.from(gasLimitApprove.toString());
     const gasPriceApproveBN = ethers.BigNumber.from(gasPriceApprove.toString());
     const estimatedGasFeesApproveWei = gasLimitApproveBN.mul(gasPriceApproveBN);
-
+    
     // Estimate gas for purchase
-    const gasLimitPurchase = await estimateGas(museumContract, 'purchaseTicket', [eventId, ticketPrice]);
+    let gasLimitPurchase;
+    try {
+      gasLimitPurchase = await estimateGas(museumContract, 'purchaseTicket', [eventId, ticketPrice]);
+    } catch (error) {
+      console.error('Error estimating gas for purchaseTicket:', error);
+      // Fallback to a manual gas limit
+      gasLimitPurchase = ethers.BigNumber.from('1000'); // fallback gas limit
+    }
     const gasPricePurchase = await provider.getGasPrice();
     
     const gasLimitPurchaseBN = ethers.BigNumber.from(gasLimitPurchase.toString());
     const gasPricePurchaseBN = ethers.BigNumber.from(gasPricePurchase.toString());
     const estimatedGasFeesPurchaseWei = gasLimitPurchaseBN.mul(gasPricePurchaseBN);
-
+    
     // Sum up the estimated gas fees in Wei
     const totalEstimatedGasFeesWei = estimatedGasFeesApproveWei.add(estimatedGasFeesPurchaseWei);
-
+    
     // Convert Wei to ETH
     const totalEstimatedGasFeesETH = ethers.utils.formatEther(totalEstimatedGasFeesWei);
-
+    
     // Fetch the current ETH/USDT price
-    const ethUsdtPrice = await fetchEthUsdtPrice()
+    const ethUsdtPrice = await fetchEthUsdtPrice();
     // Convert ETH to USDT
-    const totalEstimatedGasFeesUSDT = (parseFloat(totalEstimatedGasFeesETH) * ethUsdtPrice).toFixed(6);
+    const totalEstimatedGasFeesUSDT = parseFloat(totalEstimatedGasFeesETH) * ethUsdtPrice;
+    
+  // Format the number to remove trailing zeros but keep up to 2 decimal places
+  const formatNumber = (num: number): string => {
+    return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  };
 
-    console.log("Total gas estimate in USDT:", totalEstimatedGasFeesUSDT);
-    setEstimatedGasFees(totalEstimatedGasFeesUSDT);
-  } catch (error) {
-    console.error('Error estimating gas fees:', error);
-    setEstimatedGasFees('Unable to estimate');
-  } finally {
-    setIsEstimating(false);
-  }
-};
+  const formattedGasFees = formatNumber(totalEstimatedGasFeesUSDT);
+  
+  console.log('Total gas estimate in USDT:', formattedGasFees);
+  setEstimatedGasFees(formattedGasFees);
+} catch (error) {
+  console.error(error);
+  setStatus('Error estimating gas fees. Please try again.');
+} finally {
+  setIsEstimating(false);
+}}
+
 
     // function to calculate total price incl. gas fees
     const calculateTotalPrice = () => {
       const ticketPrice = parseFloat(ticketPriceFormatted);
       const gasFees = parseFloat(estimatedGasFees);
       const total = ticketPrice + gasFees;
-      return total.toFixed(6);
+      return total.toFixed(2);
     };
 
     // pop up component
@@ -197,7 +211,7 @@ const estimateGasFees = async () => {
         ticketPrice,
         { gasLimit: gasLimitPurchase }
       );
-      const receipt00 = await purchaseTx.wait();
+      const receipt00: TransactionReceipt = await purchaseTx.wait(2);
 
       //State update after successful ticket purchase
       setPurchaseSuccessful(true);
@@ -206,7 +220,7 @@ const estimateGasFees = async () => {
     try {
         // assign user ticket details post successful ticketPurchase
         const walletAddress = receipt00.from;
-        const event_Id = exhibit.id
+        const event_Id = exhibit.id;
         const userId = "USERID"
         const HOST = process.env.NEXT_PUBLIC_HOST
         const eventLink = `${HOST}/exhibit`
@@ -218,7 +232,7 @@ const estimateGasFees = async () => {
           event_id : event_Id,
           user_id : userId,
           eventLink : eventLink,
-          trasaction_id : transactionId
+          transaction_id : transactionId
         }
   
         const response = await axios.post('api/v1/events/tickets/create', userTicketData);
