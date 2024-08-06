@@ -10,12 +10,14 @@ import { GLTF } from 'three-stdlib'
 
 type GLTFResult = GLTF & {
   nodes: {
-    mask8001: THREE.Mesh
-    mask8001_1: THREE.Mesh
-    mask8001_2: THREE.Mesh
+    Hair: THREE.Mesh
+    Mask: THREE.Mesh
+    Wire: THREE.Mesh
   }
   materials: {
-    ['defaultMat.001']: THREE.MeshStandardMaterial
+    Hair: THREE.MeshStandardMaterial
+    ['Face - Wood']: THREE.MeshStandardMaterial
+    Wire: THREE.MeshStandardMaterial
   }
 }
 
@@ -25,11 +27,9 @@ export function Mask(props: JSX.IntrinsicElements['group']) {
   const { nodes, materials } = useGLTF('/models/mask.glb') as GLTFResult
   return (
     <group {...props} dispose={null}>
-      <group position={[11.828, 1.127, -29.281]} rotation={[1.463, -0.102, 0.754]} scale={0.008}>
-        <mesh geometry={nodes.mask8001.geometry} material={nodes.mask8001.material} />
-        <mesh geometry={nodes.mask8001_1.geometry} material={nodes.mask8001_1.material} />
-        <mesh geometry={nodes.mask8001_2.geometry} material={materials['defaultMat.001']} />
-      </group>
+      <mesh geometry={nodes.Hair.geometry} material={materials.Hair} rotation={[1.463, -0.102, 0.754]} />
+      <mesh geometry={nodes.Mask.geometry} material={materials['Face - Wood']} rotation={[1.463, -0.102, 0.754]} />
+      <mesh geometry={nodes.Wire.geometry} material={materials.Wire} rotation={[1.463, -0.102, 0.754]} />
     </group>
   )
 }
