@@ -35,7 +35,26 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
   const [provider, setProvider] = useState<ethers.providers.Web3Provider | null>(null);
   const [purchaseSuccessful, setPurchaseSuccessful] = useState<boolean>(false);
   const [purchaseFailed, setPurchaseFailed] = useState<boolean>(false);
+  const [hasTicket, setHasTicket] = useState(false);
   const exhibit = useExhibit(exhibitId);
+
+   // Effect hook to check if the user has already purchased a ticket
+   useEffect(() => {
+    const validateTicket = async () => {
+      try {
+        const response = await axios.post('/api/validateTicket', { userAddress, eventId });
+        if (response.data.hasTicket) {
+          setHasTicket(true);
+          setButtonType('secondary');
+          setButtonText('View Exhibit');
+        }
+      } catch (error) {
+        console.error('Error validating ticket:', error);
+      }
+    };
+
+    validateTicket();
+  }, [userAddress, eventId]);
 
   // Effect hook for timeouts
   useEffect(() => {
