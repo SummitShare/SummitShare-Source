@@ -124,7 +124,7 @@ const estimateGasFees = async () => {
     } catch (error) {
       console.error('Error estimating gas for purchaseTicket:', error);
       // Fallback to a manual gas limit
-      gasLimitPurchase = ethers.BigNumber.from('1000'); // fallback gas limit
+      gasLimitPurchase = ethers.BigNumber.from('100000'); // fallback gas limit
     }
     const gasPricePurchase = await provider.getGasPrice();
     
@@ -220,8 +220,8 @@ const estimateGasFees = async () => {
     try {
         // assign user ticket details post successful ticketPurchase
         const walletAddress = receipt00.from;
-        const event_Id = exhibit.id;
-        const userId = "USERID"
+        const event_Id = "419a0b2d-dee9-4782-9cff-341c5f8343a6";
+        const userId = "41bf84ba-f004-4e07-aa5d-fb49eb6a44a6"
         const HOST = process.env.NEXT_PUBLIC_HOST
         const eventLink = `${HOST}/exhibit`
         const transactionId = receipt00.transactionHash
@@ -254,8 +254,6 @@ const estimateGasFees = async () => {
 
     }
   };
-
-
 
   // Render component UI
   return (
@@ -331,7 +329,7 @@ const estimateGasFees = async () => {
                   ?
                 </small>
                 <div
-                  className="absolute left-0 transform -translate-x-full mt-1 w-max bg-white text-gray-800 text-sm border border-gray-300 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
+                  className="absolute center-0 transform -translate-x-full mt-1 w-max bg-white text-gray-800 text-sm border border-gray-300 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
                   style={{ whiteSpace: 'pre-line', padding: '8px 12px' }}
                 >
                   <div><b>Breakdown:</b> </div>
