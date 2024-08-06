@@ -10,6 +10,7 @@ interface ButtonProps {
   active?: boolean; // The state of the button, default is false (inactive)
   isConnectButton?: boolean;
   onClick?: any; // Indicates if this button should be the Connect Wallet button
+  disabled?: boolean;
 }
 
 /**

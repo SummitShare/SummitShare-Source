@@ -1,5 +1,9 @@
 import { Transporter } from 'nodemailer';
-import { transporter } from '../../../../config/nodemailer';
+import { transporter, emailServer} from '../../../../config/nodemailer';
+import { NextResponse } from 'next/server';
+import * as fs from 'fs/promises';
+import * as path from 'path';
+
 
 /**
  * Sends an email with the specified content.
@@ -9,16 +13,34 @@ import { transporter } from '../../../../config/nodemailer';
  * @param transporter The NodeMailer Transporter instance.
  * @returns A promise that resolves to true if the email was sent successfully, or throws an error if not.
  */
+
 export async function sendEmail(
   email: string,
   subject: string,
   body: string
 ): Promise<boolean> {
+
+  async function readHtmlTemplate(filePath: string): Promise<string> {
+    try {
+      const htmlContent = await fs.readFile(filePath, 'utf-8');
+      return htmlContent;
+    } catch (error) {
+      throw new Error('Error reading HTML template');
+    }
+  }
+  
+  const templatePath = path.join(process.cwd(), "src/functionality/emailNewsletter/main.html");
+  let htmlTemplate = await readHtmlTemplate(templatePath);
+
+  htmlTemplate = htmlTemplate.replace('{{title}}', 'SummitShare Exhibit Ticket');
+  htmlTemplate = htmlTemplate.replace('{{subtitle}}', 'See your ticket here');
+
+
   const mailOptions = {
-    from: 'your-email@example.com', // Replace with your email
+    from: emailServer,
     to: email,
     subject: subject,
-    html: body,
+    html: htmlTemplate,
   };
 
   try {

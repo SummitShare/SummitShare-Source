@@ -15,6 +15,7 @@ const nextConfig = {
       'ethereum.org',
       's3.tebi.io',
       'summitshare3.s3.eu-north-1.amazonaws.com',
+      'optimistic.etherscan.io',
     ],
   },
   env: {

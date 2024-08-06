@@ -1,0 +1,23 @@
+@keyframes dot-blink {
+    0%, 20% {
+      opacity: 1;
+    }
+    25%, 100% {
+      opacity: 0;
+    }
+  }
+  
+  .dot1 {
+    animation: dot-blink 1.5s infinite steps(1, end);
+  }
+  
+  .dot2 {
+    animation: dot-blink 1.5s infinite steps(1, end);
+    animation-delay: 0.5s;
+  }
+  
+  .dot3 {
+    animation: dot-blink 1.5s infinite steps(1, end);
+    animation-delay: 1s;
+  }
+  
