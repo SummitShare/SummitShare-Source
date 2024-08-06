@@ -35,20 +35,6 @@ export async function POST(req: Request, res: NextResponse) {
       );
     }
 
-    const purchased_at = new Date(ticket.purchased_at!);
-    const expiryDate = new Date(purchased_at.getTime() + 48 * 60 * 60 * 1000);
-
-    if (new Date() > expiryDate) {
-      await prisma.tickets.delete({
-        where: {
-          id: ticket.id,
-        },
-      });
-      return NextResponse.json(
-        { message: 'ticket expired and deleted' },
-        { status: 401 }
-      );
-    }
 
     return NextResponse.json({ message: 'ticket validated' }, { status: 200 });
   } catch (error) {

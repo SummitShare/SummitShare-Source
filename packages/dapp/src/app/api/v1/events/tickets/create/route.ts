@@ -44,6 +44,9 @@ export async function POST(req: Request, res: NextResponse) {
         { status: 400 }
       );
     }
+    console.log(`event id${ event_id}`)
+
+    console.log(`user id${ user_id}`)
 
     const ticket = await prisma.tickets.create({
       data: {
