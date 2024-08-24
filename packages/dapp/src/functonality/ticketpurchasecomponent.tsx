@@ -240,7 +240,7 @@ const estimateGasFees = async () => {
         // assign user ticket details post successful ticketPurchase
         const walletAddress = receipt00.from;
         const event_Id = "419a0b2d-dee9-4782-9cff-341c5f8343a6";
-        const userId = "41bf84ba-f004-4e07-aa5d-fb49eb6a44a6"
+        const userId = user_id;
         const HOST = process.env.NEXT_PUBLIC_HOST
         const eventLink = `${HOST}/exhibit`
         const transactionId = receipt00.transactionHash
