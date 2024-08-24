@@ -3,7 +3,7 @@ import {
   PaymentDistributed as PaymentDistributedEvent
 } from "../generated/templates/EventEscrow/EventEscrow"
 import { Beneficiary, Escrow, PaymentDistributed } from "../generated/schema"
-import { log } from '@graphprotocol/graph-ts'
+import { Address, log } from '@graphprotocol/graph-ts'
 
 export function handleEventEscrowDeployed(
   event: EventEscrowDeployedEvent
@@ -35,18 +35,18 @@ export function handleEventEscrowDeployed(
 
 export function handlePaymentDistributed(event: PaymentDistributedEvent): void {
 
-  // let beneficiary = event.params.beneficiary
-  // let amount = event.params.amount
-  //let indexedcaller = event.params.indexedcaller
-  // let paymentDistributed = new PaymentDistributed(event.address.toHexString().concat("-").concat(beneficiary.toHexString()))
+  let beneficiary = event.params.beneficiary
+  let amount = event.params.amount
+  let indexedcaller: Address = event.params.indexedcaller
+  let paymentDistributed = new PaymentDistributed(event.address.toHexString().concat("-").concat(beneficiary.toHexString()))
 
-  // paymentDistributed.escrow = event.address.toHexString()
-  // paymentDistributed.beneficiary = beneficiary.toHexString()
-  // paymentDistributed.amount = amount
-  //paymentDistributed.indexedcaller = indexedcaller.toHexString() 
-  // paymentDistributed.blockNumber = event.block.number
-  // paymentDistributed.blockTimestamp = event.block.timestamp
-  // paymentDistributed.transactionHash = event.transaction.hash
-  // paymentDistributed.save()
+  paymentDistributed.escrow = event.address.toHexString()
+  paymentDistributed.beneficiary = beneficiary.toHexString()
+  paymentDistributed.amount = amount
+  paymentDistributed.indexedcaller = indexedcaller
+  paymentDistributed.blockNumber = event.block.number
+  paymentDistributed.blockTimestamp = event.block.timestamp
+  paymentDistributed.transactionHash = event.transaction.hash
+  paymentDistributed.save()
 
 }
