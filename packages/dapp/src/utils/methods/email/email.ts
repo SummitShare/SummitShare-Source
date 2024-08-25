@@ -32,7 +32,7 @@ export async function sendEmail(
   const templatePath = path.join(process.cwd(), "src/functionality/emailNewsletter/main.html");
   let htmlTemplate = await readHtmlTemplate(templatePath);
 
-  htmlTemplate = htmlTemplate.replace('{{title}}', 'SummitShare Exhibit Ticket');
+  htmlTemplate = htmlTemplate.replace('{{title}}', 'SummitShare Exhibition Ticket');
   htmlTemplate = htmlTemplate.replace('{{subtitle}}', 'See your ticket here');
 
 
