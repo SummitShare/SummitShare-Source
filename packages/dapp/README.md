@@ -17,13 +17,6 @@ The SummitShare Dapp Directory houses the platform's frontend, built on `Next.js
 
 - **Capabilities**: The api facilitates user creation and exhibition/proposal creation as well as voting.
 - **Architecture**: Leveraging Next.js and TypeScript, the architecture ensures robust, scalable, and type-safe development
-
-- **Key Scripts and APIs**:
-  - **Api**:The api [dapp/src/app/api](https://github.com/bicos-io01/Revenue-Sharing-Source/tree/Central/packages/dapp/src/app/api) has the following functions
-  - facilitating user creation and verification
-  - facilitating event creation, proposal creation and voting
-  - facilitating [exhibit deployment](https://github.com/bicos-io01/Revenue-Sharing-Source/blob/Central/packages/dapp/src/app/api/deployExhibit/route.ts) once all contidions are met
-
 ### Development Commands 🛠️
 
 To get started with development, use the following `pnpm` commands:
@@ -43,23 +36,9 @@ The Dapp Directory is organized into three main parts: frontend components, cont
 - **Scripts**: Hosts the scripts for interacting with smart contracts, enabling functionalities like ticket purchasing and exhibit creation.
 - **APIs**: Includes the APIs that bridge frontend actions with the subgraph and smart contracts, facilitating platform processes.
 
-### Component Categories 🧩
-
-- **Landing Page**: The entry point for general users, showcasing available exhibitions and platform features.
-- **Help and Info**: Provides users with guidance on platform usage, FAQs, and support.
-- **Admin Dashboard**: For platform administrators, offering insights into platform activities and management tools.
-- **User Dashboard**: Where users manage their profiles, view purchased tickets, and access exhibitions.
-- **Event Creator Form**: A comprehensive form for exhibit creators to propose new exhibitions, including details like name, date, location, and stakeholders.
-- **Exhibit Dashboard**: Provides exhibit creators and stakeholders with insights, progression tracking, and voting functionalities for exhibition proposals.
-
-### User Flows 🔄
-
-- **General Users**: Can browse exhibitions, connect wallets, purchase tickets, and access exhibitions.
-- **Exhibit Creators**: Start by creating an exhibit proposal, inviting stakeholders, and managing the exhibition through consensus voting and dashboard insights.
 
 ### Resources 📌
 
-- **Hosted Service**: For the latest updates and interaction with the platform's subgraph, visit [The Graph Hosted Service](https://thegraph.com/hosted-service/subgraph/daodesigner/revenue-sharing-source).
 - **Contracts Directory**: For a more in depth exploration into the [smart contracts (RVS-m)](https://github.com/bicos-io01/Revenue-Sharing-Source/tree/Central/packages/contracts) operating within the platform.
 
 - **Utils**: Collection of essential utility scripts and configurations in the [Utils directory](https://github.com/bicos-io01/Revenue-Sharing-Source/tree/Central/packages/dapp/src/utils), which provide the building blocks for Dapp development and maintenance.

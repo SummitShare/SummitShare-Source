@@ -4,7 +4,11 @@
 
 ![summitsharep](https://github.com/bicos-io01/Revenue-Sharing-Source/assets/83420013/649df241-e29c-404f-aafb-409153cac786)
 
-**note:** this is the development/working repository. The official github organization can be found [here](https://github.com/SummitShare)
+**note:** this is the development/working repository. The contributions and issue repos organization can be found:
+
+- [FrontEnd Application](https://github.com/SummitShare/SummitShare-Client)
+- [Smart Contracts](https://github.com/SummitShare/SummitShare-Contracts)
+
 ## Introduction
 
 **SummitShare** stands as a pioneering digital platform dedicated to the repatriation of African cultural artifacts. Bridging the past and present, it serves as a beacon of hope and a testament to the resilience of African heritage, utilizing the power of blockchain technology to reclaim, celebrate, and share the rich tapestry of Africa's history with the world.
@@ -42,7 +46,7 @@ The technological stack includes `Next.js` for robust web application developmen
 
 The SummitShare repository is meticulously organized into three main directories, each representing a core component of the platform's infrastructure:
 
-### [`dapp/`](https://github.com/bicos-io01/Revenue-Sharing-Source/tree/Central/packages/dapp) - The Frontend Application 🌐
+### [`dapp/`](https://github.com/SummitShare/SummitShare-Source/tree/Central/packages/dapp) - The Frontend Application 🌐
 This directory contains the Next.js-based frontend application of the platform, crafted with TypeScript for type-safe code and `pnpm` for package management. It encompasses the React user interface, providing a dynamic and engaging experience for general users and exhibit creators alike. The `dapp/` directory is split into various subdirectories for components, pages, utilities, API interactions, and more, ensuring a modular and maintainable codebase.
 
 - **Components**: The React components used across the application for various user interfaces.
