@@ -122,7 +122,7 @@ export default function Home() {
             </Link>
           </div>
           <div>
-            <Link href={'https://github.com/SummitShare'}>
+            <Link href={'https://github.com'}>
               {' '}
               <Buttons type="secondary" size="large">
                 Star repo

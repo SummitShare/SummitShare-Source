@@ -59,7 +59,7 @@ function footer() {
                 <li>
                   <a
                     className="flex flex-row gap-2 items-center"
-                    href="https://github.com/SummitShare/SummitShare"
+                    href="https://github.com/SummitShare"
                   >
                     <GitHubLogoIcon className="w-4" />
                     Github
