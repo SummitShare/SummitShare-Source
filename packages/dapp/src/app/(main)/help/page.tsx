@@ -13,7 +13,7 @@ const steps = [
         <div className="mb-2">Start your Web3 journey by setting up a digital wallet:</div>
         <ol className="list-decimal pl-5 space-y-2">
           <li>Download a Web3 wallet like <a href="https://metamask.io/" target="_blank" rel="noopener noreferrer" className="text-orange-600 hover:underline">MetaMask</a> or <a href="https://www.coinbase.com/wallet" target="_blank" rel="noopener noreferrer" className="text-orange-600 hover:underline">Coinbase Wallet</a>.</li>
-          <li>Follow the wallet's setup instructions to create your account.</li>
+          <li>Follow the wallet&apos;s setup instructions to create your account.</li>
           <li>Secure your wallet by safely storing your recovery phrase.</li>
           <li>Fund your wallet with USDT or USDC stablecoins.</li>
         </ol>
@@ -26,7 +26,7 @@ const steps = [
     title: 'Connect Wallet',  
     description: (
       <>
-        <div>Click on the <strong>'Connect Wallet'</strong> button on the SummitShare platform to link your wallet.{' '}
+        <div>Click on the <strong>&#39;Connect Wallet&#39;</strong> button on the SummitShare platform to link your wallet.{' '}
         Ensure that your wallet is <strong>unlocked</strong> and you are connected to the <strong>correct network</strong> (e.g., Optimism Mainnet).</div>
       </>
     )
@@ -49,13 +49,14 @@ const steps = [
       <>
         <div>Once you <strong>confirm the transaction</strong> in your wallet, it will be processed on-chain.{' '}
         You will receive a <strong>confirmation notification</strong>, and your ticket will appear in your wallet as an <strong>NFT</strong>.{' '}
-        Track your transaction status via your wallet's activity section or check it on a blockchain explorer like{' '}
+        Track your transaction status via your wallet&apos;s activity section or check it on a blockchain explorer like{' '}
         <a href="https://etherscan.io/" target="_blank" rel="noopener noreferrer" className="text-orange-600 hover:underline">Etherscan Block Scanner</a> or{' '}
         <a href="https://optimistic.etherscan.io/" target="_blank" rel="noopener noreferrer" className="text-orange-600 hover:underline">Optimism Block Scanner</a>.</div>
       </>
     )
   } 
 ];
+
 
 
 const StepCard: React.FC<StepCardProps> = ({ step, isActive, isCompleted, onClick }) => (
