@@ -84,14 +84,14 @@ function Page() {
                 value={email}
                 onChange={(value) => setEmail(value)}
               />
-          <Inputs
-            type="input"
-            label="Password"
-            state="active"
-            isPassword={true}
-            value={password}
-            onChange={(value) => setPassword(value)}
-          />
+              <Inputs
+                type="input"
+                label="Password"
+                state="active"
+                isPassword={true}
+                value={password}
+                onChange={(value) => setPassword(value)}
+              />
             </section>
           </form>
         </section>

@@ -1,9 +1,8 @@
 import { Transporter } from 'nodemailer';
-import { transporter, emailServer} from '../../../../config/nodemailer';
+import { transporter, emailServer } from '../../../../config/nodemailer';
 import { NextResponse } from 'next/server';
 import * as fs from 'fs/promises';
 import * as path from 'path';
-
 
 /**
  * Sends an email with the specified content.
@@ -19,7 +18,6 @@ export async function sendEmail(
   subject: string,
   body: string
 ): Promise<boolean> {
-
   async function readHtmlTemplate(filePath: string): Promise<string> {
     try {
       const htmlContent = await fs.readFile(filePath, 'utf-8');
@@ -28,13 +26,18 @@ export async function sendEmail(
       throw new Error('Error reading HTML template');
     }
   }
-  
-  const templatePath = path.join(process.cwd(), "src/functionality/emailNewsletter/main.html");
+
+  const templatePath = path.join(
+    process.cwd(),
+    'src/functionality/emailNewsletter/main.html'
+  );
   let htmlTemplate = await readHtmlTemplate(templatePath);
 
-  htmlTemplate = htmlTemplate.replace('{{title}}', 'SummitShare Exhibition Ticket');
+  htmlTemplate = htmlTemplate.replace(
+    '{{title}}',
+    'SummitShare Exhibition Ticket'
+  );
   htmlTemplate = htmlTemplate.replace('{{subtitle}}', 'See your ticket here');
-
 
   const mailOptions = {
     from: emailServer,

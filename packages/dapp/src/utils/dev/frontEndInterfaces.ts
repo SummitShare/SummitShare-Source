@@ -232,7 +232,7 @@ export interface createTicketProps {
   exhbitId: string;
 }
 
-// exhibit details slug 
+// exhibit details slug
 export interface ObjectDescription {
   title: string;
   object_URL?: string | ReactNode;
@@ -243,10 +243,9 @@ export interface ObjectDescription {
   figure_details: string[][];
   figure_biography: string[][];
   figure_references: string[][];
-
 }
 
-// Help pages steps 
+// Help pages steps
 // Define an interface for the step
 export interface Step {
   id: number;

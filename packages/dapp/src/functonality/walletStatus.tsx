@@ -13,14 +13,9 @@ const WalletStatus: React.FC = () => {
   if (isDisconnected) return <div>Disconnected</div>;
 
   return (
-    <div
-      className="relative group"
-      style={{ display: 'inline-block' }}
-    >
-      <div
-        className="bg-white text-gray-800 border border-gray-300 rounded-full px-3 py-1 text-sm font-medium shadow-sm"
-      >
-       {/* @ts-ignore */}
+    <div className="relative group" style={{ display: 'inline-block' }}>
+      <div className="bg-white text-gray-800 border border-gray-300 rounded-full px-3 py-1 text-sm font-medium shadow-sm">
+        {/* @ts-ignore */}
         {shortenAddress(address)}
       </div>
       <div

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { Eye, EyeOff } from 'lucide-react'; 
+import { Eye, EyeOff } from 'lucide-react';
 
 function Page() {
   const router = useRouter();
@@ -119,15 +119,14 @@ function Page() {
                   setErrorMessage('');
                 }}
               />
-          <Inputs
-            type="input"
-            label="Password"
-            state="active"
-            isPassword={true}
-            value={password}
-            onChange={(value) => setPassword(value)}
-          />
-              
+              <Inputs
+                type="input"
+                label="Password"
+                state="active"
+                isPassword={true}
+                value={password}
+                onChange={(value) => setPassword(value)}
+              />
             </section>
           </form>
           {errorMessage && (

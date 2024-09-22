@@ -8,7 +8,6 @@ import {
 import * as fs from 'fs/promises';
 import * as path from 'path';
 
-
 async function readHtmlTemplate(filePath: string): Promise<string> {
   try {
     const htmlContent = await fs.readFile(filePath, 'utf-8');
@@ -42,7 +41,10 @@ async function createSendTokens(user_id: string, email: string) {
     });
 
     // Read the HTML template
-    const templatePath = path.join(process.cwd(), 'src/functonality/emailNewsletter/main.html');
+    const templatePath = path.join(
+      process.cwd(),
+      'src/functonality/emailNewsletter/main.html'
+    );
     let htmlTemplate = await readHtmlTemplate(templatePath);
 
     const host = process.env.HOST;
@@ -51,7 +53,10 @@ async function createSendTokens(user_id: string, email: string) {
     // Replace placeholders in the template with actual data
     htmlTemplate = htmlTemplate.replace('{{title}}', 'Email Verification');
     htmlTemplate = htmlTemplate.replace('{{subtitle}}', 'Verify Your Account');
-    htmlTemplate = htmlTemplate.replace('{{message}}', `Click on this link to verify your account: <a href="${verificationLink}">${verificationLink}</a>`);
+    htmlTemplate = htmlTemplate.replace(
+      '{{message}}',
+      `Click on this link to verify your account: <a href="${verificationLink}">${verificationLink}</a>`
+    );
 
     const mailOptions = {
       from: emailServer,

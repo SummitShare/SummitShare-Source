@@ -19,10 +19,7 @@ export default function Home() {
       link: '/exhibit/julia-chikamoneka',
     },
 
-    { name: 'Loongo', 
-      img: '/women/loongo.png',
-      link: '/exhibit/loongo' 
-    },
+    { name: 'Loongo', img: '/women/loongo.png', link: '/exhibit/loongo' },
 
     {
       name: 'lueji wa nkonde',
@@ -30,16 +27,10 @@ export default function Home() {
       link: '/exhibit/lueji-wa-nkonde',
     },
 
-    { name: 'Mukwae',
-      img: '/women/mukwae.png', 
-      link: '/exhibit/mukwae' 
-    },
+    { name: 'Mukwae', img: '/women/mukwae.png', link: '/exhibit/mukwae' },
 
-    { name: 'Mwape', 
-      img: '/women/mwape.png', 
-      link: '/exhibit/mwape' 
-    },
-    
+    { name: 'Mwape', img: '/women/mwape.png', link: '/exhibit/mwape' },
+
     {
       name: 'Mwenya',
       img: '/women/mwenya.png',

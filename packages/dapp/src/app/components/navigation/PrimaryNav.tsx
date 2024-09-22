@@ -23,7 +23,6 @@ const PrimaryNav: React.FC = () => {
     { name: 'Support Us', link: '/donate' },
     { name: 'Distributions', link: '/distribution' },
     { name: 'Help', link: '/help' },
-
   ];
 
   // Menu items for the responsive nav menu

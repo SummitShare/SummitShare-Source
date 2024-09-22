@@ -1,4 +1,3 @@
-
 'use client';
 import SummitShareCanvas from '@/app/components/3DCanvas/3dCanvas';
 import { Calabash } from '@/app/components/3DCanvas/models/Calabash';
@@ -8,7 +7,7 @@ import { Snuff } from '@/app/components/3DCanvas/models/Snuff';
 import { Cowry } from '@/app/components/3DCanvas/models/Cowry';
 import { Headrest } from '@/app/components/3DCanvas/models/Headrest';
 import Buttons from '@/app/components/button/Butons';
-import { ObjectDescription } from '@/utils/dev/frontEndInterfaces'
+import { ObjectDescription } from '@/utils/dev/frontEndInterfaces';
 import { X } from 'lucide-react';
 import React, { ReactNode, useState } from 'react';
 
@@ -44,10 +43,8 @@ const data: ObjectDescription[] = [
     ],
     figure_references: [
       ['https://collections.smvk.se/carlotta-em/web/object/1996946'],
-      ['https://youtu.be/xzCoP4NEbTg']
-
+      ['https://youtu.be/xzCoP4NEbTg'],
     ],
-
   },
 
   // Headrest - Julia Chikamoneka
@@ -93,9 +90,8 @@ const data: ObjectDescription[] = [
     ],
     figure_references: [
       ['https://collections.smvk.se/carlotta-em/web/object/1261202'],
-      ['https://youtu.be/Ytc_wKNzows']
-
-    ]
+      ['https://youtu.be/Ytc_wKNzows'],
+    ],
   },
 
   // Mask - Loongo
@@ -144,8 +140,8 @@ const data: ObjectDescription[] = [
     ],
     figure_references: [
       ['https://collections.smvk.se/carlotta-em/web/object/2042752'],
-      ['https://youtu.be/_wQ21pmFYZY']
-    ]
+      ['https://youtu.be/_wQ21pmFYZY'],
+    ],
   },
 
   // Calabash - Mukwae
@@ -188,8 +184,8 @@ const data: ObjectDescription[] = [
     ],
     figure_references: [
       ['https://collections.smvk.se/carlotta-em/web/object/1996935'],
-      ['https://www.youtube.com/watch?v=VwOAMAnLJQw']      
-    ]
+      ['https://www.youtube.com/watch?v=VwOAMAnLJQw'],
+    ],
   },
 
   // Snuff Cup - Lueji Wa Nkonde
@@ -234,47 +230,46 @@ const data: ObjectDescription[] = [
     ],
     figure_references: [
       ['https://collections.smvk.se/carlotta-em/web/object/1304494'],
-      ['https://youtu.be/A1HEPtkt8P4']
-      
-    ]
+      ['https://youtu.be/A1HEPtkt8P4'],
+    ],
   },
 
-  //Cowry Beads - Mwape 
+  //Cowry Beads - Mwape
   {
-    title: "Mwape",
+    title: 'Mwape',
     object_URL: <Cowry />,
-    object_name: "Cowry Beads",
+    object_name: 'Cowry Beads',
     Object_description: [
       [
-        "A belt made of leather and cowry shells. Cowries were expensive in places far away from the sea like Zambia and could only be acquired by people of influence."
+        'A belt made of leather and cowry shells. Cowries were expensive in places far away from the sea like Zambia and could only be acquired by people of influence.',
       ],
       [
-        "To possess such an item with such a large number of cowries meant the person that owned this belt was very wealthy."
+        'To possess such an item with such a large number of cowries meant the person that owned this belt was very wealthy.',
       ],
       [
-        "The shells were also used as a medium of exchange and are also an indicator of the presence of long distance trade in the interior of Zambia."
-      ]
+        'The shells were also used as a medium of exchange and are also an indicator of the presence of long distance trade in the interior of Zambia.',
+      ],
     ],
-    Figure_artifact_details: "She was a ruler of a Kingdom that comprised the middle Luangwa and the Chuambira valley and further east, Mulilo, and Chisenga respectively at Chinshumbu and Kaundi who owed her allegiance.",
+    Figure_artifact_details:
+      'She was a ruler of a Kingdom that comprised the middle Luangwa and the Chuambira valley and further east, Mulilo, and Chisenga respectively at Chinshumbu and Kaundi who owed her allegiance.',
     figure_images_URLs: [
-      "https://s3.example.com/images/mwenya_1.jpg",
-      "https://s3.example.com/images/mwenya_2.jpg"
+      'https://s3.example.com/images/mwenya_1.jpg',
+      'https://s3.example.com/images/mwenya_2.jpg',
     ],
     figure_details: [
-      ["A fearless warrior and ruler of middle Luangwa and Chuambira valley"],
-      ["(1910 - 1986)"]
+      ['A fearless warrior and ruler of middle Luangwa and Chuambira valley'],
+      ['(1910 - 1986)'],
     ],
-     figure_biography: [
+    figure_biography: [
       [
-        "Being a fierce warrior, Mwape fought battles with the Chikunda slave traders and other Chiefs, extended her influence, protected her people, and imposed control over the trade routes in her land."
-      ]
+        'Being a fierce warrior, Mwape fought battles with the Chikunda slave traders and other Chiefs, extended her influence, protected her people, and imposed control over the trade routes in her land.',
+      ],
     ],
     figure_references: [
-      ["https://collections.smvk.se/carlotta-em/web/object/1600518"],
-      ["https://youtu.be/VjXktuYSgfQ"]
-    ]
-  }
-  
+      ['https://collections.smvk.se/carlotta-em/web/object/1600518'],
+      ['https://youtu.be/VjXktuYSgfQ'],
+    ],
+  },
 ];
 
 // Fetch the data based on the slug
@@ -289,8 +284,10 @@ interface PageProps {
 }
 
 const Page = ({ params }: { params: { slug: string } }) => {
-  const [currentIndex, setCurrentIndex] = useState(() => 
-    data.findIndex(item => item.title.toLowerCase().replace(/ /g, '-') === params.slug)
+  const [currentIndex, setCurrentIndex] = useState(() =>
+    data.findIndex(
+      (item) => item.title.toLowerCase().replace(/ /g, '-') === params.slug
+    )
   );
 
   const figure = data[currentIndex];
@@ -320,7 +317,7 @@ const Page = ({ params }: { params: { slug: string } }) => {
 
   return (
     <div className="space-y-12 mx-6 my-28 lg:mx-[15%] relative">
-      <button 
+      <button
         onClick={handleClose}
         className="absolute top-[-20px] right-0 text-brown-500 hover:text-brown-700"
         aria-label="Close and return to exhibit"
@@ -362,26 +359,26 @@ const Page = ({ params }: { params: { slug: string } }) => {
         ))}
       </ul>
 
-        <div className="space-y-3">
-    <h2>References</h2>
-    <ul className="space-y-2">
-      {figure.figure_references.map((refArray, index) => (
-        <li key={index}>
-          {refArray.map((ref, subIndex) => (
-            <a
-              key={subIndex}
-              href={ref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block bg-white text-gray-800 border border-gray-300 rounded-full px-3 py-1 text-sm font-medium shadow-sm"
-            >
-              {ref}
-            </a>
+      <div className="space-y-3">
+        <h2>References</h2>
+        <ul className="space-y-2">
+          {figure.figure_references.map((refArray, index) => (
+            <li key={index}>
+              {refArray.map((ref, subIndex) => (
+                <a
+                  key={subIndex}
+                  href={ref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block bg-white text-gray-800 border border-gray-300 rounded-full px-3 py-1 text-sm font-medium shadow-sm"
+                >
+                  {ref}
+                </a>
+              ))}
+            </li>
           ))}
-        </li>
-      ))}
-    </ul>
-  </div>
+        </ul>
+      </div>
 
       <div className="w-full rounded-[8px] bg-primary-50 space-y-4 px-[45px] py-6">
         <div className="space-y-2">
@@ -404,17 +401,17 @@ const Page = ({ params }: { params: { slug: string } }) => {
       </div>
 
       <div className="space-y-4 md:flex md:flex-row md:gap-4 md:space-y-0">
-        <Buttons 
-          type="secondary" 
-          active={currentIndex > 0} 
+        <Buttons
+          type="secondary"
+          active={currentIndex > 0}
           onClick={handleBack}
           disabled={currentIndex === 0}
         >
           Back
         </Buttons>
-        <Buttons 
-          type="primary" 
-          active={currentIndex < data.length - 1} 
+        <Buttons
+          type="primary"
+          active={currentIndex < data.length - 1}
           onClick={handleNext}
           disabled={currentIndex === data.length - 1}
         >
@@ -426,4 +423,3 @@ const Page = ({ params }: { params: { slug: string } }) => {
 };
 
 export default Page;
-
