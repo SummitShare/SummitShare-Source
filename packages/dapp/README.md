@@ -17,6 +17,7 @@ The SummitShare Dapp Directory houses the platform's frontend, built on `Next.js
 
 - **Capabilities**: The api facilitates user creation and exhibition/proposal creation as well as voting.
 - **Architecture**: Leveraging Next.js and TypeScript, the architecture ensures robust, scalable, and type-safe development
+
 ### Development Commands 🛠️
 
 To get started with development, use the following `pnpm` commands:
@@ -35,7 +36,6 @@ The Dapp Directory is organized into three main parts: frontend components, cont
 - **Components**: Contains React components for UI, divided into categories like Landing Page, User Dashboard, Admin Dashboard, and Help and Info.
 - **Scripts**: Hosts the scripts for interacting with smart contracts, enabling functionalities like ticket purchasing and exhibit creation.
 - **APIs**: Includes the APIs that bridge frontend actions with the subgraph and smart contracts, facilitating platform processes.
-
 
 ### Resources 📌
 

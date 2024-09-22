@@ -42,7 +42,10 @@ async function createSendTokens(user: users, email: string) {
     });
 
     // Read the HTML template
-    const templatePath = path.join(process.cwd(), 'src/functonality/emailNewsletter/main.html');
+    const templatePath = path.join(
+      process.cwd(),
+      'src/functonality/emailNewsletter/main.html'
+    );
     let htmlTemplate = await readHtmlTemplate(templatePath);
 
     // const host = req.headers.get('host');
@@ -50,10 +53,13 @@ async function createSendTokens(user: users, email: string) {
     //${host}api/v1/user/verification/verifyEmail?token=${token}
     const verificationLink = `${host}/verification/email/${token}`;
 
-        // Replace placeholders in the template with actual data
-        htmlTemplate = htmlTemplate.replace('{{title}}', 'Email Verification');
-        htmlTemplate = htmlTemplate.replace('{{subtitle}}', 'Verify Your Account');
-        htmlTemplate = htmlTemplate.replace('{{message}}', `Click on this link to verify your account: <a href="${verificationLink}">${verificationLink}</a>`);
+    // Replace placeholders in the template with actual data
+    htmlTemplate = htmlTemplate.replace('{{title}}', 'Email Verification');
+    htmlTemplate = htmlTemplate.replace('{{subtitle}}', 'Verify Your Account');
+    htmlTemplate = htmlTemplate.replace(
+      '{{message}}',
+      `Click on this link to verify your account: <a href="${verificationLink}">${verificationLink}</a>`
+    );
 
     const mailOptions = {
       from: emailServer,

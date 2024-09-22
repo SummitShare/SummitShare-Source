@@ -22,6 +22,7 @@ const PrimaryNav: React.FC = () => {
     { name: 'Partners', link: '/partners' },
     { name: 'Support Us', link: '/donate' },
     { name: 'Distributions', link: '/distribution' },
+    { name: 'Help', link: '/help' },
   ];
 
   // Menu items for the responsive nav menu
@@ -36,6 +37,12 @@ const PrimaryNav: React.FC = () => {
         { name: 'Partners', link: '/partners' },
         { name: 'Support Us', link: '/donate' },
       ],
+    },
+    {
+      title: 'Help',
+      items: [
+        { name: 'Help', link: '/help' },
+      ]
     },
     {
       title: 'Dashboard',

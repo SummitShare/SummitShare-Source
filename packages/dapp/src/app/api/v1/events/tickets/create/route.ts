@@ -5,7 +5,10 @@ import prisma from '../../../../../../../config/db';
 import { randomUUID } from 'node:crypto';
 import * as fs from 'fs/promises';
 import * as path from 'path';
-import { emailServer, transporter } from '../../../../../../../config/nodemailer';
+import {
+  emailServer,
+  transporter,
+} from '../../../../../../../config/nodemailer';
 
 /**
  * Helper function to read the HTML template for the email.
@@ -18,7 +21,6 @@ async function readHtmlTemplate(filePath: string): Promise<string> {
     throw new Error('Error reading HTML template');
   }
 }
-
 
 /**
  * API Handler for creating tickets and recording ticket transactions.
@@ -35,8 +37,15 @@ async function readHtmlTemplate(filePath: string): Promise<string> {
 export async function POST(req: Request, res: NextResponse) {
   try {
     console.log('Request received');
-    const { wallet_address, event_id, user_id, eventLink, transaction_id } = await req.json();
-    console.log('Request body:', { wallet_address, event_id, user_id, eventLink, transaction_id });
+    const { wallet_address, event_id, user_id, eventLink, transaction_id } =
+      await req.json();
+    console.log('Request body:', {
+      wallet_address,
+      event_id,
+      user_id,
+      eventLink,
+      transaction_id,
+    });
 
     if (!wallet_address) {
       console.log('No wallet address sent');
@@ -59,9 +68,9 @@ export async function POST(req: Request, res: NextResponse) {
         { status: 400 }
       );
     }
-    console.log(`event id${ event_id}`)
+    console.log(`event id${event_id}`);
 
-    console.log(`user id${ user_id}`)
+    console.log(`user id${user_id}`);
 
     const ticket = await prisma.tickets.create({
       data: {
@@ -123,7 +132,7 @@ export async function POST(req: Request, res: NextResponse) {
         user_id,
         price,
         wallet_address,
-        transaction_id
+        transaction_id,
       },
     });
     console.log('Ticket transaction created:', ticketTransaction);
@@ -137,14 +146,26 @@ export async function POST(req: Request, res: NextResponse) {
     }
 
     // Read the HTML template
-    const templatePath = path.join(process.cwd(), 'src/functonality/emailNewsletter/main.html');
+    const templatePath = path.join(
+      process.cwd(),
+      'src/functonality/emailNewsletter/main.html'
+    );
     let htmlTemplate = await readHtmlTemplate(templatePath);
 
     // Replace placeholders in the template with actual data
     const verificationLink = `${eventLink}`;
-    htmlTemplate = htmlTemplate.replace('{{title}}', 'Ticket Purchase Confirmation');
-    htmlTemplate = htmlTemplate.replace('{{subtitle}}', 'Thank you for your purchase!');
-    htmlTemplate = htmlTemplate.replace('{{message}}', `You can view the exhibit by following this link: <a href="${verificationLink}">${verificationLink}</a>.<br><br>Your purchase enables revenue distribution within our connected heritage community and creates lasting value for them through your engagement with this collection of tokenized artifacts. We are building a new cycle of value addition, directly benefiting the Gwembe Valley community in the Southern Province of Zambia. <br><br>View our <a href="https://summitshare.co/distribution">Distributions page</a> to keep track of our work with this exhibition.`);
+    htmlTemplate = htmlTemplate.replace(
+      '{{title}}',
+      'Ticket Purchase Confirmation'
+    );
+    htmlTemplate = htmlTemplate.replace(
+      '{{subtitle}}',
+      'Thank you for your purchase!'
+    );
+    htmlTemplate = htmlTemplate.replace(
+      '{{message}}',
+      `You can view the exhibit by following this link: <a href="${verificationLink}">${verificationLink}</a>.<br><br>Your purchase enables revenue distribution within our connected heritage community and creates lasting value for them through your engagement with this collection of tokenized artifacts. We are building a new cycle of value addition, directly benefiting the Gwembe Valley community in the Southern Province of Zambia. <br><br>View our <a href="https://summitshare.co/distribution">Distributions page</a> to keep track of our work with this exhibition.`
+    );
 
     const mailOptions = {
       from: emailServer,
@@ -156,7 +177,6 @@ export async function POST(req: Request, res: NextResponse) {
     const MailSent = await transporter.sendMail(mailOptions);
     console.log('Email sent status:', MailSent);
 
-
     if (!MailSent) {
       console.log('Failed to send email');
       return NextResponse.json(
@@ -166,7 +186,7 @@ export async function POST(req: Request, res: NextResponse) {
     }
 
     console.log('Ticket created successfully');
-    return NextResponse.json({ message: 'ticket created' }, { status: 200});
+    return NextResponse.json({ message: 'ticket created' }, { status: 200 });
   } catch (error) {
     console.error('Error occurred:', error);
     return NextResponse.json({ message: error }, { status: 500 });

@@ -35,7 +35,6 @@ export async function POST(req: Request, res: NextResponse) {
       );
     }
 
-
     return NextResponse.json({ message: 'ticket validated' }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ message: error }, { status: 500 });

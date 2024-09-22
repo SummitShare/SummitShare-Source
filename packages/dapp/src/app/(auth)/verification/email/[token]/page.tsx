@@ -1,6 +1,7 @@
 'use client';
 import Buttons from '@/app/components/button/Butons';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
@@ -74,7 +75,13 @@ function Page({ params }: { params: { token: string } }) {
     }
   };
   return (
-    <main className="h-screen flex flex-col justify-end items-center bg-[url('https://images.unsplash.com/photo-1652383003064-102c52898ccf?q=80&w=2163&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-cover bg-center md:flex-row">
+    <main className="h-screen flex flex-col justify-end items-center relative">
+      <Image
+        src="https://images.unsplash.com/photo-1652383003064-102c52898ccf?q=80&w=2163&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        alt="Background Image"
+        layout="fill"
+        className="object-cover bg-center"
+      />
       <div className="bg-gray-950/35 fixed inset-0"></div>
 
       <div className="flex flex-col items-center justify-between px-6 py-10 bg-white h-screen md:w-[50%] lg:w-[30%] md:float-right z-10">

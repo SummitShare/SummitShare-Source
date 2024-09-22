@@ -160,12 +160,14 @@ const Input: React.FC<InputProps> = ({
         return (
           <div className="relative">
             <input
-              type={isPassword ? (showPassword ? "text" : "password") : "text"}
+              type={isPassword ? (showPassword ? 'text' : 'password') : 'text'}
               value={internalValue}
               onChange={(e) => handleInput(e.target.value)}
               {...sharedProps}
               placeholder={defaultValue}
-              className={`${sharedProps.className} ${isPassword ? 'pr-[40px]' : ''}`}
+              className={`${sharedProps.className} ${
+                isPassword ? 'pr-[40px]' : ''
+              }`}
             />
             {isPassword && (
               <button

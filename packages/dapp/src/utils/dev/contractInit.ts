@@ -19,7 +19,7 @@ export const CONTRACT_ADDRESSES = {
   MUSDCAdd: '0xF4Fa9d3d03A946Ae032Ca5f94CFe11e4B33340d7',
   MuseumAdd: '0x45804953C8C7e8C261cB1269039C8CE6700D56C7',
   exhibitId: '0x57084b8165aad61281c1be0cb3f809fb9476b7a4',
-  eventId: "KMGIII",
+  eventId: 'KMGIII',
   EscrowAdd: '0xf83d61fc47ca63458bbece0cee77bab90fe4311d',
 };
 
@@ -96,7 +96,6 @@ export const contracts = {
     );
   },
 };
-
 
 export async function estimateGas(
   contract: ethers.Contract,
