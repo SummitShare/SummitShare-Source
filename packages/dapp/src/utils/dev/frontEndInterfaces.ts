@@ -245,3 +245,19 @@ export interface ObjectDescription {
   figure_references: string[][];
 
 }
+
+// Help pages steps 
+// Define an interface for the step
+export interface Step {
+  id: number;
+  title: string;
+  description: React.ReactNode; // Since description contains JSX, we use React.ReactNode
+}
+
+// Define an interface for the StepCard props
+export interface StepCardProps {
+  step: Step;
+  isActive: boolean;
+  isCompleted: boolean;
+  onClick: () => void; // Function that takes no arguments and returns nothing
+}
