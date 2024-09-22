@@ -10,6 +10,7 @@ import Buttons from '@/app/components/button/Butons';
 import WalletStatus from './walletStatus';
 import Image from 'next/image';
 import axios from 'axios';
+import Link from 'next/link';
 
 
 const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
@@ -335,33 +336,41 @@ const estimateGasFees = async () => {
               </p>
   
               <div className="relative inline-block group">
-                <small
-                  className="cursor-pointer text-black rounded-full border border-black bg-white"
-                  style={{
-                    padding: '2px 6px',
-                    display: 'inline-block',
-                    lineHeight: '1em',
-                    textAlign: 'center',
-                    fontSize: '12px',
-                  }}
-                >
-                  ?
-                </small>
-                <div
-                  className="absolute center-0 transform -translate-x-full mt-1 w-max bg-white text-gray-800 text-sm border border-gray-300 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
-                  style={{ whiteSpace: 'pre-line', padding: '8px 12px' }}
-                >
-                  <div><b>Breakdown:</b> </div>
-                  {`Ticket Price: ${ticketPriceFormatted} USDT
-  Gas Fees Estimate: ${estimatedGasFees} USDT
-  (Gas fees are used to process the purchase onchain and do not go to us.)`}
+              <small
+                className="cursor-pointer text-black rounded-full border border-black bg-white px-2 py-1 inline-block leading-none text-center text-xs"
+              >
+                ?
+              </small>
+              <div
+                className="absolute left-1/2 transform -translate-x-1/2 mt-2 w-64 sm:w-auto bg-white text-gray-800 text-sm border border-gray-300 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 p-3"
+              >
+                <div className="font-bold mb-2">Breakdown:</div>
+                <div className="space-y-1">
+                  <div><strong>Ticket Price: {ticketPriceFormatted} USDT</strong></div>
+                  <div><strong>Gas Fees Estimate: {estimatedGasFees} USDT</strong> </div>
+                  <div className="text-xs mt-2">
+                    (Gas fees are used to process the purchase on-chain and do not go to us.)
+                  </div>
                 </div>
               </div>
+              <style jsx>{`
+                @media (min-width: 640px) {
+                  .group:hover > div {
+                    width: 350px;
+                  }
+                }
+              `}</style>
+            </div>
             </div>
   
             <Buttons type="primary" size="large" onClick={purchaseTicket}>
               {buttonText}
             </Buttons>
+            <div className="text-center">
+              <Link href="/help" className="text-sm text-orange-600 hover:underline">
+                Need help? Visit our Help Page
+              </Link>
+            </div>
           </div>
         </div>
       )}
