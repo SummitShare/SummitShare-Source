@@ -72,10 +72,10 @@ const Partners: React.FC = () => {
         ))}
       </div>
       <p className="text-center font-bold max-w-3xl text-sm sm:text-base mb-8">
-        SummitShare is more than a project; it's a collaborative journey and
+        SummitShare is more than a project; it&apos;s a collaborative journey and
         vehicle aimed at ushering in a new narrative around the repatriation and
         reclamation of history for a newer generation. Our partners are
-        instrumental in assisting the realization of SummitShare's vision. The
+        instrumental in assisting the realization of SummitShare&apos;s vision. The
         canvas of SummitShare is better painted together, and these are some of
         the partners that have aided and continue to aid the building of
         SummitShare.
