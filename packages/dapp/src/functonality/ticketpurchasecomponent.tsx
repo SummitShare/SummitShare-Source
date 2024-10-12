@@ -48,6 +48,7 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
   const [purchaseFailed, setPurchaseFailed] = useState<boolean>(false);
   const [hasTicket, setHasTicket] = useState(false);
   const exhibit = useExhibit(exhibitId);
+  const [isHovering, setIsHovering] = useState(false);
 
   // Effect hook to check if the user has already purchased a ticket
   useEffect(() => {
@@ -397,35 +398,43 @@ const TicketPurchaseComponent = ({ userAddress }: TicketPurchaseProps) => {
                 />
               </p>
 
-              <div className="relative inline-block group">
-                <small className="cursor-pointer text-black rounded-full border border-black bg-white px-2 py-1 inline-block leading-none text-center text-xs">
+              <div className="relative inline-block">
+                <small
+                  className="cursor-pointer text-black rounded-full border border-black bg-white px-2 py-1 inline-block leading-none text-center text-xs"
+                  onMouseEnter={() => setIsHovering(true)}
+                  onMouseLeave={() => setIsHovering(false)}
+                >
                   ?
                 </small>
-                <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 w-64 sm:w-auto bg-white text-gray-800 text-sm border border-gray-300 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 p-3">
-                  <div className="font-bold mb-2">Breakdown:</div>
-                  <div className="space-y-1">
-                    <div>
-                      <strong>Ticket Price: {ticketPriceFormatted} USDT</strong>
-                    </div>
-                    <div>
-                      <strong>
-                        Gas Fees Estimate: {estimatedGasFees} USDT
-                      </strong>{' '}
-                    </div>
-                    <div className="text-xs mt-2">
-                      (Gas fees are used to process the purchase on-chain and do
-                      not go to us.)
+                {isHovering && (
+                  <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 w-64 sm:w-350 bg-white text-gray-800 text-sm border border-gray-300 rounded-lg shadow-lg z-10 p-3">
+                    <div className="font-bold mb-2">Breakdown:</div>
+                    <div className="space-y-1">
+                      <div>
+                        <strong>
+                          Ticket Price: {ticketPriceFormatted} USDT
+                        </strong>
+                      </div>
+                      <div>
+                        <strong>
+                          Gas Fees Estimate: {estimatedGasFees} USDT
+                        </strong>{' '}
+                      </div>
+                      <div className="text-xs mt-2">
+                        (Gas fees are used to process the purchase on-chain and
+                        do not go to us.)
+                      </div>
                     </div>
                   </div>
-                </div>
-                <style jsx>{`
-                  @media (min-width: 640px) {
-                    .group:hover > div {
-                      width: 350px;
-                    }
-                  }
-                `}</style>
+                )}{' '}
               </div>
+              <style jsx>{`
+                @media (min-width: 640px) {
+                  .group:hover > div {
+                    width: 350px;
+                  }
+                }
+              `}</style>
             </div>
 
             <Buttons type="primary" size="large" onClick={purchaseTicket}>
