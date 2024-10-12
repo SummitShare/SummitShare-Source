@@ -98,7 +98,7 @@ function Page({ params }: { params: { token: string } }) {
             <p className="text-green-600 font-semibold">{resendConfirmation}</p>
           )}
         </div>
-        <img
+        <Image
           src={verificationStatus === 200 ? '/swinging.svg' : '/petting.svg'}
           alt=""
         />

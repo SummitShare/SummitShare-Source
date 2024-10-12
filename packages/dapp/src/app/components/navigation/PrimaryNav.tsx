@@ -40,9 +40,7 @@ const PrimaryNav: React.FC = () => {
     },
     {
       title: 'Help',
-      items: [
-        { name: 'Help', link: '/help' },
-      ]
+      items: [{ name: 'Help', link: '/help' }],
     },
     {
       title: 'Dashboard',
