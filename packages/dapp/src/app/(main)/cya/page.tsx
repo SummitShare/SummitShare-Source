@@ -156,7 +156,7 @@ export default function Cya() {
 
         {/* Ticket Purchase Section */}
         <div className="z-10 relative mb-8">
-          <TicketPurchaseComponent userAddress={''} />
+          <TicketPurchaseComponent userAddress={''} user_id={''}  />
         </div>
 
         <div className="flex flex-col items-center mt-12">
