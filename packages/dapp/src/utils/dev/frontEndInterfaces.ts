@@ -6,6 +6,7 @@ import { ReactNode } from 'react';
 import React from 'react';
 import { UseFormRegister } from 'react-hook-form';
 import { EmailArray } from './typeInit';
+import { ethers } from 'ethers';
 
 // auth-register/page.tsx
 export interface authUserProps {
@@ -259,4 +260,114 @@ export interface StepCardProps {
   isActive: boolean;
   isCompleted: boolean;
   onClick: () => void; // Function that takes no arguments and returns nothing
+}
+
+export interface ButtonConfig {
+  text: string;
+  action: () => void;
+  type: 'primary' | 'secondary';
+}
+
+export interface TicketPurchaseUIProps {
+  // User and Authentication
+  userAddress: string;
+  setHasTicket: (hasTicket: boolean) => void;
+  hasTicket: boolean;
+
+  // Button States and Controls
+  buttonType: 'primary' | 'secondary' | 'tartary' | 'subTartary';
+  setButtonType: (
+    type: 'primary' | 'secondary' | 'tartary' | 'subTartary'
+  ) => void;
+  buttonText: string;
+  buttonConfig: ButtonConfig;
+  isProcessing: boolean;
+
+  // Status and Messages
+  status: string;
+  isVisible: boolean;
+  showSuccessMessage: boolean;
+  closeSuccessMessage: () => void;
+
+  // Purchase State
+  purchaseSuccessful: boolean;
+  isCountdownOver: boolean;
+
+  // Popup and Interaction States
+  isPopupVisible: boolean;
+  togglePopup: () => void;
+  isHovering: boolean;
+  setIsHovering: (isHovering: boolean) => void;
+
+  // Price and Gas Information
+  estimatedGasFees: string;
+  isEstimating: boolean;
+  ticketPriceWithToken: string;
+  ticketPriceFormatted: string;
+  calculateTotalPrice: () => string;
+
+  // Core Functions
+  purchaseTicket: () => void;
+}
+
+// Additional shared types
+export interface TransactionDetails {
+  hash: string;
+  from: string;
+  to: string;
+  value: string;
+}
+
+export interface PurchaseResult {
+  success: boolean;
+  transactionHash?: string;
+  error?: string;
+}
+
+// Optional: Add validation helper
+export const validateTicketPurchaseProps = (
+  props: Partial<TicketPurchaseUIProps>
+): props is TicketPurchaseUIProps => {
+  const requiredProps: (keyof TicketPurchaseUIProps)[] = [
+    'userAddress',
+    'setHasTicket',
+    'buttonType',
+    'setButtonType',
+    'buttonText',
+    'status',
+    'purchaseSuccessful',
+    'isCountdownOver',
+    'showSuccessMessage',
+    'togglePopup',
+    'purchaseTicket',
+    'buttonConfig',
+    'isVisible',
+    'isPopupVisible',
+    'estimatedGasFees',
+    'isEstimating',
+    'isProcessing',
+    'closeSuccessMessage',
+    'hasTicket',
+    'ticketPriceWithToken',
+    'calculateTotalPrice',
+    'ticketPriceFormatted',
+    'isHovering',
+    'setIsHovering',
+  ];
+
+  return requiredProps.every((prop) => prop in props);
+};
+
+// utils/ticketPurchaseLogic
+
+export interface PurchaseHandlerProps {
+  provider: ethers.providers.Web3Provider | null;
+  ticketPrice: string;
+  eventId: string;
+  user_id: string;
+  setStatus: (status: string) => void;
+  setIsProcessing: (isProcessing: boolean) => void;
+  setButtonText: (text: string) => void;
+  setPurchaseSuccessful: (success: boolean) => void;
+  setShowSuccessMessage: (show: boolean) => void;
 }
