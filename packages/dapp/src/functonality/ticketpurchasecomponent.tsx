@@ -14,7 +14,10 @@ import TicketPurchaseUI from '@/utils/methods/ticketPurchase/ticketPurchaseUI';
 import { estimateGasFees } from '@/utils/methods/ticketPurchase/gasEstimator';
 import { ethers } from 'ethers';
 
-const TicketPurchaseComponent = ({ userAddress, user_id }: TicketPurchaseProps) => {
+const TicketPurchaseComponent = ({
+  userAddress,
+  user_id,
+}: TicketPurchaseProps) => {
   const session = useSession();
   const { provider, status, setStatus } = useWeb3Provider();
   const {

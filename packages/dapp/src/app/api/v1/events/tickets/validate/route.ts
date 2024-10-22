@@ -20,10 +20,7 @@ export async function POST(req: Request, res: NextResponse) {
       );
     }
     if (!user_id) {
-      return NextResponse.json(
-        { message: 'no user_id sent' },
-        { status: 400 }
-      );
+      return NextResponse.json({ message: 'no user_id sent' }, { status: 400 });
     }
 
     const ticket = await prisma.tickets.findFirst({

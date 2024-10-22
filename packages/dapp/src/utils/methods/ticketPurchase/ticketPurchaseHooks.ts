@@ -50,7 +50,7 @@ export const useTicketState = (
       setButtonType,
       setButtonText
     );
-  }, [userAddress, eventId]);
+  }, [userAddress, eventId, user_id]);
 
   return {
     hasTicket,

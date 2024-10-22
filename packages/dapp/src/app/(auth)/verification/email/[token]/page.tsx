@@ -46,7 +46,7 @@ function Page({ params }: { params: { token: string } }) {
     };
 
     verifyEmail();
-  }, [params.token]);
+  }, [params.token, host]);
 
   const resendVerificationEmail = async () => {
     try {
