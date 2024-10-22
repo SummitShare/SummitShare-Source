@@ -15,12 +15,12 @@ import ExhibitNFTABI from '../artifacts/contracts/ExhibitNFT.sol/ExhibitNFT.json
 import DonationsABI from '../artifacts/contracts/Donations.sol/Donations.json';
 
 export const CONTRACT_ADDRESSES = {
-  EventOrganizerServiceAdd: '0x844188D0E7CAfCf4183714f48150223a11AdE341',
-  MUSDCAdd: '0xF4Fa9d3d03A946Ae032Ca5f94CFe11e4B33340d7',
-  MuseumAdd: '0x45804953C8C7e8C261cB1269039C8CE6700D56C7',
-  exhibitId: '0x57084b8165aad61281c1be0cb3f809fb9476b7a4',
-  eventId: 'KMGIII',
-  EscrowAdd: '0xf83d61fc47ca63458bbece0cee77bab90fe4311d',
+  EventOrganizerServiceAdd: '0x24AFbcd71Ea88275f0d302706796ADE47DD0e923',
+  MUSDCAdd: '0xCF8cCFDb3Ff1E711ad0291360C8C84E3fADd5351',
+  MuseumAdd: '0x45eB3C8d2aedE8cDbfC7c71d36d2510183D0Cf09',
+  exhibitId: '0xb3ca7af3573eabc87c41b42a4ec7d764ddfb6a6d',
+  eventId: 'LLE0',
+  EscrowAdd: '0xd5f98017f2fdb45b07c8b4d6eb73e447993e2400',
 };
 
 // Export ABIs directly

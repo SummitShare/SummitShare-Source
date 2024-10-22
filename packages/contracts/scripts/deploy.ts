@@ -26,16 +26,10 @@ async function main() {
 
   // Deploy ArtifactNFT
   const artifact1 = {
-    name: "",
-    symbol: "",
+    name: "The Leading Ladies of Zambia",
+    symbol: "LLE",
     owner: owner.address,
-    baseURI: "",
-  }
-  const artifact2 = {
-    name: "",
-    symbol: "",
-    owner: owner.address,
-    baseURI: "",
+    baseURI: "https://s3.tebi.io/summitsharemetadata/leadingLadies/",
   }
 
   const tx0 = await organizerService.connect(owner).deployArtifactNFT(
@@ -49,20 +43,6 @@ async function main() {
 
   console.log("Events from ArtifactNFT 1 deployment:");
   receipt0.logs.forEach((log, index) => {
-    console.log(`Event ${index}:`, log.eventName, log.args);
-  });
-
-  const tx00 = await organizerService.connect(owner).deployArtifactNFT(
-    artifact2.name,
-    artifact2.symbol,
-    artifact2.owner,
-    artifact2.baseURI
-  );
-  const receipt00 = await tx00.wait(6);
-  console.log("Deployed ArtifactNFT 2", receipt00.status)
-
-  console.log("\nEvents from ArtifactNFT 2 deployment:");
-  receipt00.logs.forEach((log, index) => {
     console.log(`Event ${index}:`, log.eventName, log.args);
   });
 
