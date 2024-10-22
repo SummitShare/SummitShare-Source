@@ -1,16 +1,16 @@
-specVersion: 0.0.5
+specVersion: 1.1.0
 description: test
-repository: https://github.com/bicos-io01/Revenue-Sharing-Source
+repository: https://github.com/SummitShare/SummitShare
 schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum
     name: EventOrganizerService
-    network: sepolia
+    network: optimism-sepolia
     source:
       abi: EventOrganizerService
-      address: "0x844188D0E7CAfCf4183714f48150223a11AdE341"
-      startBlock: 6302990
+      address: "0x24AFbcd71Ea88275f0d302706796ADE47DD0e923"
+      startBlock: 18717022
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -38,11 +38,11 @@ dataSources:
       file: ./src/event-organizer-service.ts
   - kind: ethereum
     name: Museum
-    network: sepolia
+    network: optimism-sepolia
     source:
       abi: Museum
-      address: "0x45804953C8C7e8C261cB1269039C8CE6700D56C7"
-      startBlock: 6302989
+      address: "0x45eB3C8d2aedE8cDbfC7c71d36d2510183D0Cf09"
+      startBlock: 18717015
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -66,7 +66,7 @@ dataSources:
 templates:
   - name: ArtifactNFT
     kind: ethereum/contract
-    network: sepolia
+    network: optimism-sepolia
     source:
       abi: ArtifactNFT
     mapping:
@@ -96,7 +96,7 @@ templates:
           handler: handleTransfer
   - kind: ethereum
     name: ExhibitNFT
-    network: sepolia
+    network: optimism-sepolia
     source:
       abi: ExhibitNFT
     mapping:
@@ -129,7 +129,7 @@ templates:
       file: ./src/exhibit-nft.ts
   - name: EventEscrow
     kind: ethereum/contract
-    network: sepolia
+    network: optimism-sepolia
     source:
       abi: EventEscrow
     mapping:
