@@ -65,6 +65,9 @@ function footer() {
                     Github
                   </a>
                 </li>
+                <li>
+                  <a href="https://t.me/+X3VvXwhsHnEwNTc0">Telegram</a>
+                </li>
               </ul>
             </li>
           </ul>

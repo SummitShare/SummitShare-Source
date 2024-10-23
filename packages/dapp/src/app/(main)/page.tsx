@@ -92,7 +92,7 @@ export default function Home() {
           <div>
             <Link href={'/cya'}>
               <Buttons type="primary" size="large">
-                Coming Soon!
+                Enter
               </Buttons>
             </Link>
           </div>
@@ -122,7 +122,7 @@ export default function Home() {
             </Link>
           </div>
           <div>
-            <Link href={'https://github.com'}>
+            <Link href={'https://github.com/summitshare'}>
               {' '}
               <Buttons type="secondary" size="large">
                 Star repo

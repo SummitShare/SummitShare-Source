@@ -11,10 +11,10 @@ const config = createConfig(
   getDefaultConfig({
     appName: 'SummitShare.',
     walletConnectProjectId: process.env.WC_ID ?? 'd',
-    chains: [sepolia],
+    chains: [optimismSepolia],
     transports: {
-      [sepolia.id]: http(
-        `https://eth-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_KEY}`
+      [optimismSepolia.id]: http(
+        `https://opt-sepolia.g.alchemy.com/v2/5Jk48tzhV8aBBl8C1uoO8ZNyRVWi-Uf4}`
       ),
     },
     // Optional App Info
