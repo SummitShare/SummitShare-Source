@@ -46,101 +46,101 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
 function Page({ params }: { params: { token: string } }) {
-  const router = useRouter();
-  const [verificationStatus, setverificationStatus] = useState<number>();
-  const [verificationMessage, setVerificationMessage] = useState<number>();
-  const hasFetched = useRef(false);
+   const router = useRouter();
+   const [verificationStatus, setverificationStatus] = useState<number>();
+   const [verificationMessage, setVerificationMessage] = useState<number>();
+   const hasFetched = useRef(false);
 
-  const handleRequest = async (response: string) => {
-    const token = params.token;
-    if (!token || hasFetched.current) return;
-    hasFetched.current = true;
-    try {
-      const host = process.env.NEXT_PUBLIC_HOST;
-      await fetch(
-        `${host}/api/v1/proposal/requests/acceptRequests?token=${token}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ response, token }),
-        }
-      );
-    } catch (error) {
-      console.error('Verification request failed:', error);
-    }
+   const handleRequest = async (response: string) => {
+      const token = params.token;
+      if (!token || hasFetched.current) return;
+      hasFetched.current = true;
+      try {
+         const host = process.env.NEXT_PUBLIC_HOST;
+         await fetch(
+            `${host}/api/v1/proposal/requests/acceptRequests?token=${token}`,
+            {
+               method: 'POST',
+               headers: {
+                  'Content-Type': 'application/json',
+               },
+               body: JSON.stringify({ response, token }),
+            }
+         );
+      } catch (error) {
+         console.error('Verification request failed:', error);
+      }
 
-    // ////console.log(`token ${token}`)
-    // ////console.log(`choice ${response}`)
+      // ////console.log(`token ${token}`)
+      // ////console.log(`choice ${response}`)
 
-    router.push('/');
-  };
+      router.push('/');
+   };
 
-  // const verifyEmail =  () => {
+   // const verifyEmail =  () => {
 
-  //   try {
-  //   //
-  //   // });
-  //     // const { status } = response
-  //     // const { message } = await response.json()
-  //     ////console.log(`token ${dataToken}`)
-  //     ////console.log(`choice ${response}`)
+   //   try {
+   //   //
+   //   // });
+   //     // const { status } = response
+   //     // const { message } = await response.json()
+   //     ////console.log(`token ${dataToken}`)
+   //     ////console.log(`choice ${response}`)
 
-  //     // setVerificationMessage(message);
-  //     // setverificationStatus(response?.status)
+   //     // setVerificationMessage(message);
+   //     // setverificationStatus(response?.status)
 
-  //   } catch (error) {
-  //     console.error('Verification request failed:', error);
-  //   }
-  // };
+   //   } catch (error) {
+   //     console.error('Verification request failed:', error);
+   //   }
+   // };
 
-  // verifyEmail();
+   // verifyEmail();
 
-  return (
-    <div className=" w-full flex items-center justify-center fixed inset-0 bg-gray-50 z-20 ">
-      <div className="flex flex-col gap-6 items-center justify-center  ">
-        <h1 className="text-3xl text-gray-950 ">
-          Summit<span className="text-orange-500">Share</span>
-        </h1>
-        <div className=" w-[80%] text-center">
-          <p className="text-sm text-gray-700">{verificationMessage}</p>
-        </div>
-      </div>
+   return (
+      <div className=" w-full flex items-center justify-center fixed inset-0 bg-gray-50 z-20 ">
+         <div className="flex flex-col gap-6 items-center justify-center  ">
+            <h1 className="text-3xl text-gray-950 ">
+               Summit<span className="text-orange-500">Share</span>
+            </h1>
+            <div className=" w-[80%] text-center">
+               <p className="text-sm text-gray-700">{verificationMessage}</p>
+            </div>
+         </div>
 
-      {verificationStatus === 400 ? null : (
-        <div className="space-y-3 ring-1 ring-gray-300 rounded-md py-3 px-4 fixed bottom-5 right-5 left-5  md:right-5 md:left-[60%] ">
-          <p className="text-sm text-gray-700">
-            {/* {verificationStatus === 200 ?
+         {verificationStatus === 400 ? null : (
+            <div className="space-y-3 ring-1 ring-gray-300 rounded-md py-3 px-4 fixed bottom-5 right-5 left-5  md:right-5 md:left-[60%] ">
+               <p className="text-sm text-gray-700">
+                  {/* {verificationStatus === 200 ?
 
         " navigate to the home page and start your cultural adventure"
         : "Resend verified eamil note it will expire in 1 hour"} */}
 
-            {verificationMessage}
-          </p>
-          <div className="flex flex-row gap-2">
-            <button
-              onClick={() => {
-                handleRequest('Accepted');
-              }}
-              className="ring-1 ring-gray-300 rounded-md px-3 py-2 text-xs"
-            >
-              Accept
-            </button>
+                  {verificationMessage}
+               </p>
+               <div className="flex flex-row gap-2">
+                  <button
+                     onClick={() => {
+                        handleRequest('Accepted');
+                     }}
+                     className="ring-1 ring-gray-300 rounded-md px-3 py-2 text-xs"
+                  >
+                     Accept
+                  </button>
 
-            <button
-              onClick={() => {
-                handleRequest('Rejected');
-              }}
-              className="ring-1 ring-gray-300 rounded-md px-3 py-2 text-xs"
-            >
-              Reject
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
-  );
+                  <button
+                     onClick={() => {
+                        handleRequest('Rejected');
+                     }}
+                     className="ring-1 ring-gray-300 rounded-md px-3 py-2 text-xs"
+                  >
+                     Reject
+                  </button>
+               </div>
+            </div>
+         )}
+      </div>
+   );
 }
 
 export default Page;
