@@ -2,15 +2,15 @@ import { useState, useEffect } from 'react';
 
 const LoadingDots = () => {
   const [dots, setDots] = useState('.');
-
+  
   useEffect(() => {
     const interval = setInterval(() => {
-      setDots((current) => {
+      setDots(current => {
         if (current === '...') return '.';
         return current + '.';
       });
     }, 500);
-
+    
     return () => clearInterval(interval);
   }, []);
 

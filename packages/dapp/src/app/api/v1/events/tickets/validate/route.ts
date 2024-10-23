@@ -34,7 +34,7 @@ export async function POST(req: Request, res: NextResponse) {
     if (!ticket) {
       return NextResponse.json(
         { message: 'no tickets found' },
-        { status: 400 }
+        { status: 401 }
       );
     }
 

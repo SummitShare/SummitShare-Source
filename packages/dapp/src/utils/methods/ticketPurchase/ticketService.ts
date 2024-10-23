@@ -51,37 +51,39 @@ export const validateTicket = async (
 
 export const validatePageAccess = async (
   userAddress: string | undefined,
-  router: ReturnType<typeof useRouter>,
-  session: ReturnType<typeof useSession>,
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
-): Promise<boolean> => {
-  setIsLoading(true);
+  router: AppRouterInstance,
+  session: ReturnType<typeof useSession>
+): Promise<{ isLoading: boolean; hasAccess: boolean }> => {
+
+  console.log('Validating page access with:', {
+    userAddress,
+    eventId: '419a0b2d-dee9-4782-9cff-341c5f8343a6',
+    userId: session.data?.token.id,
+    sessionStatus: session.status,
+    fullSession: session.data
+  });
 
   if (!userAddress) {
     router.push('/401');
-    setIsLoading(false);
-    return false;
+    return { isLoading: false, hasAccess: false };
   }
 
   try {
     const response = await axios.post('/api/v1/events/tickets/validate', {
       userAddress,
-      eventId: CONTRACT_ADDRESSES.eventId,
+      eventId: '419a0b2d-dee9-4782-9cff-341c5f8343a6',
       user_id: session.data?.token.id || '',
     });
-
-    setIsLoading(false);
-
+    
     if (!response.data.hasTicket) {
       router.push('/401');
-      return false;
+      return { isLoading: false, hasAccess: false };
     }
-
-    return true;
+    
+    return { isLoading: false, hasAccess: true };
   } catch (error) {
     console.error('Error validating ticket:', error);
-    setIsLoading(false);
     router.push('/401');
-    return false;
+    return { isLoading: false, hasAccess: false };
   }
 };
