@@ -1,34 +1,17 @@
 'use client';
 import Buttons from '@/app/components/button/Butons';
-
+import TicketPurchaseComponent from '@/functonality/ticketpurchasecomponent';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
-import { validatePageAccess } from '@/utils/methods/ticketPurchase/ticketService';
-
+import WalletStatus from '@/functonality/walletStatus';
 import { useAccount } from 'wagmi';
-import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
-import LoadingDots from './loadingDots';
 
 export default function Home() {
   const [open, setOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const { address } = useAccount();
   const userAddress = address;
-
-  const router = useRouter();
-  const session = useSession();
-
-  useEffect(() => {
-    // @ts-ignore
-    validatePageAccess(address, router, session);
-  }, [address, router, session]);
-
-  if (isLoading) {
-    return <LoadingDots />;
-  }
-
   const women = [
     {
       name: 'Julia Chikamoneka',
@@ -60,7 +43,7 @@ export default function Home() {
       <section className="border-b md:border-b-0 border-primary-900-5 space-y-[48px] pb-6 md:flex md:flex-row md:gap-4">
         <div className="w-full md:w-[45%] h-[342px] rounded-[0.5rem] overflow-hidden bg-[url('https://images.squarespace-cdn.com/content/v1/5878a307ebbd1ab23e1ed5a0/1650963860604-LGJSBAWOMLQIU9ZXUK1K/all-women.71ba3487f51cab4dc38a.png?format=2500w')] bg-cover bg-primary-50 bg-center "></div>
 
-        <div className="md:w-[45%] md:flex md:flex-col md:justify-between">
+        <div className="space-y-6 md:w-[45%] md:flex md:flex-col md:justify-between">
           <div className="space-y-2">
             <h2>The Leading Ladies</h2>
             <p>
@@ -71,21 +54,24 @@ export default function Home() {
               danced to the drum.
             </p>
           </div>
-          <div className="mt-14 mx-4">
-            {' '}
-            {/* Moved this outside and adjusted margin */}
-            <a
-              href="https://oncyber.io/spaces/89cp8FpYgF5hgrHk1i3N"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Buttons type="secondary" size="large">
-                View Exhibit
-              </Buttons>
-            </a>
-          </div>
+          <TicketPurchaseComponent userAddress={''} />
         </div>
       </section>
+
+      {/* <div className="w-full rounded-[0.5rem] bg-primary-50 space-y-4 px-12 py-6">
+      <div className="w-full ">
+        <XMarkIcon className="w-6 float-end" />
+      </div>
+
+      <div className="space-y-2">
+        <h3>How to purchase a ticket</h3>
+        <p>Those who walked before us and those to come.</p>
+      </div>
+
+      <div className="w-[118px]">
+        <Buttons type="subTartary" size="small">Help me</Buttons>
+      </div>
+    </div> */}
 
       <section className="w-full space-y-6">
         <h2>Meet the Leading Ladies and Explore Their Lives</h2>

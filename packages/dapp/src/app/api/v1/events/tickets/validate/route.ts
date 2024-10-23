@@ -5,28 +5,25 @@ import prisma from '../../../../../../../config/db';
 
 export async function POST(req: Request, res: NextResponse) {
   try {
-    const { userAddress, eventId, user_id } = await req.json();
+    const { wallet_address, event_id, user_id } = await req.json();
 
-    if (!userAddress) {
+    if (!wallet_address) {
       return NextResponse.json(
         { message: 'no wallet address sent' },
         { status: 400 }
       );
     }
-    if (!eventId) {
+    if (!event_id) {
       return NextResponse.json(
         { message: 'no event id sent' },
         { status: 400 }
       );
     }
-    if (!user_id) {
-      return NextResponse.json({ message: 'no user_id sent' }, { status: 400 });
-    }
 
     const ticket = await prisma.tickets.findFirst({
       where: {
-        wallet_address: userAddress,
-        event_id: eventId,
+        wallet_address: wallet_address,
+        event_id: event_id,
         user_id,
       },
     });
@@ -34,7 +31,7 @@ export async function POST(req: Request, res: NextResponse) {
     if (!ticket) {
       return NextResponse.json(
         { message: 'no tickets found' },
-        { status: 401 }
+        { status: 400 }
       );
     }
 

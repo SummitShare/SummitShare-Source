@@ -92,7 +92,7 @@ export default function Home() {
           <div>
             <Link href={'/cya'}>
               <Buttons type="primary" size="large">
-                Enter
+                Coming Soon!
               </Buttons>
             </Link>
           </div>
