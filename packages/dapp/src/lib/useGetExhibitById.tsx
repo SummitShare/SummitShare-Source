@@ -3,59 +3,59 @@ import { useEffect, useState } from 'react';
 import { useQuery, gql } from '@apollo/client';
 
 interface Collection {
-  name: string;
-  symbol: string;
+   name: string;
+   symbol: string;
 }
 
 interface ExhibitDetail {
-  baseURI: string;
-  name: string;
-  location: string;
-  details: string;
-  collection: Collection;
-  ticketPrice: string;
+   baseURI: string;
+   name: string;
+   location: string;
+   details: string;
+   collection: Collection;
+   ticketPrice: string;
 }
 
 interface Exhibit {
-  id: string;
-  totalMinted: string;
-  exhibitDetails: ExhibitDetail[];
+   id: string;
+   totalMinted: string;
+   exhibitDetails: ExhibitDetail[];
 }
 
 const useExhibit = (id: string): Exhibit | null => {
-  const [exhibit, setExhibit] = useState<Exhibit | null>(null);
+   const [exhibit, setExhibit] = useState<Exhibit | null>(null);
 
-  const EXHIBIT_QUERY = gql`
-    query GetExhibit($id: ID!) {
-      exhibit(id: $id) {
-        id
-        totalMinted
-        exhibitDetails {
-          baseURI
-          name
-          location
-          details
-          collection {
-            name
-            symbol
-          }
-          ticketPrice
-        }
+   const EXHIBIT_QUERY = gql`
+      query GetExhibit($id: ID!) {
+         exhibit(id: $id) {
+            id
+            totalMinted
+            exhibitDetails {
+               baseURI
+               name
+               location
+               details
+               collection {
+                  name
+                  symbol
+               }
+               ticketPrice
+            }
+         }
       }
-    }
-  `;
+   `;
 
-  const { data } = useQuery<{ exhibit: Exhibit }>(EXHIBIT_QUERY, {
-    variables: { id },
-  });
+   const { data } = useQuery<{ exhibit: Exhibit }>(EXHIBIT_QUERY, {
+      variables: { id },
+   });
 
-  useEffect(() => {
-    if (data && data.exhibit) {
-      setExhibit(data.exhibit);
-    }
-  }, [data]);
+   useEffect(() => {
+      if (data && data.exhibit) {
+         setExhibit(data.exhibit);
+      }
+   }, [data]);
 
-  return exhibit;
+   return exhibit;
 };
 
 export default useExhibit;

@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useQuery, gql } from '@apollo/client';
 import {
-  Collection,
-  Exhibit,
-  ExhibitCreated,
-  RecentExhibitsData,
+   Collection,
+   Exhibit,
+   ExhibitCreated,
+   RecentExhibitsData,
 } from '@/utils/dev/frontEndInterfaces';
 
 /**
@@ -12,42 +12,42 @@ import {
  * @returns An array of the 5 most recent exhibits or null if no data is fetched
  */
 const useRecentExhibits = (): ExhibitCreated[] | null => {
-  const [recentExhibits, setRecentExhibits] = useState<ExhibitCreated[] | null>(
-    null
-  );
+   const [recentExhibits, setRecentExhibits] = useState<ExhibitCreated[] | null>(
+      null
+   );
 
-  const RECENT_EXHIBITS_QUERY = gql`
-    query GetRecentExhibits {
-      exhibitCreateds(orderBy: blockTimestamp, first: 5) {
-        name
-        location
-        details
-        ticketPrice
-        baseURI
-        exhibit {
-          id
-          museumId
-        }
-        collection {
-          id
-          baseURI
-          name
-          symbol
-          totalMinted
-        }
+   const RECENT_EXHIBITS_QUERY = gql`
+      query GetRecentExhibits {
+         exhibitCreateds(orderBy: blockTimestamp, first: 5) {
+            name
+            location
+            details
+            ticketPrice
+            baseURI
+            exhibit {
+               id
+               museumId
+            }
+            collection {
+               id
+               baseURI
+               name
+               symbol
+               totalMinted
+            }
+         }
       }
-    }
-  `;
+   `;
 
-  const { data } = useQuery<RecentExhibitsData>(RECENT_EXHIBITS_QUERY);
+   const { data } = useQuery<RecentExhibitsData>(RECENT_EXHIBITS_QUERY);
 
-  useEffect(() => {
-    if (data && data.exhibitCreateds) {
-      setRecentExhibits(data.exhibitCreateds);
-    }
-  }, [data]);
+   useEffect(() => {
+      if (data && data.exhibitCreateds) {
+         setRecentExhibits(data.exhibitCreateds);
+      }
+   }, [data]);
 
-  return recentExhibits;
+   return recentExhibits;
 };
 
 export default useRecentExhibits;

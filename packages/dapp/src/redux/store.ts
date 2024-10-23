@@ -3,9 +3,9 @@ import increment from './features/count-slice';
 import selectSlice from './features/select-slice';
 
 export const store = configureStore({
-  reducer: {
-    select: selectSlice,
-  },
+   reducer: {
+      select: selectSlice,
+   },
 });
 
 export type RootState = ReturnType<typeof store.getState>;

@@ -14,44 +14,44 @@ import * as path from 'path';
  */
 
 export async function sendEmail(
-  email: string,
-  subject: string,
-  body: string
+   email: string,
+   subject: string,
+   body: string
 ): Promise<boolean> {
-  async function readHtmlTemplate(filePath: string): Promise<string> {
-    try {
-      const htmlContent = await fs.readFile(filePath, 'utf-8');
-      return htmlContent;
-    } catch (error) {
-      throw new Error('Error reading HTML template');
-    }
-  }
+   async function readHtmlTemplate(filePath: string): Promise<string> {
+      try {
+         const htmlContent = await fs.readFile(filePath, 'utf-8');
+         return htmlContent;
+      } catch (error) {
+         throw new Error('Error reading HTML template');
+      }
+   }
 
-  const templatePath = path.join(
-    process.cwd(),
-    'src/functionality/emailNewsletter/main.html'
-  );
-  let htmlTemplate = await readHtmlTemplate(templatePath);
+   const templatePath = path.join(
+      process.cwd(),
+      'src/functionality/emailNewsletter/main.html'
+   );
+   let htmlTemplate = await readHtmlTemplate(templatePath);
 
-  htmlTemplate = htmlTemplate.replace(
-    '{{title}}',
-    'SummitShare Exhibition Ticket'
-  );
-  htmlTemplate = htmlTemplate.replace('{{subtitle}}', 'See your ticket here');
+   htmlTemplate = htmlTemplate.replace(
+      '{{title}}',
+      'SummitShare Exhibition Ticket'
+   );
+   htmlTemplate = htmlTemplate.replace('{{subtitle}}', 'See your ticket here');
 
-  const mailOptions = {
-    from: emailServer,
-    to: email,
-    subject: subject,
-    html: htmlTemplate,
-  };
+   const mailOptions = {
+      from: emailServer,
+      to: email,
+      subject: subject,
+      html: htmlTemplate,
+   };
 
-  try {
-    await transporter.sendMail(mailOptions);
-    ////console.log('Email sent successfully');
-    return true;
-  } catch (error) {
-    console.error('Failed to send email:', error);
-    throw new Error('Failed to send email');
-  }
+   try {
+      await transporter.sendMail(mailOptions);
+      ////console.log('Email sent successfully');
+      return true;
+   } catch (error) {
+      console.error('Failed to send email:', error);
+      throw new Error('Failed to send email');
+   }
 }

@@ -12,30 +12,30 @@ import { Web3Provider } from '@/functonality/Web3Provider';
 const inter = Inter({ subsets: ['latin'] });
 
 const metadata: Metadata = {
-  title: 'SummitShare',
-  description:
-    'A pioneering digital platform dedicated to the repatriation of African cultural artifacts. ',
+   title: 'SummitShare',
+   description:
+      'A pioneering digital platform dedicated to the repatriation of African cultural artifacts. ',
 };
 
 export default function RootLayout({
-  children,
+   children,
 }: Readonly<{
-  children: React.ReactNode;
+   children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body className={`h-screen mt-32`}>
-        <SessionProvider>
-          <ApolloWrapper>
-            <Web3Provider>
-              <Providers>
-                <PrimaryNav />
-                {children}
-              </Providers>
-            </Web3Provider>
-          </ApolloWrapper>
-        </SessionProvider>
-      </body>
-    </html>
-  );
+   return (
+      <html lang="en">
+         <body className={`h-screen mt-32`}>
+            <SessionProvider>
+               <ApolloWrapper>
+                  <Web3Provider>
+                     <Providers>
+                        <PrimaryNav />
+                        {children}
+                     </Providers>
+                  </Web3Provider>
+               </ApolloWrapper>
+            </SessionProvider>
+         </body>
+      </html>
+   );
 }

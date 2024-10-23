@@ -1,42 +1,42 @@
 .container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
+   max-width: 800px;
+   margin: 0 auto;
+   padding: 20px;
 }
 
 .card {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 20px;
-  margin-bottom: 20px;
-  transition: box-shadow 0.3s;
+   border: 1px solid #ddd;
+   border-radius: 8px;
+   padding: 20px;
+   margin-bottom: 20px;
+   transition: box-shadow 0.3s;
 }
 
 .card:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .title {
-  font-size: 1.5em;
-  margin-bottom: 10px;
+   font-size: 1.5em;
+   margin-bottom: 10px;
 }
 
 .tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 10px;
+   display: flex;
+   flex-wrap: wrap;
+   gap: 10px;
+   margin-bottom: 10px;
 }
 
 .tag {
-  background-color: #0070f3;
-  color: white;
-  padding: 5px 10px;
-  border-radius: 15px;
-  font-size: 0.9em;
+   background-color: #0070f3;
+   color: white;
+   padding: 5px 10px;
+   border-radius: 15px;
+   font-size: 0.9em;
 }
 
 .excerpt {
-  font-size: 1em;
-  color: #333;
+   font-size: 1em;
+   color: #333;
 }

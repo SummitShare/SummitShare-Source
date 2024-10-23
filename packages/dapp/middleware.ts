@@ -54,21 +54,21 @@
 import { withAuth } from 'next-auth/middleware';
 
 export default withAuth(
-  // `withAuth` augments your `Request` with the user's token.
-  function middleware(req) {
-    // //console.log("Route :", req.nextUrl.pathname)
-    const isLoggedIn = !!req.nextauth;
-    // //console.log("Is Logged in: ", isLoggedIn);
-    // //console.log(`token : ${req.nextauth.token}`)
-    return null;
-  }
-  //   {
-  //     callbacks: {
-  //       authorized: ({ token }) => token?.role === "admin",
-  //     },
-  //   }
+   // `withAuth` augments your `Request` with the user's token.
+   function middleware(req) {
+      // //console.log("Route :", req.nextUrl.pathname)
+      const isLoggedIn = !!req.nextauth;
+      // //console.log("Is Logged in: ", isLoggedIn);
+      // //console.log(`token : ${req.nextauth.token}`)
+      return null;
+   }
+   //   {
+   //     callbacks: {
+   //       authorized: ({ token }) => token?.role === "admin",
+   //     },
+   //   }
 );
 
 export const config = {
-  matcher: ['["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"]'],
+   matcher: ['["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"]'],
 };
