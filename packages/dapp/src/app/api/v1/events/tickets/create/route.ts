@@ -167,8 +167,9 @@ export async function POST(req: Request, res: NextResponse) {
       );
       htmlTemplate = htmlTemplate.replace(
          '{{message}}',
-         `You can view the exhibit by following this link: <a href="${verificationLink}">${verificationLink}</a>.<br><br>Your purchase enables revenue distribution within our connected heritage community and creates lasting value for them through your engagement with this collection of tokenized artifacts. We are building a new cycle of value addition, directly benefiting the Gwembe Valley community in the Southern Province of Zambia. <br><br>View our <a href="https://summitshare.co/distribution">Distributions page</a> to keep track of our work with this exhibition.`
-      );
+         `You can view the exhibit by following this link: <a href="${verificationLink}">${verificationLink}</a> once the countdown is over.<br><br>After the countdown, please proceed to the exhibit and connect the wallet you used for your purchase.<br><br>Your purchase enables revenue distribution within our connected heritage community and creates lasting value for them through your engagement with this collection of tokenized artifacts. We are building a new cycle of value addition, directly benefiting the Gwembe Valley community in the Southern Province of Zambia.<br><br>View our <a href="https://summitshare.co/distribution">Distributions page</a> to keep track of our work with this exhibition.`
+       );
+       
 
       const mailOptions = {
          from: emailServer,
