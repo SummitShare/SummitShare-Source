@@ -28,18 +28,14 @@ const partners: Partner[] = [
 
 const Partners: React.FC = () => {
   return (
-    <div className="flex flex-col items-center p-8 mt-24">
-      {' '}
-      {/* Added margin-top */}
-      <div className="mb-2">
-        <h1 className="text-3xl font-bold mb-12">
-          Our Partners and Supporters
-        </h1>
-      </div>
-      <div className="flex justify-center space-x-8 mb-12">
+    <div className="flex flex-col items-center p-4 sm:p-8 mt-12 sm:mt-24">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-8 sm:mb-12 text-center">
+        Our Partners and Supporters
+      </h1>
+      <div className="flex flex-col sm:flex-row justify-center items-center space-y-8 sm:space-y-0 sm:space-x-8 mb-8 sm:mb-12">
         {partners.map((partner, index) => (
           <div key={index} className="relative group">
-            <div className="w-40 h-40 rounded-full overflow-hidden">
+            <div className="w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden">
               <Image
                 src={partner.logo}
                 alt={partner.name}
@@ -75,41 +71,37 @@ const Partners: React.FC = () => {
           </div>
         ))}
       </div>
-      <p className="text-center font-bold max-w-3xl">
-        SummitShare is more than a project; it&apos;s a collaborative journey
-        and vehicle aimed at ushering in a new narrative around the repatriation
-        and reclamation of history for a newer generation. Our partners are
-        instrumental in assisting the realization of SummitShare&apos;s vision.
-        The canvas of SummitShare is better painted together, and these are some
-        of the partners that have aided and continue to aid the building of
+      <p className="text-center font-bold max-w-3xl text-sm sm:text-base mb-8">
+        SummitShare is more than a project; it&apos;s a collaborative journey and
+        vehicle aimed at ushering in a new narrative around the repatriation and
+        reclamation of history for a newer generation. Our partners are
+        instrumental in assisting the realization of SummitShare&apos;s vision. The
+        canvas of SummitShare is better painted together, and these are some of
+        the partners that have aided and continue to aid the building of
         SummitShare.
       </p>
-      <div className="mb-12"></div>
-      <div className="flex items-center">
-        <Link
-          href="https://summitshare.co/blog/BkntmFS8R"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center  text-blue-500 font-bold font-size:16px bg-white px-4 py-2 rounded-full shadow-lg hover:shadow-xl transition-all"
+      <Link
+        href="https://summitshare.co/blog/BkntmFS8R"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center text-blue-500 font-medium text-sm sm:text-base bg-white px-4 py-2 rounded-full shadow-lg hover:shadow-xl transition-all text-center"
+      >
+        Read more about our partners
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-4 w-4 ml-2"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
         >
-          Read more about our partners and supporters and their journey with the
-          project
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 ml-2"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M14 5l7 7m0 0l-7 7m7-7H3"
-            />
-          </svg>
-        </Link>
-      </div>
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M14 5l7 7m0 0l-7 7m7-7H3"
+          />
+        </svg>
+      </Link>
     </div>
   );
 };

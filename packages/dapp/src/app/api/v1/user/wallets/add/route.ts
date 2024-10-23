@@ -32,15 +32,13 @@ export async function POST(request: Request, response: NextResponse) {
       },
     });
 
-    // Check if the user has already added this wallet
-    for (let index = 0; index < wallets.length; index++) {
-      const wallet = wallets[index];
-      if (wallet_address == wallet.wallet_address) {
-        return NextResponse.json(
-          { message: 'wallet already exists' },
-          { status: 409 }
-        );
-      }
+    // Check if the user already has 1 wallets, which is the maximum allowed.
+    if (wallets.length >= 1) {
+      console.error('User already has the maximum of 1 wallets.');
+      return NextResponse.json(
+        { message: 'maximum amount of wallets added' },
+        { status: 400 }
+      );
     }
 
     // Calculate the index for the new wallet. If wallets exist, increment the highest index by 1; otherwise, start at 1.
