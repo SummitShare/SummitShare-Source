@@ -8,81 +8,82 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 export const validateTicket = async (
-   userAddress: string | undefined,
-   eventId: string,
-   user_id: string,
-   setHasTicket: React.Dispatch<React.SetStateAction<boolean>>,
-   setButtonType: React.Dispatch<
-      React.SetStateAction<'primary' | 'secondary' | 'tartary' | 'subTartary'>
-   >,
-   setButtonText: React.Dispatch<React.SetStateAction<string>>
+  userAddress: string | undefined,
+  eventId: string,
+  user_id: string,
+  setHasTicket: React.Dispatch<React.SetStateAction<boolean>>,
+  setButtonType: React.Dispatch<
+    React.SetStateAction<'primary' | 'secondary' | 'tartary' | 'subTartary'>
+  >,
+  setButtonText: React.Dispatch<React.SetStateAction<string>>
 ) => {
-   // Early return if no userAddress
-   if (!userAddress) {
-      setHasTicket(false);
-      setButtonType('primary');
-      return;
-   }
+  // Early return if no userAddress
+  if (!userAddress) {
+    setHasTicket(false);
+    setButtonType('primary');
+    return;
+  }
 
-   try {
-      const response = await axios.post('/api/v1/events/tickets/validate', {
-         userAddress,
-         eventId,
-         user_id,
-      });
-      if (response.data.hasTicket) {
-         setHasTicket(true);
-         setButtonType('secondary'); // Valid value
-         setButtonText('View Exhibit');
-      } else {
-         // Handle case where user doesn't have a ticket
-         setHasTicket(false);
-         setButtonType('primary'); // Valid value
-         setButtonText('Purchase Ticket');
-      }
-   } catch (error) {
-      console.error('Error validating ticket:', error);
-      // Handle error state
+  try {
+    const response = await axios.post('/api/v1/events/tickets/validate', {
+      userAddress,
+      eventId,
+      user_id,
+    });
+    if (response.data.hasTicket) {
+      setHasTicket(true);
+      setButtonType('secondary'); // Valid value
+      setButtonText('View Exhibit');
+    } else {
+      // Handle case where user doesn't have a ticket
       setHasTicket(false);
       setButtonType('primary'); // Valid value
       setButtonText('Purchase Ticket');
-   }
+    }
+  } catch (error) {
+    console.error('Error validating ticket:', error);
+    // Handle error state
+    setHasTicket(false);
+    setButtonType('primary'); // Valid value
+    setButtonText('Purchase Ticket');
+  }
 };
 
 export const validatePageAccess = async (
-   userAddress: string | undefined,
-   router: AppRouterInstance,
-   session: ReturnType<typeof useSession>
+  userAddress: string | undefined,
+  router: AppRouterInstance,
+  session: ReturnType<typeof useSession>
 ): Promise<{ isLoading: boolean; hasAccess: boolean }> => {
-   console.log('Validating page access with:', {
+
+  console.log('Validating page access with:', {
+    userAddress,
+    eventId: '419a0b2d-dee9-4782-9cff-341c5f8343a6',
+    userId: session.data?.token.id,
+    sessionStatus: session.status,
+    fullSession: session.data
+  });
+
+  if (!userAddress) {
+    router.push('/401');
+    return { isLoading: false, hasAccess: false };
+  }
+
+  try {
+    const response = await axios.post('/api/v1/events/tickets/validate', {
       userAddress,
       eventId: '419a0b2d-dee9-4782-9cff-341c5f8343a6',
-      userId: session.data?.token.id,
-      sessionStatus: session.status,
-      fullSession: session.data,
-   });
-
-   if (!userAddress) {
+      user_id: session.data?.token.id || '',
+    });
+    
+    if (!response.data.hasTicket) {
       router.push('/401');
       return { isLoading: false, hasAccess: false };
-   }
-
-   try {
-      const response = await axios.post('/api/v1/events/tickets/validate', {
-         userAddress,
-         eventId: '419a0b2d-dee9-4782-9cff-341c5f8343a6',
-         user_id: session.data?.token.id || '',
-      });
-
-      if (!response.data.hasTicket) {
-         router.push('/401');
-         return { isLoading: false, hasAccess: false };
-      }
-
-      return { isLoading: false, hasAccess: true };
-   } catch (error) {
-      console.error('Error validating ticket:', error);
-      router.push('/401');
-      return { isLoading: false, hasAccess: false };
-   }
+    }
+    
+    return { isLoading: false, hasAccess: true };
+  } catch (error) {
+    console.error('Error validating ticket:', error);
+    router.push('/401');
+    return { isLoading: false, hasAccess: false };
+  }
 };
