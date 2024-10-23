@@ -15,21 +15,10 @@ import {
    TableRow,
 } from '@/components/ui/table';
 import { CONTRACT_ADDRESSES } from '@/utils/dev/contractInit';
-import { useSession } from 'next-auth/react';
 
-const { data: session } = useSession();
-
-const event_id = CONTRACT_ADDRESSES.exhibitId;
-const user_id = session?.user?.id || '';
 
 const Page: React.FC = () => {
    const [eventData, setEventData] = useState<any>(null);
-
-   useEffect(() => {
-      if (user_id) {
-         sendData(user_id, event_id).then((data) => setEventData(data));
-      }
-   }, [user_id]);
 
    const community = {
       name: '1. Gwembe Valley',
