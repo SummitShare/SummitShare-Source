@@ -9,37 +9,37 @@ import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 
 type GLTFResult = GLTF & {
-  nodes: {
-    calabash_base: THREE.Mesh;
-    calabash_nest: THREE.Mesh;
-  };
-  materials: {
-    POT: THREE.MeshStandardMaterial;
-    wire_224198087: THREE.MeshStandardMaterial;
-  };
+   nodes: {
+      calabash_base: THREE.Mesh;
+      calabash_nest: THREE.Mesh;
+   };
+   materials: {
+      POT: THREE.MeshStandardMaterial;
+      wire_224198087: THREE.MeshStandardMaterial;
+   };
 };
 
 type ContextType = Record<
-  string,
-  React.ForwardRefExoticComponent<JSX.IntrinsicElements['mesh']>
+   string,
+   React.ForwardRefExoticComponent<JSX.IntrinsicElements['mesh']>
 >;
 
 export function Calabash(props: JSX.IntrinsicElements['group']) {
-  const { nodes, materials } = useGLTF('/models/calabash.glb') as GLTFResult;
-  return (
-    <group {...props} dispose={null}>
-      <mesh
-        geometry={nodes.calabash_base.geometry}
-        material={materials.POT}
-        rotation={[Math.PI / 2, 0, 0]}
-      />
-      <mesh
-        geometry={nodes.calabash_nest.geometry}
-        material={materials.wire_224198087}
-        rotation={[Math.PI / 2, 0, 0]}
-      />
-    </group>
-  );
+   const { nodes, materials } = useGLTF('/models/calabash.glb') as GLTFResult;
+   return (
+      <group {...props} dispose={null}>
+         <mesh
+            geometry={nodes.calabash_base.geometry}
+            material={materials.POT}
+            rotation={[Math.PI / 2, 0, 0]}
+         />
+         <mesh
+            geometry={nodes.calabash_nest.geometry}
+            material={materials.wire_224198087}
+            rotation={[Math.PI / 2, 0, 0]}
+         />
+      </group>
+   );
 }
 
 useGLTF.preload('/models/calabash.glb');

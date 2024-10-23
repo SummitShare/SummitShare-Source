@@ -11,26 +11,26 @@ import { Web3Provider } from '@/functonality/Web3Provider';
 const inter = Inter({ subsets: ['latin'] });
 
 const metadata: Metadata = {
-  title: 'SummitShare',
-  description: 'A Pan-African Mission',
+   title: 'SummitShare',
+   description: 'A Pan-African Mission',
 };
 
 export default function RootLayout({
-  children,
+   children,
 }: Readonly<{
-  children: React.ReactNode;
+   children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body className={``}>
-        <SessionProvider>
-          <Web3Provider>
-            <PrimaryNav />
-            <SecondaryNavBar />
-            {children}
-          </Web3Provider>
-        </SessionProvider>
-      </body>
-    </html>
-  );
+   return (
+      <html lang="en">
+         <body className={``}>
+            <SessionProvider>
+               <Web3Provider>
+                  <PrimaryNav />
+                  <SecondaryNavBar />
+                  {children}
+               </Web3Provider>
+            </SessionProvider>
+         </body>
+      </html>
+   );
 }

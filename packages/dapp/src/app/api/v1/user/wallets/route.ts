@@ -18,36 +18,39 @@ import prisma from '../../../../../../config/db';
  */
 
 export async function POST(request: Request, response: NextResponse) {
-  try {
-    const { user_id } = await request.json();
+   try {
+      const { user_id } = await request.json();
 
-    if (!user_id) {
-      return NextResponse.json({ message: 'no user id sent' }, { status: 401 });
-    }
+      if (!user_id) {
+         return NextResponse.json(
+            { message: 'no user id sent' },
+            { status: 401 }
+         );
+      }
 
-    //console.log(user_id)
+      //console.log(user_id)
 
-    const wallets = await prisma.user_wallets.findMany({
-      where: { user_id: user_id },
-    });
+      const wallets = await prisma.user_wallets.findMany({
+         where: { user_id: user_id },
+      });
 
-    if (wallets.length < 1) {
+      if (wallets.length < 1) {
+         return NextResponse.json(
+            { message: 'no wallets found d0ffa426-41e5-49ed-b9e0-653a8c55d036' },
+            { status: 404 }
+         );
+      }
+      //console.log(wallets)
+
       return NextResponse.json(
-        { message: 'no wallets found d0ffa426-41e5-49ed-b9e0-653a8c55d036' },
-        { status: 404 }
+         { message: 'wallets found', wallets: wallets },
+         { status: 200 }
       );
-    }
-    //console.log(wallets)
-
-    return NextResponse.json(
-      { message: 'wallets found', wallets: wallets },
-      { status: 200 }
-    );
-  } catch (error) {
-    //console.log(error)
-    return NextResponse.json(
-      { message: 'internal server error' },
-      { status: 500 }
-    );
-  }
+   } catch (error) {
+      //console.log(error)
+      return NextResponse.json(
+         { message: 'internal server error' },
+         { status: 500 }
+      );
+   }
 }
