@@ -54,13 +54,12 @@ export const validatePageAccess = async (
   router: AppRouterInstance,
   session: ReturnType<typeof useSession>
 ): Promise<{ isLoading: boolean; hasAccess: boolean }> => {
-
   console.log('Validating page access with:', {
     userAddress,
     eventId: '419a0b2d-dee9-4782-9cff-341c5f8343a6',
     userId: session.data?.token.id,
     sessionStatus: session.status,
-    fullSession: session.data
+    fullSession: session.data,
   });
 
   if (!userAddress) {
@@ -74,12 +73,12 @@ export const validatePageAccess = async (
       eventId: '419a0b2d-dee9-4782-9cff-341c5f8343a6',
       user_id: session.data?.token.id || '',
     });
-    
+
     if (!response.data.hasTicket) {
       router.push('/401');
       return { isLoading: false, hasAccess: false };
     }
-    
+
     return { isLoading: false, hasAccess: true };
   } catch (error) {
     console.error('Error validating ticket:', error);
