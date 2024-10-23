@@ -56,7 +56,7 @@ export const validatePageAccess = async (
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 ): Promise<boolean> => {
   setIsLoading(true);
-  
+
   if (!userAddress) {
     router.push('/401');
     setIsLoading(false);
@@ -69,14 +69,14 @@ export const validatePageAccess = async (
       eventId: CONTRACT_ADDRESSES.eventId,
       user_id: session.data?.token.id || '',
     });
-    
+
     setIsLoading(false);
-    
+
     if (!response.data.hasTicket) {
       router.push('/401');
       return false;
     }
-    
+
     return true;
   } catch (error) {
     console.error('Error validating ticket:', error);
