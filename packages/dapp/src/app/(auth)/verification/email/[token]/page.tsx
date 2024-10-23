@@ -46,7 +46,7 @@ function Page({ params }: { params: { token: string } }) {
     };
 
     verifyEmail();
-  }, [params.token]);
+  }, [params.token, host]);
 
   const resendVerificationEmail = async () => {
     try {
@@ -101,6 +101,8 @@ function Page({ params }: { params: { token: string } }) {
         <Image
           src={verificationStatus === 200 ? '/swinging.svg' : '/petting.svg'}
           alt=""
+          width={500}
+          height={500}
         />
         <div className="w-full">
           <Buttons

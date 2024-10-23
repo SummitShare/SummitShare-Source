@@ -1,7 +1,4 @@
 'use client';
-
-import Buttons from '@/app/components/button/Butons';
-import Inputs from '@/app/components/inputs/Inputs';
 import { sendData } from '@/functonality/eventData';
 import EventEscrowComponent from '@/functonality/eventEscrowComponent';
 import React, { useEffect, useState } from 'react';
@@ -15,7 +12,6 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { CONTRACT_ADDRESSES } from '@/utils/dev/contractInit';
-import { EVENTS } from 'react-hook-form/dist/constants';
 
 const event_id = CONTRACT_ADDRESSES.exhibitId;
 const user_id = '227a4cbb-e8c0-40c3-91d1-db44116cf9eb';
@@ -27,7 +23,7 @@ const Page: React.FC = () => {
     if (user_id) {
       sendData(user_id, event_id).then((data) => setEventData(data));
     }
-  }, [user_id]);
+  });
 
   const community = {
     name: '1. Gwembe Valley',
