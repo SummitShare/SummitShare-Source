@@ -50,7 +50,10 @@ const PrimaryNav: React.FC = () => {
          title: 'Settings',
          items: [
             { name: 'Profile', link: '/profile' },
-            { name: 'Log Out', link: '/auth-sign-in' },
+            {
+               name: session?.status === 'authenticated' ? 'Log Out' : 'Log In',
+               link: session?.status === 'authenticated' ? '/auth-sign-in' : '/auth-sign-in',
+            },
          ],
       },
    ];
