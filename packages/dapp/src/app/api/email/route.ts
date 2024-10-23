@@ -17,24 +17,24 @@ import { transporter, emailServer } from '../../../../config/nodemailer';
  */
 
 export async function POST(request: Request, response: NextResponse) {
-  const { subject, receiver } = await request.json();
-  try {
-    // Define default mail options
-    const mailOptions = {
-      from: emailServer, // Sender address from server config
-      to: receiver, // Recipient address from request
-    };
-    // Attempt to send the email
-    await transporter.sendMail({
-      ...mailOptions,
-      subject: subject, // Subject line from request
-      text: 'testing', // Placeholder text content
-      html: '<h1>Test title<h1/>', // Placeholder HTML content
-    });
-    // Return a success response
-    return NextResponse.json({ yes: 'great success' }, { status: 200 });
-  } catch (error) {
-    // Return a failure response
-    return NextResponse.json({ no: 'you are a failure' }, { status: 200 });
-  }
+   const { subject, receiver } = await request.json();
+   try {
+      // Define default mail options
+      const mailOptions = {
+         from: emailServer, // Sender address from server config
+         to: receiver, // Recipient address from request
+      };
+      // Attempt to send the email
+      await transporter.sendMail({
+         ...mailOptions,
+         subject: subject, // Subject line from request
+         text: 'testing', // Placeholder text content
+         html: '<h1>Test title<h1/>', // Placeholder HTML content
+      });
+      // Return a success response
+      return NextResponse.json({ yes: 'great success' }, { status: 200 });
+   } catch (error) {
+      // Return a failure response
+      return NextResponse.json({ no: 'you are a failure' }, { status: 200 });
+   }
 }

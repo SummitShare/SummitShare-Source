@@ -1,92 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <style>
-      /* Reset and Base Styles */
-      body {
-        margin: 0;
-        padding: 0;
-        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-        background-color: #f5f5f5;
-        color: #333333;
-      }
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <style>
+         /* Reset and Base Styles */
+         body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333333;
+         }
 
-      /* Container */
-      .container {
-        max-width: 600px;
-        margin: 20px auto;
-        background-color: #ffffff;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      }
+         /* Container */
+         .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+         }
 
-      /* Header */
-      .header {
-        background-color: #ff9966; /* Tinted orange background */
-        color: #ffffff;
-        padding: 20px;
-        text-align: center;
-        font-size: 24px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-      }
+         /* Header */
+         .header {
+            background-color: #ff9966; /* Tinted orange background */
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+         }
 
-      /* Logo */
-      .logo {
-        padding: 20px;
-        text-align: center;
-        background-color: #ffffff;
-      }
+         /* Logo */
+         .logo {
+            padding: 20px;
+            text-align: center;
+            background-color: #ffffff;
+         }
 
-      /* Content */
-      .content {
-        padding: 20px;
-        text-align: left;
-        line-height: 1.6;
-      }
+         /* Content */
+         .content {
+            padding: 20px;
+            text-align: left;
+            line-height: 1.6;
+         }
 
-      /* Footer */
-      .footer {
-        background-color: #ff9966;
-        color: #ffffff;
-        text-align: center;
-        padding: 10px;
-        font-size: 14px;
-      }
+         /* Footer */
+         .footer {
+            background-color: #ff9966;
+            color: #ffffff;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+         }
 
-      /* Links */
-      a {
-        color: #ff9966;
-        text-decoration: none;
-        font-weight: 700;
-        transition: color 0.2s ease-in-out;
-      }
+         /* Links */
+         a {
+            color: #ff9966;
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.2s ease-in-out;
+         }
 
-      a:hover {
-        color: #ff7324;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <div class="logo">
-        <img
-          src="https://summitshare3.s3.eu-north-1.amazonaws.com/IMG_3157.PNG"
-          alt="Company Logo"
-          width="100"
-          height="auto"
-        />
+         a:hover {
+            color: #ff7324;
+         }
+      </style>
+   </head>
+   <body>
+      <div class="container">
+         <div class="logo">
+            <img
+               src="https://summitshare3.s3.eu-north-1.amazonaws.com/IMG_3157.PNG"
+               alt="Company Logo"
+               width="100"
+               height="auto"
+            />
+         </div>
+         <div class="header">{{title}}</div>
+         <div class="content">
+            <h2>{{subtitle}}</h2>
+            <p>{{message}}</p>
+         </div>
+         <div class="footer">&copy; 2024 SummitShare. All rights reserved.</div>
       </div>
-      <div class="header">{{title}}</div>
-      <div class="content">
-        <h2>{{subtitle}}</h2>
-        <p>{{message}}</p>
-      </div>
-      <div class="footer">&copy; 2024 SummitShare. All rights reserved.</div>
-    </div>
-  </body>
+   </body>
 </html>

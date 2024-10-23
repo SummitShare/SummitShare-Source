@@ -9,68 +9,68 @@ h2,
 h3,
 h4,
 h5 {
-  font-family: 'Martel', serif;
-  line-height: 125%;
-  font-weight: 700;
-  color: #1a0d08;
+   font-family: 'Martel', serif;
+   line-height: 125%;
+   font-weight: 700;
+   color: #1a0d08;
 }
 
 h1 {
-  font-size: 2rem;
+   font-size: 2rem;
 }
 
 h2 {
-  font-size: 1.75rem;
+   font-size: 1.75rem;
 }
 
 h3 {
-  font-size: 1.25rem;
+   font-size: 1.25rem;
 }
 
 h4 {
-  font-size: 1.125rem;
+   font-size: 1.125rem;
 }
 
 h5 {
-  font-size: 0.875rem;
+   font-size: 0.875rem;
 }
 
 p,
 a,
 li {
-  font-family: 'Inter', sans-serif;
-  line-height: 150%;
-  color: #403b3a;
+   font-family: 'Inter', sans-serif;
+   line-height: 150%;
+   color: #403b3a;
 }
 
 .p1-r {
-  font-size: 1rem;
-  font-weight: 400;
+   font-size: 1rem;
+   font-weight: 400;
 }
 
 .p2-r {
-  font-size: 0.875rem;
-  font-weight: 400;
+   font-size: 0.875rem;
+   font-weight: 400;
 }
 
 .p3-r {
-  font-size: 0.75rem;
-  font-weight: 400;
+   font-size: 0.75rem;
+   font-weight: 400;
 }
 
 .p1-m {
-  font-size: 1rem;
-  font-weight: 500;
+   font-size: 1rem;
+   font-weight: 500;
 }
 
 .p2-m {
-  font-size: 0.875rem;
-  font-weight: 500;
+   font-size: 0.875rem;
+   font-weight: 500;
 }
 
 .p3-m {
-  font-size: 0.75rem;
-  font-weight: 500;
+   font-size: 0.75rem;
+   font-weight: 500;
 }
 
 .l1-r,
@@ -79,94 +79,94 @@ li {
 .l1-m,
 .l2-m,
 .l3-m {
-  font-family: 'Inter', sans-serif;
-  line-height: 125%;
-  color: #1a0d08;
+   font-family: 'Inter', sans-serif;
+   line-height: 125%;
+   color: #1a0d08;
 }
 
 .l1-r {
-  font-size: 1rem;
-  font-weight: 400;
+   font-size: 1rem;
+   font-weight: 400;
 }
 
 .l2-r {
-  font-size: 0.875rem;
-  font-weight: 400;
+   font-size: 0.875rem;
+   font-weight: 400;
 }
 
 .l3-r {
-  font-size: 0.75rem;
-  font-weight: 400;
+   font-size: 0.75rem;
+   font-weight: 400;
 }
 
 .l1-m {
-  font-size: 1rem;
-  font-weight: 600;
+   font-size: 1rem;
+   font-weight: 600;
 }
 
 .l2-m {
-  font-size: 0.875rem;
-  font-weight: 600;
+   font-size: 0.875rem;
+   font-weight: 600;
 }
 
 .l3-m {
-  font-size: 0.75rem;
-  font-weight: 600;
+   font-size: 0.75rem;
+   font-weight: 600;
 }
 .primary-50 {
-  color: #f6f3f2;
+   color: #f6f3f2;
 }
 
 .primary-100 {
-  color: #746d6a;
+   color: #746d6a;
 }
 
 .primary-400 {
-  color: #794228;
+   color: #794228;
 }
 
 .primary-600 {
-  color: #352218;
+   color: #352218;
 }
 
 .primary-700 {
-  color: #352218;
+   color: #352218;
 }
 
 .primary-900 {
-  color: #1a0d08;
+   color: #1a0d08;
 }
 
 .primary-900-75 {
-  color: rgb(26, 13, 8, 75%);
+   color: rgb(26, 13, 8, 75%);
 }
 
 .primary-900-5 {
-  color: rgb(26, 13, 8, 5%);
+   color: rgb(26, 13, 8, 5%);
 }
 
 re-100 {
-  color: #f7dede;
+   color: #f7dede;
 }
 
 re-500 {
-  color: #8b2020;
+   color: #8b2020;
 }
 
 ge-100 {
-  color: #d7f5e2;
+   color: #d7f5e2;
 }
 
 ge-500 {
-  color: #207f42;
+   color: #207f42;
 }
 
 p > img {
-  max-width: 100%;
-  height: auto;
-  display: block;
+   max-width: 100%;
+   height: auto;
+   display: block;
 }
 
 .bg-women-image {
-  background-image: url('/women/all-women.png');
+   background-image: url('/women/all-women.png');
 }

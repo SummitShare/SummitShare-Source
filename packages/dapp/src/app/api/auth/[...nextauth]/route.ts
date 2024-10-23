@@ -1,133 +1,176 @@
 import { passwordCompare } from '@/utils/methods/auth/passwordCompare';
-import NextAuth, {
-  ExtendedJWT,
-  ExtendedSession,
-  ExtendedUser,
-} from 'next-auth';
+import NextAuth, { User } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import { JWT } from 'next-auth/jwt';
 
-// export const { handlers, signIn, signOut, auth } = NextAuth({
-//   providers: [],
-// })
+interface UserWallet {
+   id: string;
+   user_id: string;
+   wallet_address: string;
+   index: number | null;
+}
+
+interface CustomUser {
+   id: string;
+   email: string;
+   username: string | null;
+   bio: string | null;
+   email_verified: boolean | null;
+   type: string | null;
+   user_wallets: UserWallet[];
+}
+
+declare module 'next-auth' {
+   interface User extends CustomUser {}
+
+   interface Session {
+      user: CustomUser;
+   }
+}
+
+declare module 'next-auth/jwt' {
+   interface JWT extends CustomUser {}
+}
 
 const handler = NextAuth({
-  session: {
-    strategy: 'jwt',
-  },
-  providers: [
-    CredentialsProvider({
-      credentials: {
-        email: {},
-        password: {},
+   secret: process.env.NEXTAUTH_SECRET,
+   session: {
+      strategy: 'jwt',
+      maxAge: 30 * 24 * 60 * 60, // 30 days
+      updateAge: 24 * 60 * 60, // 24 hours
+   },
+   cookies: {
+      sessionToken: {
+         name:
+            process.env.NODE_ENV === 'production'
+               ? '__Secure-next-auth.session-token'
+               : 'next-auth.session-token',
+         options: {
+            httpOnly: true,
+            sameSite: 'lax',
+            path: '/',
+            secure: process.env.NODE_ENV === 'production',
+         },
       },
-      async authorize(credentials, req) {
-        //
-
-        let user = null;
-
-        if (!credentials || !credentials.email || !credentials.password) {
-          return null;
-        }
-        const email = String(credentials.email);
-        const password = String(credentials.password);
-
-        const {
-          compare,
-          message,
-          error,
-          user: foundUser,
-        } = await passwordCompare(email, password);
-        user = foundUser;
-
-        //console.log(`foundUser ${{ foundUser }}`)
-        if (!user) {
-          return null;
-        }
-        console.log(`logged in user is ${user.id}`);
-        // return json object with the user data
-        return {
-          id: user.id,
-          email: user.email,
-          username: user.username,
-          bio: user.bio,
-          email_verified: user.email_verified,
-          type: user.type,
-          user_wallets: user.user_wallets,
-        };
+      callbackUrl: {
+         name:
+            process.env.NODE_ENV === 'production'
+               ? '__Secure-next-auth.callback-url'
+               : 'next-auth.callback-url',
+         options: {
+            sameSite: 'lax',
+            path: '/',
+            secure: process.env.NODE_ENV === 'production',
+         },
       },
-    }),
-  ],
-  callbacks: {
-    async jwt({ token, user }) {
-      // If user is defined, it's an initial sign-in
-      if (user) {
-        // Assuming `user` has been correctly populated with extended fields
-        const customUser = user as ExtendedUser; // Type assertion to your extended user type
+      csrfToken: {
+         name:
+            process.env.NODE_ENV === 'production'
+               ? '__Host-next-auth.csrf-token'
+               : 'next-auth.csrf-token',
+         options: {
+            httpOnly: true,
+            sameSite: 'lax',
+            path: '/',
+            secure: process.env.NODE_ENV === 'production',
+         },
+      },
+   },
+   providers: [
+      CredentialsProvider({
+         id: 'credentials',
+         name: 'Credentials',
+         credentials: {
+            email: {},
+            password: {},
+         },
+         async authorize(credentials): Promise<User | null> {
+            try {
+               if (!credentials?.email || !credentials?.password) {
+                  throw new Error('Missing credentials');
+               }
 
-        token = {
-          ...token,
-          id: customUser.id,
-          email: customUser.email,
-          username: customUser.username,
-          bio: customUser.bio,
-          email_verified: customUser.email_verified,
-          type: customUser.type,
-          user_wallets: customUser.user_wallets,
-        };
-      }
-      return token;
-    },
-    async session({ session, token, user }) {
-      session.user = {
-        ...session.user, // Retain existing session.user fields
-        id: token.id,
-        username: token.username,
-        bio: token.bio,
-        email_verified: token.email_verified,
-        type: token.type,
-        user_wallets: token.user_wallets,
-      };
-      console.log(`logged in user session ${session.token.id}`);
-      console.log(`session ${session.token.id}`);
-      return session;
-    },
-  },
-  //   callbacks: {
-  //     async jwt({ token, user }) {
-  //       // If the user object exists, it means this is the initial sign in
-  //       if (user) {
-  //         //console.log(`jwt user ${JSON.stringify(user, null, 2)} `);
-  //         const customUser = user as ExtendedUser;
-  //         // Add user info to the token, but exclude the password
-  //         token.id = user.id;
-  //         token.email = user.email;
-  //         token.username = customUser.username;
-  //         token.bio = customUser.bio;
-  //         token.email_verified = customUser.email_verified;
-  //         token.type = customUser.type;
-  //         token.user_wallets = customUser.user_wallets; // Assuming you have this info in your user object
-  //         // Any other user properties you want to include, but avoid sensitive ones like password
-  //       }
-  //       //console.log(`jwt token ${JSON.stringify(token, null, 2)} `);
-  //       return token;
-  //     },
-  //     async session({ session, token }) {
-  //         //console.log("Entering session callback");
-  //         const extendedSession: ExtendedSession = session as ExtendedSession;
-  //         const extendedToken: ExtendedJWT = token as ExtendedJWT;
+               const email = String(credentials.email);
+               const password = String(credentials.password);
 
-  //         // Now, safely transfer custom claims from the JWT to the session
-  //         if (extendedToken.id) extendedSession.user.id = extendedToken.id;
-  //         if (extendedToken.email) extendedSession.user.email = extendedToken.email;
-  //         if (extendedToken.username) extendedSession.user.username = extendedToken.username;
-  //         if (extendedToken.bio) extendedSession.user.bio = extendedToken.bio;
-  //         if (extendedToken.email_verified !== undefined) extendedSession.user.email_verified = extendedToken.email_verified;
-  //         if (extendedToken.type) extendedSession.user.type = extendedToken.type;
-  //         if (extendedToken.user_wallets) extendedSession.user.user_wallets = extendedToken.user_wallets;
-  //         //console.log(`session ${JSON.stringify(session, null, 2)} `);
-  //         return extendedSession;
-  //       },
-  //   },
+               const {
+                  compare,
+                  message,
+                  error,
+                  user: foundUser,
+               } = await passwordCompare(email, password);
+
+               if (!foundUser || !compare) {
+                  throw new Error(message || 'Invalid credentials');
+               }
+
+               const user: User = {
+                  id: foundUser.id,
+                  email: foundUser.email,
+                  username: foundUser.username || null,
+                  bio: foundUser.bio || null,
+                  email_verified: foundUser.email_verified || null,
+                  type: foundUser.type || null,
+                  user_wallets: foundUser.user_wallets || [],
+               };
+
+               return user;
+            } catch (error) {
+               console.error('Authorization error:', error);
+               return null;
+            }
+         },
+      }),
+   ],
+   pages: {
+      signIn: '/auth/signin',
+      error: '/auth/error',
+   },
+   callbacks: {
+      async jwt({ token, user, trigger, session }) {
+         if (trigger === 'update' && session) {
+            // Handle token updates
+            return { ...token, ...session.user };
+         }
+
+         if (user) {
+            token.id = user.id;
+            token.email = user.email;
+            token.username = user.username;
+            token.bio = user.bio;
+            token.email_verified = user.email_verified;
+            token.type = user.type;
+            token.user_wallets = user.user_wallets;
+         }
+         return token;
+      },
+      async session({ session, token }) {
+         session.user = {
+            ...session.user,
+            id: token.id,
+            email: token.email,
+            username: token.username,
+            bio: token.bio,
+            email_verified: token.email_verified,
+            type: token.type,
+            user_wallets: token.user_wallets,
+         };
+
+         return session;
+      },
+   },
+   debug: process.env.NODE_ENV === 'development',
+   logger: {
+      error(code, metadata) {
+         console.error(code, metadata);
+      },
+      warn(code) {
+         console.warn(code);
+      },
+      debug(code, metadata) {
+         console.debug(code, metadata);
+      },
+   },
 });
 
 export { handler as GET, handler as POST };
