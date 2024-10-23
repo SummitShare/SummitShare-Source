@@ -9,9 +9,11 @@ import { validatePageAccess } from '@/utils/methods/ticketPurchase/ticketService
 import { useAccount } from 'wagmi';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import LoadingDots from './loadingDots';
 
 export default function Home() {
   const [open, setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { address } = useAccount();
   const userAddress = address;
 
@@ -22,6 +24,10 @@ export default function Home() {
     // @ts-ignore
     validatePageAccess(address, router, session);
   }, [address, router, session]);
+
+  if (isLoading) {
+    return <LoadingDots />;
+  }
 
   const women = [
     {

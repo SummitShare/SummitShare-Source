@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { useRouter } from 'next/router';
+import React from 'react';
 
 export const validateTicket = async (
   userAddress: string | undefined,
@@ -51,10 +52,14 @@ export const validateTicket = async (
 export const validatePageAccess = async (
   userAddress: string | undefined,
   router: ReturnType<typeof useRouter>,
-  session: ReturnType<typeof useSession>
+  session: ReturnType<typeof useSession>,
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 ): Promise<boolean> => {
+  setIsLoading(true);
+  
   if (!userAddress) {
     router.push('/401');
+    setIsLoading(false);
     return false;
   }
 
@@ -64,15 +69,18 @@ export const validatePageAccess = async (
       eventId: CONTRACT_ADDRESSES.eventId,
       user_id: session.data?.token.id || '',
     });
-
+    
+    setIsLoading(false);
+    
     if (!response.data.hasTicket) {
       router.push('/401');
       return false;
     }
-
+    
     return true;
   } catch (error) {
     console.error('Error validating ticket:', error);
+    setIsLoading(false);
     router.push('/401');
     return false;
   }
