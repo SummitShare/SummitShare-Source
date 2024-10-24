@@ -67,7 +67,7 @@ export default function Cya() {
    }, []);
 
    return (
-      <main className="relative h-screen overflow-hidden">
+      <main className="relative h-screen overflow-hidden mt-12 mb-20 z-0">
          {/* YouTube Video Background */}
          <ResponsiveVideo />
 
@@ -76,11 +76,11 @@ export default function Cya() {
             <div className="mt-20 md:mt-0">
                {' '}
                {/* Added margin top for mobile */}
-               <h1 className="text-4xl md:text-5xl font-extrabold mb-4 md:mb-6 text-brown tracking-wide text-center">
+               <h1 className="text-4xl md:text-5xl font-extrabold mb-4 md:mb-6 text-brown tracking-wide text-center text-white">
                   {isComplete ? 'Coming Soon...' : 'Welcome!'}
                </h1>
                <div className="text-center max-w-2xl mb-8 md:mb-12 px-4">
-                  <p className="text-lg md:text-xl text-white mb-2 leading-relaxed">
+                  <p className=" md:text-xl text-white mb-2 leading-relaxed">
                      Prepare to experience the &ldquo;Leading Ladies&ldquo;. An
                      educational and interactive experience, one of the first of
                      its kind...
@@ -163,7 +163,7 @@ export default function Cya() {
                   <div className="flex flex-col items-center">
                      <div className="text-6xl font-bold">6</div>
                      <div className="text-lg text-gray-300">
-                        Unique Stories and Artifacts Preserved
+                     Stories
                      </div>
                   </div>
 
@@ -178,21 +178,21 @@ export default function Cya() {
                   <div className="flex flex-col items-center">
                      <div className="text-6xl font-bold">1</div>
                      <div className="text-lg text-gray-300">
-                        Collective Legacy
+                      Legacy
                      </div>
                   </div>
                </div>
             </div>
 
             {/*  Different color */}
-            <Link
+             <Link
                href="https://summitshare.co/blog/SJZH2lwwA"
-               className="text-lg text-white underline hover:text-gray-300 transition-colors"
+               className="text-lg text-white underline hover:text-gray-300 transition-colors mt-10 md:mt-6"
                target="_blank"
                rel="noopener noreferrer"
             >
                learn more here
-            </Link>
+            </Link> 
          </div>
       </main>
    );
