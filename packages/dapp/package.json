@@ -71,7 +71,7 @@
       "remark-parse": "^11.0.0",
       "tailwind-merge": "^1.14.0",
       "tailwindcss-animate": "^1.0.7",
-      "three": "^0.154.0",
+      "three": "^0.155.0",
       "three-stdlib": "^2.30.4",
       "unified": "^11.0.4",
       "viem": "~2.10.9",
