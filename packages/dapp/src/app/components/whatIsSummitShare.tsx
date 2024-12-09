@@ -25,15 +25,15 @@ function WhatIsSummitShare() {
         </div>
   
         {/* Action buttons */}
-        <div className="flex flex-wrap gap-4 pt-2">
+        <div className="flex gap-2 pt-2">
           <Link href="/donate">
-            <Button variant="default" size={"medium"}>
+            <Button variant="default" >
               Donate
             </Button>
           </Link>
           
           <Link href="https://github.com/summitshare">
-            <Button variant="outline" size={"medium"}>
+            <Button variant="outline" >
               Star repo
             </Button>
           </Link>

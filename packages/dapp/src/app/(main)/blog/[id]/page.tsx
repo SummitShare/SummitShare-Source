@@ -33,25 +33,7 @@ const Note = async ({ params }: { params: { id: string } }) => {
                className="space-y-6"
                dangerouslySetInnerHTML={{ __html: contentHtml }}
             />
-            <div className="w-full rounded-[8px] bg-primary-50 space-y-4 px-[45px] py-6">
-               <div className="space-y-2">
-                  <h3>Was this page informative?</h3>
-                  <p>Those who walked before us and those to come.</p>
-               </div>
-
-               <div className="flex flex-row gap-4">
-                  <div className="w-[73px]">
-                     <Button>Yes</Button>
-                  </div>
-                  <div className="w-[73px]">
-                     <Button variant="outline">No</Button>
-                  </div>
-               </div>
-            </div>
-            <div className="space-y-4 md:flex md:flex-row md:gap-4 md:space-y-0">
-               <Button variant="outline">Back</Button>
-               <Button>Next</Button>
-            </div>
+          
          </div>
       );
    } catch (error) {

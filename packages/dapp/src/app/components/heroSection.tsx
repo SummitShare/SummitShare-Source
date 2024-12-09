@@ -120,7 +120,7 @@ function HeroSection() {
         <div className="h-full flex items-end md:items-center pb-16 md:pb-0">
           <div className="w-full md:max-w-2xl">
             {/* Content box */}
-            <div className="backdrop-blur-sm bg-white/95 p-8 md:p-10 
+            <div className="backdrop-blur-sm bg-white/75 p-8 md:p-10 
                           rounded-xl shadow-2xl border border-white/20">
               <div className="space-y-8">
                 {/* Text content */}
@@ -130,7 +130,7 @@ function HeroSection() {
                     The Leading Ladies of Zambia
                   </h1>
 
-                  <p className="text-neutral-700 text-lg md:text-xl leading-relaxed">
+                  <p className="text-neutral-700 md:text-xl leading-relaxed">
                     Those who walked before us and those to come. Those who wore red
                     clay masks and rested their heads on bended knees. Those who
                     washed the cowry bead and swung the snuff cup. Those who weaved
@@ -145,7 +145,7 @@ function HeroSection() {
                     <ConnectKitButton.Custom>
                       {({ show }) => (
                         <Button
-                          size={"medium"}
+                        
                           onClick={show}
                           className="transition-all duration-300 ease-in-out
                                    transform hover:-translate-y-0.5"
@@ -155,10 +155,10 @@ function HeroSection() {
                       )}
                     </ConnectKitButton.Custom>
                   ) : (
-                    <div className="flex flex-wrap gap-4">
+                    <div className="flex gap-2">
                       <Link href="/cya">
                         <Button
-                          size={"medium"}
+                        
                           className="transition-all duration-300 ease-in-out
                                          transform hover:-translate-y-0.5">
                           Purchase Ticket
@@ -167,13 +167,13 @@ function HeroSection() {
 
                       {loading ? (
                         <Button
-                          size={"medium"}
+                        
                           variant="white" disabled className="text-base">
                           Loading...
                         </Button>
                       ) : isAirdropValid && isCountdownComplete() === true ? (
                         <Button
-                          size={"medium"}
+                        
 
                           disabled={desableButton(response, loading)}
                           className={`transition-all duration-300 ease-in-out
@@ -189,7 +189,7 @@ function HeroSection() {
                         </Button>
                       ) : (
                         <Link href="/distribution">
-                          <Button size={"medium"}
+                          <Button 
                             variant="white" className="transition-all duration-300 ease-in-out
                                                          transform hover:-translate-y-0.5">
                             Learn More
