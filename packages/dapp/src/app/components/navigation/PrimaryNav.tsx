@@ -8,6 +8,7 @@ import { ConnectKitButton } from 'connectkit';
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import { UserCircle } from 'lucide-react';
+import { ThemeToggle } from '../theme-toggle';
 
 const NeutralNav: React.FC = () => {
    const router = useRouter();
@@ -67,10 +68,10 @@ const NeutralNav: React.FC = () => {
 
    return (
       <nav className="w-full">
-         <ul className="fixed top-0 inset-x-0 px-6 py-4 lg:px-[15%] lg:py-6 flex flex-row justify-between items-center border-b border-neutral-900-5 text-neutral-900 z-10 bg-white">
+         <ul className="fixed top-0 inset-x-0 px-6 py-4 lg:px-[15%] lg:py-6 flex flex-row justify-between items-center border-b border-neutral-900-5 text-neutral-900 dark:text-neutral-50 dark:border-neutral-800 z-10 bg-white dark:bg-neutral-900">
             <li>
                <Link href="/">
-                  <h1 className="text-neutral-900">
+                  <h1 className="text-neutral-900 dark:text-neutral-50">
                      <span className="text-orange-500">Summit</span>Share
                   </h1>
                </Link>
@@ -80,9 +81,9 @@ const NeutralNav: React.FC = () => {
                   {items.map((item, index) => (
                      <li
                         key={index}
-                        className={`hover:text-neutral-700 hover:underline underline-offset-[0.625rem] cursor-pointer ${
+                        className={`hover:text-neutral-700 dark:hover:text-neutral-300 hover:underline underline-offset-[0.625rem] cursor-pointer ${
                            pathname === item.link &&
-                           'text-neutral-900 font-bold underline underline-offset-[0.625rem]'
+                           'text-neutral-900 dark:text-neutral-50 font-bold underline underline-offset-[0.625rem]'
                         }`}
                      >
                         <a href={item.link}>{item.name}</a>
@@ -92,6 +93,9 @@ const NeutralNav: React.FC = () => {
             </li>
             <li className="sm:block hidden md:hidden lg:block w-fit">
                <ul className="flex flex-row gap-2 items-center">
+                  <li>
+                     <ThemeToggle />
+                  </li>
                   <li>
                      <ConnectKitButton.Custom>
                         {({ show }) => (
@@ -112,51 +116,54 @@ const NeutralNav: React.FC = () => {
                      )}
                   </li>
                   {session.status === 'authenticated' && (
-                     <li className="group bg-gradient-to-br from-neutral-50 to-neutral-100 w-10 h-10 rounded-full flex items-center justify-center transition-all">
+                     <li className="group bg-gradient-to-br from-neutral-50 to-neutral-100 dark:from-neutral-800 dark:to-neutral-900 w-10 h-10 rounded-full flex items-center justify-center transition-all">
                         <Link href={'/profile'}>
-                           <UserCircle className="w-8 h-8 text-neutral-600 group-hover:text-neutral-900/80 transition-all" />
+                           <UserCircle className="w-8 h-8 text-neutral-600 group-hover:text-neutral-900/80 dark:text-neutral-400 dark:group-hover:text-neutral-200 transition-all" />
                         </Link>
                      </li>
                   )}
                </ul>
             </li>
             <li onClick={() => setOpenMenu(!openMenu)} className="lg:hidden">
-               <Bars3Icon className="w-4" />
+               <Bars3Icon className="w-4 dark:text-neutral-50" />
             </li>
          </ul>
+
          {openMenu && (
             <div
                className="fixed inset-0 bg-black/40 z-40"
                onClick={() => setOpenMenu(false)}
             />
          )}
+
          <nav
-            className={`fixed inset-y-0 left-0 w-[70%] md:w-[40%] bg-white z-50 transform border-r border-neutral-900-5 ${
+            className={`fixed inset-y-0 left-0 w-[70%] md:w-[40%] bg-white dark:bg-neutral-900 z-50 transform border-r border-neutral-900-5 dark:border-neutral-800 ${
                openMenu ? 'translate-x-0' : '-translate-x-full'
             } transition-transform duration-300 ease-in-out`}
          >
-            <div className="border-b border-neutral-900-5 py-[18px]">
-               <div className="px-6 flex flex-row justify-between text-neutral-900">
-                  <h2 className="text-neutral-900">
+            <div className="border-b border-neutral-900-5 dark:border-neutral-800 py-[18px]">
+               <div className="px-6 flex flex-row justify-between text-neutral-900 dark:text-neutral-50">
+                  <h2 className="text-neutral-900 dark:text-neutral-50">
                      <span className="text-orange-500">Summit</span>Share
                   </h2>
                   <XMarkIcon
                      onClick={() => setOpenMenu(!openMenu)}
-                     className="w-4 cursor-pointer"
+                     className="w-4 cursor-pointer dark:text-neutral-50"
                   />
                </div>
             </div>
+
             <ul className="px-6 mt-6 max-h-[80%] flex flex-col gap-6 justify-between overflow-y-auto">
                {menuItems.map((menu, index) => (
                   <li
                      key={index}
                      className={`space-y-4 py-2 ${
                         index !== menuItems.length - 1
-                           ? 'border-b border-neutral-900-5'
+                           ? 'border-b border-neutral-900-5 dark:border-neutral-800'
                            : ''
                      }`}
                   >
-                     <h4 className="font-normal text-neutral-400">
+                     <h4 className="font-normal text-neutral-400 dark:text-neutral-500">
                         {menu.title}
                      </h4>
                      <ul className="space-y-1">
@@ -177,9 +184,9 @@ const NeutralNav: React.FC = () => {
                            return (
                               <li
                                  key={subIndex}
-                                 className={`text-[1.25rem] text-neutral-700 font-normal ${
+                                 className={`text-[1.25rem] text-neutral-700 dark:text-neutral-300 font-normal ${
                                     pathname === subItem.link &&
-                                    'text-neutral-400'
+                                    'text-neutral-400 dark:text-neutral-500'
                                  }`}
                               >
                                  <a
@@ -206,6 +213,9 @@ const NeutralNav: React.FC = () => {
                         </Button>
                      )}
                   </ConnectKitButton.Custom>
+               </li>
+               <li>
+                  <ThemeToggle />
                </li>
             </ul>
          </nav>
