@@ -175,3 +175,38 @@ p > img {
 .bg-purple-gradient {
    background: linear-gradient(to right, #471d35, #8c497f);
 }
+
+@layer base {
+   :root {
+     --background: 0 0% 100%;
+     --foreground: 20 85% 7%;
+   }
+  
+   .dark {
+     --background: 20 85% 7%;
+     --foreground: 0 0% 100%;
+   }
+ }
+ 
+ .dark h1,
+ .dark h2,
+ .dark h3,
+ .dark h4,
+ .dark h5 {
+   color: #F6F3F2;
+ }
+ 
+ .dark p,
+ .dark a,
+ .dark li {
+   color: #B8B2B1;
+ }
+ 
+ .dark .l1-r,
+ .dark .l2-r,
+ .dark .l3-r,
+ .dark .l1-m,
+ .dark .l2-m,
+ .dark .l3-m {
+   color: #F6F3F2;
+ }
