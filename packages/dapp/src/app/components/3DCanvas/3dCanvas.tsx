@@ -29,17 +29,19 @@ declare global {
  */
 const CanvasLoader = () => {
    const { progress } = useProgress();
-   
+
    return (
       <div className="absolute inset-0 z-10 flex items-center justify-center bg-primary-50 rounded-[8px]">
          <div className="flex flex-col items-center gap-3">
-            <div className="animate-spin rounded-full h-8 w-8 border-2 border-orange-500 border-t-transparent"/>
+            <div className="animate-spin rounded-full h-8 w-8 border-2 border-orange-500 border-t-transparent" />
             <div className="flex flex-col items-center gap-1">
                <p className="text-lg text-gray-700">
                   Loading Artifact... {Math.round(progress)}%
                </p>
                <p className="text-sm text-gray-500">
-                  {progress >= 50 ? 'Grabbing history from chain...' : 'Finding your artifact...'}
+                  {progress >= 50
+                     ? 'Grabbing history from chain...'
+                     : 'Finding your artifact...'}
                </p>
             </div>
          </div>
@@ -61,7 +63,7 @@ const DynamicCanvas: React.FC<DynamicCanvasProps> = ({ children }) => {
       if (progress === 100) {
          const timer = setTimeout(() => {
             setIsLoading(false);
-         }, 500); 
+         }, 500);
          return () => clearTimeout(timer);
       }
    }, [progress]);
@@ -107,7 +109,7 @@ const DynamicCanvas: React.FC<DynamicCanvasProps> = ({ children }) => {
          className="h-[360px] w-full rounded-[8px] bg-primary-50 relative"
       >
          {isLoading && <CanvasLoader />}
-         
+
          {isVisible && (
             <Suspense fallback={<CanvasLoader />}>
                <Canvas

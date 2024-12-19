@@ -26,28 +26,27 @@ export default function RootLayout({
 }: Readonly<{
    children: React.ReactNode;
 }>) {
-return (
-   <html lang="en" suppressHydrationWarning>
-      <body className={`flex flex-col justify-between min-h-screen bg-white dark:bg-neutral-900`}>
-         <ThemeProvider
-            defaultTheme="light"
-            storageKey="summitshare-theme"
+   return (
+      <html lang="en" suppressHydrationWarning>
+         <body
+            className={`flex flex-col justify-between min-h-screen bg-white dark:bg-neutral-900`}
          >
-            <SessionProvider>
-               <ApolloWrapper>
-                  <Web3Provider>
-                     <Providers>
-                        <PrimaryNav />
-                        <div className="bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-50">
-                           {children}
-                        </div>
-                        <Footer />
-                     </Providers>
-                  </Web3Provider>
-               </ApolloWrapper>
-            </SessionProvider>
-         </ThemeProvider>
-      </body>
-   </html>
-);
+            <ThemeProvider defaultTheme="light" storageKey="summitshare-theme">
+               <SessionProvider>
+                  <ApolloWrapper>
+                     <Web3Provider>
+                        <Providers>
+                           <PrimaryNav />
+                           <div className="bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-50">
+                              {children}
+                           </div>
+                           <Footer />
+                        </Providers>
+                     </Web3Provider>
+                  </ApolloWrapper>
+               </SessionProvider>
+            </ThemeProvider>
+         </body>
+      </html>
+   );
 }

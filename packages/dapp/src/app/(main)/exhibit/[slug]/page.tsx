@@ -92,19 +92,19 @@ const Page = ({ params }: PageProps) => {
 
          {/* 3D Model Section */}
          <article className="space-y-6 sm:space-y-8">
-      <div className="relative">
-         <DynamicCanvas>{figure.object_URL}</DynamicCanvas>
-         
-         <div className="absolute -top-4 left-4">
-            <a
-               href={figure.object_address}
-               target="_blank"
-               rel="noopener noreferrer"
-               className="inline-block bg-white text-gray-700 px-3 py-1 rounded-full text-xs border border-gray-200 shadow-md hover:bg-gray-50 transition-colors"
-            >
-               Explorer
-            </a>
-         </div>
+            <div className="relative">
+               <DynamicCanvas>{figure.object_URL}</DynamicCanvas>
+
+               <div className="absolute -top-4 left-4">
+                  <a
+                     href={figure.object_address}
+                     target="_blank"
+                     rel="noopener noreferrer"
+                     className="inline-block bg-white text-gray-700 px-3 py-1 rounded-full text-xs border border-gray-200 shadow-md hover:bg-gray-50 transition-colors"
+                  >
+                     Explorer
+                  </a>
+               </div>
             </div>
 
             {/* About Section */}

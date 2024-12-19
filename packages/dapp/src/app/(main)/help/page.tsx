@@ -45,10 +45,10 @@ const steps = [
             <div className="mt-4 p-3 bg-orange-50 rounded-lg">
                <strong className="text-orange-700">Mobile Users:</strong>
                <p className="mt-2">
-      Mobile users will need to use the in-app browser of their wallets to correctly access the platform.
+                  Mobile users will need to use the in-app browser of their
+                  wallets to correctly access the platform.
                </p>
                <ul className="mt-2 space-y-1">
-                  
                   <li>
                      • Android: We recommend using{' '}
                      <a
