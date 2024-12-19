@@ -10,7 +10,7 @@ export function ThemeToggle() {
 
   return (
     <Button
-      variant="white"
+      variant="outline"
       size="small"
       onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
       className="w-9 h-9 flex items-center justify-center hover:bg-neutral-100 dark:hover:bg-neutral-800"
