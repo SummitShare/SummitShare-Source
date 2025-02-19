@@ -36,11 +36,11 @@ export default function Home(): JSX.Element {
 
    useEffect(() => {
       const validateAccess = async (): Promise<void> => {
-         setIsLoading(true);
-         if (!address) {
-            router.push('/connect-wallet');
-            return;
-         }
+         // setIsLoading(true);
+         // if (!address) {
+         //    router.push('/connect-wallet');
+         //    return;
+         // }
 
          try {
             const { hasAccess } = await validatePageAccess(
@@ -54,7 +54,7 @@ export default function Home(): JSX.Element {
          } catch (error) {
             console.error('Access validation error:', error);
          } finally {
-            setIsLoading(false);
+            // setIsLoading(false);
          }
       };
 

@@ -2,6 +2,7 @@ node_modules
 lerna-debug.log
 pnpm-debug.log
 .idea
+.env
 .vscode/
 packages/dapp/generate.js
 codeql-custom-queries-javascript/example.ql
