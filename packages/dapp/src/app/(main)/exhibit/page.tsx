@@ -17,7 +17,7 @@ interface VideoRefs {
 }
 
 export default function Home(): JSX.Element {
-   const [isLoading, setIsLoading] = useState<boolean>(true);
+   const [isLoading, setIsLoading] = useState<boolean>(false);
    const [loadingItem, setLoadingItem] = useState<string | null>(null);
    const videoRefs = useRef<VideoRefs>({});
 
