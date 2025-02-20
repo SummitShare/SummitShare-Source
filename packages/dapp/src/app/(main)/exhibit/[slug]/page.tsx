@@ -71,7 +71,9 @@ const Page = ({ params }: PageProps) => {
    };
 
    const handleClose = () => {
-      router.push('/exhibit');
+      setCurrentIndex(-1);
+      setIsImageLoading(true);
+      router.replace('/exhibit');
    };
 
    return (
