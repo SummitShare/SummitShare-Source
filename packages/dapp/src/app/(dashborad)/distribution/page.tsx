@@ -79,20 +79,20 @@ const InsightsPage = () => {
       },
       {
          id_no: 3,
-         date: 'TBA',
+         date: '01-04-2025',
          goal: 'Funds distributed into community Escrow',
          tooltip:
             'Transfer of collected funds to a secure escrow contract for community benefit (80%) and administrative costs (20%)',
-         status: 'yellow',
-         transaction_id: 'Transaction ID 3',
+         status: 'green',
+         transaction_id: '0x277a0d27f696ab6c87de39a88cd7c9546834963a1ba548b9c54125880037f4e3',
       },
       {
          id_no: 4,
-         date: 'TBA',
+         date: '12-04-2025',
          goal: 'Voting on Community Funding Proposal',
          tooltip:
             'Community members participate in selecting development projects aligned with SDG goals',
-         status: 'orange',
+         status: 'yellow',
          transaction_id: 'Transaction ID 4',
       },
       {
