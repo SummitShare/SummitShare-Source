@@ -22,7 +22,7 @@
 
 import Link from 'next/link';
 import React from 'react';
-import { productCardsTypes } from '@/utils/dev/frontEndInterfaces';
+import { productCardsTypes } from '@/types/frontend';
 
 const ProductCard: React.FC<productCardsTypes> = ({
    author,

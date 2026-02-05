@@ -1,5 +1,5 @@
 import { fetchAllTeamNotes } from '@/lib/hackMD';
-import { Note } from '@/utils/dev/frontEndInterfaces';
+import { Note } from '@/types/frontend';
 import { ArrowRightIcon } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';

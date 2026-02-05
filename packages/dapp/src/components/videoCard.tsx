@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
-import { Button } from '@/app/components/button/Button';
-import { WomanData } from '@/utils/dev/frontEndInterfaces';
+import { Button } from '@/components/button/Button';
+import { WomanData } from '@/types/frontend';
 
 interface VideoCardProps {
    item: WomanData;
