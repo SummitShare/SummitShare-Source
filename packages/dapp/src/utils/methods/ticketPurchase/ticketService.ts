@@ -1,6 +1,6 @@
 // ticketService.ts
 
-import { calculateTimeLeft } from '@/functonality/countdownTimer';
+import { calculateTimeLeft } from '@/features/countdownTimer';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';

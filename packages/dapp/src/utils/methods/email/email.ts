@@ -29,7 +29,7 @@ export async function sendEmail(
 
    const templatePath = path.join(
       process.cwd(),
-      'src/functionality/emailNewsletter/main.html'
+      'src/features/emailNewsletter/main.html'
    );
    let htmlTemplate = await readHtmlTemplate(templatePath);
 
