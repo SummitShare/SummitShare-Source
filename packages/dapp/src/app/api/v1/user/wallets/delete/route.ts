@@ -21,6 +21,7 @@ Purpose: Delete a specified wallet address for a user and re-index the remaining
 
 import { NextResponse } from 'next/server';
 import prisma, { PRISMA_DISABLED } from '../../../../../../../config/db';
+import { user_wallets } from '@prisma/client';
 
 export async function POST(request: Request) {
    if (PRISMA_DISABLED) {
@@ -54,7 +55,7 @@ export async function POST(request: Request) {
       }
 
       const walletIndexToRemove = wallets.findIndex(
-         (wallet) => wallet.wallet_address === wallet_address
+         (wallet: user_wallets) => wallet.wallet_address === wallet_address
       );
       if (walletIndexToRemove === -1) {
          return NextResponse.json(
@@ -80,15 +81,15 @@ export async function POST(request: Request) {
       }
 
       // Update indexes of subsequent wallets
-      wallets.forEach((wallet, index) => {
+      wallets.forEach((wallet: user_wallets, index: number) => {
          if (wallet.index !== null && index < walletIndexToRemove) {
             wallet.index -= 1;
          }
       });
 
-      await prisma.$transaction(async (prisma) => {
+      await prisma.$transaction(async (tx: any) => {
          // Step 1: Delete the wallet with the given address
-         await prisma.user_wallets.deleteMany({
+         await tx.user_wallets.deleteMany({
             where: {
                user_id: user_id,
                wallet_address: wallet_address,
@@ -97,7 +98,7 @@ export async function POST(request: Request) {
 
          // Step 2: Update the indexes of the remaining wallets in the database
          for (const wallet of wallets) {
-            await prisma.user_wallets.update({
+            await tx.user_wallets.update({
                where: {
                   id: wallet.id,
                },
