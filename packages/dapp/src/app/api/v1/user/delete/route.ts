@@ -19,7 +19,7 @@ async function sendDeletionConfirmationEmail(email: string, token: string) {
 
       const filePath = path.join(
          process.cwd(),
-         'src/functonality/emailNewsletter/main.html'
+         'src/features/emailNewsletter/main.html'
       );
 
       // Read the file

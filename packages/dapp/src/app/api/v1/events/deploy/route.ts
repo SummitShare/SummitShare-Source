@@ -12,7 +12,7 @@ import {
    IPropsal,
    IStakes,
    ExhibitParams,
-} from '@/utils/dev/typeInit';
+} from '@/types/contracts';
 
 /**
  * POST handler for deploying event data.

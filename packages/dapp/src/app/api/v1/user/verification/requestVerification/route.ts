@@ -40,7 +40,7 @@ async function createSendTokens(user_id: string, email: string) {
       // Read the HTML template
       const templatePath = path.join(
          process.cwd(),
-         'src/functonality/emailNewsletter/main.html'
+         'src/features/emailNewsletter/main.html'
       );
       let htmlTemplate = await readHtmlTemplate(templatePath);
 

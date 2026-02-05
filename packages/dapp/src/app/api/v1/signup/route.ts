@@ -43,7 +43,7 @@ async function createSendTokens(user: users, email: string) {
       // Read the HTML template
       const templatePath = path.join(
          process.cwd(),
-         'src/functonality/emailNewsletter/main.html'
+         'src/features/emailNewsletter/main.html'
       );
       let htmlTemplate = await readHtmlTemplate(templatePath);
 
@@ -111,7 +111,7 @@ async function userWithUsername(
 
    // const host = req.headers.get('host');
    const host = process.env.HOST;
-   const verificationLink = `${host}/api/verifyEmail?token=${token}`;
+   const verificationLink = `${host}/verification/email/${token}`;
 
    const mailOptions = {
       from: emailServer,

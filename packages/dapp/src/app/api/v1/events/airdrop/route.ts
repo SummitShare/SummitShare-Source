@@ -8,8 +8,8 @@ import * as fs from 'fs/promises';
 import { emailServer, transporter } from '../../../../../../config/nodemailer';
 
 // production values:
-import { initializeDevWallet } from '@/utils/prod/walletInit';
-import { contracts } from '@/utils/prod/contractInit';
+import { initializeDevWallet } from '@/utils/walletInit';
+import { contracts } from '@/utils/contractInit';
 
 const USDT_AMOUNT = ethers.utils.parseUnits('5', 6); // USDT decimals = 6
 const MUSDC_AMOUNT = ethers.utils.parseUnits('5', 18); // MOCK decimals = 18
@@ -141,7 +141,7 @@ export async function POST(req: Request) {
 
       const templatePath = path.join(
          process.cwd(),
-         'src/functonality/emailNewsletter/main.html'
+         'src/features/emailNewsletter/main.html'
       );
 
       let htmlContent = await fs.readFile(templatePath, 'utf-8');

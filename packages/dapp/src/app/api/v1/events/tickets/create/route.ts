@@ -1,4 +1,4 @@
-import { IPropsal, EmailArray } from '@/utils/dev/typeInit';
+import { IPropsal, EmailArray } from '@/types/contracts';
 import { PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
 import prisma from '../../../../../../../config/db';
@@ -154,7 +154,7 @@ export async function POST(req: Request, res: NextResponse) {
       // Read the HTML template
       const templatePath = path.join(
          process.cwd(),
-         'src/functonality/emailNewsletter/main.html'
+         'src/features/emailNewsletter/main.html'
       );
       let htmlTemplate = await readHtmlTemplate(templatePath);
 
