@@ -7,6 +7,7 @@ import * as THREE from 'three';
 import React from 'react';
 import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
+import { ThreeElements } from '@react-three/fiber';
 
 type GLTFResult = GLTF & {
    nodes: {
@@ -21,8 +22,8 @@ type GLTFResult = GLTF & {
    };
 };
 
-export function Mask(props: JSX.IntrinsicElements['group']) {
-   const { nodes, materials } = useGLTF('/models/mask.glb') as GLTFResult;
+export function Mask(props: ThreeElements['group']) {
+   const { nodes, materials } = useGLTF('/models/mask.glb') as unknown as GLTFResult;
    return (
       <group {...props} dispose={null}>
          <mesh

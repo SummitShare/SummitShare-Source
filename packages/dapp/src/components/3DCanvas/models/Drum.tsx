@@ -7,6 +7,7 @@ import * as THREE from 'three';
 import React from 'react';
 import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
+import { ThreeElements } from '@react-three/fiber';
 
 type GLTFResult = GLTF & {
    nodes: {
@@ -21,8 +22,8 @@ type GLTFResult = GLTF & {
    };
 };
 
-export function Drum(props: JSX.IntrinsicElements['group']) {
-   const { nodes, materials } = useGLTF('/models/drum.glb') as GLTFResult;
+export function Drum(props: ThreeElements['group']) {
+   const { nodes, materials } = useGLTF('/models/drum.glb') as unknown as GLTFResult;
    return (
       <group {...props} dispose={null}>
          <mesh

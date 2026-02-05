@@ -1,7 +1,7 @@
 import React, { Suspense, useMemo } from 'react';
 import * as THREE from 'three';
 import { useGLTF } from '@react-three/drei';
-import { useFrame } from '@react-three/fiber';
+import { useFrame, ThreeElements } from '@react-three/fiber';
 import { GLTF } from 'three-stdlib';
 
 // Define types
@@ -39,10 +39,10 @@ const createOptimizedMaterial = (baseMaterial: THREE.MeshStandardMaterial) => {
 
 // Main component with optimizations
 export function Snuff(
-   props: JSX.IntrinsicElements['group'] & { levelOfDetail?: 'high' | 'low' }
+   props: ThreeElements['group'] & { levelOfDetail?: 'high' | 'low' }
 ) {
    const { levelOfDetail = 'high' } = props;
-   const { nodes, materials } = useGLTF('/models/snuff.glb') as GLTFResult;
+   const { nodes, materials } = useGLTF('/models/snuff.glb') as unknown as GLTFResult;
 
    // Memoize material to prevent unnecessary recreations
    const optimizedMaterial = useMemo(

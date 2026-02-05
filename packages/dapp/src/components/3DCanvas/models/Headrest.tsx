@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import React, { useRef } from 'react';
 import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
+import { ThreeElements } from '@react-three/fiber';
 
 type GLTFResult = GLTF & {
    nodes: {
@@ -17,9 +18,9 @@ type GLTFResult = GLTF & {
 // Euler rotation
 const ROTATION = new THREE.Euler(Math.PI / 2, 0, 0);
 
-export function Headrest(props: JSX.IntrinsicElements['group']) {
+export function Headrest(props: ThreeElements['group']) {
    const group = useRef<THREE.Group>(null);
-   const { nodes, materials } = useGLTF('/models/headrest.glb') as GLTFResult;
+   const { nodes, materials } = useGLTF('/models/headrest.glb') as unknown as GLTFResult;
 
    // Optimize static materials
    React.useMemo(() => {

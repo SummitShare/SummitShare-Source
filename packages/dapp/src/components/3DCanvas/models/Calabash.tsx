@@ -7,6 +7,7 @@ import * as THREE from 'three';
 import React, { useRef } from 'react';
 import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
+import { ThreeElements } from '@react-three/fiber';
 
 type GLTFResult = GLTF & {
    nodes: {
@@ -22,9 +23,9 @@ type GLTFResult = GLTF & {
 // Create proper Euler rotation
 const ROTATION = new THREE.Euler(Math.PI / 2, 0, 0);
 
-export function Calabash(props: JSX.IntrinsicElements['group']) {
+export function Calabash(props: ThreeElements['group']) {
    const group = useRef<THREE.Group>(null);
-   const { nodes, materials } = useGLTF('/models/calabash.glb') as GLTFResult;
+   const { nodes, materials } = useGLTF('/models/calabash.glb') as unknown as GLTFResult;
 
    // Optimize materials if they're not going to change
    React.useMemo(() => {
