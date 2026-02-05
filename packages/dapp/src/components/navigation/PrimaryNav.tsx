@@ -90,24 +90,25 @@ const NeutralNav: React.FC = () => {
                   ))}
                </ul>
             </li>
-            <li className="sm:block hidden md:hidden lg:block w-fit">
+            <li className="sm:block hidden md:hidden lg:block flex-shrink-0">
                <ul className="flex flex-row gap-2 items-center">
-                  <li>
+                  <li className="flex-shrink-0">
                      <ConnectKitButton.Custom>
                         {({ show }) => (
-                           <Button onClick={show}>
-                              {!userAddress ? 'Connect Wallet' : 'Connected'}
+                           <Button onClick={show} className="whitespace-nowrap">
+                              {!userAddress ? 'Connect' : 'Connected'}
                            </Button>
                         )}
                      </ConnectKitButton.Custom>
                   </li>
-                  <li>
+                  <li className="flex-shrink-0">
                      {session.status !== 'authenticated' && (
                         <Button
                            variant={'outline'}
                            onClick={() => handleAuthClick()}
+                           className="whitespace-nowrap"
                         >
-                           Sign In or Register
+                           Sign In
                         </Button>
                      )}
                   </li>
