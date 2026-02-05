@@ -69,7 +69,7 @@ async function createSendTokens(user_id: string, email: string) {
    }
 }
 
-export async function GET(req: Request, res: NextResponse) {
+export async function GET(req: Request) {
    try {
       const host = req.headers.get('host');
       const url = new URL(req.url!, `http://${host}`);

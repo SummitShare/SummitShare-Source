@@ -4,7 +4,7 @@ import crypto from 'node:crypto';
 import prisma from '../../../../../../config/db';
 import { emailServer, transporter } from '../../../../../../config/nodemailer';
 
-export async function POST(req: Request, res: NextResponse) {
+export async function POST(req: Request) {
    try {
       const { username } = await req.json();
       const existingUsername = await prisma.users.findUnique({

@@ -31,7 +31,7 @@ async function readHtmlTemplate(filePath: string): Promise<string> {
  * @returns {NextResponse} - Returns a JSON response with the status of the operation.
  */
 
-export async function POST(req: Request, res: NextResponse) {
+export async function POST(req: Request) {
    try {
       console.log('Request received');
       const { wallet_address, event_id, user_id, eventLink, transaction_id } =

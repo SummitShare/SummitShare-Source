@@ -28,7 +28,7 @@ interface EmailStatus {
    status: number;
 }
 
-export async function POST(req: Request, res: NextResponse) {
+export async function POST(req: Request) {
    async function createEvent(propsal: IPropsal, user_id: string) {
       const {
          event_type,

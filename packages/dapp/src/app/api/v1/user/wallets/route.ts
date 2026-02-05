@@ -17,7 +17,7 @@ import prisma from '../../../../../../config/db';
  * @returns A JSON response indicating the success or failure of the email sending operation.
  */
 
-export async function POST(request: Request, response: NextResponse) {
+export async function POST(request: Request) {
    try {
       const { user_id } = await request.json();
 

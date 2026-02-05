@@ -26,7 +26,7 @@ async function updateUser(
    }
 }
 
-export async function POST(req: Request, res: NextResponse) {
+export async function POST(req: Request) {
    try {
       const host = req.headers.get('host');
       const url = new URL(req.url!, `http://${host}`);

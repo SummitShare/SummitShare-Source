@@ -22,7 +22,7 @@ Purpose: Delete a specified wallet address for a user and re-index the remaining
 import { NextResponse } from 'next/server';
 import prisma from '../../../../../../../config/db';
 
-export async function POST(request: Request, response: NextResponse) {
+export async function POST(request: Request) {
    try {
       // Extracting user_id and wallet_address from the request body.
       const { user_id, wallet_address } = await request.json();

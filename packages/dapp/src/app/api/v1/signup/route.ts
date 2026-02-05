@@ -202,7 +202,7 @@ async function createVisitor(
    }
 }
 
-export async function POST(req: Request, res: NextResponse) {
+export async function POST(req: Request) {
    try {
       // if (!req.body || Object.keys(req.body).length === 0) {
       //   return NextResponse.json({ error: 'No data provided' }, { status: 400 });

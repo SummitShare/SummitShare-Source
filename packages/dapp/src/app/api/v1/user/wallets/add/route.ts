@@ -13,7 +13,7 @@ import prisma from '../../../../../../../config/db';
  * It performs input validation, database querying, and conditional logic to manage wallet addresses associated with a user.
  */
 
-export async function POST(request: Request, response: NextResponse) {
+export async function POST(request: Request) {
    try {
       // Extracting user_id and wallet_address from the request body.
       const { user_id, wallet_address } = await request.json();
