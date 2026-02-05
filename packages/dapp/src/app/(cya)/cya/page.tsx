@@ -4,18 +4,18 @@ import {
    calculateTimeLeft,
    isCountdownComplete,
    TimeLeft,
-} from '@/functonality/countdownTimer';
-import TicketPurchaseComponent from '@/functonality/ticketpurchasecomponent';
+} from '@/features/countdownTimer';
+import TicketPurchaseComponent from '@/features/ticketpurchasecomponent';
 import Link from 'next/link';
 import useTicketCount from '@/lib/getTickets';
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import Buttons from '@/app/components/button/Butons';
+import Buttons from '@/components/button/Butons';
 import {
    ButtonConfig,
    TicketPurchaseUIProps,
-} from '@/utils/dev/frontEndInterfaces';
-import { Button } from '@/app/components/button/Button';
+} from '@/types/frontend';
+import { Button } from '@/components/button/Button';
 import { useAccount } from 'wagmi';
 
 const ResponsiveVideo: React.FC = () => {

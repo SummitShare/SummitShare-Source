@@ -4,9 +4,9 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import '../styles/globals.css';
 import { SessionProvider } from 'next-auth/react';
-import SecondaryNavBar from '../components/secondaryNavBar';
-import PrimaryNav from '../components/navigation/PrimaryNav';
-import { Web3Provider } from '@/functonality/Web3Provider';
+import SecondaryNavBar from '@/components/secondaryNavBar';
+import PrimaryNav from '@/components/navigation/PrimaryNav';
+import { Web3Provider } from '@/features/Web3Provider';
 
 const inter = Inter({ subsets: ['latin'] });
 
