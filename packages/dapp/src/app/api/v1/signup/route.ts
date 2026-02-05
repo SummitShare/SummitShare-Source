@@ -137,8 +137,8 @@ async function createExhibitor(
    wallet_address: string
 ) {
    try {
-      const result = await prisma.$transaction(async (prisma) => {
-         const user = await prisma.users.create({
+      const result = await prisma.$transaction(async (tx: any) => {
+         const user = await tx.users.create({
             data: {
                email,
                password: hashedPassword,
@@ -147,7 +147,7 @@ async function createExhibitor(
             },
          });
 
-         const wallet = await prisma.user_wallets.create({
+         const wallet = await tx.user_wallets.create({
             data: {
                user_id: user.id,
                wallet_address: wallet_address,
