@@ -4,12 +4,12 @@ import {
    contracts,
    CONTRACT_ADDRESSES,
    estimateGas,
-} from '@/utils/prod/contractInit';
-import { handleContractError } from '@/utils/dev/handleContractError';
-import { EventEscrowComponentProps } from '@/utils/dev/typeInit';
+} from '@/utils/contractInit';
+import { handleContractError } from '@/utils/handleContractError';
+import { EventEscrowComponentProps } from '@/types/contracts';
 import useExhibit from '@/lib/useGetExhibitById';
 import { Transition } from '@headlessui/react';
-import Buttons from '@/app/components/button/Butons';
+import Buttons from '@/components/button/Butons';
 
 const EventEscrowComponent = ({ userAddress }: any) => {
    // Hardcoded exhibit ID for demo

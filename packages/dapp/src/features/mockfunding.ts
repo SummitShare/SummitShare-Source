@@ -1,5 +1,5 @@
 import { ethers } from 'ethers';
-import usdcABI from '../utils/artifacts/contracts/MUSDC.sol/MUSDC.json';
+import usdcABI from '../utils/abis/MUSDC.json';
 const musdcABI = usdcABI as unknown as ethers.ContractInterface;
 
 const musdcAddress = '0xDd4c60185608108D073C19432eef0ae50AB3830d';
