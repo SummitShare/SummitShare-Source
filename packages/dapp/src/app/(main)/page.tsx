@@ -1,15 +1,15 @@
-import { Button } from '../components/button/Button';
+import { Button } from '@/components/button/Button';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import HeroSection from '../components/heroSection';
+import HeroSection from '@/components/heroSection';
 import Partners from './partners/page';
-import BlogList from '../components/BlogList';
-import InfoGrid from '../components/InfoCard';
-import IntegrationGrid from '../components/IntegrationCard';
-import LeadingLaides from '../components/leadingLaides';
-import WhatIsSummitShare from '../components/whatIsSummitShare';
-import ProblemSection from '../components/problemSection';
-import CollaborateWithUs from '../components/collaborateWithUs';
+import BlogList from '@/components/BlogList';
+import InfoGrid from '@/components/InfoCard';
+import IntegrationGrid from '@/components/IntegrationCard';
+import LeadingLaides from '@/components/leadingLaides';
+import WhatIsSummitShare from '@/components/whatIsSummitShare';
+import ProblemSection from '@/components/problemSection';
+import CollaborateWithUs from '@/components/collaborateWithUs';
 
 const metadata: Metadata = {
    title: 'SummitShare',

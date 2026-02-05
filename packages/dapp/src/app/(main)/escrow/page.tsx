@@ -2,7 +2,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { useAccount } from 'wagmi';
-import EventEscrowComponent from '@/functonality/eventEscrowComponent';
+import EventEscrowComponent from '@/features/eventEscrowComponent';
 
 const FundDistributionPage = () => {
    const router = useRouter();

@@ -1,29 +1,24 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useEffect, useRef, RefCallback } from 'react';
+import { useState, useRef, RefCallback } from 'react';
 import Image from 'next/image';
-import { validatePageAccess } from '@/utils/methods/ticketPurchase/ticketService';
-import { useAccount } from 'wagmi';
 import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
 import { women } from './[slug]/data';
-import VideoCard from '@/app/components/videoCard';
-import { Button } from '@/app/components/button/Button';
-import CollaborateWithUs from '@/app/components/collaborateWithUs';
+import VideoCard from '@/components/videoCard';
+import { Button } from '@/components/button/Button';
+import CollaborateWithUs from '@/components/collaborateWithUs';
 
 interface VideoRefs {
    [key: string]: HTMLVideoElement | null;
 }
 
 export default function Home(): JSX.Element {
-   const [isLoading, setIsLoading] = useState<boolean>(false);
+   const [isLoading] = useState<boolean>(false);
    const [loadingItem, setLoadingItem] = useState<string | null>(null);
    const videoRefs = useRef<VideoRefs>({});
 
-   const { address } = useAccount();
    const router = useRouter();
-   const session = useSession();
 
    const setVideoRef: RefCallback<HTMLVideoElement> = (element) => {
       if (element) {
@@ -34,14 +29,10 @@ export default function Home(): JSX.Element {
       }
    };
 
+   // Access validation disabled: exhibit is now free and public.
+   /*
    useEffect(() => {
       const validateAccess = async (): Promise<void> => {
-         // setIsLoading(true);
-         // if (!address) {
-         //    router.push('/connect-wallet');
-         //    return;
-         // }
-
          try {
             const { hasAccess } = await validatePageAccess(
                address,
@@ -53,13 +44,12 @@ export default function Home(): JSX.Element {
             }
          } catch (error) {
             console.error('Access validation error:', error);
-         } finally {
-            // setIsLoading(false);
          }
       };
 
       session.status === 'authenticated' ? validateAccess() : setIsLoading(false);
    }, [address, router, session]);
+   */
 
    const handleMouseEnter = (name: string): void => {
       const video = videoRefs.current[name];

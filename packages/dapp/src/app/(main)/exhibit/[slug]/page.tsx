@@ -1,7 +1,7 @@
 'use client';
-import DynamicCanvas from '@/app/components/3DCanvas/3dCanvas';
+import DynamicCanvas from '@/components/3DCanvas/3dCanvas';
 import { data } from './data';
-import { Button } from '@/app/components/button/Button';
+import { Button } from '@/components/button/Button';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
