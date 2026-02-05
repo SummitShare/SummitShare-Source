@@ -21,7 +21,13 @@ Purpose: Delete a specified wallet address for a user and re-index the remaining
 
 import { NextResponse } from 'next/server';
 import prisma, { PRISMA_DISABLED } from '../../../../../../../config/db';
-import { user_wallets } from '@prisma/client';
+
+type UserWallet = {
+   id: string;
+   user_id: string;
+   wallet_address: string;
+   index: number | null;
+};
 
 export async function POST(request: Request) {
    if (PRISMA_DISABLED) {
@@ -55,7 +61,7 @@ export async function POST(request: Request) {
       }
 
       const walletIndexToRemove = wallets.findIndex(
-         (wallet: user_wallets) => wallet.wallet_address === wallet_address
+         (wallet: UserWallet) => wallet.wallet_address === wallet_address
       );
       if (walletIndexToRemove === -1) {
          return NextResponse.json(
@@ -81,7 +87,7 @@ export async function POST(request: Request) {
       }
 
       // Update indexes of subsequent wallets
-      wallets.forEach((wallet: user_wallets, index: number) => {
+      wallets.forEach((wallet: UserWallet, index: number) => {
          if (wallet.index !== null && index < walletIndexToRemove) {
             wallet.index -= 1;
          }
