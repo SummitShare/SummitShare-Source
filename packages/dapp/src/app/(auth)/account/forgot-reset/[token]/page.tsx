@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Button } from '@/app/components/button/Button';
-import { TextInput } from '@/app/components/inputs/TextInput';
+import { Button } from '@/components/button/Button';
+import { TextInput } from '@/components/inputs/TextInput';
 import { usePasswordVisibility } from '@/utils/methods/auth/usePasswordVisibility';
 import { desableButton } from '@/app/(test)/functions/disable';
 

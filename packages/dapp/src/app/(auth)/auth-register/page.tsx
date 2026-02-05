@@ -1,9 +1,9 @@
 'use client';
-import { Button } from '@/app/components/button/Button';
+import { Button } from '@/components/button/Button';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
-import { TextInput } from '@/app/components/inputs/TextInput';
+import { TextInput } from '@/components/inputs/TextInput';
 import { usePasswordVisibility } from '@/utils/methods/auth/usePasswordVisibility';
 import { desableButton } from '@/app/(test)/functions/disable';
 
