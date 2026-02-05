@@ -104,7 +104,7 @@ export default function Home(): JSX.Element {
 
                   <div className="flex flex-wrap gap-3">
                      <Link
-                        href="https://oncyber.io/spaces/89cp8FpYgF5hgrHk1i3N"
+                        href="https://v2.oncyber.io/play/kGxCRYstlbZFl03Mq4DC?draft=true"
                         target="_blank"
                         rel="noopener noreferrer"
                      >
