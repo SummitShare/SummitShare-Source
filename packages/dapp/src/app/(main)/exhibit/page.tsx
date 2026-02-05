@@ -125,6 +125,9 @@ export default function Home(): JSX.Element {
                         </Button>
                      </Link>
                   </div>
+                  <p className="text-xs italic text-amber-200/80">
+                     * Current virtual exhibit is in beta — early access.
+                  </p>
                </div>
 
                <div className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl">
