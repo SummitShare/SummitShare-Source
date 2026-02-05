@@ -158,20 +158,32 @@ const DynamicCanvas: React.FC<DynamicCanvasProps> = ({ children }) => {
                   <AdaptiveEvents />
                   <BakeShadows />
 
-                  <ambientLight intensity={1.15} />
+                  <ambientLight intensity={2.0} />
                   <hemisphereLight
-                     intensity={1.15}
-                     color="#f6e7d1"
-                     groundColor="#2b1a10"
+                     intensity={1.8}
+                     color="#fff5e6"
+                     groundColor="#3d2817"
+                  />
+                  <directionalLight
+                     intensity={1.5}
+                     position={[0, 10, 5]}
+                     color="#ffffff"
                   />
                   <spotLight
-                     intensity={2.8}
+                     intensity={4}
                      position={[6, 8, 4]}
-                     angle={0.45}
-                     penumbra={0.6}
+                     angle={0.5}
+                     penumbra={0.5}
                      castShadow
                      shadow-mapSize-width={512}
                      shadow-mapSize-height={512}
+                  />
+                  <spotLight
+                     intensity={2.0}
+                     position={[-5, 6, -3]}
+                     angle={0.6}
+                     penumbra={0.7}
+                     color="#ffeedd"
                   />
 
                   <Center>{children}</Center>
