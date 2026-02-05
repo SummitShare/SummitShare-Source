@@ -13,7 +13,6 @@ import EventEscrowABI from './abis/EventEscrow.json';
 import ExhibitNFTABI from './abis/ExhibitNFT.json';
 import USDTABI from './abis/usdtoptimism.json';
 import MUSDCABI from './abis/MUSDC.json';
-import DonationsABI from './abis/Donations.json';
 
 const DEV_CONFIG = {
    addresses: {
@@ -58,7 +57,6 @@ export const ABIS = {
    ExhibitNFTABI,
    USDTABI,
    MUSDCABI,
-   DonationsABI,
 };
 
 const getStableTokenContract = (
@@ -145,14 +143,6 @@ export const contracts = {
       );
    },
 
-   getDonations: (address: string) => {
-      const { wallet } = initializeDevWallet();
-      return new ethers.Contract(
-         address,
-         DonationsABI as ethers.ContractInterface,
-         wallet
-      );
-   },
 };
 
 export async function estimateGas(
