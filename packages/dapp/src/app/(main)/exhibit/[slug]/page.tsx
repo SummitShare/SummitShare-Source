@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { Cormorant_Garamond, Manrope } from 'next/font/google';
 
 interface PageProps {
-   params: { slug: string };
+   params: Promise<{ slug: string }>;
 }
 
 const display = Cormorant_Garamond({
@@ -26,12 +26,13 @@ const flatten = (items: string[][]) => items.flat().filter(Boolean);
 
 const Page = ({ params }: PageProps) => {
    const router = useRouter();
+   const resolvedParams = React.use(params);
    const [currentIndex, setCurrentIndex] = useState<number>(-1);
    const [isImageLoading, setIsImageLoading] = useState(true);
 
    useEffect(() => {
       const index = data.findIndex(
-         (item) => item.title.toLowerCase().replace(/ /g, '-') === params.slug
+         (item) => item.title.toLowerCase().replace(/ /g, '-') === resolvedParams.slug
       );
 
       if (index === -1) {
@@ -41,7 +42,7 @@ const Page = ({ params }: PageProps) => {
 
       setCurrentIndex(index);
       setIsImageLoading(true);
-   }, [params.slug, router]);
+   }, [resolvedParams.slug, router]);
 
    if (currentIndex === -1) {
       return (
