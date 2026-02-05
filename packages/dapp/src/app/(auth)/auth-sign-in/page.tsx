@@ -6,7 +6,6 @@ import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { TextInput } from '@/components/inputs/TextInput';
 import { usePasswordVisibility } from '@/utils/methods/auth/usePasswordVisibility';
-import { desableButton } from '@/app/(test)/functions/disable';
 
 function Page() {
    const [email, setEmail] = useState<string>('');
@@ -103,7 +102,7 @@ function Page() {
                   className={`w-full ${isLoading && 'cursor-wait'} ${
                      status === 200 && 'cursor-not-allowed'
                   }`}
-                  disabled={desableButton(status, isLoading)}
+                  disabled={(status !== undefined && status <= 200) || isLoading}
                >
                   {isLoading ? 'Signing in...' : 'Sign into my account'}
                </Button>

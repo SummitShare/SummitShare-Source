@@ -9,7 +9,6 @@ import { useSession, signOut } from 'next-auth/react';
 import { toast } from 'react-hot-toast';
 import { TextInput } from '@/components/inputs/TextInput';
 import { setInterval } from 'timers';
-import { desableButton } from '@/app/(test)/functions/disable';
 
 export default function ProfileSettings() {
    const router = useRouter();
@@ -175,7 +174,7 @@ export default function ProfileSettings() {
                      <Button
                         variant={'danger'}
                         onClick={handleDeleteAccount}
-                        disabled={desableButton(status, isDeleting)}
+                        disabled={(status !== undefined && status <= 200) || isDeleting}
                         className={` ${isDeleting && 'cursor-wait'} ${
                            status === 200 && 'cursor-not-allowed'
                         }`}

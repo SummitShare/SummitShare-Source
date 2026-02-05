@@ -7,9 +7,16 @@ import {
    BakeShadows,
    Preload,
    useProgress,
-   Html,
+   Center,
 } from '@react-three/drei';
 import * as THREE from 'three';
+
+// Compatibility aliases for legacy three-stdlib / drei internals.
+// three r155+ removed *BufferGeometry constructors in favor of *Geometry.
+if (typeof window !== 'undefined') {
+   (THREE as any).PlaneBufferGeometry = THREE.PlaneGeometry;
+   (THREE as any).CylinderBufferGeometry = THREE.CylinderGeometry;
+}
 
 // Declare global type for the renderer
 declare global {
@@ -31,14 +38,14 @@ const CanvasLoader = () => {
    const { progress } = useProgress();
 
    return (
-      <div className="absolute inset-0 z-10 flex items-center justify-center bg-primary-50 rounded-[8px]">
-         <div className="flex flex-col items-center gap-3">
-            <div className="animate-spin rounded-full h-8 w-8 border-2 border-orange-500 border-t-transparent" />
+      <div className="absolute inset-0 z-10 flex items-center justify-center bg-[#0f0c09]/90 rounded-2xl">
+         <div className="flex flex-col items-center gap-3 text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-2 border-amber-300 border-t-transparent" />
             <div className="flex flex-col items-center gap-1">
-               <p className="text-lg text-gray-700">
+               <p className="text-lg text-amber-100">
                   Loading Artifact... {Math.round(progress)}%
                </p>
-               <p className="text-sm text-gray-500">
+               <p className="text-sm text-amber-200/70">
                   {progress >= 50
                      ? 'Grabbing history from chain...'
                      : 'Finding your artifact...'}
@@ -56,7 +63,8 @@ interface DynamicCanvasProps {
 const DynamicCanvas: React.FC<DynamicCanvasProps> = ({ children }) => {
    const [isVisible, setIsVisible] = useState(false);
    const [isLoading, setIsLoading] = useState(true);
-   const { progress, total } = useProgress();
+   const [dpr, setDpr] = useState(1);
+   const { progress } = useProgress();
 
    useEffect(() => {
       // Consider loading complete when progress reaches 100%
@@ -67,6 +75,19 @@ const DynamicCanvas: React.FC<DynamicCanvasProps> = ({ children }) => {
          return () => clearTimeout(timer);
       }
    }, [progress]);
+
+   useEffect(() => {
+      const updateDpr = () => {
+         if (typeof window === 'undefined') return;
+         const isMobile = window.innerWidth < 768;
+         const nextDpr = isMobile ? 1 : Math.min(1.5, window.devicePixelRatio);
+         setDpr(nextDpr);
+      };
+
+      updateDpr();
+      window.addEventListener('resize', updateDpr);
+      return () => window.removeEventListener('resize', updateDpr);
+   }, []);
 
    useEffect(() => {
       const observer = new IntersectionObserver(
@@ -106,18 +127,19 @@ const DynamicCanvas: React.FC<DynamicCanvasProps> = ({ children }) => {
    return (
       <div
          id="canvas-container"
-         className="h-[360px] w-full rounded-[8px] bg-primary-50 relative"
+         className="relative isolate h-[360px] w-full overflow-hidden rounded-2xl bg-[#0f0c09] shadow-[0_40px_120px_-60px_rgba(0,0,0,0.8)]"
       >
+         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(245,210,160,0.25),_transparent_50%),radial-gradient(circle_at_bottom,_rgba(255,120,0,0.18),_transparent_55%)]" />
          {isLoading && <CanvasLoader />}
 
          {isVisible && (
             <Suspense fallback={<CanvasLoader />}>
                <Canvas
-                  frameloop="demand"
+                  frameloop={isVisible ? 'always' : 'demand'}
                   shadows
                   camera={{
-                     position: [0, 0, 10],
-                     fov: 45,
+                     position: [0, 0.2, 8.5],
+                     fov: 42,
                      near: 0.1,
                      far: 200,
                   }}
@@ -134,43 +156,55 @@ const DynamicCanvas: React.FC<DynamicCanvasProps> = ({ children }) => {
                         window.__THREEJS_RENDERER__ = gl;
                      }
                   }}
-                  dpr={[1, 1.5]}
+                  dpr={dpr}
                   performance={{ min: 0.5 }}
                >
-                  <color attach="background" args={['#F5F5F1']} />
+                  <color attach="background" args={['#0f0c09']} />
 
                   <AdaptiveDpr pixelated />
                   <AdaptiveEvents />
                   <BakeShadows />
 
-                  <directionalLight
-                     intensity={5}
-                     position={[5, 10, 5]}
+                  <ambientLight intensity={1.15} />
+                  <hemisphereLight
+                     intensity={1.15}
+                     color="#f6e7d1"
+                     groundColor="#2b1a10"
+                  />
+                  <spotLight
+                     intensity={2.8}
+                     position={[6, 8, 4]}
+                     angle={0.45}
+                     penumbra={0.6}
+                     castShadow
                      shadow-mapSize-width={512}
                      shadow-mapSize-height={512}
-                     shadow-camera-far={20}
-                     shadow-camera-near={0.1}
-                     castShadow
                   />
-                  <ambientLight intensity={5} />
 
-                  {children}
+                  <Center>{children}</Center>
+
                   <Preload all />
 
                   <OrbitControls
                      enableZoom={true}
                      enablePan={false}
-                     minDistance={7}
-                     maxDistance={20}
+                     minDistance={8}
+                     maxDistance={18}
                      target={[0, 0, 0]}
                      enableDamping={true}
                      dampingFactor={0.05}
                      rotateSpeed={0.5}
                      zoomSpeed={0.5}
+                     autoRotate
+                     autoRotateSpeed={0.6}
                   />
                </Canvas>
             </Suspense>
          )}
+
+         <div className="pointer-events-none absolute bottom-3 left-3 rounded-full bg-black/40 px-3 py-1 text-xs text-amber-100/80 backdrop-blur-sm">
+            Drag to rotate
+         </div>
       </div>
    );
 };

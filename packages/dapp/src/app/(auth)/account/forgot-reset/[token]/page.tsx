@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/button/Button';
 import { TextInput } from '@/components/inputs/TextInput';
 import { usePasswordVisibility } from '@/utils/methods/auth/usePasswordVisibility';
-import { desableButton } from '@/app/(test)/functions/disable';
 
 function ResetPassword({ params }: { params: { token: string } }) {
    const router = useRouter();
@@ -121,7 +120,7 @@ function ResetPassword({ params }: { params: { token: string } }) {
             </form>
             <section className="text-center space-y-6">
                <Button
-                  disabled={desableButton(status, isLoading)}
+                  disabled={(status !== undefined && status <= 200) || isLoading}
                   className={`full ${isLoading && 'cursor-wait'} ${
                      status === 200 && 'cursor-not-allowed'
                   }`}
