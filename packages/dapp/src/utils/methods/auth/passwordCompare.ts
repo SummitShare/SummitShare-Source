@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import prisma from '../../../../config/db';
-import users from '@prisma/client';
+import { users } from '@prisma/client';
 /**
  * finds user and compares passwords
  * @param email
