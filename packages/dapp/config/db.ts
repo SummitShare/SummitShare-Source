@@ -1,17 +1,8 @@
-import { PrismaClient } from '@prisma/client';
+// TEMP: Prisma disabled while Supabase is down.
+// Flip this back when DB access is restored.
+export const PRISMA_DISABLED = true;
 
-const prismaClientSingleton = () => {
-   return new PrismaClient();
-};
-
-type PrismaClientSingleton = ReturnType<typeof prismaClientSingleton>;
-
-const globalForPrisma = globalThis as unknown as {
-   prisma: PrismaClientSingleton | undefined;
-};
-
-const prisma = globalForPrisma.prisma ?? prismaClientSingleton();
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const prisma: any = null;
 
 export default prisma;
-
-if (process.env.NODE_ENV !== 'development') globalForPrisma.prisma = prisma;

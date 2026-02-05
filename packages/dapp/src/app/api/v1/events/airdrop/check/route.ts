@@ -1,8 +1,15 @@
 import { NextResponse } from 'next/server';
-import prisma from '../../../../../../../config/db';
+import prisma, { PRISMA_DISABLED } from '../../../../../../../config/db';
 
 // GET handler to fetch all airdrops with user details
 export async function GET(req: Request) {
+   if (PRISMA_DISABLED) {
+      return NextResponse.json(
+         { message: 'Database temporarily disabled.' },
+         { status: 503 }
+      );
+   }
+
    try {
       const { searchParams } = new URL(req.url);
       const code = searchParams.get('code');
@@ -75,6 +82,13 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
+   if (PRISMA_DISABLED) {
+      return NextResponse.json(
+         { message: 'Database temporarily disabled.' },
+         { status: 503 }
+      );
+   }
+
    try {
       const body = await req.json();
       const { email, code } = body;
@@ -155,6 +169,13 @@ export async function POST(req: Request) {
 }
 
 export async function PUT(req: Request) {
+   if (PRISMA_DISABLED) {
+      return NextResponse.json(
+         { message: 'Database temporarily disabled.' },
+         { status: 503 }
+      );
+   }
+
    try {
       const body = await req.json();
       const { email, claimed, code } = body;

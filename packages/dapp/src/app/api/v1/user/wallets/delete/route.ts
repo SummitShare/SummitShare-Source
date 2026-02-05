@@ -20,9 +20,16 @@ Purpose: Delete a specified wallet address for a user and re-index the remaining
  */
 
 import { NextResponse } from 'next/server';
-import prisma from '../../../../../../../config/db';
+import prisma, { PRISMA_DISABLED } from '../../../../../../../config/db';
 
 export async function POST(request: Request) {
+   if (PRISMA_DISABLED) {
+      return NextResponse.json(
+         { message: 'Database temporarily disabled.' },
+         { status: 503 }
+      );
+   }
+
    try {
       // Extracting user_id and wallet_address from the request body.
       const { user_id, wallet_address } = await request.json();

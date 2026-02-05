@@ -1,7 +1,14 @@
 import { NextResponse } from 'next/server';
-import prisma from '../../../../../../../config/db';
+import prisma, { PRISMA_DISABLED } from '../../../../../../../config/db';
 
 export async function GET(req: Request) {
+   if (PRISMA_DISABLED) {
+      return NextResponse.json(
+         { message: 'Database temporarily disabled.' },
+         { status: 503 }
+      );
+   }
+
    const host = req.headers.get('host');
    const url = new URL(req.url!, `http://${host}`);
    const queryParams = new URLSearchParams(url.search);

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import prisma from '../../../../../../config/db';
+import prisma, { PRISMA_DISABLED } from '../../../../../../config/db';
 import { emailServer, transporter } from '../../../../../../config/nodemailer';
 import * as fs from 'fs/promises';
 import * as path from 'path';
@@ -62,6 +62,13 @@ async function sendDeletionConfirmationEmail(email: string, token: string) {
 }
 
 export async function DELETE(req: Request) {
+   if (PRISMA_DISABLED) {
+      return NextResponse.json(
+         { message: 'Database temporarily disabled.' },
+         { status: 503 }
+      );
+   }
+
    try {
       const body = await req.json();
       const { userId, email } = body;
