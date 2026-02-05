@@ -11,13 +11,6 @@ import {
 } from '@react-three/drei';
 import * as THREE from 'three';
 
-// Compatibility aliases for legacy three-stdlib / drei internals.
-// three r155+ removed *BufferGeometry constructors in favor of *Geometry.
-if (typeof window !== 'undefined') {
-   (THREE as any).PlaneBufferGeometry = THREE.PlaneGeometry;
-   (THREE as any).CylinderBufferGeometry = THREE.CylinderGeometry;
-}
-
 // Declare global type for the renderer
 declare global {
    interface Window {
