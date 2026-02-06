@@ -1,36 +1,36 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
-import { ObjectDescription, WomanData } from '@/utils/dev/frontEndInterfaces';
+import { ObjectDescription, WomanData } from '@/types/frontend';
 
 // Dynamically import each model component
 const Calabash = dynamic(
    () =>
-      import('@/app/components/3DCanvas/models/Calabash').then(
+      import('@/components/3DCanvas/models/Calabash').then(
          (mod) => mod.Calabash
       ),
    { ssr: false }
 );
 const Drum = dynamic(
-   () => import('@/app/components/3DCanvas/models/Drum').then((mod) => mod.Drum),
+   () => import('@/components/3DCanvas/models/Drum').then((mod) => mod.Drum),
    { ssr: false }
 );
 const Mask = dynamic(
-   () => import('@/app/components/3DCanvas/models/Mask').then((mod) => mod.Mask),
+   () => import('@/components/3DCanvas/models/Mask').then((mod) => mod.Mask),
    { ssr: false }
 );
 const Snuff = dynamic(
    () =>
-      import('@/app/components/3DCanvas/models/Snuff').then((mod) => mod.Snuff),
+      import('@/components/3DCanvas/models/Snuff').then((mod) => mod.Snuff),
    { ssr: false }
 );
 const Cowry = dynamic(
    () =>
-      import('@/app/components/3DCanvas/models/Cowry').then((mod) => mod.Cowry),
+      import('@/components/3DCanvas/models/Cowry').then((mod) => mod.Cowry),
    { ssr: false }
 );
 const Headrest = dynamic(
    () =>
-      import('@/app/components/3DCanvas/models/Headrest').then(
+      import('@/components/3DCanvas/models/Headrest').then(
          (mod) => mod.Headrest
       ),
    { ssr: false }

@@ -1,7 +1,6 @@
 'use client';
-import { desableButton } from '@/app/(test)/functions/disable';
-import { Button } from '@/app/components/button/Button';
-import { TextInput } from '@/app/components/inputs/TextInput';
+import { Button } from '@/components/button/Button';
+import { TextInput } from '@/components/inputs/TextInput';
 import { usePasswordVisibility } from '@/utils/methods/auth/usePasswordVisibility';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -149,7 +148,7 @@ function Page({ params }: { params: { token: string } }) {
                      className={`full ${isLoading && 'cursor-wait'} ${
                         status === 200 && 'cursor-not-allowed'
                      }`}
-                     disabled={desableButton(status, isLoading)} // Disable button when loading
+                     disabled={(status !== undefined && status <= 200) || isLoading} // Disable button when loading
                   >
                      {isLoading ? 'Creating account...' : 'Create my account'}
                   </Button>

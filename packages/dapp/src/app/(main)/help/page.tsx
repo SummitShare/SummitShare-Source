@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { ChevronRight, CheckCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { StepCardProps } from '@/utils/dev/frontEndInterfaces';
+import { StepCardProps } from '@/types/frontend';
 
 const steps = [
    {

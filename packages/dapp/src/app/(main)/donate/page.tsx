@@ -1,10 +1,10 @@
 'use client';
 
-import { Button } from '@/app/components/button/Button';
-import Inputs from '@/app/components/inputs/Inputs';
+import { Button } from '@/components/button/Button';
+import Inputs from '@/components/inputs/Inputs';
 import React, { useState, useRef, useEffect } from 'react';
 import QRCode from 'qrcode.react';
-import Banner from '@/app/components/banners/banner';
+import Banner from '@/components/banners/banner';
 
 type WalletAddresses = {
    Ethereum: string;

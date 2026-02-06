@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { ConnectKitButton } from 'connectkit';
 import { useAccount } from 'wagmi';
-import WalletStatus from '@/functonality/walletStatus';
+import WalletStatus from '@/features/walletStatus';
 
 export default function ConnectWalletPrompt() {
    const { address } = useAccount();

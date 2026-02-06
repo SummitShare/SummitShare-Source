@@ -1,7 +1,6 @@
-import { IPropsal, EmailArray } from '@/utils/dev/typeInit';
-import { PrismaClient } from '@prisma/client';
+import { IPropsal, EmailArray } from '@/types/contracts';
 import { NextResponse } from 'next/server';
-import prisma from '../../../../../../../config/db';
+import prisma, { PRISMA_DISABLED } from '../../../../../../../config/db';
 import { randomUUID } from 'node:crypto';
 import * as fs from 'fs/promises';
 import * as path from 'path';
@@ -31,7 +30,14 @@ async function readHtmlTemplate(filePath: string): Promise<string> {
  * @returns {NextResponse} - Returns a JSON response with the status of the operation.
  */
 
-export async function POST(req: Request, res: NextResponse) {
+export async function POST(req: Request) {
+   if (PRISMA_DISABLED) {
+      return NextResponse.json(
+         { message: 'Database temporarily disabled.' },
+         { status: 503 }
+      );
+   }
+
    try {
       console.log('Request received');
       const { wallet_address, event_id, user_id, eventLink, transaction_id } =
@@ -154,7 +160,7 @@ export async function POST(req: Request, res: NextResponse) {
       // Read the HTML template
       const templatePath = path.join(
          process.cwd(),
-         'src/functonality/emailNewsletter/main.html'
+         'src/features/emailNewsletter/main.html'
       );
       let htmlTemplate = await readHtmlTemplate(templatePath);
 

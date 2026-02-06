@@ -1,15 +1,14 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import Container from '@/app/components/Container';
-import Line from '@/app/components/Line';
-import { Button } from '@/app/components/button/Button';
+import Container from '@/components/Container';
+import Line from '@/components/Line';
+import { Button } from '@/components/button/Button';
 import { Trash, XCircle } from 'lucide-react';
 import { useSession, signOut } from 'next-auth/react';
 import { toast } from 'react-hot-toast';
-import { TextInput } from '@/app/components/inputs/TextInput';
+import { TextInput } from '@/components/inputs/TextInput';
 import { setInterval } from 'timers';
-import { desableButton } from '@/app/(test)/functions/disable';
 
 export default function ProfileSettings() {
    const router = useRouter();
@@ -175,7 +174,7 @@ export default function ProfileSettings() {
                      <Button
                         variant={'danger'}
                         onClick={handleDeleteAccount}
-                        disabled={desableButton(status, isDeleting)}
+                        disabled={(status !== undefined && status <= 200) || isDeleting}
                         className={` ${isDeleting && 'cursor-wait'} ${
                            status === 200 && 'cursor-not-allowed'
                         }`}

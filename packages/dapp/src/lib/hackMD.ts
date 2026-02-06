@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import matter from 'gray-matter';
-import { Note } from '@/utils/dev/frontEndInterfaces';
+import { Note } from '@/types/frontend';
 
 const API_URL = 'https://api.hackmd.io/v1/notes';
 const BEARER_TOKEN = process.env.HACKMD_API_TOKEN as string;

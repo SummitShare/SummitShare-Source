@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-import prisma from '../../../../../../../config/db';
-import { users } from '@prisma/client';
+import prisma, { PRISMA_DISABLED } from '../../../../../../../config/db';
 import bcrypt from 'bcryptjs';
 import { emailServer, transporter } from '../../../../../../../config/nodemailer';
 
@@ -26,7 +25,14 @@ async function updateUser(
    }
 }
 
-export async function POST(req: Request, res: NextResponse) {
+export async function POST(req: Request) {
+   if (PRISMA_DISABLED) {
+      return NextResponse.json(
+         { message: 'Database temporarily disabled.' },
+         { status: 503 }
+      );
+   }
+
    try {
       const host = req.headers.get('host');
       const url = new URL(req.url!, `http://${host}`);

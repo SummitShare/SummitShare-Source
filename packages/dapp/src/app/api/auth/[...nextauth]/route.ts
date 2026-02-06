@@ -1,10 +1,6 @@
-import {
-   passwordCompare,
-   getAirdropStatus,
-} from '@/utils/methods/auth/passwordCompare';
+// Mock Auth - Database imports removed
 import NextAuth, { DefaultSession, User } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { JWT } from 'next-auth/jwt';
 
 interface UserWallet {
    id: string;
@@ -88,35 +84,25 @@ const handler = NextAuth({
             password: {},
          },
          async authorize(credentials): Promise<User | null> {
+            // MOCKED AUTH - No database required for development
+            // Returns a mock user for any valid email/password combination
             try {
                if (!credentials?.email || !credentials?.password) {
                   throw new Error('Missing credentials');
                }
 
-               const email = String(credentials.email);
-               const password = String(credentials.password);
-
-               const {
-                  compare,
-                  message,
-                  error,
-                  user: foundUser,
-               } = await passwordCompare(email, password);
-
-               if (!foundUser || !compare) {
-                  throw new Error(message || 'Invalid credentials');
-               }
-
+               // Mock user data - no database call
                const user: CustomUser = {
-                  id: foundUser.id,
-                  email: foundUser.email,
-                  username: foundUser.username || null,
-                  bio: foundUser.bio || null,
-                  email_verified: foundUser.email_verified || null,
-                  type: foundUser.type || null,
-                  user_wallets: foundUser.user_wallets || [],
+                  id: 'mock-user-id-123',
+                  email: String(credentials.email),
+                  username: 'mockuser',
+                  bio: 'Mock user for development',
+                  email_verified: true,
+                  type: 'user',
+                  user_wallets: [],
                };
 
+               console.log('[MOCK AUTH] User authenticated:', user.email);
                return user;
             } catch (error) {
                console.error('Authorization error:', error);

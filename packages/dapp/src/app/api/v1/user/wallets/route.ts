@@ -4,7 +4,7 @@ Purpose: sends user wallets for a given user
 */
 
 import { NextResponse } from 'next/server';
-import prisma from '../../../../../../config/db';
+import prisma, { PRISMA_DISABLED } from '../../../../../../config/db';
 
 /**
  * POST handler for sending getting user emails.
@@ -17,7 +17,14 @@ import prisma from '../../../../../../config/db';
  * @returns A JSON response indicating the success or failure of the email sending operation.
  */
 
-export async function POST(request: Request, response: NextResponse) {
+export async function POST(request: Request) {
+   if (PRISMA_DISABLED) {
+      return NextResponse.json(
+         { message: 'Database temporarily disabled.' },
+         { status: 503 }
+      );
+   }
+
    try {
       const { user_id } = await request.json();
 

@@ -1,9 +1,16 @@
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import crypto from 'node:crypto';
-import prisma from '../../../../../../../config/db';
+import prisma, { PRISMA_DISABLED } from '../../../../../../../config/db';
 
-export async function POST(req: Request, res: NextResponse) {
+export async function POST(req: Request) {
+   if (PRISMA_DISABLED) {
+      return NextResponse.json(
+         { message: 'Database temporarily disabled.' },
+         { status: 503 }
+      );
+   }
+
    try {
       const { user_id, event_id } = await req.json();
 

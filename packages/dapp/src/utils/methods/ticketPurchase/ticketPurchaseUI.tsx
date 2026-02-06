@@ -1,12 +1,12 @@
 import React, { useState, useEffect, ReactNode } from 'react';
-import Buttons from '@/app/components/button/Butons';
-import WalletStatus from '@/functonality/walletStatus';
+import Buttons from '@/components/button/Butons';
+import WalletStatus from '@/features/walletStatus';
 import Image from 'next/image';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import useExhibit from '@/lib/useGetExhibitById';
-import { CONTRACT_ADDRESSES } from '@/utils/prod/contractInit';
-import { TicketPurchaseUIProps } from '@/utils/dev/frontEndInterfaces';
+import { CONTRACT_ADDRESSES } from '@/utils/contractInit';
+import { TicketPurchaseUIProps } from '@/types/frontend';
 import { useAccount } from 'wagmi';
 
 const TicketPurchaseUI: React.FC<TicketPurchaseUIProps> = ({

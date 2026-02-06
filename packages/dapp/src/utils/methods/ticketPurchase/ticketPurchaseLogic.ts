@@ -3,9 +3,9 @@ import {
    contracts,
    estimateGas,
    CONTRACT_ADDRESSES,
-} from '@/utils/prod/contractInit';
-import { PurchaseHandlerProps } from '@/utils/dev/frontEndInterfaces';
-import { handleContractError } from '@/utils/dev/handleContractError';
+} from '@/utils/contractInit';
+import { PurchaseHandlerProps } from '@/types/frontend';
+import { handleContractError } from '@/utils/handleContractError';
 import axios from 'axios';
 import { validateTicket } from './ticketService';
 

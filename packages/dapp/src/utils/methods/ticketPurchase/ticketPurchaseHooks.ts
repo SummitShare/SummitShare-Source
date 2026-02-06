@@ -1,8 +1,8 @@
 // ticketPurchaseHooks.ts
 import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
-import { EthereumWindow } from '@/utils/dev/typeInit';
-import { calculateTimeLeft } from '@/functonality/countdownTimer';
+import { EthereumWindow } from '@/types/contracts';
+import { calculateTimeLeft } from '@/features/countdownTimer';
 import { validateTicket } from '@/utils/methods/ticketPurchase/ticketService';
 
 export const useWeb3Provider = () => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { notificationProps } from '@/utils/dev/frontEndInterfaces';
+import { notificationProps } from '@/types/frontend';
 
 // Create an array of objects conforming to the Props interface
 const notifications: notificationProps[] = [

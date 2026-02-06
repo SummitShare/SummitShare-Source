@@ -20,9 +20,23 @@ Purpose: Delete a specified wallet address for a user and re-index the remaining
  */
 
 import { NextResponse } from 'next/server';
-import prisma from '../../../../../../../config/db';
+import prisma, { PRISMA_DISABLED } from '../../../../../../../config/db';
 
-export async function POST(request: Request, response: NextResponse) {
+type UserWallet = {
+   id: string;
+   user_id: string;
+   wallet_address: string;
+   index: number | null;
+};
+
+export async function POST(request: Request) {
+   if (PRISMA_DISABLED) {
+      return NextResponse.json(
+         { message: 'Database temporarily disabled.' },
+         { status: 503 }
+      );
+   }
+
    try {
       // Extracting user_id and wallet_address from the request body.
       const { user_id, wallet_address } = await request.json();
@@ -47,7 +61,7 @@ export async function POST(request: Request, response: NextResponse) {
       }
 
       const walletIndexToRemove = wallets.findIndex(
-         (wallet) => wallet.wallet_address === wallet_address
+         (wallet: UserWallet) => wallet.wallet_address === wallet_address
       );
       if (walletIndexToRemove === -1) {
          return NextResponse.json(
@@ -73,15 +87,15 @@ export async function POST(request: Request, response: NextResponse) {
       }
 
       // Update indexes of subsequent wallets
-      wallets.forEach((wallet, index) => {
+      wallets.forEach((wallet: UserWallet, index: number) => {
          if (wallet.index !== null && index < walletIndexToRemove) {
             wallet.index -= 1;
          }
       });
 
-      await prisma.$transaction(async (prisma) => {
+      await prisma.$transaction(async (tx: any) => {
          // Step 1: Delete the wallet with the given address
-         await prisma.user_wallets.deleteMany({
+         await tx.user_wallets.deleteMany({
             where: {
                user_id: user_id,
                wallet_address: wallet_address,
@@ -90,7 +104,7 @@ export async function POST(request: Request, response: NextResponse) {
 
          // Step 2: Update the indexes of the remaining wallets in the database
          for (const wallet of wallets) {
-            await prisma.user_wallets.update({
+            await tx.user_wallets.update({
                where: {
                   id: wallet.id,
                },

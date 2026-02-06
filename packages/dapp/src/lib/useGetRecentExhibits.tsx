@@ -5,7 +5,7 @@ import {
    Exhibit,
    ExhibitCreated,
    RecentExhibitsData,
-} from '@/utils/dev/frontEndInterfaces';
+} from '@/types/frontend';
 
 /**
  * Custom hook for fetching the 5 most recent exhibits

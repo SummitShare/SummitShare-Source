@@ -2,7 +2,6 @@
 // import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import '../styles/globals.css';
-import { Providers } from '@/redux/provider';
 import { SessionProvider } from 'next-auth/react';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -22,7 +21,7 @@ export default function RootLayout({
       <html lang="en">
          <body className=" bg-gradient-to-br from-orange-600 via-orange-500 bg-orange-400 ">
             <SessionProvider>
-               <Providers>
+
                   <div className=" fixed bottom-5 left-5 space-y-2 ">
                      <h1 className="text-white">
                         Summit<span className="">share</span>
@@ -34,7 +33,7 @@ export default function RootLayout({
                      </p>
                   </div>
                   {children}
-               </Providers>
+
             </SessionProvider>
          </body>
       </html>

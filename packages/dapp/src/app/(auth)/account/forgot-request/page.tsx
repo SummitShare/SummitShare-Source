@@ -2,10 +2,9 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Button } from '@/app/components/button/Button';
-import { TextInput } from '@/app/components/inputs/TextInput';
+import { Button } from '@/components/button/Button';
+import { TextInput } from '@/components/inputs/TextInput';
 import { NoUndefined } from 'viem/_types/types/utils';
-import { desableButton } from '@/app/(test)/functions/disable';
 
 function ForgotPasswordRequest() {
    const router = useRouter();
@@ -125,7 +124,7 @@ function ForgotPasswordRequest() {
                {/* Action Buttons */}
                <div className="flex flex-col gap-4 items-center">
                   <Button
-                     disabled={desableButton(status, isLoading)}
+                     disabled={(status !== undefined && status <= 200) || isLoading}
                      onClick={handleSubmit}
                      className={`${isLoading && 'cursor-wait'} ${
                         status === 200 && 'cursor-not-allowed'

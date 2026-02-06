@@ -2,12 +2,11 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import '../styles/globals.css';
-import { Providers } from '@/redux/provider';
 import { ApolloWrapper } from './apolloWrapper';
 import { SessionProvider } from 'next-auth/react';
-import Footer from '../components/navigation/footer';
-import PrimaryNav from '../components/navigation/PrimaryNav';
-import { Web3Provider } from '@/functonality/Web3Provider';
+import Footer from '@/components/navigation/footer';
+import PrimaryNav from '@/components/navigation/PrimaryNav';
+import { Web3Provider } from '@/features/Web3Provider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -31,11 +30,11 @@ export default function RootLayout({
             <SessionProvider>
                <ApolloWrapper>
                   <Web3Provider>
-                     <Providers>
+
                         <PrimaryNav />
                         <div className="">{children} </div>
                         <Footer />
-                     </Providers>
+
                   </Web3Provider>
                </ApolloWrapper>
             </SessionProvider>

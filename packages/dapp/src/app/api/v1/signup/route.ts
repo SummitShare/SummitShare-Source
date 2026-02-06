@@ -1,11 +1,15 @@
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import prisma from '../../../../../config/db';
+import prisma, { PRISMA_DISABLED } from '../../../../../config/db';
 import { emailServer, transporter } from '../../../../../config/nodemailer';
-import { users } from '@prisma/client';
 import { randomUUID } from 'crypto';
 import * as fs from 'fs/promises';
 import * as path from 'path';
+
+type UserRecord = {
+   id: string;
+   email: string;
+};
 
 async function readHtmlTemplate(filePath: string): Promise<string> {
    try {
@@ -16,7 +20,7 @@ async function readHtmlTemplate(filePath: string): Promise<string> {
    }
 }
 
-async function createSendTokens(user: users, email: string) {
+async function createSendTokens(user: UserRecord, email: string) {
    try {
       // Create verification token and expiry time
       const token = crypto.randomUUID(); // Generate a token
@@ -43,7 +47,7 @@ async function createSendTokens(user: users, email: string) {
       // Read the HTML template
       const templatePath = path.join(
          process.cwd(),
-         'src/functonality/emailNewsletter/main.html'
+         'src/features/emailNewsletter/main.html'
       );
       let htmlTemplate = await readHtmlTemplate(templatePath);
 
@@ -111,7 +115,7 @@ async function userWithUsername(
 
    // const host = req.headers.get('host');
    const host = process.env.HOST;
-   const verificationLink = `${host}/api/verifyEmail?token=${token}`;
+   const verificationLink = `${host}/verification/email/${token}`;
 
    const mailOptions = {
       from: emailServer,
@@ -133,8 +137,8 @@ async function createExhibitor(
    wallet_address: string
 ) {
    try {
-      const result = await prisma.$transaction(async (prisma) => {
-         const user = await prisma.users.create({
+      const result = await prisma.$transaction(async (tx: any) => {
+         const user = await tx.users.create({
             data: {
                email,
                password: hashedPassword,
@@ -143,7 +147,7 @@ async function createExhibitor(
             },
          });
 
-         const wallet = await prisma.user_wallets.create({
+         const wallet = await tx.user_wallets.create({
             data: {
                user_id: user.id,
                wallet_address: wallet_address,
@@ -202,7 +206,14 @@ async function createVisitor(
    }
 }
 
-export async function POST(req: Request, res: NextResponse) {
+export async function POST(req: Request) {
+   if (PRISMA_DISABLED) {
+      return NextResponse.json(
+         { message: 'Database temporarily disabled.' },
+         { status: 503 }
+      );
+   }
+
    try {
       // if (!req.body || Object.keys(req.body).length === 0) {
       //   return NextResponse.json({ error: 'No data provided' }, { status: 400 });

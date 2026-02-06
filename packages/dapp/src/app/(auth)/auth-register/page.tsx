@@ -1,11 +1,10 @@
 'use client';
-import { Button } from '@/app/components/button/Button';
+import { Button } from '@/components/button/Button';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
-import { TextInput } from '@/app/components/inputs/TextInput';
+import { TextInput } from '@/components/inputs/TextInput';
 import { usePasswordVisibility } from '@/utils/methods/auth/usePasswordVisibility';
-import { desableButton } from '@/app/(test)/functions/disable';
 
 function Page() {
    const router = useRouter();
@@ -144,7 +143,7 @@ function Page() {
                      className={`w-full ${isLoading && 'cursor-wait'} ${
                         status === 200 && 'cursor-not-allowed'
                      }`}
-                     disabled={desableButton(status, isLoading)} // Disable button when loading
+                     disabled={(status !== undefined && status <= 200) || isLoading} // Disable button when loading
                   >
                      {isLoading ? 'Creating account...' : 'Create my account'}
                   </Button>

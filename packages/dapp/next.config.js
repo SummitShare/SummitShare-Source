@@ -24,6 +24,8 @@ const nextConfig = {
       RPC_URL: process.env.RPC_URL,
       DEV_PRIVATE_KEY: process.env.DEV_PRIVATE_KEY,
    },
+   // Empty turbopack config to silence Next.js 16 warning
+   turbopack: {},
    webpack: (config, { isServer }) => {
       config.ignoreWarnings = [
          {
