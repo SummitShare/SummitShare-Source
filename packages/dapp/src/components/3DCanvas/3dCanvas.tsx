@@ -170,7 +170,7 @@ const DynamicCanvas: React.FC<DynamicCanvasProps> = ({ children }) => {
                      color="#ffffff"
                   />
                   <spotLight
-                     intensity={4}
+                     intensity={6}
                      position={[6, 8, 4]}
                      angle={0.5}
                      penumbra={0.5}
