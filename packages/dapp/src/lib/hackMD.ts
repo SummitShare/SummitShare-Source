@@ -5,6 +5,7 @@ import remarkGfm from 'remark-gfm';
 import remarkHtml from 'remark-html';
 import remarkParse from 'remark-parse';
 import { Note } from '@/types/frontend';
+import * as cheerio from 'cheerio';
 
 const API_URL = 'https://api.hackmd.io/v1/notes';
 const BEARER_TOKEN = process.env.HACKMD_API_TOKEN as string;
@@ -167,10 +168,14 @@ export const renderMarkdownToHtml = async (
  * @returns {string} plain text content.
  */
 export const extractPlainTextFromHtml = (html: string): string => {
-   return html
-      .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, ' ')
-      .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, ' ')
-      .replace(/<[^>]+>/g, ' ')
+   const $ = cheerio.load(html);
+
+   // Remove script and style elements entirely
+   $('script, style').remove();
+
+   let text = $.root().text();
+
+   return text
       .replace(/&nbsp;/g, ' ')
       .replace(/&amp;/g, '&')
       .replace(/\s+/g, ' ')

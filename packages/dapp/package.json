@@ -48,7 +48,8 @@
       "three-stdlib": "^2.34.0",
       "unified": "^11.0.5",
       "viem": "~2.10.11",
-      "wagmi": "^2.13.0"
+      "wagmi": "^2.13.0",
+      "cheerio": "^1.2.0"
    },
    "devDependencies": {
       "@react-three/gltfjsx": "^4.3.4",
