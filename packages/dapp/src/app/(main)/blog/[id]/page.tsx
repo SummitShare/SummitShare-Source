@@ -1,34 +1,26 @@
-import { unified } from 'unified';
-import remarkParse from 'remark-parse';
-import remarkHtml from 'remark-html';
-import remarkGfm from 'remark-gfm';
-import {
-   fetchAllTeamNotes,
-   fetchNoteContent,
-   parseNoteContent,
-} from '@/lib/hackMD';
+import { fetchNoteContent, parseNoteContent, renderMarkdownToHtml } from '@/lib/hackMD';
 import Image from 'next/image';
 
-const Note = async ({ params }: { params: { id: string } }) => {
-   const noteId = params.id;
+interface NotePageProps {
+   params: {
+      id: string;
+   };
+}
 
-   // Log the noteId to ensure it is correctly captured -- only for dev
-   // //console.log('Fetching note with ID---:', noteId);
+const Note = async ({ params }: NotePageProps): Promise<React.JSX.Element> => {
+   const noteId = params.id;
 
    try {
       const note = await fetchNoteContent(noteId);
-      const parsedNote = parseNoteContent(note.content);
-
-      const processedContent = await unified()
-         .use(remarkParse)
-         .use(remarkGfm)
-         .use(remarkHtml, { sanitize: false })
-         .process(parsedNote.content);
-      const contentHtml = processedContent.toString();
+      const parsedNote = parseNoteContent(note.content ?? '');
+      const contentHtml = await renderMarkdownToHtml(parsedNote.content);
+      const noteTitle =
+         typeof parsedNote.data?.title === 'string' && parsedNote.data.title.trim()
+            ? parsedNote.data.title
+            : note.title ?? 'Blog Post';
 
       return (
          <div className="relative min-h-screen w-full overflow-hidden">
-            {/* Watermark */}
             <div className="absolute inset-0 flex items-center justify-center opacity-5 pointer-events-none">
                <div className="relative w-[150%] aspect-square">
                   <Image
@@ -40,9 +32,8 @@ const Note = async ({ params }: { params: { id: string } }) => {
                </div>
             </div>
 
-            {/* Content */}
             <div className="relative space-y-24 mx-6 my-28 lg:mx-[15%]">
-               <h1>{parsedNote.data.title}</h1>
+               <h1>{noteTitle}</h1>
                <div
                   className="space-y-6 prose prose-lg max-w-none"
                   dangerouslySetInnerHTML={{ __html: contentHtml }}
@@ -50,9 +41,12 @@ const Note = async ({ params }: { params: { id: string } }) => {
             </div>
          </div>
       );
-   } catch (error) {
-      console.error('Error fetching note content:', error);
-      return <div>Error loading note</div>;
+   } catch (_error: unknown) {
+      return (
+         <div className="w-full h-full text-center bg-red-100 text-red-500 py-2">
+            Error loading note... Please Refresh...
+         </div>
+      );
    }
 };
 

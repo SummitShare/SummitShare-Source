@@ -1,5 +1,9 @@
 import axios, { AxiosError } from 'axios';
 import matter from 'gray-matter';
+import { unified } from 'unified';
+import remarkGfm from 'remark-gfm';
+import remarkHtml from 'remark-html';
+import remarkParse from 'remark-parse';
 import { Note } from '@/types/frontend';
 
 const API_URL = 'https://api.hackmd.io/v1/notes';
@@ -138,4 +142,37 @@ export const parseNoteContent = (
       data: parsed.data,
       content: parsed.content,
    };
+};
+
+/**
+ * Render markdown content to HTML.
+ * @param {string} markdown - markdown content to render.
+ * @returns {Promise<string>} rendered HTML string.
+ */
+export const renderMarkdownToHtml = async (
+   markdown: string
+): Promise<string> => {
+   const processedContent = await unified()
+      .use(remarkParse)
+      .use(remarkGfm)
+      .use(remarkHtml, { sanitize: false })
+      .process(markdown);
+
+   return processedContent.toString();
+};
+
+/**
+ * Extract readable text from rendered HTML.
+ * @param {string} html - rendered HTML content.
+ * @returns {string} plain text content.
+ */
+export const extractPlainTextFromHtml = (html: string): string => {
+   return html
+      .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, ' ')
+      .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, ' ')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&amp;/g, '&')
+      .replace(/\s+/g, ' ')
+      .trim();
 };

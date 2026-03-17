@@ -55,7 +55,13 @@ const TicketPurchaseComponent = ({
          setButtonType('secondary');
          setButtonText(isCountdownOver ? 'View Exhibit' : 'Read Insights');
       }
-   }, [purchaseSuccessful, isCountdownOver]);
+   }, [
+      purchaseSuccessful,
+      isCountdownOver,
+      setHasTicket,
+      setButtonType,
+      setButtonText,
+   ]);
 
    useEffect(() => {
       if (userAddress && user_id) {
@@ -71,7 +77,14 @@ const TicketPurchaseComponent = ({
             setIsValidating(false);
          });
       }
-   }, [userAddress, user_id, purchaseSuccessful]);
+   }, [
+      userAddress,
+      user_id,
+      purchaseSuccessful,
+      setHasTicket,
+      setButtonType,
+      setButtonText,
+   ]);
 
    if (!exhibit) return <div>Loading Exhibit</div>;
 
