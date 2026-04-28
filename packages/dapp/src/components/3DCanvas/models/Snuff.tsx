@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { useGLTF } from '@react-three/drei';
 import { useFrame, ThreeElements } from '@react-three/fiber';
 import { GLTF } from 'three-stdlib';
+import ModelFallback from '../ModelFallback';
 
 // Define types
 type GLTFResult = GLTF & {
@@ -19,14 +20,6 @@ type GLTFResult = GLTF & {
       ['MAT - Snuff Cup']: THREE.MeshStandardMaterial;
    };
 };
-
-// Create a low-quality fallback component
-const ModelFallback = () => (
-   <mesh>
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color="gray" />
-   </mesh>
-);
 
 // Optimize material creation
 const createOptimizedMaterial = (baseMaterial: THREE.MeshStandardMaterial) => {

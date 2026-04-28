@@ -4,10 +4,11 @@ Command: npx gltfjsx@6.5.2 public/models/mask.glb -t -r public --draco
 */
 
 import * as THREE from 'three';
-import React from 'react';
+import React, { Suspense } from 'react';
 import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 import { ThreeElements } from '@react-three/fiber';
+import ModelFallback from '../ModelFallback';
 
 type GLTFResult = GLTF & {
    nodes: {
@@ -25,6 +26,7 @@ type GLTFResult = GLTF & {
 export function Mask(props: ThreeElements['group']) {
    const { nodes, materials } = useGLTF('/models/mask.glb') as unknown as GLTFResult;
    return (
+      <Suspense fallback={<ModelFallback />}>
       <group {...props} dispose={null}>
          <mesh
             geometry={nodes.Hair.geometry}
@@ -42,6 +44,7 @@ export function Mask(props: ThreeElements['group']) {
             rotation={[1.463, -0.102, 0.754]}
          />
       </group>
+      </Suspense>
    );
 }
 

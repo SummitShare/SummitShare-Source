@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/button/Button';
 import { WomanData } from '@/types/frontend';
@@ -22,6 +22,8 @@ const VideoCard: React.FC<VideoCardProps> = ({
    onMouseLeave,
    priority = false,
 }) => {
+   const [imgError, setImgError] = useState(false);
+
    return (
       <div
          key={item.name}
@@ -39,13 +41,14 @@ const VideoCard: React.FC<VideoCardProps> = ({
                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent z-[4] rounded-2xl" />
 
                <Image
-                  src={item.image}
+                  src={imgError ? '/all-women.png' : item.image}
                   alt={item.name}
                   fill
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 25vw"
                   className="object-cover z-[1] transition-opacity duration-500 group-hover:opacity-0"
                   loading={priority ? 'eager' : 'lazy'}
                   priority={priority}
+                  onError={() => setImgError(true)}
                   placeholder="blur"
                   blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx0FFRUVHSIeHhUVHiIYGBUVFRUYGBUWFhoaIRwUJCoeJCQqLCwsGiYzOi0uOiouLCz/2wBDAREVFRgYGBwgHBwsLCYqLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCz/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
                />

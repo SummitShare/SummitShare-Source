@@ -1,6 +1,5 @@
 'use client';
 
-import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import '../styles/globals.css';
 import { SessionProvider } from 'next-auth/react';
@@ -9,11 +8,6 @@ import PrimaryNav from '@/components/navigation/PrimaryNav';
 import { Web3Provider } from '@/features/Web3Provider';
 
 const inter = Inter({ subsets: ['latin'] });
-
-const metadata: Metadata = {
-   title: 'SummitShare',
-   description: 'A Pan-African Mission',
-};
 
 export default function RootLayout({
    children,

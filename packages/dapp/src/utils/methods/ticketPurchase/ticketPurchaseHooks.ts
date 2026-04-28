@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import { EthereumWindow } from '@/types/contracts';
-import { calculateTimeLeft } from '@/features/countdownTimer';
 import { validateTicket } from '@/utils/methods/ticketPurchase/ticketService';
 
 export const useWeb3Provider = () => {
@@ -64,18 +63,6 @@ export const useTicketState = (
 };
 
 export const useCountdown = () => {
-   const [isCountdownOver, setIsCountdownOver] = useState(false);
-
-   useEffect(() => {
-      const checkCountdown = () => {
-         const timeLeft = calculateTimeLeft();
-         setIsCountdownOver(!timeLeft);
-      };
-
-      checkCountdown();
-      const timer = setInterval(checkCountdown, 1000);
-      return () => clearInterval(timer);
-   }, []);
-
-   return isCountdownOver;
+   // Countdown target (2024-12-13) has passed; always resolved
+   return true;
 };

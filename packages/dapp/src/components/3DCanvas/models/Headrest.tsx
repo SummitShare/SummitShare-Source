@@ -1,8 +1,9 @@
 import * as THREE from 'three';
-import React, { useRef } from 'react';
+import React, { Suspense, useRef } from 'react';
 import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 import { ThreeElements } from '@react-three/fiber';
+import ModelFallback from '../ModelFallback';
 
 type GLTFResult = GLTF & {
    nodes: {
@@ -31,6 +32,7 @@ export function Headrest(props: ThreeElements['group']) {
    }, [materials]);
 
    return (
+      <Suspense fallback={<ModelFallback />}>
       <group ref={group} {...props} dispose={null}>
          <mesh
             geometry={nodes.head_rest.geometry}
@@ -55,6 +57,7 @@ export function Headrest(props: ThreeElements['group']) {
             }}
          />
       </group>
+      </Suspense>
    );
 }
 
