@@ -25,7 +25,9 @@ const ROTATION = new THREE.Euler(Math.PI / 2, 0, 0);
 
 export function Calabash(props: ThreeElements['group']) {
    const group = useRef<THREE.Group>(null);
-   const { nodes, materials } = useGLTF('/models/calabash.glb') as unknown as GLTFResult;
+   const { nodes, materials } = useGLTF(
+      '/models/calabash.glb'
+   ) as unknown as GLTFResult;
 
    // Optimize materials if they're not going to change
    React.useMemo(() => {

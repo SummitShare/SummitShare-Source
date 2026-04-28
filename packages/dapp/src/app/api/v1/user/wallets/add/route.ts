@@ -5,7 +5,9 @@ import { parseJson } from '@/lib/apiValidation';
 
 const addWalletSchema = z.object({
    user_id: z.string().min(1),
-   wallet_address: z.string().regex(/^0x[a-fA-F0-9]{40}$/, 'Invalid wallet address'),
+   wallet_address: z
+      .string()
+      .regex(/^0x[a-fA-F0-9]{40}$/, 'Invalid wallet address'),
 });
 
 export async function POST(request: Request) {

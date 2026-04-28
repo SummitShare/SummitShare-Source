@@ -58,7 +58,10 @@ interface DynamicCanvasProps {
 const DynamicCanvas: React.FC<DynamicCanvasProps> = ({ children }) => {
    const [isVisible, setIsVisible] = useState(false);
    const [isLoading, setIsLoading] = useState(true);
-   const [profile, setProfile] = useState<ViewportProfile>({ dpr: 1, isMobile: false });
+   const [profile, setProfile] = useState<ViewportProfile>({
+      dpr: 1,
+      isMobile: false,
+   });
    const { progress } = useProgress();
 
    useEffect(() => {

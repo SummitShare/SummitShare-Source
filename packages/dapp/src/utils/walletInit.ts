@@ -15,13 +15,18 @@ type ChainEnv = 'dev' | 'prod';
 
 const resolveChainEnv = (): ChainEnv => {
    const raw = (
-      process.env.NEXT_PUBLIC_CHAIN_ENV ?? process.env.CHAIN_ENV ?? 'prod'
+      process.env.NEXT_PUBLIC_CHAIN_ENV ??
+      process.env.CHAIN_ENV ??
+      'prod'
    ).toLowerCase();
    if (raw === 'dev' || raw === 'development') return 'dev';
    return 'prod';
 };
 
-const CHAIN_CONFIG: Record<ChainEnv, { rpcUrl?: string; privateKey?: string; chainId: number; name: string }> = {
+const CHAIN_CONFIG: Record<
+   ChainEnv,
+   { rpcUrl?: string; privateKey?: string; chainId: number; name: string }
+> = {
    dev: {
       rpcUrl: process.env.RPC_URL,
       privateKey: process.env.DEV_PRIVATE_KEY,

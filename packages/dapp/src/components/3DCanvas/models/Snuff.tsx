@@ -28,7 +28,9 @@ const createOptimizedMaterial = (baseMaterial: THREE.MeshStandardMaterial) => {
 };
 
 export function Snuff(props: ThreeElements['group']) {
-   const { nodes, materials } = useGLTF('/models/snuff.glb') as unknown as GLTFResult;
+   const { nodes, materials } = useGLTF(
+      '/models/snuff.glb'
+   ) as unknown as GLTFResult;
 
    const optimizedMaterial = useMemo(
       () => createOptimizedMaterial(materials['MAT - Snuff Cup']),

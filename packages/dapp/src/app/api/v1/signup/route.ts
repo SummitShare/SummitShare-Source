@@ -229,7 +229,8 @@ export async function POST(req: Request) {
    const validation = await parseJson(req, signupSchema);
    if (!validation.ok) return validation.response;
 
-   const { email, password, username, type, wallet_address, code } = validation.data;
+   const { email, password, username, type, wallet_address, code } =
+      validation.data;
 
    try {
       if (username) {

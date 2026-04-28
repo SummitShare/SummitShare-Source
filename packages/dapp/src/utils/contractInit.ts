@@ -4,7 +4,11 @@ Purpose: Provides utility functions for initializing and interacting with smart 
 */
 
 import { ethers } from 'ethers';
-import { getChainEnv, initializeDevWallet, initializeUserWallet } from './walletInit';
+import {
+   getChainEnv,
+   initializeDevWallet,
+   initializeUserWallet,
+} from './walletInit';
 
 import EventOrganizerServiceABI from './abis/EventOrganizerService.json';
 import MuseumABI from './abis/Museum.json';
@@ -142,7 +146,6 @@ export const contracts = {
          wallet
       );
    },
-
 };
 
 export async function estimateGas(

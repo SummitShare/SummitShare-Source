@@ -57,10 +57,13 @@ export default function Home(): JSX.Element {
       }
    }, []);
 
-   const handleCardClick = useCallback((name: string, link: string): void => {
-      setLoadingItem(name);
-      router.push(link);
-   }, [router]);
+   const handleCardClick = useCallback(
+      (name: string, link: string): void => {
+         setLoadingItem(name);
+         router.push(link);
+      },
+      [router]
+   );
 
    const stats = [
       { label: 'Artifacts', value: `${women.length}` },
@@ -70,7 +73,9 @@ export default function Home(): JSX.Element {
    ];
 
    return (
-      <div className={`${body.className} min-h-screen bg-[#0b0907] text-amber-50`}>
+      <div
+         className={`${body.className} min-h-screen bg-[#0b0907] text-amber-50`}
+      >
          <section className="relative overflow-hidden">
             <div className="absolute inset-0">
                <Image

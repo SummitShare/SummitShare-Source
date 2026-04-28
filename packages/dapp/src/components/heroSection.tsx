@@ -53,8 +53,8 @@ function HeroSection() {
                            Those who walked before us and those to come. Those who
                            wore red clay masks and rested their heads on bended
                            knees. Those who washed the cowry bead and swung the
-                           snuff cup. Those who weaved the baskets and wrapped
-                           the cloth. Those who fought for peace and danced to the
+                           snuff cup. Those who weaved the baskets and wrapped the
+                           cloth. Those who fought for peace and danced to the
                            drum.
                         </p>
                      </div>

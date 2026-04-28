@@ -20,11 +20,9 @@ export default function RootLayout({
             <SessionProvider>
                <ApolloWrapper>
                   <Web3Provider>
-
-                        <PrimaryNav />
-                        <div className="">{children} </div>
-                        <Footer />
-
+                     <PrimaryNav />
+                     <div className="">{children} </div>
+                     <Footer />
                   </Web3Provider>
                </ApolloWrapper>
             </SessionProvider>

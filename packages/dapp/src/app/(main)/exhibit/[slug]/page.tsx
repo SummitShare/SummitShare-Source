@@ -34,7 +34,8 @@ const Page = ({ params }: PageProps) => {
 
    useEffect(() => {
       const index = data.findIndex(
-         (item) => item.title.toLowerCase().replace(/ /g, '-') === resolvedParams.slug
+         (item) =>
+            item.title.toLowerCase().replace(/ /g, '-') === resolvedParams.slug
       );
 
       if (index === -1) {
@@ -141,7 +142,10 @@ const Page = ({ params }: PageProps) => {
             <section className="mt-10 grid lg:grid-cols-[1.1fr_0.9fr] gap-8">
                <div className="space-y-6">
                   <div className="rounded-2xl border border-white/10 bg-[#14110c] p-4">
-                     <CanvasErrorBoundary fallbackSrc={figure.image} fallbackAlt={figure.title}>
+                     <CanvasErrorBoundary
+                        fallbackSrc={figure.image}
+                        fallbackAlt={figure.title}
+                     >
                         <DynamicCanvas>{figure.object_URL}</DynamicCanvas>
                      </CanvasErrorBoundary>
                   </div>
@@ -210,7 +214,10 @@ const Page = ({ params }: PageProps) => {
                            priority={true}
                            quality={85}
                            onLoad={() => setIsImageLoading(false)}
-                           onError={() => { setImageError(true); setIsImageLoading(false); }}
+                           onError={() => {
+                              setImageError(true);
+                              setIsImageLoading(false);
+                           }}
                            placeholder="blur"
                            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx0FFRUVHSIeHhUVHiIYGBUVFRUYGBUWFhoaIRwUJCoeJCQqLCwsGiYzOi0uOiouLCz/2wBDAREVFRgYGBwgHBwsLCYqLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCz/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
                         />

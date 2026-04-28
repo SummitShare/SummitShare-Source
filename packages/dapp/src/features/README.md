@@ -6,12 +6,12 @@ Feature-level components and helpers used across the dapp (web3, ticket purchase
 
 ## Contents
 
-- `Web3Provider.tsx`
-- `customTheme.tsx`
-- `ticketpurchasecomponent.tsx`
-- `eventEscrowComponent.tsx`
-- `countdownTimer.ts`
-- `walletStatus.tsx`
-- `navBarController.tsx`
-- `mockfunding.ts` (dev helper)
-- `emailNewsletter/main.html`
+-  `Web3Provider.tsx`
+-  `customTheme.tsx`
+-  `ticketpurchasecomponent.tsx`
+-  `eventEscrowComponent.tsx`
+-  `countdownTimer.ts`
+-  `walletStatus.tsx`
+-  `navBarController.tsx`
+-  `mockfunding.ts` (dev helper)
+-  `emailNewsletter/main.html`

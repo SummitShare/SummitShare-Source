@@ -5,9 +5,7 @@ import { ObjectDescription, WomanData } from '@/types/frontend';
 // Dynamically import each model component
 const Calabash = dynamic(
    () =>
-      import('@/components/3DCanvas/models/Calabash').then(
-         (mod) => mod.Calabash
-      ),
+      import('@/components/3DCanvas/models/Calabash').then((mod) => mod.Calabash),
    { ssr: false }
 );
 const Drum = dynamic(
@@ -19,20 +17,16 @@ const Mask = dynamic(
    { ssr: false }
 );
 const Snuff = dynamic(
-   () =>
-      import('@/components/3DCanvas/models/Snuff').then((mod) => mod.Snuff),
+   () => import('@/components/3DCanvas/models/Snuff').then((mod) => mod.Snuff),
    { ssr: false }
 );
 const Cowry = dynamic(
-   () =>
-      import('@/components/3DCanvas/models/Cowry').then((mod) => mod.Cowry),
+   () => import('@/components/3DCanvas/models/Cowry').then((mod) => mod.Cowry),
    { ssr: false }
 );
 const Headrest = dynamic(
    () =>
-      import('@/components/3DCanvas/models/Headrest').then(
-         (mod) => mod.Headrest
-      ),
+      import('@/components/3DCanvas/models/Headrest').then((mod) => mod.Headrest),
    { ssr: false }
 );
 

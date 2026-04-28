@@ -23,7 +23,9 @@ type GLTFResult = GLTF & {
 };
 
 export function Mask(props: ThreeElements['group']) {
-   const { nodes, materials } = useGLTF('/models/mask.glb') as unknown as GLTFResult;
+   const { nodes, materials } = useGLTF(
+      '/models/mask.glb'
+   ) as unknown as GLTFResult;
    return (
       <group {...props} dispose={null}>
          <mesh

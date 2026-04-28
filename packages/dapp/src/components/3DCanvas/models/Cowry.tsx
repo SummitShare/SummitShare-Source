@@ -21,7 +21,9 @@ type GLTFResult = GLTF & {
 };
 
 export function Cowry(props: ThreeElements['group']) {
-   const { nodes, materials } = useGLTF('/models/cowry.glb') as unknown as GLTFResult;
+   const { nodes, materials } = useGLTF(
+      '/models/cowry.glb'
+   ) as unknown as GLTFResult;
    return (
       <group {...props} dispose={null}>
          <mesh

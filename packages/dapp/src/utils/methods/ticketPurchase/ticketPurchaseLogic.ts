@@ -1,9 +1,5 @@
 // ticketPurchaseLogic.ts
-import {
-   contracts,
-   estimateGas,
-   CONTRACT_ADDRESSES,
-} from '@/utils/contractInit';
+import { contracts, estimateGas, CONTRACT_ADDRESSES } from '@/utils/contractInit';
 import { PurchaseHandlerProps } from '@/types/frontend';
 import { handleContractError } from '@/utils/handleContractError';
 import axios from 'axios';

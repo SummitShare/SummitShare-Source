@@ -174,7 +174,9 @@ export default function ProfileSettings() {
                      <Button
                         variant={'danger'}
                         onClick={handleDeleteAccount}
-                        disabled={(status !== undefined && status <= 200) || isDeleting}
+                        disabled={
+                           (status !== undefined && status <= 200) || isDeleting
+                        }
                         className={` ${isDeleting && 'cursor-wait'} ${
                            status === 200 && 'cursor-not-allowed'
                         }`}

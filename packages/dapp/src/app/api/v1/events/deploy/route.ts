@@ -6,12 +6,7 @@ Purpose: Facilitates the deployment of event data to the blockchain, preparing e
 import { NextResponse } from 'next/server';
 import crypto from 'node:crypto';
 import prisma from '../../../../../../config/db';
-import {
-   EmailStatus,
-   IPropsal,
-   IStakes,
-   ExhibitParams,
-} from '@/types/contracts';
+import { EmailStatus, IPropsal, IStakes, ExhibitParams } from '@/types/contracts';
 
 /**
  * POST handler for deploying event data.
