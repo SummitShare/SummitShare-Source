@@ -5,7 +5,7 @@ Purpose: Facilitates the deployment of event data to the blockchain, preparing e
 
 import { NextResponse } from 'next/server';
 import crypto from 'node:crypto';
-import prisma, { PRISMA_DISABLED } from '../../../../../../config/db';
+import prisma from '../../../../../../config/db';
 import {
    EmailStatus,
    IPropsal,
@@ -25,13 +25,6 @@ import {
  */
 
 export async function POST(req: Request) {
-   if (PRISMA_DISABLED) {
-      return NextResponse.json(
-         { message: 'Database temporarily disabled.' },
-         { status: 503 }
-      );
-   }
-
    try {
       //console.log("Received request in deploy route");
       const requestBody = await req.json();

@@ -6,7 +6,6 @@ import Partners from './partners/page';
 import BlogList from '@/components/BlogList';
 import InfoGrid from '@/components/InfoCard';
 import IntegrationGrid from '@/components/IntegrationCard';
-import LeadingLaides from '@/components/leadingLaides';
 import WhatIsSummitShare from '@/components/whatIsSummitShare';
 import ProblemSection from '@/components/problemSection';
 import CollaborateWithUs from '@/components/collaborateWithUs';

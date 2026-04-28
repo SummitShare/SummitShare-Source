@@ -1,6 +1,6 @@
 import { IPropsal, EmailArray } from '@/types/contracts';
 import { NextResponse } from 'next/server';
-import prisma, { PRISMA_DISABLED } from '../../../../../../../config/db';
+import prisma from '../../../../../../../config/db';
 import { randomUUID } from 'node:crypto';
 import * as fs from 'fs/promises';
 import * as path from 'path';
@@ -31,13 +31,6 @@ async function readHtmlTemplate(filePath: string): Promise<string> {
  */
 
 export async function POST(req: Request) {
-   if (PRISMA_DISABLED) {
-      return NextResponse.json(
-         { message: 'Database temporarily disabled.' },
-         { status: 503 }
-      );
-   }
-
    try {
       console.log('Request received');
       const { wallet_address, event_id, user_id, eventLink, transaction_id } =

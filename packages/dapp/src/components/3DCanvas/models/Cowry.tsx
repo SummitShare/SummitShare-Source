@@ -4,11 +4,10 @@ Command: npx gltfjsx@6.5.2 public/models/cowry.glb -t -r public --draco
 */
 
 import * as THREE from 'three';
-import React, { Suspense } from 'react';
+import React from 'react';
 import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 import { ThreeElements } from '@react-three/fiber';
-import ModelFallback from '../ModelFallback';
 
 type GLTFResult = GLTF & {
    nodes: {
@@ -24,7 +23,6 @@ type GLTFResult = GLTF & {
 export function Cowry(props: ThreeElements['group']) {
    const { nodes, materials } = useGLTF('/models/cowry.glb') as unknown as GLTFResult;
    return (
-      <Suspense fallback={<ModelFallback />}>
       <group {...props} dispose={null}>
          <mesh
             geometry={nodes.band.geometry}
@@ -42,7 +40,6 @@ export function Cowry(props: ThreeElements['group']) {
             scale={0.9}
          />
       </group>
-      </Suspense>
    );
 }
 

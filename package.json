@@ -28,7 +28,34 @@
       "sha.js": ">=2.4.12",
       "form-data": ">=2.5.4",
       "handlebars": ">=4.7.9",
-      "protobufjs": ">=7.5.5"
-    }
+      "protobufjs": ">=7.5.5",
+      "zod": "^3"
+    },
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "react": "19",
+        "react-dom": "19",
+        "next": "16",
+        "eslint": "8",
+        "prettier": "3",
+        "react-native": "*",
+        "eciesjs": "*",
+        "@nomicfoundation/hardhat-verify": "*",
+        "ethers": "*"
+      }
+    },
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "@prisma/engines",
+      "bufferutil",
+      "keccak",
+      "nx",
+      "postinstall-postinstall",
+      "prisma",
+      "protobufjs",
+      "secp256k1",
+      "sharp",
+      "utf-8-validate"
+    ]
   }
 }

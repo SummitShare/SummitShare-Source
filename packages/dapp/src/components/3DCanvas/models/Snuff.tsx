@@ -1,11 +1,9 @@
-import React, { Suspense, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import * as THREE from 'three';
 import { useGLTF } from '@react-three/drei';
-import { useFrame, ThreeElements } from '@react-three/fiber';
+import { ThreeElements } from '@react-three/fiber';
 import { GLTF } from 'three-stdlib';
-import ModelFallback from '../ModelFallback';
 
-// Define types
 type GLTFResult = GLTF & {
    nodes: {
       CLOTHE_KNOT1: THREE.Mesh;
@@ -21,7 +19,6 @@ type GLTFResult = GLTF & {
    };
 };
 
-// Optimize material creation
 const createOptimizedMaterial = (baseMaterial: THREE.MeshStandardMaterial) => {
    const material = baseMaterial.clone();
    material.roughness = 0.7;
@@ -30,81 +27,34 @@ const createOptimizedMaterial = (baseMaterial: THREE.MeshStandardMaterial) => {
    return material;
 };
 
-// Main component with optimizations
-export function Snuff(
-   props: ThreeElements['group'] & { levelOfDetail?: 'high' | 'low' }
-) {
-   const { levelOfDetail = 'high' } = props;
+export function Snuff(props: ThreeElements['group']) {
    const { nodes, materials } = useGLTF('/models/snuff.glb') as unknown as GLTFResult;
 
-   // Memoize material to prevent unnecessary recreations
    const optimizedMaterial = useMemo(
       () => createOptimizedMaterial(materials['MAT - Snuff Cup']),
       [materials]
    );
 
-   // Memoize geometries
-   const memoizedGeometries = useMemo(() => {
-      // If low detail is requested, simplify geometries
-      const simplifyGeometry = (geometry: THREE.BufferGeometry) => {
-         if (levelOfDetail === 'low') {
-            // Create simplified version with fewer vertices
-            const modifier = new THREE.BufferGeometry();
-            modifier.setAttribute('position', geometry.getAttribute('position'));
-
-            return modifier;
-         }
-         return geometry;
-      };
-
-      return {
-         CLOTHE_KNOT1: simplifyGeometry(nodes.CLOTHE_KNOT1.geometry),
-         GLOBE: simplifyGeometry(nodes.GLOBE.geometry),
-         NEW_KNOT_MID1: simplifyGeometry(nodes.NEW_KNOT_MID1.geometry),
-         ROPE: simplifyGeometry(nodes.ROPE.geometry),
-         STRAP: simplifyGeometry(nodes.STRAP.geometry),
-         THREADS2: simplifyGeometry(nodes.THREADS2.geometry),
-         TOP_WOOD2: simplifyGeometry(nodes.TOP_WOOD2.geometry),
-      };
-   }, [nodes, levelOfDetail]);
-
-   // Optional: Add frustum culling
-   useFrame(({ camera }) => {
-      const frustum = new THREE.Frustum();
-      frustum.setFromProjectionMatrix(
-         new THREE.Matrix4().multiplyMatrices(
-            camera.projectionMatrix,
-            camera.matrixWorldInverse
-         )
-      );
-      // Implement visibility culling logic here if needed
-   });
-
-   const baseRotation = [-2.445, 1.38, 1.023] as const;
+   const meshes = useMemo(
+      () => [
+         { key: 'CLOTHE_KNOT1', geometry: nodes.CLOTHE_KNOT1.geometry },
+         { key: 'GLOBE', geometry: nodes.GLOBE.geometry },
+         { key: 'NEW_KNOT_MID1', geometry: nodes.NEW_KNOT_MID1.geometry },
+         { key: 'ROPE', geometry: nodes.ROPE.geometry },
+         { key: 'STRAP', geometry: nodes.STRAP.geometry },
+         { key: 'THREADS2', geometry: nodes.THREADS2.geometry },
+         { key: 'TOP_WOOD2', geometry: nodes.TOP_WOOD2.geometry },
+      ],
+      [nodes]
+   );
 
    return (
-      <Suspense fallback={<ModelFallback />}>
-         <group {...props} dispose={null}>
-            {Object.entries(memoizedGeometries).map(([key, geometry]) => (
-               <mesh key={key} geometry={geometry} material={optimizedMaterial} />
-            ))}
-         </group>
-      </Suspense>
+      <group {...props} dispose={null}>
+         {meshes.map(({ key, geometry }) => (
+            <mesh key={key} geometry={geometry} material={optimizedMaterial} />
+         ))}
+      </group>
    );
 }
 
-// Preload with priority levels
-useGLTF.preload('/models/snuff.glb', true); // true for high priority
-
-// Example usage in your model collection
-export const ModelCollection = () => {
-   const models = useMemo(
-      () => ({
-         snuff: <Snuff levelOfDetail="high" />,
-         // Add other models here
-      }),
-      []
-   );
-
-   return models;
-};
+useGLTF.preload('/models/snuff.glb');

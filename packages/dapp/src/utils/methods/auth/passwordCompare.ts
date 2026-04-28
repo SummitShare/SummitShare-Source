@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import prisma, { PRISMA_DISABLED } from '../../../../config/db';
+import prisma from '../../../../config/db';
 /**
  * finds user and compares passwords
  * @param email
@@ -8,13 +8,6 @@ import prisma, { PRISMA_DISABLED } from '../../../../config/db';
  */
 export async function passwordCompare(email: string, password: string) {
    try {
-      if (PRISMA_DISABLED) {
-         return {
-            compare: false,
-            message: 'Database temporarily disabled',
-         };
-      }
-
       if (!email || !password) {
          return {
             compare: false,
@@ -70,13 +63,6 @@ export async function getAirdropStatus(
    userId: string
 ): Promise<{ valid: boolean | null; claimed: boolean | null }> {
    try {
-      if (PRISMA_DISABLED) {
-         return {
-            valid: false,
-            claimed: false,
-         };
-      }
-
       // Validate the userId parameter
       if (!userId) {
          return {

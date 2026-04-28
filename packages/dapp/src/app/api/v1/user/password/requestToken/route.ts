@@ -1,8 +1,14 @@
 import { NextResponse } from 'next/server';
-import prisma, { PRISMA_DISABLED } from '../../../../../../../config/db';
+import { z } from 'zod';
+import prisma from '../../../../../../../config/db';
 import { emailServer, transporter } from '../../../../../../../config/nodemailer';
 import * as fs from 'fs/promises';
 import * as path from 'path';
+import { parseJson } from '@/lib/apiValidation';
+
+const requestTokenSchema = z.object({
+   email: z.string().trim().email(),
+});
 
 async function createSendTokens(user_id: string, email: string) {
    try {
@@ -69,54 +75,25 @@ async function createSendTokens(user_id: string, email: string) {
 }
 
 export async function POST(req: Request) {
-   if (PRISMA_DISABLED) {
-      return NextResponse.json(
-         { message: 'Database temporarily disabled.' },
-         { status: 503 }
-      );
-   }
+   const validation = await parseJson(req, requestTokenSchema);
+   if (!validation.ok) return validation.response;
+
+   const { email } = validation.data;
 
    try {
-      const host = req.headers.get('host');
-      const body = await req.json();
-      const { email } = body;
+      const user = await prisma.users.findUnique({ where: { email } });
 
-      // Validate email
-      if (!email) {
-         return NextResponse.json(
-            { message: 'Email is required' },
-            { status: 400 }
-         );
-      }
-
-      // Find user by email
-      const user = await prisma.users.findUnique({
-         where: { email: email },
-      });
-
-      // Security best practice: return same response whether email exists or not
-      if (!user) {
-         return NextResponse.json(
-            { message: 'If an account exists, a reset link will be sent' },
-            { status: 200 }
-         );
-      }
-
-      // Create and send verification token
-      const verification = await createSendTokens(user.id, user?.email!);
-
-      if (!verification) {
-         return NextResponse.json(
-            { message: 'Failed to create verification link' },
-            { status: 500 }
-         );
+      // Always return the same response so attackers can't enumerate accounts
+      if (user) {
+         await createSendTokens(user.id, user.email);
       }
 
       return NextResponse.json(
-         { message: 'Password reset link sent' },
+         { message: 'If an account exists, a reset link will be sent' },
          { status: 200 }
       );
    } catch (error) {
+      console.error('Password reset request error:', error);
       return NextResponse.json({ message: 'Server error' }, { status: 500 });
    }
 }

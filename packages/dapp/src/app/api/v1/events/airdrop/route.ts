@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { ethers } from 'ethers';
 // import { initializeDevWallet } from '@/utils/dev/walletInit';
 // import { contracts } from '@/utils/dev/contractInit';
-import prisma, { PRISMA_DISABLED } from '../../../../../../config/db';
+import prisma from '../../../../../../config/db';
 import path from 'path';
 import * as fs from 'fs/promises';
 import { emailServer, transporter } from '../../../../../../config/nodemailer';
@@ -16,13 +16,6 @@ const MUSDC_AMOUNT = ethers.utils.parseUnits('5', 18); // MOCK decimals = 18
 const ETH_AMOUNT = ethers.utils.parseEther('0.00000606');
 
 export async function POST(req: Request) {
-   if (PRISMA_DISABLED) {
-      return NextResponse.json(
-         { message: 'Database temporarily disabled.' },
-         { status: 503 }
-      );
-   }
-
    if (req.method !== 'POST') {
       return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
    }
@@ -196,13 +189,6 @@ export async function POST(req: Request) {
 }
 
 export async function GET(req: Request) {
-   if (PRISMA_DISABLED) {
-      return NextResponse.json(
-         { message: 'Database temporarily disabled.' },
-         { status: 503 }
-      );
-   }
-
    try {
       // Extract query parameters from the request URL
       const { searchParams } = new URL(req.url);
