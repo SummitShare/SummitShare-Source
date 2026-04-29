@@ -48,13 +48,16 @@
       "@parcel/watcher",
       "@prisma/engines",
       "bufferutil",
+      "esbuild",
       "keccak",
+      "netlify-cli",
       "nx",
       "postinstall-postinstall",
       "prisma",
       "protobufjs",
       "secp256k1",
       "sharp",
+      "unix-dgram",
       "utf-8-validate"
     ]
   }
