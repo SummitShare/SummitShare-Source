@@ -79,11 +79,20 @@ export default function Home(): JSX.Element {
          <section className="relative overflow-hidden">
             <div className="absolute inset-0">
                <Image
-                  src="https://s3.tebi.io/summitshare-images/WHM%20Baskets.jpg"
+                  src="https://pub-a2d19ba4b3934be7a05aa694f8e6618c.r2.dev/baskets%20potrait.png"
                   alt="WHM Baskets"
                   fill
-                  className="object-cover opacity-25"
-                  sizes="(max-width: 768px) 100vw, 100vw"
+                  className="object-cover opacity-25 block md:hidden"
+                  sizes="(max-width: 768px) 100vw, 0px"
+                  priority
+                  quality={75}
+               />
+               <Image
+                  src="https://pub-a2d19ba4b3934be7a05aa694f8e6618c.r2.dev/baskets%20main.png"
+                  alt="WHM Baskets"
+                  fill
+                  className="object-cover opacity-25 hidden md:block"
+                  sizes="(max-width: 768px) 0px, 100vw"
                   priority
                   quality={75}
                />

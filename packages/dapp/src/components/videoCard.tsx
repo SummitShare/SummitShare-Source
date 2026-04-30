@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/button/Button';
 import { WomanData } from '@/types/frontend';
@@ -10,7 +10,7 @@ interface VideoCardProps {
    setVideoRef: (element: HTMLVideoElement | null) => void;
    onMouseEnter: (name: string) => void;
    onMouseLeave: (name: string) => void;
-   priority?: boolean; // priority prop for above-the-fold cards
+   priority?: boolean;
 }
 
 const VideoCard: React.FC<VideoCardProps> = ({
@@ -23,14 +23,28 @@ const VideoCard: React.FC<VideoCardProps> = ({
    priority = false,
 }) => {
    const [imgError, setImgError] = useState(false);
+   const [isHovered, setIsHovered] = useState(false);
+   const [videoReady, setVideoReady] = useState(false);
+
+   const handleMouseEnter = useCallback(() => {
+      setIsHovered(true);
+      onMouseEnter(item.name);
+   }, [item.name, onMouseEnter]);
+
+   const handleMouseLeave = useCallback(() => {
+      setIsHovered(false);
+      onMouseLeave(item.name);
+   }, [item.name, onMouseLeave]);
+
+   const showVideo = isHovered && videoReady;
 
    return (
       <div
          key={item.name}
          onClick={() => onCardClick(item.name, item.link)}
          className="group relative isolate flex h-[320px] flex-col justify-end overflow-hidden rounded-2xl border border-white/10 bg-[#14110c] p-5 text-amber-50 shadow-[0_24px_60px_-40px_rgba(0,0,0,0.6)] transition-all duration-300 ease-in-out will-change-transform hover:-translate-y-1 hover:shadow-[0_32px_80px_-50px_rgba(0,0,0,0.8)] cursor-pointer"
-         onMouseEnter={() => onMouseEnter(item.name)}
-         onMouseLeave={() => onMouseLeave(item.name)}
+         onMouseEnter={handleMouseEnter}
+         onMouseLeave={handleMouseLeave}
       >
          {loadingItem === item.name ? (
             <div className="absolute inset-0 flex items-center justify-center bg-[#14110c] z-30">
@@ -45,7 +59,9 @@ const VideoCard: React.FC<VideoCardProps> = ({
                   alt={item.name}
                   fill
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 33vw, 25vw"
-                  className="object-cover z-[1] transition-opacity duration-500 group-hover:opacity-0"
+                  className={`object-cover z-[1] transition-opacity duration-500 ${
+                     showVideo ? 'opacity-0' : 'opacity-100'
+                  }`}
                   loading={priority ? 'eager' : 'lazy'}
                   priority={priority}
                   onError={() => setImgError(true)}
@@ -56,12 +72,15 @@ const VideoCard: React.FC<VideoCardProps> = ({
                <video
                   ref={setVideoRef}
                   data-name={item.name}
-                  className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-[2] hidden md:block"
+                  className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 z-[2] hidden md:block ${
+                     showVideo ? 'opacity-100' : 'opacity-0'
+                  }`}
                   src={item.video}
                   muted
                   playsInline
                   loop
-                  preload={priority ? 'metadata' : 'none'}
+                  preload="metadata"
+                  onCanPlay={() => setVideoReady(true)}
                />
 
                <div className="z-[5] space-y-3 relative">
