@@ -1,6 +1,5 @@
 'use client';
-import { ChevronDownIcon } from '@radix-ui/react-icons';
-import { Eye, EyeOff } from 'lucide-react';
+import { ChevronDown, Eye, EyeOff } from 'lucide-react';
 import { useState, useRef, useEffect, KeyboardEvent } from 'react';
 import * as React from 'react';
 
@@ -190,7 +189,7 @@ const Input: React.FC<InputProps> = ({
                      onClick={handleSelectClick}
                   >
                      {internalValue || 'Select an option'}
-                     <ChevronDownIcon className="w-[20px]" />
+                     <ChevronDown className="w-[20px]" />
                   </div>
                   {open && (
                      <ul className="absolute z-10 w-full max-h-[110px] p-[12px] rounded-[6px] border border-primary-100 text-primary-900 text-p1-r flex flex-col gap-2 bg-white">

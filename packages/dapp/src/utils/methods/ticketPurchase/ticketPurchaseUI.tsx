@@ -2,7 +2,7 @@ import React, { useState, useEffect, ReactNode } from 'react';
 import Buttons from '@/components/button/Butons';
 import WalletStatus from '@/features/walletStatus';
 import Image from 'next/image';
-import { XMarkIcon } from '@heroicons/react/24/outline';
+import { X } from 'lucide-react';
 import Link from 'next/link';
 import useExhibit from '@/lib/useGetExhibitById';
 import { CONTRACT_ADDRESSES } from '@/utils/contractInit';
@@ -262,7 +262,7 @@ const TicketPurchaseUI: React.FC<TicketPurchaseUIProps> = ({
                      onClick={closeSuccessMessage}
                      className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
                   >
-                     <XMarkIcon className="h-6 w-6" />
+                     <X className="h-6 w-6" />
                   </button>
 
                   {/* Success Content */}

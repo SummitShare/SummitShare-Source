@@ -1,9 +1,5 @@
 'use client';
-import {
-   Bars3Icon,
-   ChevronDownIcon,
-   XMarkIcon,
-} from '@heroicons/react/24/outline';
+import { Menu, X } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import React, { useState } from 'react';
 
@@ -19,7 +15,6 @@ function SecondaryNav() {
          title: 'Pages',
          items: [
             { name: 'What Is SummitShare?', link: '/blog' },
-            { name: 'Need Something?', link: '/help' },
             // { name: 'The Leading Ladies', link: '/exhibit' },
          ],
       },
@@ -28,7 +23,6 @@ function SecondaryNav() {
    const items: { name: string; link: string }[] = [
       // { name: 'Exhibit', link: '/exhibit' },
       { name: 'Blog', link: '/blog' },
-      { name: 'Help', link: '/help' },
       { name: 'Profile', link: '/profile' },
       { name: 'Insights', link: '/distribution' },
    ];
@@ -40,7 +34,7 @@ function SecondaryNav() {
             onClick={() => setOpenMenu(!openMenu)}
             className="p-1 border border-primary-900 rounded-sm"
          >
-            <Bars3Icon className="w-4" />
+            <Menu className="w-4" />
          </div>
          <nav
             className={`fixed inset-y-0 left-0 w-fit  bg-white z-50 transform ${
@@ -50,7 +44,7 @@ function SecondaryNav() {
             <div className="border-b border-primary-900-5 py-4 lg:py-[17.5px]">
                <div className="px-6 flex flex-row justify-between text-primary-900">
                   <h2 className="text-primary-400">Blog</h2>
-                  <XMarkIcon
+                  <X
                      onClick={() => setOpenMenu(!openMenu)}
                      className="w-4 cursor-pointer"
                   />

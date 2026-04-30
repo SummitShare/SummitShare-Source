@@ -1,4 +1,4 @@
-import { QrCodeIcon } from '@heroicons/react/24/outline';
+import { QrCode } from 'lucide-react';
 import React from 'react';
 
 // Create an array of objects conforming to the Props interface
@@ -38,7 +38,7 @@ const Page = () => {
                      <p className="text-sm text-gray-700">{ticket.details}</p>
                      <p className="text-xs text-gray-700">{ticket.dateTime}</p>
                   </div>
-                  <QrCodeIcon className="w-6" />
+                  <QrCode className="w-6" />
                </div>
             ))}
          </div>

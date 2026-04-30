@@ -1,7 +1,5 @@
 import React from 'react';
-import { ArrowRightCircleIcon } from '@heroicons/react/24/outline';
-import { GitHubLogoIcon } from '@radix-ui/react-icons';
-import Input from '../inputs/Inputs';
+import { Github } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '../button/Button';
 
@@ -123,7 +121,7 @@ function Footer() {
                                  target="_blank"
                                  rel="noopener noreferrer"
                               >
-                                 <GitHubLogoIcon className="w-4 h-4" />
+                                 <Github className="w-4 h-4" />
                                  <span>GitHub</span>
                               </a>
                            </li>

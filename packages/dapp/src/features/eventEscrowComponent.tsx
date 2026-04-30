@@ -1,10 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
+import React, { useEffect, useState } from 'react';
 import { contracts, CONTRACT_ADDRESSES, estimateGas } from '@/utils/contractInit';
 import { handleContractError } from '@/utils/handleContractError';
-import { EventEscrowComponentProps } from '@/types/contracts';
 import useExhibit from '@/lib/useGetExhibitById';
-import { Transition } from '@headlessui/react';
 import Buttons from '@/components/button/Butons';
 
 const EventEscrowComponent = ({ userAddress }: any) => {
