@@ -12,7 +12,7 @@ interface Partner {
 const partners: Partner[] = [
    {
       name: "Women's History Museum of Zambia",
-      logo: 'https://pub-a2d19ba4b3934be7a05aa694f8e6618c.r2.dev/whmzacc.png',
+      logo: 'https://pub-a2d19ba4b3934be7a05aa694f8e6618c.r2.dev/whmz.jpg',
       website: 'https://www.whmzambia.org/',
    },
    {
@@ -47,13 +47,15 @@ const Partners: React.FC = () => {
                      target="_blank"
                      rel="noopener noreferrer"
                   >
-                     <Image
-                        src={partner.logo}
-                        alt={partner.name}
-                        width={120}
-                        height={120}
-                        className="rounded-full object-contain"
-                     />
+                     <div className="w-[120px] h-[120px] rounded-full bg-white flex items-center justify-center overflow-hidden shadow-sm">
+                        <Image
+                           src={partner.logo}
+                           alt={partner.name}
+                           width={120}
+                           height={120}
+                           className="object-contain"
+                        />
+                     </div>
                   </Link>
                </div>
             ))}
@@ -67,13 +69,15 @@ const Partners: React.FC = () => {
                         target="_blank"
                         rel="noopener noreferrer"
                      >
-                        <Image
-                           src={partner.logo}
-                           alt={partner.name}
-                           width={120}
-                           height={120}
-                           className="rounded-full object-contain"
-                        />
+                        <div className="w-[120px] h-[120px] rounded-full bg-white flex items-center justify-center overflow-hidden shadow-sm">
+                           <Image
+                              src={partner.logo}
+                              alt={partner.name}
+                              width={96}
+                              height={96}
+                              className="object-contain"
+                           />
+                        </div>
                      </Link>
                   </div>
                ))}
@@ -87,13 +91,15 @@ const Partners: React.FC = () => {
                      target="_blank"
                      rel="noopener noreferrer"
                   >
-                     <Image
-                        src={partner.logo}
-                        alt={partner.name}
-                        width={120}
-                        height={120}
-                        className="rounded-full object-contain"
-                     />
+                     <div className="w-[120px] h-[120px] rounded-full bg-white flex items-center justify-center overflow-hidden shadow-sm">
+                        <Image
+                           src={partner.logo}
+                           alt={partner.name}
+                           width={120}
+                           height={120}
+                           className="object-contain"
+                        />
+                     </div>
                   </Link>
                </div>
             ))}
