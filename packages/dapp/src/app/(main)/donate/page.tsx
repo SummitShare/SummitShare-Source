@@ -135,10 +135,7 @@ function Page() {
          </div>
          <p className="text-sm mt-4">
             Read our{' '}
-            <a
-               href="https://hackmd.io/e5h31Xw3Q-Su2tzJrVN98g"
-               className="text-blue-500 underline"
-            >
+            <a href="/blog/donations-policy" className="text-blue-500 underline">
                donations policy
             </a>{' '}
             for more info.

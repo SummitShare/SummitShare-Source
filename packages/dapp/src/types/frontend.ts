@@ -7,6 +7,8 @@ import React from 'react';
 import { EmailArray } from './contracts';
 import { ethers } from 'ethers';
 
+export type { Post, PostMeta } from '@/lib/blog';
+
 // auth-register/page.tsx
 export interface authUserProps {
    userName: string;
@@ -163,42 +165,6 @@ export interface ExhibitDetail {
    details: string;
    collection: Collection;
    ticketPrice: string;
-}
-
-// blog usage for notes props
-export interface BlogProps {
-   notes: Note[];
-}
-
-export interface NoteProps {
-   title: string;
-   content: string; // Defining the type for the props of the Note component
-}
-
-export interface Note {
-   id: string;
-   title: string;
-   tags: string[];
-   createdAt: number;
-   titleUpdatedAt: number;
-   tagsUpdatedAt: number | null;
-   publishType: string;
-   publishedAt: number;
-   permalink: string | null;
-   publishLink: string;
-   shortId: string;
-   content: string;
-   lastChangedAt: number;
-   lastChangeUser: {
-      name: string;
-      photo: string;
-      biography: string;
-      userPath: string;
-   };
-   userPath: string;
-   teamPath: string | null;
-   readPermission: string;
-   writePermission: string;
 }
 
 // Create ticket component

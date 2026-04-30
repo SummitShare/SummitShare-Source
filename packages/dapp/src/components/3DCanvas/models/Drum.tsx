@@ -23,7 +23,9 @@ type GLTFResult = GLTF & {
 };
 
 export function Drum(props: ThreeElements['group']) {
-   const { nodes, materials } = useGLTF('/models/drum.glb') as unknown as GLTFResult;
+   const { nodes, materials } = useGLTF(
+      '/models/drum.glb'
+   ) as unknown as GLTFResult;
    return (
       <group {...props} dispose={null}>
          <mesh

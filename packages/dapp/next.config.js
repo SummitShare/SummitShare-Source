@@ -3,24 +3,24 @@ require('dotenv').config();
 
 const nextConfig = {
    images: {
-      domains: [
-         'images.unsplash.com',
-         'unsplash.com',
-         'plus.unsplash.com',
-         'loremflickr.com',
-         'images.squarespace-cdn.com',
-         'source.unsplash.com',
-         'hackmd.io',
-         'amazonaws.com',
-         'ethereum.org',
-         's3.tebi.io',
-         'summitshare3.s3.eu-north-1.amazonaws.com',
-         'optimistic.etherscan.io',
-         'hackmd.io/_uploads',
+      remotePatterns: [
+         { protocol: 'https', hostname: 'images.unsplash.com' },
+         { protocol: 'https', hostname: 'unsplash.com' },
+         { protocol: 'https', hostname: 'plus.unsplash.com' },
+         { protocol: 'https', hostname: 'loremflickr.com' },
+         { protocol: 'https', hostname: 'images.squarespace-cdn.com' },
+         { protocol: 'https', hostname: 'source.unsplash.com' },
+         { protocol: 'https', hostname: '*.amazonaws.com' },
+         { protocol: 'https', hostname: 'ethereum.org' },
+         { protocol: 'https', hostname: 's3.tebi.io' },
+         {
+            protocol: 'https',
+            hostname: 'pub-a2d19ba4b3934be7a05aa694f8e6618c.r2.dev',
+         },
+         { protocol: 'https', hostname: 'optimistic.etherscan.io' },
       ],
    },
    env: {
-      HACKMD_API_TOKEN: process.env.HACKMD_API_TOKEN,
       RPC_URL: process.env.RPC_URL,
       DEV_PRIVATE_KEY: process.env.DEV_PRIVATE_KEY,
    },

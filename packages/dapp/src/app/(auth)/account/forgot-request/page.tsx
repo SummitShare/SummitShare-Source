@@ -124,7 +124,9 @@ function ForgotPasswordRequest() {
                {/* Action Buttons */}
                <div className="flex flex-col gap-4 items-center">
                   <Button
-                     disabled={(status !== undefined && status <= 200) || isLoading}
+                     disabled={
+                        (status !== undefined && status <= 200) || isLoading
+                     }
                      onClick={handleSubmit}
                      className={`${isLoading && 'cursor-wait'} ${
                         status === 200 && 'cursor-not-allowed'

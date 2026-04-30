@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import prisma, { PRISMA_DISABLED } from '../../../../../../config/db';
+import prisma from '../../../../../../config/db';
 
 // const prisma = new PrismaClient()
 
@@ -28,13 +28,6 @@ interface EmailStatus {
 }
 
 export async function POST(req: Request) {
-   if (PRISMA_DISABLED) {
-      return NextResponse.json(
-         { message: 'Database temporarily disabled.' },
-         { status: 503 }
-      );
-   }
-
    async function createEvent(propsal: IPropsal, user_id: string) {
       const {
          event_type,

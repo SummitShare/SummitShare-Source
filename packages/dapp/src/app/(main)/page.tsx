@@ -6,10 +6,10 @@ import Partners from './partners/page';
 import BlogList from '@/components/BlogList';
 import InfoGrid from '@/components/InfoCard';
 import IntegrationGrid from '@/components/IntegrationCard';
-import LeadingLaides from '@/components/leadingLaides';
 import WhatIsSummitShare from '@/components/whatIsSummitShare';
 import ProblemSection from '@/components/problemSection';
 import CollaborateWithUs from '@/components/collaborateWithUs';
+import { getAllPosts } from '@/lib/blog';
 
 const metadata: Metadata = {
    title: 'SummitShare',
@@ -20,7 +20,9 @@ const metadata: Metadata = {
    },
 };
 
-export default function Home() {
+export default async function Home() {
+   const posts = await getAllPosts();
+
    return (
       <main className="flex flex-col overflow-hidden">
          {/* Hero - Full width */}
@@ -52,7 +54,7 @@ export default function Home() {
 
             {/* Updates section */}
             <div>
-               <BlogList />
+               <BlogList posts={posts} />
             </div>
 
             {/* Partners section */}

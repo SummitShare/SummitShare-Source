@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import prisma, { PRISMA_DISABLED } from '../../../../../../../config/db';
+import prisma from '../../../../../../../config/db';
 import { emailServer, transporter } from '../../../../../../../config/nodemailer';
 import * as fs from 'fs/promises';
 import * as path from 'path';
@@ -69,13 +69,6 @@ async function createSendTokens(user_id: string, email: string) {
 }
 
 export async function GET(req: Request) {
-   if (PRISMA_DISABLED) {
-      return NextResponse.json(
-         { message: 'Database temporarily disabled.' },
-         { status: 503 }
-      );
-   }
-
    try {
       const host = req.headers.get('host');
       const url = new URL(req.url!, `http://${host}`);

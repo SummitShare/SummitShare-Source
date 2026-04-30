@@ -1,10 +1,29 @@
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import prisma, { PRISMA_DISABLED } from '../../../../../config/db';
+import { z } from 'zod';
+import prisma from '../../../../../config/db';
 import { emailServer, transporter } from '../../../../../config/nodemailer';
 import { randomUUID } from 'crypto';
 import * as fs from 'fs/promises';
 import * as path from 'path';
+import { parseJson } from '@/lib/apiValidation';
+
+const signupSchema = z
+   .object({
+      email: z.string().trim().email(),
+      password: z.string().min(8).max(200),
+      username: z.string().trim().min(1).max(50).optional(),
+      type: z.enum(['exhibitor', 'visitor']),
+      wallet_address: z
+         .string()
+         .regex(/^0x[a-fA-F0-9]{40}$/, 'Invalid wallet address')
+         .optional(),
+      code: z.string().max(50).optional(),
+   })
+   .refine((data) => data.type !== 'exhibitor' || !!data.wallet_address, {
+      message: 'wallet_address is required for exhibitor signups',
+      path: ['wallet_address'],
+   });
 
 type UserRecord = {
    id: string;
@@ -71,10 +90,10 @@ async function createSendTokens(user: UserRecord, email: string) {
          html: htmlTemplate,
       };
 
-      const info = await transporter.sendMail(mailOptions);
+      await transporter.sendMail(mailOptions);
       return verification;
    } catch (error) {
-      console.log(error);
+      console.error('createSendTokens error:', error);
       throw error;
    }
 }
@@ -207,45 +226,23 @@ async function createVisitor(
 }
 
 export async function POST(req: Request) {
-   if (PRISMA_DISABLED) {
-      return NextResponse.json(
-         { message: 'Database temporarily disabled.' },
-         { status: 503 }
-      );
-   }
+   const validation = await parseJson(req, signupSchema);
+   if (!validation.ok) return validation.response;
+
+   const { email, password, username, type, wallet_address, code } =
+      validation.data;
 
    try {
-      // if (!req.body || Object.keys(req.body).length === 0) {
-      //   return NextResponse.json({ error: 'No data provided' }, { status: 400 });
-      // }
-      const { email, password, username, type, wallet_address, code } =
-         await req.json();
-      // Check if user already exists
-
-      console.log(`sent ${code}`);
-      console.log(`code ${process.env.AD_CODE}`);
-
-      if (!email || email == ' ') {
-         return NextResponse.json(
-            { failure: 'Please input email' },
-            { status: 400 }
-         );
-      }
-      if (!password || password == ' ') {
-         return NextResponse.json(
-            { failure: 'please input password' },
-            { status: 400 }
-         );
-      }
-
-      const existingUserName = await prisma.users.findUnique({
-         where: { username },
-      });
-      if (existingUserName) {
-         return NextResponse.json(
-            { message: 'Username already exists' },
-            { status: 409 }
-         );
+      if (username) {
+         const existingUserName = await prisma.users.findUnique({
+            where: { username },
+         });
+         if (existingUserName) {
+            return NextResponse.json(
+               { message: 'Username already exists' },
+               { status: 409 }
+            );
+         }
       }
 
       const existingUser = await prisma.users.findUnique({ where: { email } });
@@ -256,46 +253,35 @@ export async function POST(req: Request) {
          );
       }
 
-      // Hash password
-      const hashedPassword = await bcrypt.hash(password, 10); // 10 is the number of salt rounds
+      const hashedPassword = await bcrypt.hash(password, 10);
 
-      if (!type) {
-         return NextResponse.json({ message: 'no user type' }, { status: 400 });
+      if (type === 'exhibitor') {
+         await createExhibitor(
+            email,
+            hashedPassword,
+            username ?? randomUUID(),
+            type,
+            wallet_address!
+         );
+      } else {
+         await createVisitor(
+            email,
+            hashedPassword,
+            username ?? randomUUID(),
+            type,
+            code ?? ''
+         );
       }
 
-      switch (type) {
-         case 'exhibitor':
-            const exhibitor = await createExhibitor(
-               email,
-               hashedPassword,
-               username,
-               type,
-               wallet_address
-            );
-            return NextResponse.json(
-               { success: 'User created and email sent' },
-               { status: 201 }
-            );
-         case 'visitor':
-            const visitor = await createVisitor(
-               email,
-               hashedPassword,
-               username,
-               type,
-               code
-            );
-            return NextResponse.json(
-               { success: 'User created and email sent' },
-               { status: 201 }
-            );
-         default:
-            return NextResponse.json(
-               { success: 'user type error' },
-               { status: 400 }
-            );
-      }
+      return NextResponse.json(
+         { success: 'User created and email sent' },
+         { status: 201 }
+      );
    } catch (error) {
-      console.error(error);
-      return NextResponse.json({ failure: error }, { status: 500 });
+      console.error('Signup error:', error);
+      return NextResponse.json(
+         { message: 'Internal server error' },
+         { status: 500 }
+      );
    }
 }

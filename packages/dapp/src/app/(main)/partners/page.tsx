@@ -12,17 +12,17 @@ interface Partner {
 const partners: Partner[] = [
    {
       name: "Women's History Museum of Zambia",
-      logo: 'https://s3.tebi.io/summitshare-images/whmzacc.png',
+      logo: 'https://pub-a2d19ba4b3934be7a05aa694f8e6618c.r2.dev/whmzacc.png',
       website: 'https://www.whmzambia.org/',
    },
    {
       name: 'Ethereum Foundation',
-      logo: 'https://s3.tebi.io/summitshare-images/EF.png',
+      logo: 'https://pub-a2d19ba4b3934be7a05aa694f8e6618c.r2.dev/ef.png',
       website: 'https://ethereum.foundation/',
    },
    {
       name: 'Octant',
-      logo: 'https://s3.tebi.io/summitshare-images/octant.png',
+      logo: 'https://pub-a2d19ba4b3934be7a05aa694f8e6618c.r2.dev/octant.png',
       website: 'https://octant.app/',
    },
 ];

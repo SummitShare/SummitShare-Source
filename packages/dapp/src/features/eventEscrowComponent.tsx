@@ -1,10 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import {
-   contracts,
-   CONTRACT_ADDRESSES,
-   estimateGas,
-} from '@/utils/contractInit';
+import { contracts, CONTRACT_ADDRESSES, estimateGas } from '@/utils/contractInit';
 import { handleContractError } from '@/utils/handleContractError';
 import { EventEscrowComponentProps } from '@/types/contracts';
 import useExhibit from '@/lib/useGetExhibitById';

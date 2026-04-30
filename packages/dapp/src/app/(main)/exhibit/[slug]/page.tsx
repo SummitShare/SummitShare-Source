@@ -1,5 +1,6 @@
 'use client';
 import DynamicCanvas from '@/components/3DCanvas/3dCanvas';
+import { CanvasErrorBoundary } from '@/components/3DCanvas/CanvasErrorBoundary';
 import { data } from './data';
 import { Button } from '@/components/button/Button';
 import React, { useState, useEffect } from 'react';
@@ -29,10 +30,12 @@ const Page = ({ params }: PageProps) => {
    const resolvedParams = React.use(params);
    const [currentIndex, setCurrentIndex] = useState<number>(-1);
    const [isImageLoading, setIsImageLoading] = useState(true);
+   const [imageError, setImageError] = useState(false);
 
    useEffect(() => {
       const index = data.findIndex(
-         (item) => item.title.toLowerCase().replace(/ /g, '-') === resolvedParams.slug
+         (item) =>
+            item.title.toLowerCase().replace(/ /g, '-') === resolvedParams.slug
       );
 
       if (index === -1) {
@@ -42,6 +45,7 @@ const Page = ({ params }: PageProps) => {
 
       setCurrentIndex(index);
       setIsImageLoading(true);
+      setImageError(false);
    }, [resolvedParams.slug, router]);
 
    if (currentIndex === -1) {
@@ -138,7 +142,12 @@ const Page = ({ params }: PageProps) => {
             <section className="mt-10 grid lg:grid-cols-[1.1fr_0.9fr] gap-8">
                <div className="space-y-6">
                   <div className="rounded-2xl border border-white/10 bg-[#14110c] p-4">
-                     <DynamicCanvas>{figure.object_URL}</DynamicCanvas>
+                     <CanvasErrorBoundary
+                        fallbackSrc={figure.image}
+                        fallbackAlt={figure.title}
+                     >
+                        <DynamicCanvas>{figure.object_URL}</DynamicCanvas>
+                     </CanvasErrorBoundary>
                   </div>
 
                   <div className="grid md:grid-cols-2 gap-4">
@@ -197,7 +206,7 @@ const Page = ({ params }: PageProps) => {
                            <div className="absolute inset-0 bg-[#1a140f] animate-pulse rounded-xl" />
                         )}
                         <Image
-                           src={figure.image}
+                           src={imageError ? '/all-women.png' : figure.image}
                            alt={figure.title}
                            fill
                            sizes="(max-width: 768px) 100vw, 50vw"
@@ -205,6 +214,10 @@ const Page = ({ params }: PageProps) => {
                            priority={true}
                            quality={85}
                            onLoad={() => setIsImageLoading(false)}
+                           onError={() => {
+                              setImageError(true);
+                              setIsImageLoading(false);
+                           }}
                            placeholder="blur"
                            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx0FFRUVHSIeHhUVHiIYGBUVFRUYGBUWFhoaIRwUJCoeJCQqLCwsGiYzOi0uOiouLCz/2wBDAREVFRgYGBwgHBwsLCYqLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCwsLCz/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
                         />

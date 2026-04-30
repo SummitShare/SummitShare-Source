@@ -1,16 +1,9 @@
 import { NextResponse } from 'next/server';
-import prisma, { PRISMA_DISABLED } from '../../../../../../config/db';
+import prisma from '../../../../../../config/db';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: Request) {
-   if (PRISMA_DISABLED) {
-      return NextResponse.json(
-         { message: 'Database temporarily disabled.' },
-         { status: 503 }
-      );
-   }
-
    try {
       const { searchParams } = new URL(req.url);
       const user_id = searchParams.get('userId');

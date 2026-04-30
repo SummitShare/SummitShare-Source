@@ -23,11 +23,20 @@ function HeroSection() {
          className={`relative w-full min-h-[80vh] overflow-hidden pt-24 md:pt-28 ${body.className}`}
       >
          <Image
-            src="https://s3.tebi.io/summitshare-images/WHM%20Baskets.jpg"
+            src="https://pub-a2d19ba4b3934be7a05aa694f8e6618c.r2.dev/baskets%20potrait.png"
             alt="WHM Baskets"
             fill
-            className="object-cover object-left-top"
-            sizes="(max-width: 768px) 100vw, 100vw"
+            className="object-cover object-left-top block md:hidden"
+            sizes="(max-width: 768px) 100vw, 0px"
+            priority
+            quality={75}
+         />
+         <Image
+            src="https://pub-a2d19ba4b3934be7a05aa694f8e6618c.r2.dev/baskets%20main.png"
+            alt="WHM Baskets"
+            fill
+            className="object-cover object-left-top hidden md:block"
+            sizes="(max-width: 768px) 0px, 100vw"
             priority
             quality={75}
          />
@@ -53,8 +62,8 @@ function HeroSection() {
                            Those who walked before us and those to come. Those who
                            wore red clay masks and rested their heads on bended
                            knees. Those who washed the cowry bead and swung the
-                           snuff cup. Those who weaved the baskets and wrapped
-                           the cloth. Those who fought for peace and danced to the
+                           snuff cup. Those who weaved the baskets and wrapped the
+                           cloth. Those who fought for peace and danced to the
                            drum.
                         </p>
                      </div>

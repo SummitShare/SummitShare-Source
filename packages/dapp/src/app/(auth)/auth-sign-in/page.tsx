@@ -110,17 +110,11 @@ function Page() {
             <section className=" text-center space-y-6">
                <p>
                   By continuing you accept our standard{' '}
-                  <a
-                     className="underline  text-blue-600"
-                     href="https://hackmd.io/@summitshare-eth/BygXfsxEJl"
-                  >
+                  <a className="underline  text-blue-600" href="">
                      terms and conditions
                   </a>{' '}
                   and{' '}
-                  <a
-                     className="underline text-blue-600"
-                     href="https://hackmd.io/@summitshare-eth/BygXfsxEJl"
-                  >
+                  <a className="underline text-blue-600" href="">
                      our privacy policy
                   </a>
                   .

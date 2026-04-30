@@ -20,7 +20,9 @@ const ROTATION = new THREE.Euler(Math.PI / 2, 0, 0);
 
 export function Headrest(props: ThreeElements['group']) {
    const group = useRef<THREE.Group>(null);
-   const { nodes, materials } = useGLTF('/models/headrest.glb') as unknown as GLTFResult;
+   const { nodes, materials } = useGLTF(
+      '/models/headrest.glb'
+   ) as unknown as GLTFResult;
 
    // Optimize static materials
    React.useMemo(() => {

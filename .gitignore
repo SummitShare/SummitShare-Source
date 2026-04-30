@@ -14,3 +14,6 @@ packages/dapp/prisma/
 packages/dapp/auth.config.ts
 packages/dapp/middleware.ts
 CLAUDE.md
+DESIGN.md
+# Local Netlify folder
+.netlify

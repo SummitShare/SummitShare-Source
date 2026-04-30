@@ -148,7 +148,9 @@ function Page({ params }: { params: { token: string } }) {
                      className={`full ${isLoading && 'cursor-wait'} ${
                         status === 200 && 'cursor-not-allowed'
                      }`}
-                     disabled={(status !== undefined && status <= 200) || isLoading} // Disable button when loading
+                     disabled={
+                        (status !== undefined && status <= 200) || isLoading
+                     } // Disable button when loading
                   >
                      {isLoading ? 'Creating account...' : 'Create my account'}
                   </Button>

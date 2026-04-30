@@ -5,9 +5,7 @@ import { ObjectDescription, WomanData } from '@/types/frontend';
 // Dynamically import each model component
 const Calabash = dynamic(
    () =>
-      import('@/components/3DCanvas/models/Calabash').then(
-         (mod) => mod.Calabash
-      ),
+      import('@/components/3DCanvas/models/Calabash').then((mod) => mod.Calabash),
    { ssr: false }
 );
 const Drum = dynamic(
@@ -19,20 +17,16 @@ const Mask = dynamic(
    { ssr: false }
 );
 const Snuff = dynamic(
-   () =>
-      import('@/components/3DCanvas/models/Snuff').then((mod) => mod.Snuff),
+   () => import('@/components/3DCanvas/models/Snuff').then((mod) => mod.Snuff),
    { ssr: false }
 );
 const Cowry = dynamic(
-   () =>
-      import('@/components/3DCanvas/models/Cowry').then((mod) => mod.Cowry),
+   () => import('@/components/3DCanvas/models/Cowry').then((mod) => mod.Cowry),
    { ssr: false }
 );
 const Headrest = dynamic(
    () =>
-      import('@/components/3DCanvas/models/Headrest').then(
-         (mod) => mod.Headrest
-      ),
+      import('@/components/3DCanvas/models/Headrest').then((mod) => mod.Headrest),
    { ssr: false }
 );
 
@@ -42,9 +36,9 @@ export const data: ObjectDescription[] = [
       title: 'Julia Chikamoneka',
       object_URL: <Headrest />,
       object_name: 'Headrest',
-      image: 'https://s3.tebi.io/women/julia.8a3947559b371149d239.png',
+      image: '/women/julia.png',
       object_address:
-         'https://optimistic.etherscan.io/nft/0xe3f9cb6608fefb78fdb2fd5496d62dc547236aaa/1',
+         'https://optimistic.etherscan.io/nft/0xe3f9cb6608fefb78fdb2fd5496d62dc547236aaa/3',
       Object_description: [
          [
             'Made from one block of wood, with a support on top that has a depression to hold the neck of a sleeping person.',
@@ -86,7 +80,7 @@ export const data: ObjectDescription[] = [
    // Double Sided Drum - Mwenya Mukulu
    {
       title: 'Mwenya Mukulu',
-      image: 'https://s3.tebi.io/women/mwenya.29445005ff1bfd622c6a.png',
+      image: '/women/mwenya.png',
       object_URL: <Drum />,
       object_name: 'Double Sided Drum',
       object_address:
@@ -120,11 +114,11 @@ export const data: ObjectDescription[] = [
    //Cowry Beads - Mwape
    {
       title: 'Mwape',
-      image: 'https://s3.tebi.io/women/mwape.65f6da26e8ba70662459.png',
+      image: '/women/mwape.png',
       object_URL: <Cowry />,
       object_name: 'Cowry Beads',
       object_address:
-         'https://optimistic.etherscan.io/nft/0xe3f9cb6608fefb78fdb2fd5496d62dc547236aaa/3',
+         'https://optimistic.etherscan.io/nft/0xe3f9cb6608fefb78fdb2fd5496d62dc547236aaa/1',
       Object_description: [
          [
             'A belt made of leather and cowry shells. Cowries were expensive in places far away from the sea like Zambia and could only be acquired by people of influence.',
@@ -156,8 +150,8 @@ export const data: ObjectDescription[] = [
    // Snuff Cup - Lueji Wa Nkonde
    {
       title: 'Lueji Wa Nkonde',
-      image: 'https://s3.tebi.io/women/lueji.f1f3c00ac13a6f15ad29.png',
-      object_URL: <Snuff levelOfDetail="high" />,
+      image: '/women/lueji.png',
+      object_URL: <Snuff />,
       object_name: 'Snuff Cup',
       object_address:
          'https://optimistic.etherscan.io/nft/0xe3f9cb6608fefb78fdb2fd5496d62dc547236aaa/2',
@@ -201,7 +195,7 @@ export const data: ObjectDescription[] = [
    // Calabash - Mukwae
    {
       title: 'Mukwae',
-      image: 'https://s3.tebi.io/women/mukwae.dcca9f02ec09b75af383.png',
+      image: '/women/mukwae.png',
       object_URL: <Calabash />,
       object_name: 'Calabash',
       object_address:
@@ -245,11 +239,11 @@ export const data: ObjectDescription[] = [
    // Mask - Loongo
    {
       title: 'Loongo',
-      image: 'https://s3.tebi.io/women/loongo.fb394b5caa52590a76f2.png',
+      image: '/women/loongo.png',
       object_URL: <Mask />,
       object_name: 'Luvale Mask',
       object_address:
-         'https://optimistic.etherscan.io/nft/0xe3f9cb6608fefb78fdb2fd5496d62dc547236aaa/6',
+         'https://optimistic.etherscan.io/nft/0xe3f9cb6608fefb78fdb2fd5496d62dc547236aaa/5',
       Object_description: [
          [
             'The mask of Mwanapewo used in the Makishi masquerade. It is a female Likishi in an all male mask squad.',
@@ -295,43 +289,43 @@ export const data: ObjectDescription[] = [
 export const women: WomanData[] = [
    {
       name: 'Mwenye',
-      image: 'https://s3.tebi.io/summitshare-previews/1.png',
-      video: 'https://s3.tebi.io/summitshare-videos/01_Drum_Preview.mp4',
+      image: '/women/mwenya.png',
+      video: 'https://pub-a2d19ba4b3934be7a05aa694f8e6618c.r2.dev/01_Drum_Preview.mp4',
       link: '/exhibit/mwenya-mukulu',
       artifact: 'Double Sided Drum',
    },
    {
       name: 'Mwape',
-      image: 'https://s3.tebi.io/summitshare-previews/2.png',
-      video: 'https://s3.tebi.io/summitshare-videos/02_Girdle_Belt_Preview.mp4',
+      image: '/women/mwape.png',
+      video: 'https://pub-a2d19ba4b3934be7a05aa694f8e6618c.r2.dev/02_Girdle_Belt_Preview.mp4',
       link: '/exhibit/mwape',
       artifact: 'Cowry Beads',
    },
    {
       name: 'Lueji Wa Nkonde',
-      image: 'https://s3.tebi.io/summitshare-previews/3.png',
-      video: 'https://s3.tebi.io/summitshare-videos/03_Snuff%20Box_Preview.mp4',
+      image: '/women/lueji.png',
+      video: 'https://pub-a2d19ba4b3934be7a05aa694f8e6618c.r2.dev/03_Snuff%20Box_Preview.mp4',
       link: '/exhibit/lueji-wa-nkonde',
       artifact: 'Snuff Cup',
    },
    {
       name: 'Julia Chikamoneka',
-      image: 'https://s3.tebi.io/summitshare-previews/4.png',
-      video: 'https://s3.tebi.io/summitshare-videos/04_Headrest_Preview%20%281%29.mp4',
+      image: '/women/julia.png',
+      video: 'https://pub-a2d19ba4b3934be7a05aa694f8e6618c.r2.dev/04_Headrest_Preview.mp4',
       link: '/exhibit/julia-chikamoneka',
       artifact: 'Headrest',
    },
    {
       name: 'Mukwae',
-      image: 'https://s3.tebi.io/summitshare-previews/5.png',
-      video: 'https://s3.tebi.io/summitshare-videos/05_Calabash_Preview.mp4',
+      image: '/women/mukwae.png',
+      video: 'https://pub-a2d19ba4b3934be7a05aa694f8e6618c.r2.dev/05_Calabash_Preview.mp4',
       link: '/exhibit/mukwae',
       artifact: 'Calabash',
    },
    {
       name: 'Loongo',
-      image: 'https://s3.tebi.io/summitshare-previews/6.png',
-      video: 'https://s3.tebi.io/summitshare-videos/06_Mask__Preview%20%281%29.mp4',
+      image: '/women/loongo.png',
+      video: 'https://pub-a2d19ba4b3934be7a05aa694f8e6618c.r2.dev/06_Mask__Preview.mp4',
       link: '/exhibit/loongo',
       artifact: 'Luvale Mask',
    },

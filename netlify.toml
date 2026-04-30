@@ -1,0 +1,4 @@
+[build]
+  base = "packages/dapp"
+  command = "pnpm prisma generate && pnpm build"
+  publish = ".next"
