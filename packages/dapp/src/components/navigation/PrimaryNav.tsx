@@ -29,7 +29,6 @@ const NeutralNav: React.FC = () => {
       { name: 'Blog', link: '/blog' },
       { name: 'Support Us', link: '/donate' },
       { name: 'Insights', link: '/distribution' },
-      { name: 'Help', link: '/help' },
    ];
 
    const menuItems = [
@@ -42,10 +41,6 @@ const NeutralNav: React.FC = () => {
             { name: 'Support Us', link: '/donate' },
             { name: 'Insights', link: '/distribution' },
          ],
-      },
-      {
-         title: 'Help',
-         items: [{ name: 'Help', link: '/help' }],
       },
       {
          title: 'Settings',
