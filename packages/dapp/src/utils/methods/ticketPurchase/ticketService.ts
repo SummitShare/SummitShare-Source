@@ -1,10 +1,36 @@
-// ticketService.ts
-
-import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import React from 'react';
-import { useAccount } from 'wagmi';
+
+type TicketValidationPayload = {
+   userAddress: string;
+   eventId: string;
+   user_id: string;
+};
+
+type TicketValidationResponse = {
+   hasTicket?: boolean;
+   message?: string;
+};
+
+const postTicketValidation = async (payload: TicketValidationPayload) => {
+   const response = await fetch('/api/v1/events/tickets/validate', {
+      method: 'POST',
+      headers: {
+         'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+   });
+   const data = (await response
+      .json()
+      .catch(() => ({}))) as TicketValidationResponse;
+
+   if (!response.ok) {
+      throw new Error(data.message || response.statusText);
+   }
+
+   return data;
+};
 
 // Helper function to get userId from session
 const getUserIdFromSession = (
@@ -38,14 +64,14 @@ export const validateTicket = async (
    }
 
    try {
-      const response = await axios.post('/api/v1/events/tickets/validate', {
+      const data = await postTicketValidation({
          userAddress,
          eventId,
          user_id,
       });
 
       // console.log('Validate response:', response.data);
-      if (response.data.hasTicket) {
+      if (data.hasTicket) {
          setHasTicket(true);
          setButtonType('secondary');
          setButtonText('View Exhibit');
@@ -113,23 +139,17 @@ export const validatePageAccess = async (
 
    try {
       // Make API call to validate the ticket
-      const response = await axios.post('/api/v1/events/tickets/validate', {
+      const data = await postTicketValidation({
          userAddress,
          eventId: '419a0b2d-dee9-4782-9cff-341c5f8343a6',
          user_id,
       });
 
-      console.log(response.data.message);
+      console.log(data.message);
 
       // If the API returns status 200, user has access
-      if (response.status === 200) {
-         router.push('/exhibit');
-         return { isLoading: false, hasAccess: true }; // End function here with successful state
-      }
-
-      // For any other status, redirect to 401
-      router.push('/401');
-      return { isLoading: false, hasAccess: false };
+      router.push('/exhibit');
+      return { isLoading: false, hasAccess: true }; // End function here with successful state
    } catch (error) {
       // Handle any errors and redirect to 401 page
       console.error('Error validating ticket:', error);

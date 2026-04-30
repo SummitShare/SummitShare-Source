@@ -1,40 +1,47 @@
 import { InputHTMLAttributes, FC, forwardRef } from 'react';
-import { VariantProps, cva } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
-const inputVariants = cva(
-   'block w-full rounded-md border font-medium focus:outline-none focus:ring-2 focus:ring-offset-1', // Shared styles
-   {
-      variants: {
-         variant: {
-            default:
-               'border-gray-300 bg-white text-primary-900 focus:ring-primary-600',
-            outline:
-               'border-gray-300 bg-transparent text-primary-900 focus:ring-primary-600',
-            error: 'border-re-500 bg-re-100 text-re-500 focus:ring-re-500',
-            success: 'border-ge-500 bg-ge-100 text-ge-500 focus:ring-ge-500',
-         },
-         size: {
-            default: 'px-4 py-2',
-            small: 'px-3 py-1',
-            medium: 'px-5 py-3',
-            large: 'px-6 py-4 text-lg',
-         },
-      },
-      defaultVariants: {
-         variant: 'default',
-         size: 'default',
-      },
-   }
-);
+const inputBase =
+   'block w-full rounded-md border font-medium focus:outline-none focus:ring-2 focus:ring-offset-1';
+
+const inputVariantClasses = {
+   default: 'border-gray-300 bg-white text-primary-900 focus:ring-primary-600',
+   outline:
+      'border-gray-300 bg-transparent text-primary-900 focus:ring-primary-600',
+   error: 'border-re-500 bg-re-100 text-re-500 focus:ring-re-500',
+   success: 'border-ge-500 bg-ge-100 text-ge-500 focus:ring-ge-500',
+} as const;
+
+const inputSizeClasses = {
+   default: 'px-4 py-2',
+   small: 'px-3 py-1',
+   medium: 'px-5 py-3',
+   large: 'px-6 py-4 text-lg',
+} as const;
+
+type TextInputVariant = keyof typeof inputVariantClasses;
+type TextInputSize = keyof typeof inputSizeClasses;
+
+const inputVariants = ({
+   variant = 'default',
+   size = 'default',
+}: {
+   variant?: TextInputVariant | null;
+   size?: TextInputSize | null;
+} = {}) =>
+   cn(
+      inputBase,
+      inputVariantClasses[variant || 'default'],
+      inputSizeClasses[size || 'default']
+   );
 
 interface TextInputProps
-   extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'>,
-      VariantProps<typeof inputVariants> {
+   extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
    label?: string;
    leftIcon?: React.ReactNode;
    rightIcon?: React.ReactNode;
-   size?: 'default' | 'small' | 'medium' | 'large'; // Override the conflicting size type
+   size?: TextInputSize | null;
+   variant?: TextInputVariant | null;
 }
 
 const TextInput: FC<TextInputProps> = forwardRef<

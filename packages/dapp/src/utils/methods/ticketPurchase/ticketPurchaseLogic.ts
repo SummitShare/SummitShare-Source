@@ -2,7 +2,6 @@
 import { contracts, estimateGas, CONTRACT_ADDRESSES } from '@/utils/contractInit';
 import { PurchaseHandlerProps } from '@/types/frontend';
 import { handleContractError } from '@/utils/handleContractError';
-import axios from 'axios';
 import { validateTicket } from './ticketService';
 
 export const handleTicketPurchase = async ({
@@ -132,12 +131,20 @@ const createTicketRecord = async (receipt: any, userId: string) => {
    };
 
    try {
-      const response = await axios.post(
-         'api/v1/events/tickets/create',
-         userTicketData
-      );
-      if (response.status !== 200) {
-         console.error('Failed to create ticket record:', response.data.message);
+      const response = await fetch('/api/v1/events/tickets/create', {
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+         },
+         body: JSON.stringify(userTicketData),
+      });
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok) {
+         console.error(
+            'Failed to create ticket record:',
+            data?.message || response.statusText
+         );
       }
    } catch (error) {
       console.error('Failed to create ticket record:', error);

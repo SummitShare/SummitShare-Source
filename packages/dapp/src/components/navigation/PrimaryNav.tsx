@@ -1,5 +1,4 @@
 'use client';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import React, { useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { Button } from '../button/Button';
@@ -7,7 +6,7 @@ import { useAccount } from 'wagmi';
 import { ConnectKitButton } from 'connectkit';
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
-import { UserCircle } from 'lucide-react';
+import { Menu, UserCircle, X } from 'lucide-react';
 
 const NeutralNav: React.FC = () => {
    const router = useRouter();
@@ -122,7 +121,7 @@ const NeutralNav: React.FC = () => {
                </ul>
             </li>
             <li onClick={() => setOpenMenu(!openMenu)} className="lg:hidden">
-               <Bars3Icon className="w-4" />
+               <Menu className="w-4" />
             </li>
          </ul>
          {openMenu && (
@@ -141,7 +140,7 @@ const NeutralNav: React.FC = () => {
                   <h2 className="text-neutral-900">
                      <span className="text-orange-500">Summit</span>Share
                   </h2>
-                  <XMarkIcon
+                  <X
                      onClick={() => setOpenMenu(!openMenu)}
                      className="w-4 cursor-pointer"
                   />

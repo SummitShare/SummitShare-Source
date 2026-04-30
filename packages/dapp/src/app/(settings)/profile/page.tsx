@@ -1,14 +1,11 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import Container from '@/components/Container';
 import Line from '@/components/Line';
 import { Button } from '@/components/button/Button';
-import { Trash, XCircle } from 'lucide-react';
+import { Trash } from 'lucide-react';
 import { useSession, signOut } from 'next-auth/react';
-import { toast } from 'react-hot-toast';
 import { TextInput } from '@/components/inputs/TextInput';
-import { setInterval } from 'timers';
 
 export default function ProfileSettings() {
    const router = useRouter();
@@ -67,10 +64,9 @@ export default function ProfileSettings() {
          }
       } catch (error) {
          console.error('Error deleting account:', error);
-         toast.error('Failed to delete account');
+         setResponse('Failed to delete account');
       } finally {
          setIsDeleting(false);
-         setIsDeleteDialogOpen(false);
       }
    };
 
