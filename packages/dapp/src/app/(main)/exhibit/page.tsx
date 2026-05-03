@@ -118,7 +118,7 @@ export default function Home(): JSX.Element {
 
                   <div className="flex flex-wrap gap-3">
                      <Link
-                        href="https://v2.oncyber.io/play/kGxCRYstlbZFl03Mq4DC?draft=true"
+                        href="https://awe.box/play/VPFGa26SS4liwVsOAg0a?draft=true"
                         target="_blank"
                         rel="noopener noreferrer"
                      >
