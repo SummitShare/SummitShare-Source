@@ -1,4 +1,5 @@
 import type { PostMeta } from '@/lib/blog';
+import { formatBlogDate } from '@/lib/blogDates';
 import { ArrowRightIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -9,14 +10,6 @@ interface BlogListProps {
    posts: PostMeta[];
    showNewsBanner?: boolean;
 }
-
-const formatDate = (date: string) => {
-   return new Intl.DateTimeFormat('en', {
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric',
-   }).format(new Date(date));
-};
 
 const BlogList = ({ posts, showNewsBanner = false }: BlogListProps) => {
    return (
@@ -84,47 +77,57 @@ const BlogList = ({ posts, showNewsBanner = false }: BlogListProps) => {
          </div>
 
          <ul className="grid w-full grid-cols-1 gap-8 md:grid-cols-2 lg:gap-12">
-            {posts.map((post) => (
-               <li
-                  key={post.slug}
-                  className="relative flex min-h-[21rem] w-full flex-col justify-between rounded-lg border-2 border-orange-600/50 bg-white p-6 shadow-[4px_4px_0px_0px_rgba(234,88,12,0.2)] transition-all duration-300 ease-in-out hover:-translate-y-1 hover:bg-neutral-50 hover:shadow-[6px_6px_0px_0px_rgba(234,88,12,0.3)] md:p-8"
-               >
-                  <div className="space-y-5">
-                     <div className="space-y-3">
-                        <h3 className="text-2xl font-bold text-neutral-800">
-                           {post.title}
-                        </h3>
-                        <p className="leading-relaxed text-neutral-600">
-                           {post.description}
-                        </p>
+            {posts.map((post) => {
+               const publishedDate = formatBlogDate(post.published);
+
+               return (
+                  <li
+                     key={post.slug}
+                     className="relative flex min-h-[21rem] w-full flex-col justify-between rounded-lg border-2 border-orange-600/50 bg-white p-6 shadow-[4px_4px_0px_0px_rgba(234,88,12,0.2)] transition-all duration-300 ease-in-out hover:-translate-y-1 hover:bg-neutral-50 hover:shadow-[6px_6px_0px_0px_rgba(234,88,12,0.3)] md:p-8"
+                  >
+                     <div className="space-y-5">
+                        <div className="space-y-3">
+                           <h3 className="text-2xl font-bold text-neutral-800">
+                              {post.title}
+                           </h3>
+                           <p className="leading-relaxed text-neutral-600">
+                              {post.description}
+                           </p>
+                        </div>
+
+                        <div className="flex flex-wrap items-center gap-2">
+                           {publishedDate ? (
+                              <time
+                                 dateTime={post.published}
+                                 className="mr-1 text-sm font-medium text-neutral-600"
+                              >
+                                 {publishedDate}
+                              </time>
+                           ) : (
+                              <span className="mr-1 text-sm font-medium text-neutral-500">
+                                 Undated
+                              </span>
+                           )}
+                           {post.tags.map((tag) => (
+                              <span
+                                 key={tag}
+                                 className="rounded-full border border-orange-600/30 bg-orange-50 px-3 py-1 text-xs font-semibold text-orange-900"
+                              >
+                                 {tag}
+                              </span>
+                           ))}
+                        </div>
                      </div>
 
-                     <div className="flex flex-wrap items-center gap-2">
-                        <time
-                           dateTime={post.published}
-                           className="mr-1 text-sm font-medium text-neutral-600"
-                        >
-                           {formatDate(post.published)}
-                        </time>
-                        {post.tags.map((tag) => (
-                           <span
-                              key={tag}
-                              className="rounded-full border border-orange-600/30 bg-orange-50 px-3 py-1 text-xs font-semibold text-orange-900"
-                           >
-                              {tag}
-                           </span>
-                        ))}
-                     </div>
-                  </div>
-
-                  <Link href={`/blog/${post.slug}`} className="mt-8 w-fit">
-                     <Button className="flex gap-2 border border-orange-600 bg-orange-600 text-white hover:bg-orange-600/95 focus:ring-orange-600">
-                        Read more
-                        <ArrowRightIcon className="h-4 w-4" />
-                     </Button>
-                  </Link>
-               </li>
-            ))}
+                     <Link href={`/blog/${post.slug}`} className="mt-8 w-fit">
+                        <Button className="flex gap-2 border border-orange-600 bg-orange-600 text-white hover:bg-orange-600/95 focus:ring-orange-600">
+                           Read more
+                           <ArrowRightIcon className="h-4 w-4" />
+                        </Button>
+                     </Link>
+                  </li>
+               );
+            })}
          </ul>
 
          {posts.length === 0 ? (

@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import matter from 'gray-matter';
+import { getBlogDateTimestamp } from './blogDates';
 
 export interface PostMeta {
    slug: string;
@@ -62,7 +63,16 @@ function toPostMeta(slug: string, data: BlogFrontmatter): PostMeta {
 }
 
 function sortByPublishedDesc(a: PostMeta, b: PostMeta) {
-   return Date.parse(b.published) - Date.parse(a.published);
+   const aPublished =
+      getBlogDateTimestamp(a.published) ?? Number.NEGATIVE_INFINITY;
+   const bPublished =
+      getBlogDateTimestamp(b.published) ?? Number.NEGATIVE_INFINITY;
+
+   if (aPublished === bPublished) {
+      return a.slug.localeCompare(b.slug);
+   }
+
+   return bPublished - aPublished;
 }
 
 async function getPostFileNames() {
