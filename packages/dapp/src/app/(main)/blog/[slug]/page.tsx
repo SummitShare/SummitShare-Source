@@ -1,5 +1,6 @@
 import ReadingProgress from '@/components/blog/ReadingProgress';
 import ShareButtons from '@/components/blog/ShareButtons';
+import { formatBlogDate } from '@/lib/blogDates';
 import {
    getAdjacentPosts,
    getAllSlugs,
@@ -21,14 +22,6 @@ type BlogPostPageProps = {
    params: Promise<{
       slug: string;
    }>;
-};
-
-const formatDate = (date: string) => {
-   return new Intl.DateTimeFormat('en', {
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric',
-   }).format(new Date(date));
 };
 
 const slugify = (text: string) =>
@@ -76,6 +69,7 @@ const BlogPost = async ({ params }: BlogPostPageProps) => {
    const stats = getPostStats(post.content);
    const { previous, next } = await getAdjacentPosts(slug);
    const related = await getRelatedPosts(slug, post.tags);
+   const publishedDate = formatBlogDate(post.published);
 
    return (
       <div className="relative min-h-screen w-full overflow-hidden bg-[#f6f3f2]/50 py-10">
@@ -105,9 +99,11 @@ const BlogPost = async ({ params }: BlogPostPageProps) => {
          <article className="relative mx-5 mb-24 max-w-5xl overflow-hidden rounded-lg border border-orange-600/20 bg-white shadow-[6px_6px_0px_0px_rgba(234,88,12,0.16)] md:mx-10 lg:mx-auto">
             <header className="space-y-5 border-b border-orange-600/15 bg-orange-50/45 px-6 py-8 md:px-10 md:py-10">
                <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm font-medium text-neutral-600">
-                  <time dateTime={post.published}>
-                     {formatDate(post.published)}
-                  </time>
+                  {publishedDate ? (
+                     <time dateTime={post.published}>{publishedDate}</time>
+                  ) : (
+                     <span>Undated</span>
+                  )}
                   <span aria-hidden className="text-orange-600/40">
                      •
                   </span>

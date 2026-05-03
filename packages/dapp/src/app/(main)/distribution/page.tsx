@@ -111,7 +111,8 @@ const InsightsPage = () => {
          tooltip:
             'Transfer of collected funds to a secure escrow contract for community benefit (80%) and administrative costs (20%)',
          status: 'green',
-         transaction_id: '0x277a0d27f696ab6c87de39a88cd7c9546834963a1ba548b9c54125880037f4e3',
+         transaction_id:
+            '0x277a0d27f696ab6c87de39a88cd7c9546834963a1ba548b9c54125880037f4e3',
       },
       {
          id_no: 4,
@@ -166,187 +167,184 @@ const InsightsPage = () => {
 
    return (
       <div className="flex flex-col space-y-8 mx-6 mb-12 lg:mx-[15%] pb-16 pt-28 md:pt-32">
-            {/* Header Section */}
-            <div className="space-y-4">
-               <div className="flex items-center space-x-2">
-                  <h1 className="text-3xl font-bold text-stone-800">
-                     1. Gwembe Valley
-                  </h1>
-               </div>
-
-               <div className="flex items-center space-x-2 text-stone-600">
-                  <h2 className="text-xl">The Leading Ladies Exhibit</h2>
-
-                  <InfoTooltip>
-                     An interactive exhibition showcasing tokenized African
-                     artifacts
-                  </InfoTooltip>
-               </div>
-               <p className="text-stone-600 leading-relaxed">
-                  Our goal is to create a new value addition cycle through the
-                  exhibits on our platform. Through the Women&apos;s History
-                  Museum of Zambia, we connected with the Gwembe Valley community
-                  in the Southern Province of Zambia. Proceeds support
-                  community-voted SDG development projects.
-               </p>
+         {/* Header Section */}
+         <div className="space-y-4">
+            <div className="flex items-center space-x-2">
+               <h1 className="text-3xl font-bold text-stone-800">
+                  1. Gwembe Valley
+               </h1>
             </div>
 
-            {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-               {stats.map((stat, index) => (
-                  <Card
-                     key={index}
-                     className="relative overflow-hidden hover:bg-stone-50 transition-colors"
-                  >
-                     <CardContent className="pt-6">
-                        <div className="absolute top-3 right-3 text-stone-400">
-                           {stat.icon}
-                        </div>
-                        <div className="space-y-2">
-                           <p className="text-4xl font-bold text-stone-800">
-                              {stat.value}
-                           </p>
-                           <p className="text-sm font-medium text-stone-600">
-                              {stat.label}
-                           </p>
-                           <p className="text-xs text-stone-500">
-                              {stat.subtext}
-                           </p>
-                        </div>
-                     </CardContent>
-                  </Card>
-               ))}
+            <div className="flex items-center space-x-2 text-stone-600">
+               <h2 className="text-xl">The Leading Ladies Exhibit</h2>
+
+               <InfoTooltip>
+                  An interactive exhibition showcasing tokenized African artifacts
+               </InfoTooltip>
             </div>
+            <p className="text-stone-600 leading-relaxed">
+               Our goal is to create a new value addition cycle through the
+               exhibits on our platform. Through the Women&apos;s History Museum
+               of Zambia, we connected with the Gwembe Valley community in the
+               Southern Province of Zambia. Proceeds support community-voted SDG
+               development projects.
+            </p>
+         </div>
 
-            {/* Progress Table */}
-            <Card>
-               <CardHeader>
-                  <CardTitle className="text-xl text-stone-800">
-                     Project Milestones
-                  </CardTitle>
-               </CardHeader>
-               <CardContent>
-                  <Table>
-                     <TableHeader>
-                        <TableRow>
-                           <TableHead>Phase</TableHead>
-                           <TableHead>Date</TableHead>
-                           <TableHead>Goal</TableHead>
-                           <TableHead>Status</TableHead>
-                           <TableHead>Transaction</TableHead>
-                        </TableRow>
-                     </TableHeader>
-                     <TableBody>
-                        {tableData.map((row) => (
-                           <TableRow key={row.id_no} className="group">
-                              <TableCell className="font-medium">
-                                 {row.id_no}
-                              </TableCell>
-                              <TableCell>{row.date}</TableCell>
-                              <TableCell className="flex items-center space-x-1">
-                                 <span>{row.goal}</span>
-
-                                 <InfoTooltip>{row.tooltip}</InfoTooltip>
-                              </TableCell>
-                              <TableCell>
-                                 <span
-                                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                                       row.status === 'green'
-                                          ? 'bg-green-100 text-green-800'
-                                          : row.status === 'yellow'
-                                          ? 'bg-yellow-100 text-yellow-800'
-                                          : row.status === 'orange'
-                                          ? 'bg-orange-100 text-orange-800'
-                                          : 'bg-stone-100 text-stone-800'
-                                    }`}
-                                 >
-                                    {row.status === 'green'
-                                       ? 'Completed'
-                                       : row.status === 'yellow'
-                                       ? 'In Progress'
-                                       : row.status === 'orange'
-                                       ? 'Pending'
-                                       : 'Unknown'}
-                                 </span>
-                              </TableCell>
-                              <TableCell>
-                                 <SmartLink transactionId={row.transaction_id} />
-                              </TableCell>
-                           </TableRow>
-                        ))}
-                     </TableBody>
-                  </Table>
-               </CardContent>
-            </Card>
-            {/* Fund Distribution Section */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-               <Card>
-                  <CardHeader>
-                     <CardTitle className="text-xl text-stone-800">
-                        Fund Distribution Scheme
-                     </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                     <div className="space-y-4">
-                        <div className="relative h-4 bg-stone-100 rounded-full overflow-hidden">
-                           <div className="absolute left-0 top-0 h-full w-4/5 bg-stone-800" />
-                        </div>
-                        <div className="grid grid-cols-2 text-sm">
-                           <div>
-                              <p className="font-medium text-stone-800">80%</p>
-                              <p className="text-stone-600">Community Fund</p>
-                           </div>
-                           <div className="text-right">
-                              <p className="font-medium text-stone-800">20%</p>
-                              <p className="text-stone-600">Administrative</p>
-                           </div>
-                        </div>
+         {/* Stats Cards */}
+         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {stats.map((stat, index) => (
+               <Card
+                  key={index}
+                  className="relative overflow-hidden hover:bg-stone-50 transition-colors"
+               >
+                  <CardContent className="pt-6">
+                     <div className="absolute top-3 right-3 text-stone-400">
+                        {stat.icon}
+                     </div>
+                     <div className="space-y-2">
+                        <p className="text-4xl font-bold text-stone-800">
+                           {stat.value}
+                        </p>
+                        <p className="text-sm font-medium text-stone-600">
+                           {stat.label}
+                        </p>
+                        <p className="text-xs text-stone-500">{stat.subtext}</p>
                      </div>
                   </CardContent>
                </Card>
+            ))}
+         </div>
 
-               <Card>
-                  <CardHeader>
-                     <CardTitle className="text-xl text-stone-800">
-                        Next Steps
-                     </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                     <ul className="space-y-3">
-                        <li className="flex items-start space-x-3">
-                           <div className="flex-shrink-0 w-6 h-6 rounded-full bg-stone-100 flex items-center justify-center">
-                              <span className="text-sm font-medium text-stone-800">
-                                 1
+         {/* Progress Table */}
+         <Card>
+            <CardHeader>
+               <CardTitle className="text-xl text-stone-800">
+                  Project Milestones
+               </CardTitle>
+            </CardHeader>
+            <CardContent>
+               <Table>
+                  <TableHeader>
+                     <TableRow>
+                        <TableHead>Phase</TableHead>
+                        <TableHead>Date</TableHead>
+                        <TableHead>Goal</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Transaction</TableHead>
+                     </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                     {tableData.map((row) => (
+                        <TableRow key={row.id_no} className="group">
+                           <TableCell className="font-medium">
+                              {row.id_no}
+                           </TableCell>
+                           <TableCell>{row.date}</TableCell>
+                           <TableCell className="flex items-center space-x-1">
+                              <span>{row.goal}</span>
+
+                              <InfoTooltip>{row.tooltip}</InfoTooltip>
+                           </TableCell>
+                           <TableCell>
+                              <span
+                                 className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                    row.status === 'green'
+                                       ? 'bg-green-100 text-green-800'
+                                       : row.status === 'yellow'
+                                       ? 'bg-yellow-100 text-yellow-800'
+                                       : row.status === 'orange'
+                                       ? 'bg-orange-100 text-orange-800'
+                                       : 'bg-stone-100 text-stone-800'
+                                 }`}
+                              >
+                                 {row.status === 'green'
+                                    ? 'Completed'
+                                    : row.status === 'yellow'
+                                    ? 'In Progress'
+                                    : row.status === 'orange'
+                                    ? 'Pending'
+                                    : 'Unknown'}
                               </span>
-                           </div>
-                           <span className="text-stone-600">
-                              Community voting on development objectives
+                           </TableCell>
+                           <TableCell>
+                              <SmartLink transactionId={row.transaction_id} />
+                           </TableCell>
+                        </TableRow>
+                     ))}
+                  </TableBody>
+               </Table>
+            </CardContent>
+         </Card>
+         {/* Fund Distribution Section */}
+         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card>
+               <CardHeader>
+                  <CardTitle className="text-xl text-stone-800">
+                     Fund Distribution Scheme
+                  </CardTitle>
+               </CardHeader>
+               <CardContent>
+                  <div className="space-y-4">
+                     <div className="relative h-4 bg-stone-100 rounded-full overflow-hidden">
+                        <div className="absolute left-0 top-0 h-full w-4/5 bg-stone-800" />
+                     </div>
+                     <div className="grid grid-cols-2 text-sm">
+                        <div>
+                           <p className="font-medium text-stone-800">80%</p>
+                           <p className="text-stone-600">Community Fund</p>
+                        </div>
+                        <div className="text-right">
+                           <p className="font-medium text-stone-800">20%</p>
+                           <p className="text-stone-600">Administrative</p>
+                        </div>
+                     </div>
+                  </div>
+               </CardContent>
+            </Card>
+
+            <Card>
+               <CardHeader>
+                  <CardTitle className="text-xl text-stone-800">
+                     Next Steps
+                  </CardTitle>
+               </CardHeader>
+               <CardContent>
+                  <ul className="space-y-3">
+                     <li className="flex items-start space-x-3">
+                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-stone-100 flex items-center justify-center">
+                           <span className="text-sm font-medium text-stone-800">
+                              1
                            </span>
-                        </li>
-                        <li className="flex items-start space-x-3">
-                           <div className="flex-shrink-0 w-6 h-6 rounded-full bg-stone-100 flex items-center justify-center">
-                              <span className="text-sm font-medium text-stone-800">
-                                 2
-                              </span>
-                           </div>
-                           <span className="text-stone-600">
-                              Project implementation planning
+                        </div>
+                        <span className="text-stone-600">
+                           Community voting on development objectives
+                        </span>
+                     </li>
+                     <li className="flex items-start space-x-3">
+                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-stone-100 flex items-center justify-center">
+                           <span className="text-sm font-medium text-stone-800">
+                              2
                            </span>
-                        </li>
-                        <li className="flex items-start space-x-3">
-                           <div className="flex-shrink-0 w-6 h-6 rounded-full bg-stone-100 flex items-center justify-center">
-                              <span className="text-sm font-medium text-stone-800">
-                                 3
-                              </span>
-                           </div>
-                           <span className="text-stone-600">
-                              Fund disbursement and project execution
+                        </div>
+                        <span className="text-stone-600">
+                           Project implementation planning
+                        </span>
+                     </li>
+                     <li className="flex items-start space-x-3">
+                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-stone-100 flex items-center justify-center">
+                           <span className="text-sm font-medium text-stone-800">
+                              3
                            </span>
-                        </li>
-                     </ul>
-                  </CardContent>
-               </Card>
-            </div>
+                        </div>
+                        <span className="text-stone-600">
+                           Fund disbursement and project execution
+                        </span>
+                     </li>
+                  </ul>
+               </CardContent>
+            </Card>
+         </div>
       </div>
    );
 };
