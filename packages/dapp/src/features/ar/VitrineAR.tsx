@@ -67,6 +67,9 @@ const ERROR_COPY: Record<ARErrorKind, Omit<ARErrorState, 'kind'>> = {
    },
 };
 
+// The 768 px medallion occupies 75% of its square MindAR target canvas.
+const VERTICAL_MEDALLION_LOWER_EDGE_Y = -0.375;
+
 const createError = (kind: ARErrorKind): ARErrorState => ({
    kind,
    ...ERROR_COPY[kind],
@@ -391,14 +394,18 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
             model.position.z - center.z
          );
 
-         const normalizedModel = new THREE.Group();
-         normalizedModel.rotation.y = artifact.rotationY;
-         normalizedModel.add(model);
+         const uprightArtifact = new THREE.Group();
+         uprightArtifact.rotation.y = artifact.rotationY;
+         uprightArtifact.add(model);
 
-         const flatMarkerMount = new THREE.Group();
-         flatMarkerMount.rotation.x = Math.PI / 2;
-         flatMarkerMount.add(normalizedModel);
-         anchor.group.add(flatMarkerMount);
+         const verticalMedallionMount = new THREE.Group();
+         verticalMedallionMount.position.set(
+            0,
+            VERTICAL_MEDALLION_LOWER_EDGE_Y,
+            0
+         );
+         verticalMedallionMount.add(uprightArtifact);
+         anchor.group.add(verticalMedallionMount);
 
          const disposeModel = disposeObject(model, THREE.Texture);
          if (!mountedRef.current || attemptRef.current !== attempt) {
@@ -488,8 +495,8 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
                   </h1>
                   <p className="mt-4 text-sm leading-6 !text-amber-100/75">
                      The QR opened this exhibit. Next, allow camera access and
-                     point your phone at the separate tracking label lying flat
-                     inside the bell jar.
+                     point your phone at the circular tracking medallion mounted
+                     upright on the stand inside the bell jar.
                   </p>
                   <button
                      type="button"
@@ -569,7 +576,7 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
                   />
                   {phase === 'tracking'
                      ? 'Artifact locked to the vitrine'
-                     : 'Aim at the tracking label under the jar'}
+                     : 'Aim at the medallion on the stand'}
                </div>
             </div>
          )}

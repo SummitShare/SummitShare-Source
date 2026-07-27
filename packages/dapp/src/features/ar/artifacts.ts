@@ -1,3 +1,8 @@
+/**
+ * `displayHeight` is the upright model height in square-target units above the
+ * lower edge of the vertical medallion. `rotationY` yaws that standing model
+ * around the marker image's up axis for per-artifact presentation calibration.
+ */
 export const AR_ARTIFACTS = {
    calabash: {
       slug: 'calabash',
