@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-labelledby="title description">
+  <title id="title">Snuff Cup tracking marker</title>
+  <description id="description">Museum label and MindAR image target for the Snuff Cup vitrine.</description>
+  <rect width="1024" height="1024" fill="#fffdf7"/>
+  <rect x="62" y="62" width="900" height="900" rx="8" fill="#efe4c9"/>
+  <g opacity="0.23"><circle cx="323.9" cy="389.5" r="6.6" fill="none" stroke="#512f1d" stroke-width="3.0"/><path d="M 675.7 241.1 l 12.6 25.9 l -15.6 -2.8" fill="none" stroke="#6c4025" stroke-width="2.2"/><rect x="248.2" y="660.5" width="11.6" height="9.3" fill="#8d5d36" transform="rotate(35 248.2 660.5)"/><circle cx="379.5" cy="643.2" r="7.7" fill="none" stroke="#512f1d" stroke-width="2.3"/><path d="M 127.9 618.1 l -14.5 -15.3 l 11.5 -1.5" fill="none" stroke="#6c4025" stroke-width="2.1"/><rect x="367.4" y="819.4" width="5.8" height="13.3" fill="#8d5d36" transform="rotate(23 367.4 819.4)"/><circle cx="188.6" cy="385.1" r="4.1" fill="none" stroke="#512f1d" stroke-width="2.6"/><path d="M 794.6 372.7 l -15.8 -12.3 l 10.6 -3.1" fill="none" stroke="#6c4025" stroke-width="1.6"/><rect x="428.7" y="388.8" width="5.9" height="10.6" fill="#8d5d36" transform="rotate(-2 428.7 388.8)"/><circle cx="761.6" cy="130.5" r="3.5" fill="none" stroke="#512f1d" stroke-width="2.5"/><path d="M 421.6 117.1 l 4.7 17.0 l -9.1 -3.4" fill="none" stroke="#6c4025" stroke-width="2.3"/><rect x="290.7" y="837.6" width="11.3" height="6.4" fill="#8d5d36" transform="rotate(-15 290.7 837.6)"/><circle cx="396.6" cy="800.9" r="7.8" fill="none" stroke="#512f1d" stroke-width="1.7"/><path d="M 154.0 780.8 l -5.3 -25.7 l 13.2 6.0" fill="none" stroke="#6c4025" stroke-width="2.0"/><rect x="155.6" y="351.1" width="9.5" height="12.8" fill="#8d5d36" transform="rotate(8 155.6 351.1)"/><circle cx="675.9" cy="534.1" r="5.7" fill="none" stroke="#512f1d" stroke-width="2.0"/><path d="M 692.7 421.1 l 7.3 12.0 l -7.7 -0.6" fill="none" stroke="#6c4025" stroke-width="2.3"/><rect x="415.3" y="766.8" width="9.8" height="6.6" fill="#8d5d36" transform="rotate(-13 415.3 766.8)"/><circle cx="161.9" cy="404.7" r="7.9" fill="none" stroke="#512f1d" stroke-width="1.5"/><path d="M 910.2 753.7 l 23.0 -22.8 l 2.7 17.6" fill="none" stroke="#6c4025" stroke-width="1.6"/><rect x="677.8" y="739.9" width="11.1" height="5.5" fill="#8d5d36" transform="rotate(-12 677.8 739.9)"/><circle cx="393.7" cy="425.4" r="3.7" fill="none" stroke="#512f1d" stroke-width="2.3"/><path d="M 567.1 723.4 l 30.1 10.8 l -14.5 9.9" fill="none" stroke="#6c4025" stroke-width="1.9"/><rect x="433.4" y="248.9" width="13.6" height="12.9" fill="#8d5d36" transform="rotate(-17 433.4 248.9)"/><circle cx="402.8" cy="406.9" r="2.1" fill="none" stroke="#512f1d" stroke-width="2.8"/><path d="M 568.3 604.8 l -6.5 11.7 l -3.1 -6.7" fill="none" stroke="#6c4025" stroke-width="2.3"/><rect x="540.9" y="241.3" width="8.3" height="16.4" fill="#8d5d36" transform="rotate(28 540.9 241.3)"/><circle cx="250.1" cy="818.7" r="6.5" fill="none" stroke="#512f1d" stroke-width="2.4"/><path d="M 759.4 432.5 l -5.3 10.1 l -2.7 -5.6" fill="none" stroke="#6c4025" stroke-width="1.5"/><rect x="613.8" y="659.4" width="10.8" height="10.5" fill="#8d5d36" transform="rotate(24 613.8 659.4)"/><circle cx="461.5" cy="410.3" r="7.4" fill="none" stroke="#512f1d" stroke-width="2.2"/><path d="M 182.8 862.4 l 4.8 29.5 l -14.7 -7.4" fill="none" stroke="#6c4025" stroke-width="2.6"/><rect x="506.8" y="895.6" width="7.0" height="7.8" fill="#8d5d36" transform="rotate(-34 506.8 895.6)"/><circle cx="644.5" cy="310.9" r="5.9" fill="none" stroke="#512f1d" stroke-width="2.6"/></g>
+  <path d="M 90 90 H 934 V 934 H 90 Z" fill="none" stroke="#26170f" stroke-width="7"/>
+  <path d="M 107 111 H 910 V 906 H 121 V 136" fill="none" stroke="#9e6a34" stroke-width="2.5"/>
+  <path d="M 90 222 H 934" stroke="#26170f" stroke-width="3"/>
+  <path d="M 90 642 H 934" stroke="#26170f" stroke-width="3"/>
+
+  <g transform="translate(126 122)">
+    <circle cx="44" cy="42" r="37" fill="#321e13"/>
+    <path d="M 18 47 C 28 17, 56 12, 71 35 C 56 32, 44 45, 48 67 C 32 67, 22 60, 18 47 Z" fill="#d7a24c"/>
+    <circle cx="59" cy="25" r="7" fill="#efe4c9"/>
+    <path d="M 8 79 L 86 8" stroke="#321e13" stroke-width="5"/>
+  </g>
+
+  <text x="235" y="142" fill="#362116" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="5">SUMMITSHARE</text>
+  <text x="235" y="177" fill="#76502f" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="600" letter-spacing="3.4">WOMEN OF HISTORY · DIGITAL COLLECTION</text>
+  <text x="872" y="148" text-anchor="end" fill="#362116" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" letter-spacing="2">SS-WH-03</text>
+
+  <g transform="translate(132 279)">
+    <text x="0" y="0" fill="#7b512f" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" letter-spacing="4">ARTIFACT</text>
+    <text x="0" y="92" fill="#23150e" font-family="Georgia, 'Times New Roman', serif" font-size="70" font-weight="700">Snuff Cup</text>
+    <path d="M 0 132 H 610" stroke="#a76d35" stroke-width="5"/>
+    <path d="M 0 147 H 421" stroke="#26170f" stroke-width="2"/>
+    <text x="0" y="198" fill="#3e2b20" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="500">Engraved, oil-treated wood with three openings</text>
+    <text x="0" y="260" fill="#7b512f" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" letter-spacing="3.5">ASSOCIATED HISTORY</text>
+    <text x="0" y="300" fill="#23150e" font-family="Georgia, 'Times New Roman', serif" font-size="27" font-weight="700">Lueji Wa Nkonde · North-Western Zambia</text>
+  </g>
+
+  <g transform="translate(132 700)">
+    <text x="0" y="0" fill="#7b512f" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" letter-spacing="3.5">COLLECTION REFERENCE</text>
+    <text x="0" y="43" fill="#271910" font-family="Arial, Helvetica, sans-serif" font-size="23" font-weight="700">SMVK 1304494 · SummitShare digital twin</text>
+    <text x="0" y="96" fill="#4e3628" font-family="Arial, Helvetica, sans-serif" font-size="17">TRACKING LABEL · KEEP FLAT · DO NOT COVER</text>
+    <path d="M 0 126 H 518" stroke="#26170f" stroke-width="2"/>
+    <g transform="translate(0 154)">
+      <circle cx="9" cy="9" r="9" fill="#26170f"/>
+      <circle cx="43" cy="9" r="6" fill="#a76d35"/>
+      <rect x="68" y="1" width="58" height="16" fill="#26170f"/>
+      <path d="M 148 17 L 165 0 L 183 17 Z" fill="#a76d35"/>
+      <rect x="203" y="0" width="12" height="18" fill="#26170f" transform="rotate(19 209 9)"/>
+    </g>
+  </g>
+
+  <g><rect x="864" y="674" width="26" height="6" fill="#2e1c13"/><rect x="821" y="683" width="69" height="3" fill="#2e1c13"/><rect x="836" y="692" width="54" height="7" fill="#2e1c13"/><rect x="840" y="701" width="50" height="4" fill="#2e1c13"/><rect x="826" y="710" width="64" height="5" fill="#2e1c13"/><rect x="860" y="719" width="30" height="8" fill="#2e1c13"/><rect x="831" y="728" width="59" height="8" fill="#2e1c13"/><rect x="826" y="737" width="64" height="5" fill="#2e1c13"/><rect x="858" y="746" width="32" height="6" fill="#2e1c13"/><rect x="827" y="755" width="63" height="6" fill="#2e1c13"/><rect x="840" y="764" width="50" height="2" fill="#2e1c13"/><rect x="845" y="773" width="45" height="5" fill="#2e1c13"/><rect x="827" y="782" width="63" height="8" fill="#2e1c13"/><rect x="838" y="791" width="52" height="7" fill="#2e1c13"/><rect x="843" y="800" width="47" height="4" fill="#2e1c13"/><rect x="822" y="809" width="68" height="6" fill="#2e1c13"/><rect x="867" y="818" width="23" height="5" fill="#2e1c13"/><rect x="817" y="827" width="73" height="2" fill="#2e1c13"/><rect x="821" y="836" width="69" height="3" fill="#2e1c13"/><rect x="868" y="845" width="22" height="5" fill="#2e1c13"/><rect x="867" y="854" width="23" height="4" fill="#2e1c13"/></g>
+  <g transform="translate(842 268)">
+    <path d="M 0 0 L 72 24 L 43 92 L 8 54 Z" fill="none" stroke="#26170f" stroke-width="4"/>
+    <circle cx="9" cy="11" r="8" fill="#a76d35"/>
+    <circle cx="61" cy="35" r="5" fill="#26170f"/>
+    <path d="M 19 72 L 61 14" stroke="#7c4e2b" stroke-width="3"/>
+  </g>
+  <text x="934" y="892" transform="rotate(-90 934 892)" fill="#513323" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700" letter-spacing="2.5">89 · SS-WH-03 · IMAGE TARGET</text>
+</svg>

@@ -7,7 +7,8 @@
       "build": "next build",
       "start": "next start",
       "lint": "eslint . --ext .ts,.tsx",
-      "format": "prettier --write ."
+      "format": "prettier --write .",
+      "generate:ar": "node scripts/generate-ar-markers.mjs"
    },
    "dependencies": {
       "@apollo/client": "^3.11.10",
@@ -25,6 +26,7 @@
       "ethers": "^5.7.2",
       "gray-matter": "^4.0.3",
       "lucide-react": "^0.292.0",
+      "mind-ar": "^1.2.5",
       "next": "^16.1.6",
       "next-auth": "^4.24.10",
       "nodemailer": "^6.10.1",
@@ -61,6 +63,8 @@
       "postcss": "^8.4.49",
       "postinstall-postinstall": "^2.1.0",
       "prettier": "^3.0.0",
+      "qrcode": "^1.5.4",
+      "sharp": "0.34.5",
       "tailwindcss": "^3.4.17",
       "typescript": "^5.6.3"
    },

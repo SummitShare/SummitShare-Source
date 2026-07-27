@@ -1,0 +1,162 @@
+diff --git a/dist/controller-mGt1s8dJ.js b/dist/controller-mGt1s8dJ.js
+index 2c757fa2f3ddceec9abc4b8d91ed84b85bd9d5eb..16069a539aebc7de800b1c7e6adeb4535d0ce41e 100644
+--- a/dist/controller-mGt1s8dJ.js
++++ b/dist/controller-mGt1s8dJ.js
+@@ -4210,12 +4210,12 @@ if (F().get("IS_BROWSER")) {
+  */
+ const ov = {
+   // tslint:disable-next-line:no-require-imports
+-  importFetch: () => require("node-fetch")
++  importFetch: () => globalThis.fetch.bind(globalThis)
+ };
+ let Lu;
+ class rv {
+   constructor() {
+-    this.util = require("util"), this.textEncoder = new this.util.TextEncoder();
++    this.util = globalThis, this.textEncoder = new TextEncoder();
+   }
+   fetch(t, e) {
+     return F().global.fetch != null ? F().global.fetch(t, e) : (Lu == null && (Lu = ov.importFetch()), Lu(t, e));
+@@ -27771,7 +27771,7 @@ function yr(n) {
+   if (F().get("IS_BROWSER"))
+     t = n instanceof TextDecoder;
+   else {
+-    const { StringDecoder: e } = require("string_decoder");
++    const e = TextDecoder;
+     t = n instanceof e;
+   }
+   return n != null && !ArrayBuffer.isView(n) && (Array.isArray(n) || typeof n == "object" && !(n instanceof Mt) && !(n instanceof Promise) && !t);
+diff --git a/dist/mindar-image-three.prod.js b/dist/mindar-image-three.prod.js
+index c19cd8e9f9a9e90dd3200691d68dc7bad7cf8634..bbd670dc6f84c0aea71b0b4b87c82a20f7a85e11 100644
+--- a/dist/mindar-image-three.prod.js
++++ b/dist/mindar-image-three.prod.js
+@@ -1,4 +1,4 @@
+-import { Matrix4 as Te, Vector3 as Se, Quaternion as Qt, Scene as Ct, WebGLRenderer as Ti, sRGBEncoding as Si, PerspectiveCamera as vi, Group as zt } from "three";
++import { Matrix4 as Te, Vector3 as Se, Quaternion as Qt, Scene as Ct, WebGLRenderer as Ti, SRGBColorSpace as Si, PerspectiveCamera as vi, Group as zt } from "three";
+ import { o as S, b as w, c as y, d as te, E as A, A as Xt, e as de, m as W, f as K, s as U, g as M, h as ue, t as ve, B as Zt, i as Yt, D as Mt, j as Oi, L as es, r as v, k as pe, S as ts, M as ss, T as me, l as Y, n as xt, p as as, q as ae, R as rs, u as ns, v as is, w as $e, x as Z, y as ce, z as Lt, F as he, G as _i, H as Ai, I as Ye, J as Me, K as et, N as re, O as Fe, P as tt, Q as st, U as os, V as us, W as ls, X as ps, Y as at, Z as rt, _ as Ei, $ as R, a0 as le, a1 as nt, a2 as it, a3 as ms, a4 as cs, a5 as ds, a6 as ki, a7 as q, a8 as Ii, a9 as ot, aa as $i, ab as Di, ac as Ci, ad as zi, ae as xi, af as Li, ag as Ve, ah as Re, ai as Pi, aj as Fi, ak as Vi, al as Ri, am as ji, an as Bi, ao as Hi, ap as Wi, aq as hs, ar as Pt, as as P, at as fs, au as Ui, av as ys, aw as qi, ax as Gi, ay as Ki, az as Ji, aA as gs, aB as Qi, aC as Xi, aD as bs, aE as Zi, aF as Ns, aG as Yi, aH as Mi, aI as eo, aJ as to, aK as so, aL as ao, aM as ro, aN as no, aO as io, aP as Oe, aQ as ee, aR as ut, aS as oo, aT as uo, aU as lo, aV as po, aW as mo, aX as co, aY as ho, aZ as fo, a_ as yo, a$ as go, b0 as bo, b1 as No, b2 as wo, b3 as To, b4 as So, b5 as vo, b6 as Oo, b7 as _o, b8 as Ao, b9 as Eo, ba as ko, bb as Io, bc as lt, bd as ws, be as $o, bf as Do, bg as Co, bh as zo, bi as xo, bj as Lo, bk as Po, bl as Fo, bm as Vo, bn as Ro, bo as jo, bp as Bo, bq as Ho, br as Wo, bs as Uo, bt as qo, bu as Go, bv as Ko, bw as Jo, bx as Qo, by as Xo, bz as Zo, bA as Yo, bB as Mo, bC as eu, bD as tu, bE as su, bF as au, bG as ru, bH as nu, bI as iu, bJ as ou, bK as uu, bL as lu, bM as pu, bN as mu, bO as cu, bP as du, bQ as hu, bR as fu, bS as yu, bT as gu, bU as bu, bV as Nu, bW as wu, bX as Tu, bY as Su, bZ as vu, b_ as Ou, b$ as _u, c0 as Au, c1 as Eu, c2 as ku, c3 as Iu, c4 as $u, c5 as pt, c6 as Du, c7 as Cu, c8 as zu, c9 as xu, ca as Lu, cb as Pu, cc as Fu, cd as Vu, ce as Ru, cf as ju, cg as Bu, ch as Hu, ci as Wu, cj as Uu, ck as qu, cl as Gu, cm as Ku, cn as Ju, co as Qu, cp as Xu, cq as Zu, cr as Yu, cs as Mu, ct as mt, cu as ct, cv as el, cw as tl, cx as sl, cy as al, cz as rl, cA as nl, cB as il, cC as ol, cD as dt, cE as z, cF as Ts, cG as Ss, cH as vs, cI as Os, cJ as _s, cK as As, cL as Es, cM as ks, cN as Is, cO as $s, cP as Ds, cQ as Cs, cR as zs, cS as xs, cT as Ls, cU as Ps, cV as Fs, cW as Vs, cX as Rs, cY as js, cZ as Bs, c_ as Hs, c$ as Ws, d0 as Us, d1 as qs, d2 as Gs, d3 as Ks, d4 as Js, d5 as Qs, d6 as Xs, d7 as Zs, d8 as Ys, d9 as Ms, da as ea, db as ta, dc as sa, dd as aa, de as ra, df as na, dg as ia, dh as oa, di as ua, dj as la, dk as pa, dl as ma, dm as ca, dn as da, dp as ha, dq as fa, dr as ya, ds as ga, dt as ba, du as ht, dv as Na, dw as wa, dx as Ta, dy as Sa, dz as va, dA as Oa, dB as _a, dC as Aa, dD as Ea, dE as ka, dF as ft, dG as Ia, dH as $a, dI as Da, dJ as Ca, dK as za, dL as xa, dM as La, dN as Pa, dO as Fa, dP as Va, dQ as Ra, dR as ja, dS as Ba, dT as Ha, dU as Wa, dV as Ua, dW as qa, dX as Ga, dY as Ka, dZ as Ja, d_ as Qa, d$ as Xa, e0 as Za, e1 as Ya, e2 as Ma, e3 as er, e4 as tr, e5 as sr, e6 as ar, e7 as rr, e8 as nr, e9 as ir, ea as or, eb as ur, ec as lr, ed as pr, ee as mr, ef as cr, eg as dr, eh as hr, ei as fr, ej as yr, ek as gr, el as br, em as Nr, en as wr, eo as Tr, ep as Sr, eq as vr, er as Or, es as _r, et as Ar, eu as Er, ev as kr, ew as Ir, ex as $r, ey as Dr, ez as Cr, eA as zr, eB as xr, eC as Lr, eD as Pr, eE as Fr, eF as Vr, eG as se, eH as Rr, eI as jr, eJ as Br, eK as Hr, eL as Wr, eM as yt, eN as _e, eO as Ur, eP as qr, eQ as Gr, eR as Kr, eS as Jr, eT as Qr, eU as ne, eV as Xr, eW as Zr, eX as Yr, eY as Mr, eZ as V, e_ as L, e$ as Ae, f0 as en, f1 as gt, f2 as De, f3 as ul, f4 as tn, f5 as ll, f6 as sn, f7 as an, f8 as pl, f9 as ml, fa as rn, fb as cl, fc as dl, fd as hl, fe as fl, ff as yl, fg as gl, fh as bl, fi as Nl, fj as wl, fk as Tl, fl as Sl, fm as vl, fn as Ol, fo as _l, fp as Al, fq as El, fr as kl, fs as Il, ft as $l, fu as Dl, fv as Cl, fw as zl, fx as xl, fy as Ll, fz as Pl, fA as Fl, fB as Vl, fC as Rl, fD as jl, fE as Bl, fF as Hl, fG as Wl, fH as Ul, fI as ql, fJ as Gl, fK as Kl, fL as Jl, fM as Ql, fN as Xl, fO as Zl, fP as Yl, fQ as Ml, fR as ep, fS as tp, fT as sp, fU as ap, fV as rp, fW as np, fX as ip, fY as op, fZ as up, f_ as lp, f$ as pp, g0 as mp, g1 as cp, g2 as dp, g3 as hp, g4 as fp, g5 as yp, g6 as gp, g7 as bp, g8 as Np, g9 as wp, ga as Tp, gb as Sp, gc as vp, gd as Op, ge as _p, gf as Ap, gg as Ep, gh as kp, gi as Ip, gj as $p, gk as Dp, gl as Cp, gm as zp, gn as xp, go as Lp, gp as Pp, gq as Fp, gr as Vp, gs as Rp, gt as jp, gu as Bp, gv as Hp, gw as Wp, gx as Up, gy as qp, gz as Gp, gA as Kp, gB as Jp, gC as Qp, gD as Xp, gE as Zp, gF as Yp, gG as Mp, gH as em, gI as tm, gJ as sm, gK as am, gL as rm, gM as nm, gN as im, gO as om, gP as um, gQ as lm, gR as pm, gS as mm, gT as cm, gU as dm, gV as hm, gW as fm, gX as ym, gY as gm, gZ as bm, g_ as Nm, g$ as wm, h0 as Tm, h1 as Sm, h2 as vm, h3 as Om, h4 as _m, h5 as Am, h6 as Em, h7 as km, h8 as Im, h9 as $m, ha as Dm, hb as Cm, hc as zm, hd as xm, he as Lm, hf as Pm, hg as Fm, hh as Vm, hi as Rm, hj as jm, hk as Bm, hl as Hm, hm as Wm, hn as Um, ho as qm, hp as Gm, hq as Km, hr as Jm, hs as Qm, ht as Xm, hu as Zm, hv as Ym, hw as Mm, hx as ec, hy as tc, hz as sc, hA as ac, hB as rc, hC as nc, hD as ic, hE as oc, hF as uc, hG as lc, hH as pc, hI as mc, hJ as cc, hK as dc, hL as hc, hM as fc, hN as yc, hO as gc, hP as bc, hQ as Nc, hR as wc, hS as Tc, hT as Sc, hU as vc, hV as Oc, hW as _c, hX as Ac, hY as Ec, hZ as kc, h_ as Ic, h$ as $c, i0 as Dc, i1 as Cc, i2 as zc, i3 as xc, i4 as Lc, i5 as Pc, i6 as Fc, i7 as Vc, i8 as Rc, i9 as jc, ia as Bc, ib as Hc, ic as Wc, id as Uc, ie as qc, ig as Gc, ih as Kc, ii as Jc, ij as Qc, ik as Xc, il as Zc, im as Yc, io as Mc, ip as ed, iq as td, ir as sd, is as ad, it as rd, iu as nd, iv as id, iw as od, ix as ud, iy as ld, iz as pd, iA as md, iB as cd, iC as dd, iD as hd, iE as fd, iF as yd, iG as gd, iH as bd, iI as Nd, iJ as wd, iK as Td, iL as Sd, iM as vd, iN as Od, iO as _d, iP as Ad, iQ as Ed, iR as kd, iS as Id, iT as $d, iU as Dd, iV as Cd, iW as zd, iX as xd, iY as Ld, iZ as Pd, C as Fd } from "./controller-mGt1s8dJ.js";
+ import { CSS3DRenderer as Vd } from "three/addons/renderers/CSS3DRenderer.js";
+ import { U as Rd } from "./ui-fBadYuor.js";
+@@ -12749,8 +12749,7 @@ class Vb extends tn {
+     if (super(), this.upstream = e, P().get("IS_BROWSER"))
+       this.decoder = new TextDecoder("utf-8");
+     else {
+-      const { StringDecoder: t } = require("string_decoder");
+-      this.decoder = new t("utf8");
++      this.decoder = new TextDecoder("utf-8");
+     }
+   }
+   summary() {
+@@ -12899,8 +12898,7 @@ class hi extends pi {
+   }
+   async iterator() {
+     if (di(this.input) && P().get("IS_NODE")) {
+-      const e = require("fs");
+-      this.input = e.readFileSync(this.input.slice(7));
++      throw new Error("file:// inputs are unavailable in the MindAR browser build");
+     }
+     return new ci(this.input, this.options);
+   }
+@@ -13580,15 +13578,15 @@ class Zb {
+     userDeviceId: c = null,
+     environmentDeviceId: d = null
+   }) {
+-    this.container = e, this.imageTargetSrc = t, this.maxTrack = a, this.filterMinCF = o, this.filterBeta = l, this.warmupTolerance = p, this.missTolerance = m, this.ui = new Rd({ uiLoading: r, uiScanning: n, uiError: u }), this.userDeviceId = c, this.environmentDeviceId = d, this.shouldFaceUser = !1, this.scene = new Ct(), this.cssScene = new Ct(), this.renderer = new Ti({ antialias: !0, alpha: !0 }), this.cssRenderer = new Vd({ antialias: !0 }), this.renderer.outputEncoding = Si, this.renderer.setPixelRatio(window.devicePixelRatio), this.camera = new vi(), this.anchors = [], this.renderer.domElement.style.position = "absolute", this.cssRenderer.domElement.style.position = "absolute", this.container.appendChild(this.renderer.domElement), this.container.appendChild(this.cssRenderer.domElement), window.addEventListener("resize", this.resize.bind(this));
++    this.container = e, this.imageTargetSrc = t, this.maxTrack = a, this.filterMinCF = o, this.filterBeta = l, this.warmupTolerance = p, this.missTolerance = m, this.ui = new Rd({ uiLoading: r, uiScanning: n, uiError: u }), this.userDeviceId = c, this.environmentDeviceId = d, this.shouldFaceUser = !1, this.scene = new Ct(), this.cssScene = new Ct(), this.renderer = new Ti({ antialias: !0, alpha: !0 }), this.cssRenderer = new Vd({ antialias: !0 }), this.renderer.outputColorSpace = Si, this.renderer.setPixelRatio(window.devicePixelRatio), this.camera = new vi(), this.anchors = [], this.renderer.domElement.style.position = "absolute", this.cssRenderer.domElement.style.position = "absolute", this.container.appendChild(this.renderer.domElement), this.container.appendChild(this.cssRenderer.domElement), this._resizeHandler = this.resize.bind(this), window.addEventListener("resize", this._resizeHandler);
+   }
+   async start() {
+     this.ui.showLoading(), await this._startVideo(), await this._startAR();
+   }
+   stop() {
+-    this.controller.stopProcessVideo(), this.video.srcObject.getTracks().forEach(function(t) {
++    this.controller && this.controller.dispose(), this.video && this.video.srcObject && this.video.srcObject.getTracks().forEach(function(t) {
+       t.stop();
+-    }), this.video.remove();
++    }), this.video && this.video.remove(), this._resizeHandler && window.removeEventListener("resize", this._resizeHandler);
+   }
+   switchCamera() {
+     this.shouldFaceUser = !this.shouldFaceUser, this.stop(), this.start();
+diff --git a/src/image-target/offline-compiler.js b/src/image-target/offline-compiler.js
+index 992024ce118e8890bc64dd8dfc5192a765bbcba8..0bf2cfc223942e157869ba6bdc39a7edfa5203de 100644
+--- a/src/image-target/offline-compiler.js
++++ b/src/image-target/offline-compiler.js
+@@ -1,13 +1,20 @@
+ import {CompilerBase} from './compiler-base.js'
+ import { buildTrackingImageList } from './image-list.js';
+ import { extractTrackingFeatures } from './tracker/extract-utils.js';
+-import { createCanvas } from 'canvas'
+ import './detector/kernels/cpu/index.js'
+ 
+ export class OfflineCompiler extends CompilerBase {
+   createProcessCanvas(img) {
+-    const processCanvas = createCanvas(img.width, img.height);
+-    return processCanvas;
++    if (!img.data || img.data.length !== img.width * img.height * 4) {
++      throw new Error('OfflineCompiler expects raw RGBA image data');
++    }
++
++    return {
++      getContext: () => ({
++        drawImage: () => {},
++        getImageData: () => ({data: img.data}),
++      }),
++    };
+   }
+ 
+   compileTrack({progressCallback, targetImages, basePercent}) {
+diff --git a/src/image-target/three.js b/src/image-target/three.js
+index aed5e353c228e48b9d1b1e6d42e817b93295d8ed..133a3781e055e6558a3f1561616073ad560e79b5 100644
+--- a/src/image-target/three.js
++++ b/src/image-target/three.js
+@@ -1,4 +1,4 @@
+-import { Matrix4, Vector3, Quaternion, Scene, WebGLRenderer, PerspectiveCamera, Group, sRGBEncoding } from "three";
++import { Matrix4, Vector3, Quaternion, Scene, WebGLRenderer, PerspectiveCamera, Group, SRGBColorSpace } from "three";
+ import * as tf from '@tensorflow/tfjs';
+ //import { CSS3DRenderer } from '../libs/CSS3DRenderer.js';
+ import {CSS3DRenderer} from 'three/addons/renderers/CSS3DRenderer.js'
+@@ -33,7 +33,7 @@ export class MindARThree {
+     this.cssScene = new Scene();
+     this.renderer = new WebGLRenderer({ antialias: true, alpha: true });
+     this.cssRenderer = new CSS3DRenderer({ antialias: true });
+-    this.renderer.outputEncoding = sRGBEncoding;
++    this.renderer.outputColorSpace = SRGBColorSpace;
+     this.renderer.setPixelRatio(window.devicePixelRatio);
+     this.camera = new PerspectiveCamera();
+     this.anchors = [];
+@@ -43,7 +43,8 @@ export class MindARThree {
+     this.container.appendChild(this.renderer.domElement);
+     this.container.appendChild(this.cssRenderer.domElement);
+ 
+-    window.addEventListener('resize', this.resize.bind(this));
++    this._resizeHandler = this.resize.bind(this);
++    window.addEventListener('resize', this._resizeHandler);
+   }
+ 
+   async start() {
+@@ -53,12 +54,21 @@ export class MindARThree {
+   }
+ 
+   stop() {
+-    this.controller.stopProcessVideo();
+-    const tracks = this.video.srcObject.getTracks();
+-    tracks.forEach(function (track) {
+-      track.stop();
+-    });
+-    this.video.remove();
++    if (this.controller) {
++      this.controller.dispose();
++    }
++    if (this.video && this.video.srcObject) {
++      const tracks = this.video.srcObject.getTracks();
++      tracks.forEach(function (track) {
++        track.stop();
++      });
++    }
++    if (this.video) {
++      this.video.remove();
++    }
++    if (this._resizeHandler) {
++      window.removeEventListener('resize', this._resizeHandler);
++    }
+   }
+ 
+   switchCamera() {
