@@ -31,6 +31,52 @@ const MEDALLION_RADIUS = 384;
 const MEDALLION_DETAIL_RADIUS = MEDALLION_RADIUS - 18;
 const ASYMMETRY_ROTATIONS = [45, 90, 135, 180];
 const MINIMUM_ASYMMETRY_PERCENT = 16;
+// These profiles vary only neutral geometry and texture density; they carry no
+// semantic relationship to the artifacts assigned to them.
+const ABSTRACT_PROFILES = [
+   {
+      formKind: 'wedge',
+      hatchClusters: 8,
+      hatchDensity: 0.9,
+      dominantDistance: 62,
+      dominantScale: 1.1,
+   },
+   {
+      formKind: 'bar',
+      hatchClusters: 10,
+      hatchDensity: 1.04,
+      dominantDistance: 102,
+      dominantScale: 0.88,
+   },
+   {
+      formKind: 'wideArc',
+      hatchClusters: 12,
+      hatchDensity: 0.92,
+      dominantDistance: 142,
+      dominantScale: 1.02,
+   },
+   {
+      formKind: 'blob',
+      hatchClusters: 9,
+      hatchDensity: 1.36,
+      dominantDistance: 178,
+      dominantScale: 0.92,
+   },
+   {
+      formKind: 'slenderWedge',
+      hatchClusters: 13,
+      hatchDensity: 1.12,
+      dominantDistance: 190,
+      dominantScale: 0.84,
+   },
+   {
+      formKind: 'shortArc',
+      hatchClusters: 11,
+      hatchDensity: 1.42,
+      dominantDistance: 158,
+      dominantScale: 1.12,
+   },
+];
 
 const parsePrintedDiameter = () => {
    const configured = process.env.AR_MARKER_DIAMETER_MM?.trim();
@@ -128,12 +174,12 @@ const makeReliefPatches = (random) =>
       }" opacity="${index % 4 === 0 ? '0.21' : '0.11'}"/>`;
    }).join('');
 
-const makeHatchField = (random) => {
+const makeHatchField = (random, profile) => {
    const hatches = [];
    const dominantAngle = random() * Math.PI;
    const denseSide = random() * Math.PI * 2;
 
-   for (let cluster = 0; cluster < 10; cluster += 1) {
+   for (let cluster = 0; cluster < profile.hatchClusters; cluster += 1) {
       const clusterAngle =
          cluster < 4
             ? denseSide + (random() - 0.5) * 1.25
@@ -146,7 +192,9 @@ const makeHatchField = (random) => {
          dominantAngle +
          (cluster % 3) * (0.34 + random() * 0.25) +
          (random() - 0.5) * 0.22;
-      const count = 13 + Math.floor(random() * 16);
+      const count = Math.round(
+         (13 + Math.floor(random() * 16)) * profile.hatchDensity
+      );
 
       for (let index = 0; index < count; index += 1) {
          const spreadX = (random() + random() - 1) * (52 + random() * 54);
@@ -173,11 +221,32 @@ const makeHatchField = (random) => {
 
 const makeMicroMarks = (random) => {
    const marks = [];
+   const clusters = Array.from(
+      { length: 4 + Math.floor(random() * 3) },
+      (_, index) => {
+         const angle = random() * Math.PI * 2;
+         const distance =
+            (0.16 + Math.pow(random(), 0.8) * 0.58) * MEDALLION_DETAIL_RADIUS;
+         return {
+            x: MEDALLION_CENTER + Math.cos(angle) * distance,
+            y: MEDALLION_CENTER + Math.sin(angle) * distance,
+            spread: 24 + random() * (index === 0 ? 58 : 92),
+         };
+      }
+   );
+
    for (let index = 0; index < 122; index += 1) {
+      const clustered = random() < 0.72;
+      const cluster =
+         clusters[Math.floor(random() * clusters.length)] ?? clusters[0];
       const angle = random() * Math.PI * 2;
-      const distance = Math.sqrt(random()) * (MEDALLION_DETAIL_RADIUS - 20);
-      const x = MEDALLION_CENTER + Math.cos(angle) * distance;
-      const y = MEDALLION_CENTER + Math.sin(angle) * distance;
+      const distance = clustered
+         ? Math.sqrt(random()) * cluster.spread
+         : Math.sqrt(random()) * (MEDALLION_DETAIL_RADIUS - 20);
+      const x =
+         (clustered ? cluster.x : MEDALLION_CENTER) + Math.cos(angle) * distance;
+      const y =
+         (clustered ? cluster.y : MEDALLION_CENTER) + Math.sin(angle) * distance;
       const markAngle = random() * Math.PI * 2;
       const length = 5 + random() * 16;
       const dx = Math.cos(markAngle) * length;
@@ -288,62 +357,113 @@ const makeBrokenRim = (random) => {
    return pieces.join('');
 };
 
-const EMBLEMS = [
-   `<path d="M -35 -116 C -57 -89 -53 -54 -72 -26 C -111 28 -83 104 -18 126 C 47 149 112 100 98 34 C 91 2 62 -15 56 -48 C 51 -78 14 -103 -35 -116 Z" fill="#f7f5ed" stroke="#c34e2c" stroke-width="10"/>
-    <path d="M -38 -88 C -7 -65 -2 -37 -18 -10 C -39 26 -24 73 18 98 M 30 -67 C 8 -33 18 5 51 29 M -61 35 C -24 23 17 42 43 75" fill="none" stroke="#101317" stroke-width="8" stroke-linecap="round"/>
-    <path d="M -52 -119 C -39 -142 -6 -148 13 -132 C 3 -121 -13 -109 -29 -99" fill="none" stroke="#f7f5ed" stroke-width="9" stroke-linecap="round"/>
-    <circle cx="66" cy="-51" r="13" fill="#101317"/>`,
-   `<path d="M -119 16 C -91 -74 -4 -121 78 -82 C 128 -58 131 11 94 61 C 53 116 -54 128 -105 75 C -125 54 -130 37 -119 16 Z" fill="#f7f5ed" stroke="#c34e2c" stroke-width="10"/>
-    <path d="M -70 23 C -32 -14 26 -31 73 -9 C 38 4 18 31 8 72 C -19 47 -43 34 -70 23 Z" fill="#101317"/>
-    <path d="M -44 12 L -27 35 M -15 -4 L 3 23 M 20 -13 L 34 13 M 50 -15 L 60 2" stroke="#c34e2c" stroke-width="7" stroke-linecap="round"/>
-    <path d="M -96 -21 C -75 -65 -32 -88 12 -90" fill="none" stroke="#101317" stroke-width="7" stroke-linecap="round"/>
-    <circle cx="-78" cy="75" r="12" fill="#101317"/>`,
-   `<path d="M -86 -102 L 67 -80 L 99 82 L -68 110 Z" fill="#f7f5ed" stroke="#c34e2c" stroke-width="10"/>
-    <path d="M -86 -102 C -46 -127 31 -116 67 -80 M -68 110 C -19 132 60 118 99 82" fill="none" stroke="#101317" stroke-width="11" stroke-linecap="round"/>
-    <path d="M -67 -68 L 79 48 M -72 -23 L 88 89 M -45 -91 L 86 7 M -61 67 L 51 113" stroke="#101317" stroke-width="6" stroke-linecap="round"/>
-    <path d="M 91 -76 L 127 -123 M 111 -117 L 135 -102" stroke="#f7f5ed" stroke-width="10" stroke-linecap="round"/>
-    <circle cx="-86" cy="30" r="13" fill="#c34e2c"/>`,
-   `<path d="M -121 -51 C -68 -88 23 -96 112 -66 L 86 -22 C 32 -37 -31 -24 -88 2 Z" fill="#f7f5ed" stroke="#c34e2c" stroke-width="10"/>
-    <path d="M -70 -1 L -43 90 L -6 91 L 14 -27 M 60 -30 L 72 62" fill="none" stroke="#f7f5ed" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M -62 94 C -14 111 44 99 86 67" fill="none" stroke="#c34e2c" stroke-width="12" stroke-linecap="round"/>
-    <path d="M -70 17 L -28 6 M 27 -17 L 57 -8" stroke="#101317" stroke-width="8" stroke-linecap="round"/>
-    <circle cx="98" cy="-50" r="11" fill="#101317"/>`,
-   `<path d="M -58 -125 C -99 -89 -112 -26 -92 48 C -71 121 13 141 72 91 C 116 54 110 -32 73 -88 C 42 -135 -14 -151 -58 -125 Z" fill="#f7f5ed" stroke="#c34e2c" stroke-width="10"/>
-    <path d="M -74 -80 L -112 -105 M -70 -49 L -123 -56 M 61 -95 L 89 -121" stroke="#f7f5ed" stroke-width="12" stroke-linecap="round"/>
-    <ellipse cx="-38" cy="-29" rx="24" ry="14" fill="#101317" transform="rotate(-17 -38 -29)"/>
-    <path d="M 18 -45 L 57 -26 L 26 -8 Z" fill="#101317"/>
-    <path d="M -4 -23 C -19 19 -10 41 18 47 M -38 75 C -6 58 30 64 51 85" fill="none" stroke="#101317" stroke-width="9" stroke-linecap="round"/>
-    <circle cx="72" cy="29" r="12" fill="#c34e2c"/>`,
-   `<path d="M -90 -71 C -46 -105 37 -101 75 -55 L 65 88 C 17 119 -49 113 -82 72 Z" fill="#f7f5ed" stroke="#c34e2c" stroke-width="10"/>
-    <path d="M 72 -43 C 130 -50 134 29 93 56 C 83 63 75 66 66 65" fill="none" stroke="#f7f5ed" stroke-width="18" stroke-linecap="round"/>
-    <ellipse cx="-44" cy="-67" rx="24" ry="13" fill="#101317" transform="rotate(-9 -44 -67)"/>
-    <ellipse cx="7" cy="-76" rx="20" ry="12" fill="#101317" transform="rotate(13 7 -76)"/>
-    <ellipse cx="49" cy="-56" rx="16" ry="10" fill="#101317" transform="rotate(-22 49 -56)"/>
-    <path d="M -62 -18 C -18 3 8 31 31 78 M -28 -42 C -2 -24 25 -8 54 -3" fill="none" stroke="#101317" stroke-width="8" stroke-linecap="round"/>
-    <circle cx="-75" cy="60" r="11" fill="#c34e2c"/>`,
-];
-
-const makeEmblem = (variant, random) => {
-   const angle = random() * 32 - 16;
+const makeAbstractComposition = (random, profile) => {
+   const angle = random() * 300 - 150;
    const direction = random() * Math.PI * 2;
-   const distance = 72 + random() * 42;
+   const distance = profile.dominantDistance + (random() - 0.5) * 10;
    const x = MEDALLION_CENTER + Math.cos(direction) * distance;
    const y = MEDALLION_CENTER + Math.sin(direction) * distance;
-   const scale = 0.88 + random() * 0.16;
+   const scale = profile.dominantScale + (random() - 0.5) * 0.06;
+   let form;
+
+   if (profile.formKind === 'wedge') {
+      const width = 208 + random() * 62;
+      const height = 150 + random() * 54;
+      form = `<path d="M ${fixed(-width * 0.58)} ${fixed(
+         -height * 0.32
+      )} L ${fixed(width * 0.37)} ${fixed(-height * 0.52)} L ${fixed(
+         width * 0.56
+      )} ${fixed(height * 0.27)} L ${fixed(-width * 0.34)} ${fixed(
+         height * 0.54
+      )} Z" fill="#f7f5ed" stroke="#c34e2c" stroke-width="11" stroke-linejoin="round"/>`;
+   } else if (profile.formKind === 'bar') {
+      const width = 226 + random() * 72;
+      const height = 82 + random() * 38;
+      const corner = 13 + random() * 19;
+      form = `<rect x="${fixed(-width / 2)}" y="${fixed(
+         -height / 2
+      )}" width="${fixed(width)}" height="${fixed(height)}" rx="${fixed(
+         corner
+      )}" fill="#f7f5ed" stroke="#c34e2c" stroke-width="12"/>`;
+   } else if (profile.formKind === 'wideArc' || profile.formKind === 'shortArc') {
+      const radius = 91 + random() * 30;
+      const startAngle = -1.55 + random() * 0.42;
+      const sweep =
+         profile.formKind === 'wideArc'
+            ? 2.2 + random() * 0.68
+            : 1.38 + random() * 0.42;
+      const endAngle = startAngle + sweep;
+      const startX = Math.cos(startAngle) * radius;
+      const startY = Math.sin(startAngle) * radius;
+      const endX = Math.cos(endAngle) * radius;
+      const endY = Math.sin(endAngle) * radius;
+      const arc = `M ${fixed(startX)} ${fixed(startY)} A ${fixed(radius)} ${fixed(
+         radius
+      )} 0 0 1 ${fixed(endX)} ${fixed(endY)}`;
+      const strokeWidth =
+         profile.formKind === 'wideArc' ? 66 + random() * 24 : 88 + random() * 22;
+      form = `<path d="${arc}" fill="none" stroke="#c34e2c" stroke-width="${fixed(
+         strokeWidth + 18
+      )}" stroke-linecap="round"/>
+      <path d="${arc}" fill="none" stroke="#f7f5ed" stroke-width="${fixed(
+         strokeWidth
+      )}" stroke-linecap="round"/>`;
+   } else if (profile.formKind === 'blob') {
+      const pointCount = 7;
+      const points = Array.from({ length: pointCount }, (_, index) => {
+         const pointAngle =
+            (index / pointCount) * Math.PI * 2 + (random() - 0.5) * 0.17;
+         const radiusX = 102 + random() * 38;
+         const radiusY = 82 + random() * 42;
+         return {
+            x: Math.cos(pointAngle) * radiusX,
+            y: Math.sin(pointAngle) * radiusY,
+         };
+      });
+      const midpoint = (first, second) => ({
+         x: (first.x + second.x) / 2,
+         y: (first.y + second.y) / 2,
+      });
+      const firstMidpoint = midpoint(points.at(-1), points[0]);
+      const pathSegments = points.map((point, index) => {
+         const next = points[(index + 1) % pointCount];
+         const nextMidpoint = midpoint(point, next);
+         return `Q ${fixed(point.x)} ${fixed(point.y)} ${fixed(
+            nextMidpoint.x
+         )} ${fixed(nextMidpoint.y)}`;
+      });
+      form = `<path d="M ${fixed(firstMidpoint.x)} ${fixed(
+         firstMidpoint.y
+      )} ${pathSegments.join(
+         ' '
+      )} Z" fill="#f7f5ed" stroke="#c34e2c" stroke-width="11" stroke-linejoin="round"/>`;
+   } else {
+      const width = 174 + random() * 42;
+      const height = 194 + random() * 48;
+      form = `<path d="M ${fixed(-width * 0.56)} ${fixed(
+         -height * 0.46
+      )} L ${fixed(width * 0.38)} ${fixed(-height * 0.34)} L ${fixed(
+         width * 0.55
+      )} ${fixed(height * 0.43)} L ${fixed(-width * 0.28)} ${fixed(
+         height * 0.52
+      )} Z" fill="#f7f5ed" stroke="#c34e2c" stroke-width="12" stroke-linejoin="round"/>`;
+   }
+
    return `<g transform="translate(${fixed(x)} ${fixed(y)}) rotate(${fixed(
       angle
-   )}) scale(${scale.toFixed(3)})">${EMBLEMS[variant]}</g>`;
+   )}) scale(${scale.toFixed(3)})">${form}</g>`;
 };
 
-const makeMarkerSvg = (artifact, emblemVariant) => {
+const makeMarkerSvg = (artifact, profileIndex) => {
    const seed = hashSlug(artifact.slug);
    const random = randomFromSeed(seed);
+   const profile = ABSTRACT_PROFILES[profileIndex];
    const clipId = `medallion-${artifact.slug}`;
    const reliefPatches = makeReliefPatches(random);
-   const hatchField = makeHatchField(random);
+   const hatchField = makeHatchField(random, profile);
    const microMarks = makeMicroMarks(random);
    const brokenRim = makeBrokenRim(random);
-   const emblem = makeEmblem(emblemVariant, random);
+   const abstractComposition = makeAbstractComposition(random, profile);
 
    return `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="${PRINT_CANVAS_SIZE_MM.toFixed(
@@ -366,7 +486,7 @@ const makeMarkerSvg = (artifact, emblemVariant) => {
     ${hatchField}
     ${microMarks}
     ${brokenRim}
-    ${emblem}
+    ${abstractComposition}
   </g>
   <circle cx="${MEDALLION_CENTER}" cy="${MEDALLION_CENTER}" r="${MEDALLION_RADIUS}" fill="none" stroke="#101317" stroke-width="9"/>
 </svg>`;
@@ -693,8 +813,8 @@ const main = async () => {
 
    const generatedRasters = [];
 
-   for (const [artifactIndex, artifact] of artifacts.entries()) {
-      const markerSvg = makeMarkerSvg(artifact, artifactIndex);
+   for (const [profileIndex, artifact] of artifacts.entries()) {
+      const markerSvg = makeMarkerSvg(artifact, profileIndex);
       const routeUrl = new URL(`ar/${artifact.slug}`, baseUrl).href;
       const qrSvg = makeQrSvg(artifact, routeUrl);
       const raster = await renderTargetPixels(artifact, markerSvg);
