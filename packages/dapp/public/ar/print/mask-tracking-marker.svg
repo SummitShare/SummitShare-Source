@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-labelledby="title description">
+  <title id="title">Luvale Mask tracking marker</title>
+  <description id="description">Museum label and MindAR image target for the Luvale Mask vitrine.</description>
+  <rect width="1024" height="1024" fill="#fffdf7"/>
+  <rect x="62" y="62" width="900" height="900" rx="8" fill="#efe4c9"/>
+  <g opacity="0.23"><circle cx="318.8" cy="834.0" r="6.8" fill="none" stroke="#512f1d" stroke-width="2.0"/><path d="M 131.6 270.8 l -25.3 -3.1 l 9.5 -10.2" fill="none" stroke="#6c4025" stroke-width="2.4"/><rect x="855.3" y="695.4" width="9.0" height="13.8" fill="#8d5d36" transform="rotate(3 855.3 695.4)"/><circle cx="830.2" cy="446.3" r="3.1" fill="none" stroke="#512f1d" stroke-width="2.0"/><path d="M 900.8 613.9 l -23.8 2.7 l 6.5 -11.5" fill="none" stroke="#6c4025" stroke-width="2.0"/><rect x="704.2" y="598.1" width="7.2" height="8.1" fill="#8d5d36" transform="rotate(-11 704.2 598.1)"/><circle cx="670.0" cy="626.2" r="8.0" fill="none" stroke="#512f1d" stroke-width="3.1"/><path d="M 216.3 249.5 l -1.8 26.7 l -11.3 -9.4" fill="none" stroke="#6c4025" stroke-width="1.2"/><rect x="466.9" y="465.6" width="6.1" height="6.0" fill="#8d5d36" transform="rotate(7 466.9 465.6)"/><circle cx="133.6" cy="401.6" r="3.1" fill="none" stroke="#512f1d" stroke-width="3.0"/><path d="M 579.8 517.1 l -21.5 -22.4 l 16.9 -2.3" fill="none" stroke="#6c4025" stroke-width="2.2"/><rect x="382.4" y="576.4" width="12.0" height="6.5" fill="#8d5d36" transform="rotate(21 382.4 576.4)"/><circle cx="237.8" cy="370.0" r="4.0" fill="none" stroke="#512f1d" stroke-width="2.3"/><path d="M 666.0 187.2 l -10.8 1.6 l 2.8 -5.3" fill="none" stroke="#6c4025" stroke-width="2.5"/><rect x="777.0" y="304.6" width="12.9" height="11.2" fill="#8d5d36" transform="rotate(-10 777.0 304.6)"/><circle cx="517.3" cy="320.3" r="5.6" fill="none" stroke="#512f1d" stroke-width="1.9"/><path d="M 499.1 373.0 l -15.0 14.7 l -1.7 -11.4" fill="none" stroke="#6c4025" stroke-width="2.6"/><rect x="270.5" y="196.0" width="12.8" height="8.4" fill="#8d5d36" transform="rotate(-23 270.5 196.0)"/><circle cx="920.7" cy="902.4" r="4.6" fill="none" stroke="#512f1d" stroke-width="2.3"/><path d="M 888.6 530.1 l 7.2 9.1 l -6.4 0.2" fill="none" stroke="#6c4025" stroke-width="1.8"/><rect x="542.5" y="803.4" width="9.5" height="10.1" fill="#8d5d36" transform="rotate(-28 542.5 803.4)"/><circle cx="426.8" cy="438.3" r="4.5" fill="none" stroke="#512f1d" stroke-width="2.5"/><path d="M 406.0 127.8 l -22.9 16.8 l -0.0 -15.6" fill="none" stroke="#6c4025" stroke-width="2.5"/><rect x="438.6" y="712.3" width="7.5" height="10.4" fill="#8d5d36" transform="rotate(12 438.6 712.3)"/><circle cx="581.0" cy="642.9" r="2.6" fill="none" stroke="#512f1d" stroke-width="1.6"/><path d="M 561.0 319.5 l 19.0 20.7 l -15.4 1.7" fill="none" stroke="#6c4025" stroke-width="1.5"/><rect x="736.8" y="236.8" width="6.3" height="9.1" fill="#8d5d36" transform="rotate(-1 736.8 236.8)"/><circle cx="831.4" cy="194.1" r="6.8" fill="none" stroke="#512f1d" stroke-width="2.6"/><path d="M 317.3 753.2 l -2.0 29.5 l -12.5 -10.4" fill="none" stroke="#6c4025" stroke-width="2.1"/><rect x="713.5" y="254.7" width="13.4" height="8.9" fill="#8d5d36" transform="rotate(27 713.5 254.7)"/><circle cx="425.2" cy="453.8" r="4.3" fill="none" stroke="#512f1d" stroke-width="1.5"/><path d="M 449.3 432.1 l 8.1 24.4 l -13.5 -4.3" fill="none" stroke="#6c4025" stroke-width="1.9"/><rect x="450.0" y="233.6" width="11.1" height="13.6" fill="#8d5d36" transform="rotate(2 450.0 233.6)"/><circle cx="304.7" cy="658.7" r="2.8" fill="none" stroke="#512f1d" stroke-width="2.6"/></g>
+  <path d="M 90 90 H 934 V 934 H 90 Z" fill="none" stroke="#26170f" stroke-width="7"/>
+  <path d="M 107 111 H 910 V 906 H 121 V 136" fill="none" stroke="#9e6a34" stroke-width="2.5"/>
+  <path d="M 90 222 H 934" stroke="#26170f" stroke-width="3"/>
+  <path d="M 90 642 H 934" stroke="#26170f" stroke-width="3"/>
+
+  <g transform="translate(126 122)">
+    <circle cx="44" cy="42" r="37" fill="#321e13"/>
+    <path d="M 18 47 C 28 17, 56 12, 71 35 C 56 32, 44 45, 48 67 C 32 67, 22 60, 18 47 Z" fill="#d7a24c"/>
+    <circle cx="59" cy="25" r="7" fill="#efe4c9"/>
+    <path d="M 8 79 L 86 8" stroke="#321e13" stroke-width="5"/>
+  </g>
+
+  <text x="235" y="142" fill="#362116" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="5">SUMMITSHARE</text>
+  <text x="235" y="177" fill="#76502f" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="600" letter-spacing="3.4">WOMEN OF HISTORY · DIGITAL COLLECTION</text>
+  <text x="872" y="148" text-anchor="end" fill="#362116" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" letter-spacing="2">SS-WH-06</text>
+
+  <g transform="translate(132 279)">
+    <text x="0" y="0" fill="#7b512f" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" letter-spacing="4">ARTIFACT</text>
+    <text x="0" y="92" fill="#23150e" font-family="Georgia, 'Times New Roman', serif" font-size="70" font-weight="700">Luvale Mask</text>
+    <path d="M 0 132 H 610" stroke="#a76d35" stroke-width="5"/>
+    <path d="M 0 147 H 421" stroke="#26170f" stroke-width="2"/>
+    <text x="0" y="198" fill="#3e2b20" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="500">Mwanapewo mask · Makishi masquerade tradition</text>
+    <text x="0" y="260" fill="#7b512f" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" letter-spacing="3.5">ASSOCIATED HISTORY</text>
+    <text x="0" y="300" fill="#23150e" font-family="Georgia, 'Times New Roman', serif" font-size="27" font-weight="700">Loongo · Mumbwa, Zambia</text>
+  </g>
+
+  <g transform="translate(132 700)">
+    <text x="0" y="0" fill="#7b512f" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" letter-spacing="3.5">COLLECTION REFERENCE</text>
+    <text x="0" y="43" fill="#271910" font-family="Arial, Helvetica, sans-serif" font-size="23" font-weight="700">SMVK 2042752 · SummitShare digital twin</text>
+    <text x="0" y="96" fill="#4e3628" font-family="Arial, Helvetica, sans-serif" font-size="17">TRACKING LABEL · KEEP FLAT · DO NOT COVER</text>
+    <path d="M 0 126 H 518" stroke="#26170f" stroke-width="2"/>
+    <g transform="translate(0 154)">
+      <circle cx="9" cy="9" r="9" fill="#26170f"/>
+      <circle cx="43" cy="9" r="6" fill="#a76d35"/>
+      <rect x="68" y="1" width="58" height="16" fill="#26170f"/>
+      <path d="M 148 17 L 165 0 L 183 17 Z" fill="#a76d35"/>
+      <rect x="203" y="0" width="12" height="18" fill="#26170f" transform="rotate(19 209 9)"/>
+    </g>
+  </g>
+
+  <g><rect x="863" y="674" width="27" height="5" fill="#2e1c13"/><rect x="848" y="683" width="42" height="6" fill="#2e1c13"/><rect x="867" y="692" width="23" height="5" fill="#2e1c13"/><rect x="852" y="701" width="38" height="5" fill="#2e1c13"/><rect x="831" y="710" width="59" height="2" fill="#2e1c13"/><rect x="835" y="719" width="55" height="2" fill="#2e1c13"/><rect x="858" y="728" width="32" height="2" fill="#2e1c13"/><rect x="827" y="737" width="63" height="4" fill="#2e1c13"/><rect x="842" y="746" width="48" height="6" fill="#2e1c13"/><rect x="831" y="755" width="59" height="3" fill="#2e1c13"/><rect x="843" y="764" width="47" height="5" fill="#2e1c13"/><rect x="825" y="773" width="65" height="6" fill="#2e1c13"/><rect x="866" y="782" width="24" height="3" fill="#2e1c13"/><rect x="839" y="791" width="51" height="3" fill="#2e1c13"/><rect x="825" y="800" width="65" height="7" fill="#2e1c13"/><rect x="838" y="809" width="52" height="3" fill="#2e1c13"/><rect x="852" y="818" width="38" height="8" fill="#2e1c13"/><rect x="838" y="827" width="52" height="2" fill="#2e1c13"/><rect x="856" y="836" width="34" height="5" fill="#2e1c13"/><rect x="857" y="845" width="33" height="5" fill="#2e1c13"/><rect x="845" y="854" width="45" height="4" fill="#2e1c13"/></g>
+  <g transform="translate(842 268)">
+    <path d="M 0 0 L 72 24 L 43 92 L 8 54 Z" fill="none" stroke="#26170f" stroke-width="4"/>
+    <circle cx="9" cy="11" r="8" fill="#a76d35"/>
+    <circle cx="61" cy="35" r="5" fill="#26170f"/>
+    <path d="M 19 72 L 61 14" stroke="#7c4e2b" stroke-width="3"/>
+  </g>
+  <text x="934" y="892" transform="rotate(-90 934 892)" fill="#513323" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700" letter-spacing="2.5">73 · SS-WH-06 · IMAGE TARGET</text>
+</svg>

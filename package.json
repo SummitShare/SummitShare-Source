@@ -62,6 +62,9 @@
       "sharp",
       "unix-dgram",
       "utf-8-validate"
-    ]
+    ],
+    "patchedDependencies": {
+      "mind-ar@1.2.5": "patches/mind-ar@1.2.5.patch"
+    }
   }
 }
