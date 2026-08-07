@@ -28,8 +28,10 @@ export const AR_ARTIFACTS = {
       associatedHistory: 'Mwenya Mukulu',
       modelUrl: '/models/drum.glb',
       targetUrl: '/ar/targets/drum.mind',
-      displayHeight: 0.88,
-      rotationY: -0.12,
+      // Device-calibrated 2026-08-07 (Samsung S20 + iPhone 11 Pro) against a
+      // printed 90 mm medallion. 1.3 target units x 120 mm = 156 mm rendered.
+      displayHeight: 1.3,
+      rotationY: 0.62,
    },
    headrest: {
       slug: 'headrest',
