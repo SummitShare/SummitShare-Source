@@ -62,6 +62,6 @@ export default function ARClient({
    }, [preferWebXR]);
 
    if (viewer === 'resolving') return <ARLoadingState />;
-   if (viewer === 'webxr') return <WebXRDemo />;
+   if (viewer === 'webxr') return <WebXRDemo artifact={artifact} />;
    return <VitrineAR artifact={artifact} />;
 }

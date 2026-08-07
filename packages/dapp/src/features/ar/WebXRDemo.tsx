@@ -1,21 +1,12 @@
 'use client';
 
 import DemoWordmark from './DemoWordmark';
-import { AR_ARTIFACTS } from './artifacts';
+import type { ARArtifact } from './artifacts';
 import {
    XRVitrine,
    type UnsupportedReason,
    type XRVitrineArtifact,
 } from './xrVitrine';
-
-const ARTIFACT = AR_ARTIFACTS.drum;
-const XR_ARTIFACT: XRVitrineArtifact = {
-   slug: ARTIFACT.slug,
-   name: ARTIFACT.name,
-   displayHeight: ARTIFACT.displayHeight,
-   rotationY: ARTIFACT.rotationY,
-   modelUrl: ARTIFACT.modelUrl,
-};
 
 const resolveNextAssetUrl = (path: string) => path;
 
@@ -24,7 +15,10 @@ type UserFailure = Readonly<{
    detail: string;
 }>;
 
-const failureCopy = (reason: UnsupportedReason): UserFailure => {
+const failureCopy = (
+   reason: UnsupportedReason,
+   artifactName: string
+): UserFailure => {
    switch (reason.kind) {
       case 'insecure-context':
          return {
@@ -59,13 +53,12 @@ const failureCopy = (reason: UnsupportedReason): UserFailure => {
       case 'hit-test-unavailable':
          return {
             title: 'A surface could not be detected',
-            detail:
-               'This device could not prepare surface placement for the drum.',
+            detail: `This device could not prepare surface placement for ${artifactName}.`,
          };
       case 'session-ended':
          return {
             title: 'The AR session ended',
-            detail: 'You can start the drum demo again whenever you are ready.',
+            detail: `You can start the ${artifactName} demo again whenever you are ready.`,
          };
       case 'capability-check-failed':
       case 'entry-failed':
@@ -83,13 +76,15 @@ const failureCopy = (reason: UnsupportedReason): UserFailure => {
 };
 
 function StartScreen({
+   artifact,
    reason,
    onStart,
 }: Readonly<{
+   artifact: ARArtifact;
    reason?: UnsupportedReason;
    onStart?: () => void;
 }>) {
-   const failure = reason ? failureCopy(reason) : null;
+   const failure = reason ? failureCopy(reason, artifact.name) : null;
    const checking = reason?.kind === 'checking';
 
    return (
@@ -107,10 +102,10 @@ function StartScreen({
                ) : (
                   <>
                      <p className="text-xs uppercase tracking-[0.32em] !text-amber-200/65">
-                        {ARTIFACT.associatedHistory}
+                        {artifact.associatedHistory}
                      </p>
                      <h1 className="mt-3 text-3xl !text-amber-50">
-                        {ARTIFACT.name}
+                        {artifact.name}
                      </h1>
                      {failure && (
                         <div className="mt-5 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
@@ -145,17 +140,31 @@ function StartScreen({
    );
 }
 
-export default function WebXRDemo() {
+export default function WebXRDemo({ artifact }: { artifact: ARArtifact }) {
+   const xrArtifact: XRVitrineArtifact = {
+      slug: artifact.slug,
+      name: artifact.name,
+      displayHeight: artifact.displayHeight,
+      rotationY: artifact.rotationY,
+      modelUrl: artifact.modelUrl,
+   };
+
    return (
       <main className="fixed inset-0 isolate h-[100dvh] min-h-[100svh] w-screen overflow-hidden bg-[#0f0c09] text-amber-50">
          <XRVitrine
-            artifact={XR_ARTIFACT}
+            artifact={xrArtifact}
             options={{}}
             resolveAssetUrl={resolveNextAssetUrl}
             renderUnsupported={(reason) => (
-               <StartScreen reason={reason} onStart={reason.retry} />
+               <StartScreen
+                  artifact={artifact}
+                  reason={reason}
+                  onStart={reason.retry}
+               />
             )}
-            renderStart={(start) => <StartScreen onStart={start} />}
+            renderStart={(start) => (
+               <StartScreen artifact={artifact} onStart={start} />
+            )}
             renderOverlay={(state) => (
                <div className="pointer-events-none fixed inset-0 z-20">
                   <DemoWordmark />
