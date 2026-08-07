@@ -1,0 +1,283 @@
+:root {
+   --record-cream: #f5ede0;
+   --record-raised-cream: #fff3e2;
+   --record-ochre: #fb923c;
+   --record-umber: #1b1410;
+   --record-rule: rgb(245 237 224 / 0.18);
+}
+
+* {
+   box-sizing: border-box;
+}
+
+html {
+   background: var(--record-umber);
+}
+
+body {
+   min-width: 320px;
+   margin: 0;
+   background: var(--record-umber);
+   color: var(--record-cream);
+   font-family: var(--record-font-body), "Segoe UI", Helvetica, Arial,
+      sans-serif;
+}
+
+.record-page {
+   min-height: 100vh;
+   background: var(--record-umber);
+}
+
+.record-intro {
+   padding: clamp(44px, 8vw, 104px) clamp(22px, 7vw, 104px);
+}
+
+.record-intro h1 {
+   max-width: 22ch;
+   margin: 0 0 34px;
+   font-family: var(--record-font-display), "Palatino Linotype", Palatino,
+      Georgia, serif;
+   font-size: clamp(32px, 5vw, 52px);
+   font-weight: 700;
+   letter-spacing: 0.02em;
+   line-height: 1.12;
+}
+
+.record-intro p {
+   max-width: 66ch;
+   margin: 0 0 22px;
+   color: rgb(245 237 224 / 0.82);
+   font-size: 16px;
+   line-height: 1.68;
+}
+
+.record-intro p:last-child {
+   margin-bottom: 0;
+}
+
+.record-section {
+   --section-ground: #2e4257;
+   --section-body: rgb(245 237 224 / 0.82);
+   --section-label: rgb(245 237 224 / 0.68);
+   --section-question: var(--record-ochre);
+   --section-vitrine: rgb(245 237 224 / 0.82);
+   background: var(--section-ground);
+   color: var(--record-cream);
+}
+
+[data-section="mask"] {
+   --section-ground: #2e4257;
+   --section-body: rgb(245 237 224 / 0.82);
+   --section-label: rgb(245 237 224 / 0.68);
+   --section-question: #fb923c;
+   --section-vitrine: rgb(245 237 224 / 0.82);
+}
+
+[data-section="mbusa"] {
+   --section-ground: #a8482a;
+   --section-body: #fff3e2;
+   --section-label: #fff3e2;
+   --section-question: #fff3e2;
+   --section-vitrine: #fff3e2;
+}
+
+[data-section="drum"] {
+   --section-ground: #1f4f4f;
+   --section-body: rgb(245 237 224 / 0.82);
+   --section-label: rgb(245 237 224 / 0.68);
+   --section-question: #fb923c;
+   --section-vitrine: rgb(245 237 224 / 0.82);
+}
+
+.record-graphic-band {
+   height: clamp(120px, 20vw, 200px);
+   overflow: hidden;
+}
+
+.record-graphic-band img {
+   display: block;
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
+   opacity: 0.32;
+}
+
+.record-section-content {
+   display: grid;
+   grid-template-columns: 80px minmax(0, 66ch) minmax(240px, 320px);
+   gap: 34px 44px;
+   width: 100%;
+   max-width: 1400px;
+   margin: 0 auto;
+   padding: clamp(44px, 7vw, 88px) clamp(22px, 7vw, 104px)
+      clamp(68px, 9vw, 120px);
+}
+
+.record-section-heading,
+.record-hairline {
+   grid-column: 1 / -1;
+}
+
+.record-section-number,
+.record-curatorial,
+.record-vitrine-label {
+   margin: 0;
+   color: var(--section-label);
+   font-family: var(--record-font-display), "Palatino Linotype", Palatino,
+      Georgia, serif;
+   font-size: 11px;
+   font-weight: 700;
+   letter-spacing: 0.22em;
+   line-height: 1.3;
+   text-transform: uppercase;
+}
+
+.record-section-number {
+   margin-bottom: 16px;
+}
+
+.record-section-heading h2 {
+   max-width: 30ch;
+   margin: 0;
+   font-family: var(--record-font-display), "Palatino Linotype", Palatino,
+      Georgia, serif;
+   font-size: clamp(25px, 3.2vw, 38px);
+   font-weight: 700;
+   letter-spacing: 0.04em;
+   line-height: 1.2;
+}
+
+.record-curatorial {
+   margin-top: 12px;
+}
+
+.record-hairline {
+   height: 1px;
+   background: var(--record-rule);
+}
+
+.record-icons {
+   display: block;
+   grid-column: 1;
+   grid-row: 3 / span 2;
+   width: 76px;
+   height: auto;
+}
+
+.record-copy {
+   grid-column: 2;
+   grid-row: 3;
+}
+
+.record-copy p {
+   max-width: 66ch;
+   margin: 0 0 22px;
+   color: var(--section-body);
+   font-size: 16px;
+   line-height: 1.68;
+}
+
+.record-copy p:last-child {
+   margin-bottom: 0;
+}
+
+.record-question {
+   grid-column: 2;
+   grid-row: 4;
+   max-width: 34ch;
+   margin: 0;
+   color: var(--section-question);
+   font-family: var(--record-font-question), "Palatino Linotype", Palatino,
+      Georgia, serif;
+   font-size: clamp(24px, 2.6vw, 30px);
+   font-style: italic;
+   font-weight: 500;
+   line-height: 1.34;
+}
+
+.record-vitrine {
+   grid-column: 3;
+   grid-row: 3 / span 2;
+   padding-left: 22px;
+   border-left: 1px solid var(--record-rule);
+}
+
+.record-vitrine-label {
+   margin-bottom: 16px;
+}
+
+.record-vitrine h3 {
+   margin: 0 0 16px;
+   font-family: var(--record-font-display), "Palatino Linotype", Palatino,
+      Georgia, serif;
+   font-size: 15px;
+   font-weight: 700;
+   letter-spacing: 0.14em;
+   line-height: 1.3;
+}
+
+.record-vitrine > p:not(.record-vitrine-label) {
+   margin: 0 0 16px;
+   color: var(--section-vitrine);
+   font-size: 13.5px;
+   line-height: 1.65;
+}
+
+.record-vitrine > p:last-child {
+   margin-bottom: 0;
+}
+
+.record-footer {
+   padding: 44px clamp(22px, 7vw, 104px) 68px;
+}
+
+.record-footer a {
+   color: var(--record-raised-cream);
+   font-size: 14px;
+   line-height: 1.5;
+   text-decoration-line: underline;
+   text-decoration-thickness: 1px;
+   text-underline-offset: 0.25em;
+}
+
+.record-footer a:focus-visible {
+   outline: 1px solid var(--record-raised-cream);
+   outline-offset: 6px;
+}
+
+@media (max-width: 1000px) {
+   .record-section-content {
+      grid-template-columns: 64px minmax(0, 66ch);
+   }
+
+   .record-vitrine {
+      grid-column: 2;
+      grid-row: 5;
+      padding: 34px 0 0;
+      border-top: 1px solid var(--record-rule);
+      border-left: 0;
+   }
+}
+
+@media (max-width: 480px) {
+   .record-section-content {
+      grid-template-columns: 48px minmax(0, 1fr);
+      gap: 28px 18px;
+   }
+
+   .record-icons {
+      width: 48px;
+   }
+
+   .record-section-heading h2 {
+      overflow-wrap: anywhere;
+   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+   *,
+   *::before,
+   *::after {
+      scroll-behavior: auto !important;
+   }
+}
