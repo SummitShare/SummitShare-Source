@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="70" viewBox="0 0 120 70" style="color:#111" aria-labelledby="title desc" data-category="approved-highlight">
+  <title id="title">approved-litota-star</title>
+  <desc id="desc">Complete Litota star geometry redrawn from the supplied 600 dpi scan: a horizontal two-direction arrow with a centred upward arrow/star.</desc>
+  <g fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="square" stroke-linejoin="miter">
+    <path d="M16 45 H104"/>
+    <path d="M16 45 L31 34 M16 45 L31 56"/>
+    <path d="M104 45 L89 34 M104 45 L89 56"/>
+    <path d="M60 45 V16 M60 16 L50 31 M60 16 L70 31"/>
+  </g>
+</svg>
