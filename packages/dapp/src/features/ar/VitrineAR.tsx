@@ -123,9 +123,30 @@ const browserSupportsWebGL = () => {
    return true;
 };
 
-const browserSupportsWebP = () => {
-   const canvas = document.createElement('canvas');
-   return canvas.toDataURL('image/webp').startsWith('data:image/webp');
+// 1x1 lossy WebP. Decoding this is exactly the capability the artifact GLBs need,
+// since they declare EXT_texture_webp.
+const WEBP_PROBE =
+   'data:image/webp;base64,UklGRhoAAABXRUJQVlA4TA0AAAAvAAAAEAcQERGIiP4HAA==';
+
+/**
+ * Tests WebP *decoding*.
+ *
+ * The previous implementation tested `canvas.toDataURL('image/webp')`, which
+ * measures ENCODING. Safari decodes WebP but has long declined to encode it,
+ * silently returning `data:image/png` instead — so that check reported false on
+ * every iPhone and rejected the viewer as "browser not supported" before the
+ * camera was ever requested. Encoding is a capability this app never uses.
+ */
+const browserSupportsWebP = async () => {
+   if (typeof createImageBitmap !== 'function') return false;
+   try {
+      const blob = await (await fetch(WEBP_PROBE)).blob();
+      const bitmap = await createImageBitmap(blob);
+      bitmap.close?.();
+      return true;
+   } catch {
+      return false;
+   }
 };
 
 const disposeObject = (
@@ -247,11 +268,12 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
          setPhase('error');
          return;
       }
-      if (!browserSupportsWebGL() || !browserSupportsWebP()) {
+      if (!browserSupportsWebGL() || !(await browserSupportsWebP())) {
          setError(createError('unsupported'));
          setPhase('error');
          return;
       }
+      if (attemptRef.current !== attempt) return;
 
       setPhase('starting');
 
