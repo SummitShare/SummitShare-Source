@@ -201,10 +201,10 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
    const [error, setError] = useState<ARErrorState | null>(null);
    const [modelProgress, setModelProgress] = useState<number | null>(null);
 
-   const cleanupSession = useCallback(() => {
-      const session = sessionRef.current;
-      sessionRef.current = null;
+   const cleanupSession = useCallback((explicit?: ActiveSession | null) => {
+      const session = explicit === undefined ? sessionRef.current : explicit;
       if (!session) return;
+      if (sessionRef.current === session) sessionRef.current = null;
 
       session.mindAR.renderer.setAnimationLoop(null);
       try {
@@ -213,8 +213,12 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
          // The camera may have failed before MindAR finished creating a controller.
       }
 
-      session.disposeModel?.();
-      session.disposeDraco?.();
+      const disposeModel = session.disposeModel;
+      const disposeDraco = session.disposeDraco;
+      session.disposeModel = null;
+      session.disposeDraco = null;
+      disposeModel?.();
+      disposeDraco?.();
       session.mindAR.renderer.dispose();
       session.mindAR.renderer.forceContextLoss();
       session.mindAR.renderer.domElement.remove();
@@ -295,6 +299,7 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
       if (!mountedRef.current || attemptRef.current !== attempt) return;
 
       let loadingStage: 'tracker' | 'model' = 'tracker';
+      let createdSession: ActiveSession | null = null;
       try {
          const [
             { MindARThree: MindARThreeClass },
@@ -328,12 +333,14 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
                style instanceof HTMLStyleElement && !stylesBefore.has(style)
          );
 
-         sessionRef.current = {
+         const session: ActiveSession = {
             mindAR,
             disposeModel: null,
             disposeDraco: null,
             injectedStyles,
          };
+         createdSession = session;
+         sessionRef.current = session;
 
          mindAR.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
          mindAR.renderer.setClearColor(0x000000, 0);
@@ -363,7 +370,7 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
 
          await mindAR.start();
          if (!mountedRef.current || attemptRef.current !== attempt) {
-            cleanupSession();
+            cleanupSession(session);
             return;
          }
 
@@ -381,7 +388,7 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
          dracoLoader.setDecoderConfig({ type: 'wasm' });
          const gltfLoader = new GLTFLoader();
          gltfLoader.setDRACOLoader(dracoLoader);
-         sessionRef.current.disposeDraco = () => dracoLoader.dispose();
+         session.disposeDraco = () => dracoLoader.dispose();
 
          const gltf = await gltfLoader.loadAsync(artifact.modelUrl, (event) => {
             if (!mountedRef.current || attemptRef.current !== attempt) return;
@@ -432,15 +439,15 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
          const disposeModel = disposeObject(model, THREE.Texture);
          if (!mountedRef.current || attemptRef.current !== attempt) {
             disposeModel();
-            cleanupSession();
+            cleanupSession(session);
             return;
          }
-         sessionRef.current.disposeModel = disposeModel;
+         session.disposeModel = disposeModel;
          setModelProgress(100);
          setPhase(anchor.visible ? 'tracking' : 'scanning');
       } catch (loadError) {
+         cleanupSession(createdSession);
          if (!mountedRef.current || attemptRef.current !== attempt) return;
-         cleanupSession();
          setError(
             loadingStage === 'model'
                ? {
