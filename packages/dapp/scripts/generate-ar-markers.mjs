@@ -7,6 +7,7 @@ import { OfflineCompiler } from 'mind-ar/src/image-target/offline-compiler.js';
 
 const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
 const DAPP_DIR = path.resolve(SCRIPT_DIR, '..');
+const SYMBOL_DIR = path.join(SCRIPT_DIR, 'ar-symbols');
 const PUBLIC_AR_DIR = path.join(DAPP_DIR, 'public', 'ar');
 const PRINT_DIR = path.join(PUBLIC_AR_DIR, 'print');
 const TARGET_DIR = path.join(PUBLIC_AR_DIR, 'targets');
@@ -31,6 +32,10 @@ const MEDALLION_RADIUS = 384;
 const MEDALLION_DETAIL_RADIUS = MEDALLION_RADIUS - 18;
 const ASYMMETRY_ROTATIONS = [45, 90, 135, 180];
 const MINIMUM_ASYMMETRY_PERCENT = 16;
+// Procedural dominant forms span roughly 200-270 marker units. Normalizing a
+// symbol's longest viewBox edge to 230 keeps its visual extent in that range
+// before applying the existing per-profile dominantScale variation.
+const DOMINANT_SYMBOL_FOOTPRINT = 230;
 // These profiles vary only neutral geometry and texture density; they carry no
 // semantic relationship to the artifacts assigned to them.
 const ABSTRACT_PROFILES = [
@@ -149,6 +154,42 @@ const hashSlug = (slug) => {
 };
 
 const fixed = (value) => value.toFixed(1);
+
+const loadArtifactSymbol = async (artifact) => {
+   const symbolPath = path.join(SYMBOL_DIR, `${artifact.slug}.svg`);
+   let source;
+   try {
+      source = await fs.readFile(symbolPath, 'utf8');
+   } catch (error) {
+      if (error.code === 'ENOENT') return null;
+      throw error;
+   }
+
+   const viewBoxMatch = source.match(/\bviewBox\s*=\s*(["'])(.*?)\1/i);
+   const svgMatch = source.match(/^\s*<svg\b[^>]*>([\s\S]*?)<\/svg>\s*$/i);
+   if (!viewBoxMatch || !svgMatch) {
+      throw new Error(
+         `Symbol for ${artifact.slug} must have an outer <svg> with a viewBox.`
+      );
+   }
+
+   const viewBox = viewBoxMatch[2].trim().split(/[\s,]+/).map(Number);
+   if (
+      viewBox.length !== 4 ||
+      viewBox.some((value) => !Number.isFinite(value)) ||
+      viewBox[2] <= 0 ||
+      viewBox[3] <= 0
+   ) {
+      throw new Error(`Symbol for ${artifact.slug} has an invalid viewBox.`);
+   }
+
+   return {
+      viewBox,
+      // The source root's color style is removed with its wrapper, so replace
+      // currentColor explicitly to keep the inlined ink visible on the dark disc.
+      geometry: svgMatch[1].trim().replaceAll(/currentColor/gi, '#f7f5ed'),
+   };
+};
 
 const pointOnCircle = (radius, angle) => ({
    x: MEDALLION_CENTER + Math.cos(angle) * radius,
@@ -454,7 +495,29 @@ const makeAbstractComposition = (random, profile) => {
    )}) scale(${scale.toFixed(3)})">${form}</g>`;
 };
 
-const makeMarkerSvg = (artifact, profileIndex) => {
+const makeSymbolComposition = (random, profile, symbol) => {
+   // Consume the old arbitrary-rotation draw so the established deterministic
+   // direction, distance, and scale draws retain exactly the same positions.
+   random();
+   const direction = random() * Math.PI * 2;
+   const distance = profile.dominantDistance + (random() - 0.5) * 10;
+   const x = MEDALLION_CENTER + Math.cos(direction) * distance;
+   const y = MEDALLION_CENTER + Math.sin(direction) * distance;
+   const profileScale = profile.dominantScale + (random() - 0.5) * 0.06;
+   const [minX, minY, width, height] = symbol.viewBox;
+   const centerX = minX + width / 2;
+   const centerY = minY + height / 2;
+   const scale =
+      (profileScale * DOMINANT_SYMBOL_FOOTPRINT) / Math.max(width, height);
+
+   return `<g transform="translate(${fixed(x)} ${fixed(y)}) scale(${scale.toFixed(
+      3
+   )}) translate(${fixed(-centerX)} ${fixed(-centerY)})">${
+      symbol.geometry
+   }</g>`;
+};
+
+const makeMarkerSvg = (artifact, profileIndex, symbol) => {
    const seed = hashSlug(artifact.slug);
    const random = randomFromSeed(seed);
    const profile = ABSTRACT_PROFILES[profileIndex];
@@ -463,7 +526,9 @@ const makeMarkerSvg = (artifact, profileIndex) => {
    const hatchField = makeHatchField(random, profile);
    const microMarks = makeMicroMarks(random);
    const brokenRim = makeBrokenRim(random);
-   const abstractComposition = makeAbstractComposition(random, profile);
+   const dominantComposition = symbol
+      ? makeSymbolComposition(random, profile, symbol)
+      : makeAbstractComposition(random, profile);
 
    return `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="${PRINT_CANVAS_SIZE_MM.toFixed(
@@ -486,7 +551,7 @@ const makeMarkerSvg = (artifact, profileIndex) => {
     ${hatchField}
     ${microMarks}
     ${brokenRim}
-    ${abstractComposition}
+    ${dominantComposition}
   </g>
   <circle cx="${MEDALLION_CENTER}" cy="${MEDALLION_CENTER}" r="${MEDALLION_RADIUS}" fill="none" stroke="#101317" stroke-width="9"/>
 </svg>`;
@@ -814,7 +879,8 @@ const main = async () => {
    const generatedRasters = [];
 
    for (const [profileIndex, artifact] of artifacts.entries()) {
-      const markerSvg = makeMarkerSvg(artifact, profileIndex);
+      const symbol = await loadArtifactSymbol(artifact);
+      const markerSvg = makeMarkerSvg(artifact, profileIndex, symbol);
       const routeUrl = new URL(`ar/${artifact.slug}`, baseUrl).href;
       const qrSvg = makeQrSvg(artifact, routeUrl);
       const raster = await renderTargetPixels(artifact, markerSvg);

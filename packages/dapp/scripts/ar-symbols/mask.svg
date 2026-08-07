@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" style="color:#111" aria-labelledby="title desc" data-category="approved-highlight">
+  <title id="title">approved-chingolo-ngondo</title>
+  <desc id="desc">Complete Chingolo Ngondo geometry redrawn from the supplied 600 dpi scan: one central diamond joined to four open triangles. Reserve for the Mask panel only.</desc>
+  <g fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="square" stroke-linejoin="miter">
+    <path d="M50 25 L75 50 L50 75 L25 50 Z"/>
+    <path d="M35 10 H65 L50 25 Z"/>
+    <path d="M90 35 V65 L75 50 Z"/>
+    <path d="M65 90 H35 L50 75 Z"/>
+    <path d="M10 65 V35 L25 50 Z"/>
+  </g>
+</svg>

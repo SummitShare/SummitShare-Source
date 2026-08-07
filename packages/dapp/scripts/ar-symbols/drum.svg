@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="110" height="90" viewBox="0 0 110 90" style="color:#111" aria-labelledby="title desc" data-category="approved-highlight">
+  <title id="title">approved-ntongonoshi-universe</title>
+  <desc id="desc">Complete Ntongonoshi universe/stars geometry redrawn from the supplied 600 dpi scan.</desc>
+  <g fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 13 C7 27 7 63 22 77"/>
+    <path d="M88 13 C103 27 103 63 88 77"/>
+    <path d="M34 69 A21 21 0 0 1 76 69 H34 Z"/>
+    <circle cx="34" cy="49" r="5"/>
+    <circle cx="47" cy="38" r="5"/>
+    <circle cx="63" cy="38" r="5"/>
+    <circle cx="76" cy="49" r="5"/>
+  </g>
+</svg>
