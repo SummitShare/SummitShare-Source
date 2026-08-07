@@ -25,7 +25,8 @@ const THREE_DRACO_DIR = path.join(
 
 const TARGET_SIZE = 1024;
 const PRINT_SIZE = 2048;
-const DEFAULT_BASE_URL = 'http://localhost:3000';
+const DEFAULT_BASE_URL = 'https://summitshare.co';
+const ALLOW_INSECURE_BASE_URL_ENV = 'AR_ALLOW_INSECURE_BASE_URL';
 const DEFAULT_PRINTED_MEDALLION_DIAMETER_MM = 90;
 const MEDALLION_CENTER = TARGET_SIZE / 2;
 const MEDALLION_RADIUS = 384;
@@ -850,6 +851,27 @@ const copyDracoDecoders = async () => {
 const normalizeBaseUrl = () => {
    const configured = process.env.AR_BASE_URL?.trim() || DEFAULT_BASE_URL;
    const url = new URL(configured);
+   const isLocalhost =
+      url.hostname === 'localhost' ||
+      url.hostname.endsWith('.localhost') ||
+      url.hostname === '127.0.0.1' ||
+      url.hostname === '[::1]';
+   const isPlainHttp = url.protocol === 'http:';
+   const allowInsecureBaseUrl =
+      process.env[ALLOW_INSECURE_BASE_URL_ENV]?.trim() === '1';
+
+   if ((isLocalhost || isPlainHttp) && !allowInsecureBaseUrl) {
+      const unsafeReasons = [
+         isLocalhost ? 'a localhost/loopback host' : null,
+         isPlainHttp ? 'a plain-http origin' : null,
+      ].filter(Boolean);
+      throw new Error(
+         `Refusing to generate printable AR markers for ${url.origin}: the base URL uses ${unsafeReasons.join(
+            ' and '
+         )}. Use an HTTPS, non-localhost AR_BASE_URL. For intentional local testing only, set ${ALLOW_INSECURE_BASE_URL_ENV}=1.`
+      );
+   }
+
    url.hash = '';
    url.search = '';
    if (!url.pathname.endsWith('/')) {
@@ -859,13 +881,14 @@ const normalizeBaseUrl = () => {
 };
 
 const main = async () => {
+   const baseUrl = normalizeBaseUrl();
+
    await Promise.all(
       [PRINT_DIR, TARGET_DIR, DRACO_DIR].map((directory) =>
          fs.mkdir(directory, { recursive: true })
       )
    );
 
-   const baseUrl = normalizeBaseUrl();
    process.stdout.write(`Generating AR print assets for ${baseUrl.href}\n`);
    process.stdout.write(
       `Medallion print config: ${PRINTED_MEDALLION_DIAMETER_MM} mm diameter on a ${PRINT_CANVAS_SIZE_MM.toFixed(
