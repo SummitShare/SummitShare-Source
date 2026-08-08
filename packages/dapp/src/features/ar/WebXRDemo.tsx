@@ -144,8 +144,9 @@ export default function WebXRDemo({ artifact }: { artifact: ARArtifact }) {
    const xrArtifact: XRVitrineArtifact = {
       slug: artifact.slug,
       name: artifact.name,
-      displayHeight: artifact.displayHeight,
-      rotationY: artifact.rotationY,
+      // WebXR calibration, not the marker-relative MindAR one — see artifacts.ts.
+      heightMetres: artifact.webxr.heightMetres,
+      rotationY: artifact.webxr.rotationY,
       modelUrl: artifact.modelUrl,
    };
 
@@ -153,7 +154,7 @@ export default function WebXRDemo({ artifact }: { artifact: ARArtifact }) {
       <main className="fixed inset-0 isolate h-[100dvh] min-h-[100svh] w-screen overflow-hidden bg-[#0f0c09] text-amber-50">
          <XRVitrine
             artifact={xrArtifact}
-            options={{}}
+            options={{ nudge: artifact.webxr.nudge }}
             resolveAssetUrl={resolveNextAssetUrl}
             renderUnsupported={(reason) => (
                <StartScreen

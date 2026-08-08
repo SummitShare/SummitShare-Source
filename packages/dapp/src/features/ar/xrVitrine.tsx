@@ -24,17 +24,20 @@ import {
    type Placement,
 } from './placement';
 
-const MINDAR_TARGET_WIDTH_METRES = 0.12;
 const MAX_TILT_RADIANS = (20 * Math.PI) / 180;
 const MIN_SURFACE_UP_DOT = Math.cos(MAX_TILT_RADIANS);
 const REQUIRED_FEATURES = ['local-floor', 'hit-test', 'dom-overlay'] as const;
 const BASE_OPTIONAL_FEATURES = ['anchors'] as const;
 const DRACO_DECODER_ASSET_PATH = '/ar/draco/';
 
+/**
+ * `heightMetres` is a real-world height, not MindAR's marker-relative unit.
+ * WebXR places into a metric room frame, so the caller owns any conversion.
+ */
 export type XRVitrineArtifact = Readonly<{
    slug: string;
    name: string;
-   displayHeight: number;
+   heightMetres: number;
    rotationY: number;
    modelUrl: string;
 }>;
@@ -285,7 +288,7 @@ function PlacementContents({
             rotation={[0, nudge.yaw, 0]}
          >
             <group
-               scale={artifact.displayHeight * MINDAR_TARGET_WIDTH_METRES}
+               scale={artifact.heightMetres}
                rotation={[0, artifact.rotationY, 0]}
             >
                <ArtifactModel
@@ -588,16 +591,35 @@ function XRScene({
 }>) {
    return (
       <XR store={store}>
-         <hemisphereLight args={[0xfff2da, 0x2a1609, 2.2]} />
+         {/* An artifact in AR is composited over a live camera feed, so it is judged
+          against whatever the room's real brightness is — lighting that looks
+          correct on a dark canvas reads as murky against a lit gallery. These
+          are deliberately hotter than a normal scene would want, and the two
+          lower fills exist to stop the underside of a tall object going black,
+          which is what made the drum look dim from a standing viewpoint. */}
+         <hemisphereLight args={[0xfff2da, 0x4a3020, 3.2]} />
+         <ambientLight color={0xfff4e4} intensity={0.9} />
          <directionalLight
             color={0xffffff}
-            intensity={2.6}
+            intensity={3.2}
             position={[1.5, 2.5, 2]}
          />
          <directionalLight
             color={0xffc16b}
-            intensity={1.4}
+            intensity={1.8}
             position={[-2, 1, 1]}
+         />
+         {/* Rim from behind, so the silhouette separates from the camera feed. */}
+         <directionalLight
+            color={0xffe6c2}
+            intensity={1.1}
+            position={[0, 1.5, -2.5]}
+         />
+         {/* Bounce, standing in for light coming back off the plinth. */}
+         <directionalLight
+            color={0xffd9a8}
+            intensity={0.7}
+            position={[0, -1.5, 0.5]}
          />
          {resources && (
             <>
