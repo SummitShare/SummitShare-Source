@@ -7,8 +7,7 @@ export type RecordSection = {
    readonly curatorial: string;
    readonly body: readonly string[];
    readonly question: string;
-   readonly vitrineTitle: string;
-   readonly vitrine: readonly string[];
+   readonly closing: readonly string[];
 };
 
 export const SECTIONS = [
@@ -27,8 +26,7 @@ export const SECTIONS = [
       ],
       question:
          'What knowledge remains visible when the people who know how to read it are removed?',
-      vitrineTitle: 'LIKISHI LYA MWANA PWEWO',
-      vitrine: [
+      closing: [
          'This vitrine is empty by design.',
          'Displaying the mask without the initiation, storyteller, movement and community that animate it would repeat the separation this exhibition examines.',
          'The object is therefore encountered through sound, living practice and a permitted digital surrogate. Its absence refuses to present a material fragment as though it were the complete record.',
@@ -48,8 +46,7 @@ export const SECTIONS = [
          'This section presents non-display as an act of care. The withheld centre recognises that some knowledge should remain under the authority of its custodians.',
       ],
       question: 'What should a museum refuse to show in order to practise care?',
-      vitrineTitle: 'MBUSA',
-      vitrine: [
+      closing: [
          'This vitrine is empty as an act of care.',
          'Mbusa forms were not created for permanent public display. They belong to a protected teaching cycle of making, embodiment, transmission and return to earth.',
          'To reproduce the object here would repeat the violence of collection. Its deliberate absence honours the authority of women knowledge keepers and makes ethical non-display visible as a practice of rematriation and museum repair.',
@@ -70,8 +67,7 @@ export const SECTIONS = [
       ],
       question:
          'When does sound become a message, and who is able to understand it?',
-      vitrineTitle: 'NGOMA PWITA',
-      vitrine: [
+      closing: [
          'This vitrine is empty by design so that the visitor encounters the message before the object.',
          'A drum separated from its player, listener, language and occasion becomes only material and sound. The absent instrument exposes that rupture. Kuvunga is the percussion technique of combining different drums that create a melody that represents or calls to the ancestral spirit — this is the only sound that will call the ancestor to come and appear or communicate through the dance and song. And Ngoma Pwita is the lead drum in the set.',
          'Its knowledge returns through rhythm and beating of the drum that performs as a “soul voice” to bring the dis-membered artefacts and petrified archives back to life just as the soul voice calls the Makishi Ancestral Spirit from the astral realm to the physical realm for the annual Likumbi Lya Mize ceremony that is a passage of knowledge and initiation one generation to the next.',

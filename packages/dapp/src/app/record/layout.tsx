@@ -1,10 +1,10 @@
 import type { Metadata, Viewport } from 'next';
-import {
-   Cormorant_Garamond,
-   Manrope,
-   Martel,
-} from 'next/font/google';
+import { Cormorant_Garamond, Manrope, Martel } from 'next/font/google';
+import Footer from '@/components/navigation/footer';
+import PrimaryNav from '@/components/navigation/PrimaryNav';
+import '../styles/globals.css';
 import './record.css';
+import SessionBoundary from './SessionBoundary';
 
 const display = Martel({
    subsets: ['latin'],
@@ -56,9 +56,15 @@ export default function RecordRootLayout({
    return (
       <html lang="en">
          <body
-            className={`${display.variable} ${body.variable} ${question.variable}`}
+            className={`${display.variable} ${body.variable} ${question.variable} record-shell`}
          >
-            {children}
+            <SessionBoundary>
+               <PrimaryNav showWallet={false} />
+               <div className="record-site-content">{children}</div>
+               <div className="record-site-footer">
+                  <Footer />
+               </div>
+            </SessionBoundary>
          </body>
       </html>
    );

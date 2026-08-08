@@ -4,6 +4,7 @@
    --record-ochre: #fb923c;
    --record-umber: #1b1410;
    --record-rule: rgb(245 237 224 / 0.18);
+   --record-nav-height: 72px;
 }
 
 * {
@@ -19,8 +20,18 @@ body {
    margin: 0;
    background: var(--record-umber);
    color: var(--record-cream);
-   font-family: var(--record-font-body), "Segoe UI", Helvetica, Arial,
-      sans-serif;
+   font-family: var(--record-font-body), 'Segoe UI', Helvetica, Arial, sans-serif;
+}
+
+.record-site-content {
+   padding-top: var(--record-nav-height);
+   background: var(--record-umber);
+}
+
+.record-site-footer {
+   border-top: 8px solid var(--record-ochre);
+   background: #fafafa;
+   color-scheme: light;
 }
 
 .record-page {
@@ -35,8 +46,9 @@ body {
 .record-intro h1 {
    max-width: 22ch;
    margin: 0 0 34px;
-   font-family: var(--record-font-display), "Palatino Linotype", Palatino,
-      Georgia, serif;
+   color: var(--record-cream);
+   font-family: var(--record-font-display), 'Palatino Linotype', Palatino, Georgia,
+      serif;
    font-size: clamp(32px, 5vw, 52px);
    font-weight: 700;
    letter-spacing: 0.02em;
@@ -55,51 +67,131 @@ body {
    margin-bottom: 0;
 }
 
+.record-gallery {
+   display: grid;
+   grid-template-rows: minmax(0, 1fr) 64px;
+   height: calc(100dvh - var(--record-nav-height));
+   min-height: 600px;
+   background: var(--record-umber);
+   isolation: isolate;
+}
+
+.record-gallery-track {
+   display: flex;
+   min-width: 0;
+   min-height: 0;
+   overflow-x: auto;
+   overflow-y: hidden;
+   overscroll-behavior: contain;
+   scroll-behavior: smooth;
+   scroll-snap-type: x mandatory;
+   scrollbar-width: none;
+   -webkit-overflow-scrolling: touch;
+}
+
+.record-gallery-track::-webkit-scrollbar {
+   display: none;
+}
+
+.record-gallery-track:focus-visible,
+.record-section:focus-visible {
+   outline: 2px solid var(--record-raised-cream);
+   outline-offset: -4px;
+}
+
 .record-section {
    --section-ground: #2e4257;
    --section-body: rgb(245 237 224 / 0.82);
    --section-label: rgb(245 237 224 / 0.68);
    --section-question: var(--record-ochre);
-   --section-vitrine: rgb(245 237 224 / 0.82);
+   --section-closing: rgb(245 237 224 / 0.82);
+   position: relative;
+   isolation: isolate;
+   flex: 0 0 100dvw;
+   width: 100dvw;
+   height: 100%;
+   min-width: 0;
+   min-height: 0;
+   overflow: hidden;
    background: var(--section-ground);
    color: var(--record-cream);
+   scroll-margin-block-start: var(--record-nav-height);
+   scroll-snap-align: start;
+   scroll-snap-stop: always;
 }
 
-[data-section="mask"] {
+/* The panel no longer scrolls itself — this does. Separating the two roles is
+   what lets the mural fill the whole panel behind the type instead of being
+   confined to a band above it. */
+.record-section-scroll {
+   position: relative;
+   z-index: 1;
+   height: 100%;
+   overflow-y: auto;
+   overflow-x: clip;
+   overscroll-behavior-y: contain;
+   -webkit-overflow-scrolling: touch;
+}
+
+[data-section='mask'] {
    --section-ground: #2e4257;
    --section-body: rgb(245 237 224 / 0.82);
    --section-label: rgb(245 237 224 / 0.68);
    --section-question: #fb923c;
-   --section-vitrine: rgb(245 237 224 / 0.82);
+   --section-closing: rgb(245 237 224 / 0.82);
 }
 
-[data-section="mbusa"] {
+[data-section='mbusa'] {
    --section-ground: #a8482a;
    --section-body: #fff3e2;
    --section-label: #fff3e2;
    --section-question: #fff3e2;
-   --section-vitrine: #fff3e2;
+   --section-closing: #fff3e2;
 }
 
-[data-section="drum"] {
+[data-section='drum'] {
    --section-ground: #1f4f4f;
    --section-body: rgb(245 237 224 / 0.82);
    --section-label: rgb(245 237 224 / 0.68);
    --section-question: #fb923c;
-   --section-vitrine: rgb(245 237 224 / 0.82);
+   --section-closing: rgb(245 237 224 / 0.82);
 }
 
+/* Full-bleed mural behind the whole panel, type included. */
 .record-graphic-band {
-   height: clamp(120px, 20vw, 200px);
+   position: absolute;
+   inset: 0;
+   z-index: 0;
    overflow: hidden;
+   pointer-events: none;
 }
 
+/* 0.26 is a measured ceiling, not a taste call: over a fully-inked mural pixel
+   the title (large text, needs 3.0) reads 3.84 / 4.16 / 3.15 on indigo / teal /
+   terracotta. At 0.32 terracotta drops to 2.84 and fails.
+   Body copy needs 4.5 and would fail at any opacity that leaves the mural
+   visible, so the mask tapers the artwork over the lower two-thirds where the
+   prose sits. It masks decorative line art — it is not a gradient ground. */
 .record-graphic-band img {
    display: block;
    width: 100%;
    height: 100%;
    object-fit: cover;
-   opacity: 0.32;
+   opacity: 0.26;
+   -webkit-mask-image: linear-gradient(
+      to bottom,
+      #000 0%,
+      #000 30%,
+      rgb(0 0 0 / 0.34) 58%,
+      rgb(0 0 0 / 0.26) 100%
+   );
+   mask-image: linear-gradient(
+      to bottom,
+      #000 0%,
+      #000 30%,
+      rgb(0 0 0 / 0.34) 58%,
+      rgb(0 0 0 / 0.26) 100%
+   );
 }
 
 .record-section-content {
@@ -109,8 +201,7 @@ body {
    width: 100%;
    max-width: 1400px;
    margin: 0 auto;
-   padding: clamp(44px, 7vw, 88px) clamp(22px, 7vw, 104px)
-      clamp(68px, 9vw, 120px);
+   padding: clamp(44px, 7vw, 88px) clamp(22px, 7vw, 104px) clamp(68px, 9vw, 120px);
 }
 
 .record-section-heading,
@@ -119,12 +210,11 @@ body {
 }
 
 .record-section-number,
-.record-curatorial,
-.record-vitrine-label {
+.record-curatorial {
    margin: 0;
    color: var(--section-label);
-   font-family: var(--record-font-display), "Palatino Linotype", Palatino,
-      Georgia, serif;
+   font-family: var(--record-font-display), 'Palatino Linotype', Palatino, Georgia,
+      serif;
    font-size: 11px;
    font-weight: 700;
    letter-spacing: 0.22em;
@@ -139,8 +229,9 @@ body {
 .record-section-heading h2 {
    max-width: 30ch;
    margin: 0;
-   font-family: var(--record-font-display), "Palatino Linotype", Palatino,
-      Georgia, serif;
+   color: var(--record-cream);
+   font-family: var(--record-font-display), 'Palatino Linotype', Palatino, Georgia,
+      serif;
    font-size: clamp(25px, 3.2vw, 38px);
    font-weight: 700;
    letter-spacing: 0.04em;
@@ -187,7 +278,7 @@ body {
    max-width: 34ch;
    margin: 0;
    color: var(--section-question);
-   font-family: var(--record-font-question), "Palatino Linotype", Palatino,
+   font-family: var(--record-font-question), 'Palatino Linotype', Palatino,
       Georgia, serif;
    font-size: clamp(24px, 2.6vw, 30px);
    font-style: italic;
@@ -195,54 +286,106 @@ body {
    line-height: 1.34;
 }
 
-.record-vitrine {
+.record-closing {
    grid-column: 3;
    grid-row: 3 / span 2;
    padding-left: 22px;
    border-left: 1px solid var(--record-rule);
 }
 
-.record-vitrine-label {
-   margin-bottom: 16px;
-}
-
-.record-vitrine h3 {
+.record-closing > p {
    margin: 0 0 16px;
-   font-family: var(--record-font-display), "Palatino Linotype", Palatino,
-      Georgia, serif;
-   font-size: 15px;
-   font-weight: 700;
-   letter-spacing: 0.14em;
-   line-height: 1.3;
-}
-
-.record-vitrine > p:not(.record-vitrine-label) {
-   margin: 0 0 16px;
-   color: var(--section-vitrine);
+   color: var(--section-closing);
    font-size: 13.5px;
    line-height: 1.65;
 }
 
-.record-vitrine > p:last-child {
+.record-closing > p:last-child {
    margin-bottom: 0;
 }
 
-.record-footer {
-   padding: 44px clamp(22px, 7vw, 104px) 68px;
+.record-gallery-navigation {
+   display: grid;
+   grid-template-columns: 48px 1fr 48px;
+   align-items: center;
+   width: 100%;
+   padding: 0 clamp(22px, 7vw, 104px);
+   background: var(--record-umber);
+   border-top: 1px solid var(--record-rule);
 }
 
-.record-footer a {
+.record-gallery-navigation ol {
+   display: flex;
+   grid-column: 2;
+   gap: 14px;
+   align-items: center;
+   justify-content: center;
+   margin: 0;
+   padding: 0;
+   list-style: none;
+}
+
+.record-gallery-navigation li {
+   line-height: 1;
+}
+
+.record-gallery-navigation [data-gallery-dot] {
+   display: grid;
+   width: 28px;
+   height: 28px;
+   place-items: center;
+}
+
+.record-gallery-navigation [data-gallery-dot] span {
+   width: 8px;
+   height: 8px;
+   border: 1px solid rgb(245 237 224 / 0.74);
+   border-radius: 999px;
+   background: transparent;
+   transition:
+      width 160ms ease,
+      background-color 160ms ease;
+}
+
+.record-gallery-navigation [data-gallery-dot][aria-current='step'] span {
+   width: 24px;
+   background: var(--record-raised-cream);
+}
+
+.record-gallery-arrow {
+   display: none;
+   align-items: center;
+   gap: 8px;
    color: var(--record-raised-cream);
-   font-size: 14px;
-   line-height: 1.5;
-   text-decoration-line: underline;
-   text-decoration-thickness: 1px;
-   text-underline-offset: 0.25em;
+   font-size: 22px;
+   text-decoration: none;
 }
 
-.record-footer a:focus-visible {
-   outline: 1px solid var(--record-raised-cream);
-   outline-offset: 6px;
+.record-gallery-previous {
+   grid-column: 1;
+   justify-self: start;
+}
+
+.record-gallery-next {
+   grid-column: 3;
+   justify-self: end;
+}
+
+.record-gallery-navigation a:focus-visible {
+   border-radius: 4px;
+   outline: 2px solid var(--record-raised-cream);
+   outline-offset: 2px;
+}
+
+.record-visually-hidden {
+   position: absolute;
+   width: 1px;
+   height: 1px;
+   padding: 0;
+   overflow: hidden;
+   clip: rect(0, 0, 0, 0);
+   white-space: nowrap;
+   border: 0;
 }
 
 @media (max-width: 1000px) {
@@ -250,12 +393,24 @@ body {
       grid-template-columns: 64px minmax(0, 66ch);
    }
 
-   .record-vitrine {
+   .record-closing {
       grid-column: 2;
       grid-row: 5;
       padding: 34px 0 0;
       border-top: 1px solid var(--record-rule);
       border-left: 0;
+   }
+}
+
+@media (min-width: 768px) {
+   .record-gallery-arrow:not([hidden]) {
+      display: inline-flex;
+   }
+}
+
+@media (min-width: 1024px) {
+   :root {
+      --record-nav-height: 88px;
    }
 }
 
@@ -279,5 +434,9 @@ body {
    *::before,
    *::after {
       scroll-behavior: auto !important;
+   }
+
+   .record-gallery-navigation [data-gallery-dot] span {
+      transition: none;
    }
 }

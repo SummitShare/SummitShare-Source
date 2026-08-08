@@ -1,14 +1,19 @@
 'use client';
 import React, { useState } from 'react';
+import dynamic from 'next/dynamic';
 import { usePathname, useRouter } from 'next/navigation';
 import { Button } from '../button/Button';
-import { useAccount } from 'wagmi';
-import { ConnectKitButton } from 'connectkit';
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import { Menu, UserCircle, X } from 'lucide-react';
 
-const NeutralNav: React.FC = () => {
+const WalletNavButton = dynamic(() => import('./WalletNavButton'));
+
+type NeutralNavProps = {
+   showWallet?: boolean;
+};
+
+const NeutralNav: React.FC<NeutralNavProps> = ({ showWallet = true }) => {
    const router = useRouter();
    const session = useSession();
 
@@ -56,8 +61,6 @@ const NeutralNav: React.FC = () => {
 
    const [openMenu, setOpenMenu] = useState<boolean>(false);
    const pathname = usePathname();
-   const { address } = useAccount();
-   const userAddress = address;
 
    return (
       <nav className="w-full">
@@ -86,15 +89,11 @@ const NeutralNav: React.FC = () => {
             </li>
             <li className="sm:block hidden md:hidden lg:block flex-shrink-0">
                <ul className="flex flex-row gap-2 items-center">
-                  <li className="flex-shrink-0">
-                     <ConnectKitButton.Custom>
-                        {({ show }) => (
-                           <Button onClick={show} className="whitespace-nowrap">
-                              {!userAddress ? 'Connect' : 'Connected'}
-                           </Button>
-                        )}
-                     </ConnectKitButton.Custom>
-                  </li>
+                  {showWallet && (
+                     <li className="flex-shrink-0">
+                        <WalletNavButton />
+                     </li>
+                  )}
                   <li className="flex-shrink-0">
                      {session.status !== 'authenticated' && (
                         <Button
@@ -193,15 +192,11 @@ const NeutralNav: React.FC = () => {
                      </ul>
                   </li>
                ))}
-               <li>
-                  <ConnectKitButton.Custom>
-                     {({ show }) => (
-                        <Button onClick={show} size={'medium'} className="w-full">
-                           {!userAddress ? 'Connect Wallet' : 'Connected'}
-                        </Button>
-                     )}
-                  </ConnectKitButton.Custom>
-               </li>
+               {showWallet && (
+                  <li>
+                     <WalletNavButton mobile />
+                  </li>
+               )}
             </ul>
          </nav>
       </nav>

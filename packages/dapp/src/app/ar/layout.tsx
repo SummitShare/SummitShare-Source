@@ -2,8 +2,8 @@ import type { Metadata, Viewport } from 'next';
 import '../styles/globals.css';
 
 export const metadata: Metadata = {
-   title: 'Vitrine AR | SummitShare',
-   description: 'View a SummitShare artifact inside a tracked museum vitrine.',
+   title: 'AR | SummitShare',
+   description: 'View a SummitShare artifact in augmented reality.',
 };
 
 export const viewport: Viewport = {

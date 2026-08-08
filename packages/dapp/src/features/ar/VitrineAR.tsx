@@ -488,7 +488,7 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
          >
             <div className="max-w-[70vw] rounded-2xl border border-white/10 bg-black/45 px-4 py-3 backdrop-blur-md">
                <p className="text-[10px] uppercase tracking-[0.35em] !text-amber-200/70">
-                  SummitShare · Vitrine AR
+                  SummitShare · AR
                </p>
                <p className="mt-1 truncate text-sm font-semibold !text-amber-50 sm:text-base">
                   {artifact.name}
