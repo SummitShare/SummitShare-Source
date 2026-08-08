@@ -1,16 +1,51 @@
 'use client';
 
 import { useEffect } from 'react';
+import { galleryControlState } from './galleryControls';
 
-const selectAll = <ElementType extends Element>(selector: string) =>
-   Array.from(document.querySelectorAll<ElementType>(selector));
-
-export default function GalleryObserver() {
+/**
+ * Progressive enhancement over a gallery that is already complete in HTML: the
+ * page ships the first panel's dot and arrow state, and this keeps them in step
+ * as the visitor scrolls. Queries are scoped to `rootId` rather than the whole
+ * document so a second gallery on the page could never be driven by this one.
+ */
+export default function GalleryObserver({ rootId }: { rootId: string }) {
    useEffect(() => {
-      const track = document.querySelector('.record-gallery-track');
-      const panels = selectAll<HTMLElement>('[data-record-panel]');
-      const dots = selectAll<HTMLAnchorElement>('[data-gallery-dot]');
-      const arrows = selectAll<HTMLAnchorElement>('[data-gallery-arrow]');
+      const root = document.getElementById(rootId);
+      if (!root) return;
+
+      const track = root.querySelector<HTMLElement>('[data-gallery-track]');
+      const panels = Array.from(
+         root.querySelectorAll<HTMLElement>('[data-record-panel]')
+      );
+      const dots = Array.from(
+         root.querySelectorAll<HTMLAnchorElement>('[data-gallery-dot]')
+      );
+      const previous = root.querySelector<HTMLAnchorElement>(
+         '[data-gallery-previous]'
+      );
+      const next = root.querySelector<HTMLAnchorElement>('[data-gallery-next]');
+      if (!track || panels.length === 0) return;
+
+      const pointArrow = (
+         arrow: HTMLAnchorElement | null,
+         index: number | null
+      ) => {
+         if (!arrow) return;
+         const panel = index === null ? null : panels[index];
+         arrow.hidden = !panel;
+         if (panel) arrow.href = `#${panel.id}`;
+      };
+
+      const apply = (activeIndex: number) => {
+         const state = galleryControlState(activeIndex, panels.length);
+         dots.forEach((dot, index) => {
+            dot.ariaCurrent = index === state.activeIndex ? 'step' : 'false';
+         });
+         pointArrow(previous, state.previousIndex);
+         pointArrow(next, state.nextIndex);
+      };
+
       const observer = new IntersectionObserver(
          (entries) => {
             // A callback can carry several panels at once mid-swipe, and the
@@ -21,20 +56,16 @@ export default function GalleryObserver() {
                .filter(({ intersectionRatio }) => intersectionRatio >= 0.55)
                .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
             if (!current) return;
+
             const index = panels.indexOf(current.target as HTMLElement);
-            dots.forEach((dot, dotIndex) => {
-               dot.ariaCurrent = dotIndex === index ? 'step' : 'false';
-            });
-            arrows.forEach((arrow, arrowIndex) => {
-               const panel = panels[index + arrowIndex * 2 - 1];
-               arrow.hidden = !panel;
-               if (panel) arrow.href = `#${panel.id}`;
-            });
+            if (index >= 0) apply(index);
          },
          { root: track, threshold: [0.55, 0.75] }
       );
+
       panels.forEach((panel) => observer.observe(panel));
       return () => observer.disconnect();
-   }, []);
+   }, [rootId]);
+
    return null;
 }

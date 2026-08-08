@@ -4,7 +4,9 @@
    --record-ochre: #fb923c;
    --record-umber: #1b1410;
    --record-rule: rgb(245 237 224 / 0.18);
-   --record-nav-height: 72px;
+   /* Deliberately shorter than PrimaryNav's ~64/88px bar: this page gives the
+      viewport to the mural gallery, which is sized against this value. */
+   --record-nav-height: 58px;
 }
 
 * {
@@ -39,8 +41,54 @@ body {
    background: var(--record-umber);
 }
 
+/* Hero. Four layers, bottom to top: the spotlight wash (::before), the marker
+   field, an umber scrim that protects the copy from both (::after), then the
+   copy itself. The scrim has to sit above the markers, not below them, or a
+   medallion drifting left would land under the body text. */
 .record-intro {
+   position: relative;
+   isolation: isolate;
+   display: grid;
+   overflow: clip;
+   grid-template-columns: minmax(0, 1fr);
    padding: clamp(44px, 8vw, 104px) clamp(22px, 7vw, 104px);
+   background: var(--record-umber);
+}
+
+.record-intro::before,
+.record-intro::after {
+   content: '';
+   position: absolute;
+   inset: 0;
+   pointer-events: none;
+}
+
+/* The spotlight, hung above the hero and pointing down — the house signature. */
+.record-intro::before {
+   z-index: 0;
+   background: radial-gradient(
+      ellipse 96% 34% at 50% -8%,
+      rgb(255 243 226 / 0.16) 0%,
+      rgb(251 146 60 / 0.07) 38%,
+      rgb(251 146 60 / 0.025) 56%,
+      transparent 74%
+   );
+}
+
+.record-intro::after {
+   z-index: 2;
+   background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 72%,
+      var(--record-umber) 100%
+   );
+}
+
+.record-intro-copy {
+   position: relative;
+   z-index: 3;
+   grid-column: 1;
 }
 
 .record-intro h1 {
@@ -65,6 +113,172 @@ body {
 
 .record-intro p:last-child {
    margin-bottom: 0;
+}
+
+/* Mobile keeps the spotlight and drops the markers entirely: there is no side
+   space to put them in, and stacking them above the copy would push the
+   curatorial statement below the fold for the sake of decoration. */
+.record-marker-field {
+   display: none;
+}
+
+@media (min-width: 768px) {
+   .record-intro {
+      grid-template-columns: minmax(0, 58ch) minmax(220px, 32vw);
+      align-items: center;
+      column-gap: clamp(32px, 5vw, 56px);
+      min-height: clamp(520px, calc(100svh - var(--record-nav-height)), 680px);
+   }
+
+   /* Off-centre towards the medallions, so the light reads as falling on them
+      rather than on the type. */
+   .record-intro::before {
+      background: radial-gradient(
+            ellipse 72% 42% at 62% -8%,
+            rgb(255 243 226 / 0.28) 0%,
+            rgb(255 243 226 / 0.16) 18%,
+            rgb(251 146 60 / 0.1) 38%,
+            rgb(251 146 60 / 0.04) 56%,
+            transparent 74%
+         ),
+         linear-gradient(to bottom, rgb(255 243 226 / 0.045), transparent 44%);
+   }
+
+   /* Pulls the ground back to solid umber under the copy column. Without this
+      the spotlight lifts the local background and body copy fails AA. */
+   .record-intro::after {
+      background: linear-gradient(
+            90deg,
+            var(--record-umber) 0%,
+            var(--record-umber) 50%,
+            rgb(27 20 16 / 0.78) 64%,
+            transparent 82%
+         ),
+         linear-gradient(to bottom, transparent 72%, var(--record-umber) 100%);
+   }
+
+   .record-marker-field {
+      position: relative;
+      z-index: 1;
+      display: block;
+      grid-column: 2;
+      grid-row: 1;
+      justify-self: end;
+      width: 100%;
+      min-height: clamp(320px, 46vw, 460px);
+      aspect-ratio: 0.78;
+      pointer-events: none;
+      -webkit-mask-image: radial-gradient(
+         ellipse 82% 88% at 58% 50%,
+         #000 0 62%,
+         rgb(0 0 0 / 0.7) 78%,
+         transparent 100%
+      );
+      mask-image: radial-gradient(
+         ellipse 82% 88% at 58% 50%,
+         #000 0 62%,
+         rgb(0 0 0 / 0.7) 78%,
+         transparent 100%
+      );
+   }
+
+   /* The medallion occupies 768 of the marker's 1024 viewBox, so scaling the
+      background to 1/0.75 crops the square print canvas away and leaves the
+      disc filling its circular frame. */
+   .record-marker {
+      position: absolute;
+      top: var(--y);
+      left: var(--x);
+      width: var(--s);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background-color: #101317;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 133.334% 133.334%;
+      box-shadow:
+         0 0 0 1px rgb(245 237 224 / 0.06),
+         0 30px 90px rgb(0 0 0 / 0.26);
+      opacity: var(--a);
+      transform: translate(-50%, -50%) rotate(var(--r));
+   }
+
+   .record-marker-mask {
+      --s: clamp(220px, 32vw, 315px);
+      --x: 48%;
+      --y: 42%;
+      --r: -7deg;
+      --a: 0.72;
+      background-image: url('/ar/print/mask-tracking-marker.svg');
+   }
+
+   .record-marker-drum {
+      --s: clamp(150px, 24vw, 220px);
+      --x: 72%;
+      --y: 63%;
+      --r: 9deg;
+      --a: 0.54;
+      background-image: url('/ar/print/drum-tracking-marker.svg');
+   }
+
+   .record-marker-calabash {
+      --s: clamp(130px, 21vw, 190px);
+      --x: 30%;
+      --y: 74%;
+      --r: 13deg;
+      --a: 0.42;
+      background-image: url('/ar/print/calabash-tracking-marker.svg');
+   }
+
+   /* Held back until there is room for a fourth without crowding. */
+   .record-marker-cowry {
+      display: none;
+   }
+}
+
+@media (min-width: 1100px) {
+   .record-intro {
+      grid-template-columns: minmax(0, 66ch) minmax(360px, 1fr);
+      column-gap: clamp(56px, 7vw, 116px);
+      min-height: clamp(580px, calc(100svh - var(--record-nav-height)), 760px);
+   }
+
+   .record-marker-field {
+      max-width: 720px;
+      min-height: clamp(420px, 38vw, 560px);
+      aspect-ratio: 1.08;
+   }
+
+   .record-marker-mask {
+      --s: clamp(300px, 26vw, 390px);
+      --x: 44%;
+      --y: 49%;
+      --a: 0.76;
+   }
+
+   .record-marker-drum {
+      --s: clamp(220px, 19vw, 285px);
+      --x: 72%;
+      --y: 34%;
+      --a: 0.6;
+   }
+
+   .record-marker-calabash {
+      --s: clamp(170px, 14vw, 220px);
+      --x: 28%;
+      --y: 72%;
+      --a: 0.42;
+   }
+
+   .record-marker-cowry {
+      display: block;
+      --s: clamp(185px, 16vw, 245px);
+      --x: 75%;
+      --y: 70%;
+      --r: -14deg;
+      --a: 0.48;
+      background-image: url('/ar/print/cowry-tracking-marker.svg');
+   }
 }
 
 .record-gallery {
@@ -94,7 +308,7 @@ body {
 }
 
 .record-gallery-track:focus-visible,
-.record-section:focus-visible {
+.record-section-scroll:focus-visible {
    outline: 2px solid var(--record-raised-cream);
    outline-offset: -4px;
 }
@@ -410,7 +624,7 @@ body {
 
 @media (min-width: 1024px) {
    :root {
-      --record-nav-height: 88px;
+      --record-nav-height: 68px;
    }
 }
 

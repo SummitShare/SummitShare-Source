@@ -1,10 +1,9 @@
 import type { Metadata, Viewport } from 'next';
 import { Cormorant_Garamond, Manrope, Martel } from 'next/font/google';
 import Footer from '@/components/navigation/footer';
-import PrimaryNav from '@/components/navigation/PrimaryNav';
 import '../styles/globals.css';
 import './record.css';
-import SessionBoundary from './SessionBoundary';
+import StaticNav from '@/components/navigation/StaticNav';
 
 const display = Martel({
    subsets: ['latin'],
@@ -30,7 +29,7 @@ const question = Cormorant_Garamond({
 
 const title = 'What the Record Forgot / What Would You Ask?';
 const description =
-   'What the Record Forgot / What Would You Ask? begins with absence. Three empty vitrines mark the place of cultural objects separated from the living systems that once gave them meaning.';
+   'An exhibition that begins with absence. Three empty vitrines mark the place of cultural objects separated from the living systems that once gave them meaning.';
 
 export const metadata: Metadata = {
    title,
@@ -58,13 +57,13 @@ export default function RecordRootLayout({
          <body
             className={`${display.variable} ${body.variable} ${question.variable} record-shell`}
          >
-            <SessionBoundary>
-               <PrimaryNav showWallet={false} />
-               <div className="record-site-content">{children}</div>
-               <div className="record-site-footer">
-                  <Footer />
-               </div>
-            </SessionBoundary>
+            {/* No session or wallet here: this page shows no user state, and
+                opting out is what keeps next-auth and wagmi off it entirely. */}
+            <StaticNav />
+            <div className="record-site-content">{children}</div>
+            <div className="record-site-footer">
+               <Footer crossDocumentLinks />
+            </div>
          </body>
       </html>
    );
