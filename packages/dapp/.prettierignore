@@ -4,3 +4,8 @@ dist/
 .next/
 .netlify/
 packages/
+
+# Vendored Draco decoders, copied verbatim from three by scripts/generate-ar-markers.mjs.
+# Prettier expands the minified decoder from 512 KB to 3.1 MB — a file the AR
+# viewer downloads at runtime — and any reformat here is lost on the next copy.
+public/ar/draco/
