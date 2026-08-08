@@ -1,21 +1,14 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import DemoWordmark from './DemoWordmark';
-import { AR_ARTIFACTS } from './artifacts';
+import { AR_EXIT_PATH, type ARArtifact } from './artifacts';
 import {
    XRVitrine,
    type UnsupportedReason,
    type XRVitrineArtifact,
 } from './xrVitrine';
-
-const ARTIFACT = AR_ARTIFACTS.drum;
-const XR_ARTIFACT: XRVitrineArtifact = {
-   slug: ARTIFACT.slug,
-   name: ARTIFACT.name,
-   displayHeight: ARTIFACT.displayHeight,
-   rotationY: ARTIFACT.rotationY,
-   modelUrl: ARTIFACT.modelUrl,
-};
 
 const resolveNextAssetUrl = (path: string) => path;
 
@@ -24,7 +17,10 @@ type UserFailure = Readonly<{
    detail: string;
 }>;
 
-const failureCopy = (reason: UnsupportedReason): UserFailure => {
+const failureCopy = (
+   reason: UnsupportedReason,
+   artifactName: string
+): UserFailure => {
    switch (reason.kind) {
       case 'insecure-context':
          return {
@@ -59,13 +55,12 @@ const failureCopy = (reason: UnsupportedReason): UserFailure => {
       case 'hit-test-unavailable':
          return {
             title: 'A surface could not be detected',
-            detail:
-               'This device could not prepare surface placement for the drum.',
+            detail: `This device could not prepare surface placement for ${artifactName}.`,
          };
       case 'session-ended':
          return {
             title: 'The AR session ended',
-            detail: 'You can start the drum demo again whenever you are ready.',
+            detail: `You can start the ${artifactName} demo again whenever you are ready.`,
          };
       case 'capability-check-failed':
       case 'entry-failed':
@@ -83,13 +78,15 @@ const failureCopy = (reason: UnsupportedReason): UserFailure => {
 };
 
 function StartScreen({
+   artifact,
    reason,
    onStart,
 }: Readonly<{
+   artifact: ARArtifact;
    reason?: UnsupportedReason;
    onStart?: () => void;
 }>) {
-   const failure = reason ? failureCopy(reason) : null;
+   const failure = reason ? failureCopy(reason, artifact.name) : null;
    const checking = reason?.kind === 'checking';
 
    return (
@@ -107,10 +104,10 @@ function StartScreen({
                ) : (
                   <>
                      <p className="text-xs uppercase tracking-[0.32em] !text-amber-200/65">
-                        {ARTIFACT.associatedHistory}
+                        {artifact.associatedHistory}
                      </p>
                      <h1 className="mt-3 text-3xl !text-amber-50">
-                        {ARTIFACT.name}
+                        {artifact.name}
                      </h1>
                      {failure && (
                         <div className="mt-5 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
@@ -134,6 +131,10 @@ function StartScreen({
                            <p className="mt-3 text-xs !text-amber-100/50">
                               Your camera is used only for this live AR view.
                            </p>
+                           <p className="mt-2 text-xs !text-amber-100/50">
+                              Best supported on Android. iOS support is
+                              experimental.
+                           </p>
                         </>
                      )}
                   </>
@@ -145,17 +146,95 @@ function StartScreen({
    );
 }
 
-export default function WebXRDemo() {
+/**
+ * Reasons that mean this device can never run our WebXR path, so the marker
+ * should be served by MindAR instead.
+ *
+ * `navigator.xr.isSessionSupported('immersive-ar')` cannot tell us whether the
+ * required features — `local-floor`, `hit-test`, `dom-overlay` — are actually
+ * available; that only surfaces once `requestSession` is attempted. Without a
+ * fallback such a device reaches a retry button that can never succeed, and
+ * before marker routing existed it would have had a working MindAR viewer.
+ *
+ * Deliberately excluded: `permission-denied` and `insecure-context` (MindAR
+ * needs the camera and a secure context too, so falling back changes nothing),
+ * `session-ended` (a normal exit), and `entry-failed` (often transient — the
+ * retry is genuine there).
+ */
+const MINDAR_FALLBACK_REASONS = new Set<UnsupportedReason['kind']>([
+   'missing-webxr',
+   'immersive-ar-unsupported',
+   'capability-check-failed',
+   'entry-not-supported',
+   'dom-overlay-unavailable',
+   'hit-test-unavailable',
+]);
+
+/**
+ * Renders nothing. `renderUnsupported` is called during XRVitrine's render, so
+ * both escalations have to happen in an effect rather than inline.
+ *
+ * `session-ended` is the WebXR counterpart of MindAR's "End AR" button — the
+ * visitor has left the immersive session, so they go to the same place.
+ */
+function UnsupportedEscalation({
+   reason,
+   onFallback,
+}: Readonly<{
+   reason: UnsupportedReason;
+   onFallback?: () => void;
+}>) {
+   const router = useRouter();
+
+   useEffect(() => {
+      if (reason.kind === 'session-ended') {
+         router.push(AR_EXIT_PATH);
+         return;
+      }
+      if (onFallback && MINDAR_FALLBACK_REASONS.has(reason.kind)) onFallback();
+   }, [reason.kind, onFallback, router]);
+
+   return null;
+}
+
+export default function WebXRDemo({
+   artifact,
+   onUnavailable,
+}: {
+   artifact: ARArtifact;
+   onUnavailable?: () => void;
+}) {
+   const xrArtifact: XRVitrineArtifact = {
+      slug: artifact.slug,
+      name: artifact.name,
+      // WebXR calibration, not the marker-relative MindAR one — see artifacts.ts.
+      heightMetres: artifact.webxr.heightMetres,
+      rotationY: artifact.webxr.rotationY,
+      modelUrl: artifact.modelUrl,
+   };
+
    return (
       <main className="fixed inset-0 isolate h-[100dvh] min-h-[100svh] w-screen overflow-hidden bg-[#0f0c09] text-amber-50">
          <XRVitrine
-            artifact={XR_ARTIFACT}
-            options={{}}
+            artifact={xrArtifact}
+            options={{ nudge: artifact.webxr.nudge }}
             resolveAssetUrl={resolveNextAssetUrl}
             renderUnsupported={(reason) => (
-               <StartScreen reason={reason} onStart={reason.retry} />
+               <>
+                  <UnsupportedEscalation
+                     reason={reason}
+                     onFallback={onUnavailable}
+                  />
+                  <StartScreen
+                     artifact={artifact}
+                     reason={reason}
+                     onStart={reason.retry}
+                  />
+               </>
             )}
-            renderStart={(start) => <StartScreen onStart={start} />}
+            renderStart={(start) => (
+               <StartScreen artifact={artifact} onStart={start} />
+            )}
             renderOverlay={(state) => (
                <div className="pointer-events-none fixed inset-0 z-20">
                   <DemoWordmark />

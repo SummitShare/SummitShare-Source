@@ -1,7 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import type { ARArtifact } from './artifacts';
 
 function ARLoadingState() {
@@ -38,6 +38,12 @@ export default function ARClient({
       preferWebXR ? 'resolving' : 'mindar'
    );
 
+   // `isSessionSupported` only answers for the mode, not for the features the
+   // session actually requires, so WebXR can still turn out to be unusable
+   // after this resolves. The viewer escalates back here rather than stranding
+   // the visitor on a retry that cannot succeed.
+   const fallBackToMindAR = useCallback(() => setViewer('mindar'), []);
+
    useEffect(() => {
       if (!preferWebXR) {
          setViewer('mindar');
@@ -62,6 +68,8 @@ export default function ARClient({
    }, [preferWebXR]);
 
    if (viewer === 'resolving') return <ARLoadingState />;
-   if (viewer === 'webxr') return <WebXRDemo />;
+   if (viewer === 'webxr') {
+      return <WebXRDemo artifact={artifact} onUnavailable={fallBackToMindAR} />;
+   }
    return <VitrineAR artifact={artifact} />;
 }

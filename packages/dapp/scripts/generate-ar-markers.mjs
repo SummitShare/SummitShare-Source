@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import QRCode from 'qrcode';
 import sharp from 'sharp';
 import { OfflineCompiler } from 'mind-ar/src/image-target/offline-compiler.js';
+import { normalizeBaseUrl } from './lib/baseUrl.mjs';
 
 const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
 const DAPP_DIR = path.resolve(SCRIPT_DIR, '..');
@@ -25,7 +26,6 @@ const THREE_DRACO_DIR = path.join(
 
 const TARGET_SIZE = 1024;
 const PRINT_SIZE = 2048;
-const DEFAULT_BASE_URL = 'http://localhost:3000';
 const DEFAULT_PRINTED_MEDALLION_DIAMETER_MM = 90;
 const MEDALLION_CENTER = TARGET_SIZE / 2;
 const MEDALLION_RADIUS = 384;
@@ -173,7 +173,10 @@ const loadArtifactSymbol = async (artifact) => {
       );
    }
 
-   const viewBox = viewBoxMatch[2].trim().split(/[\s,]+/).map(Number);
+   const viewBox = viewBoxMatch[2]
+      .trim()
+      .split(/[\s,]+/)
+      .map(Number);
    if (
       viewBox.length !== 4 ||
       viewBox.some((value) => !Number.isFinite(value)) ||
@@ -512,9 +515,7 @@ const makeSymbolComposition = (random, profile, symbol) => {
 
    return `<g transform="translate(${fixed(x)} ${fixed(y)}) scale(${scale.toFixed(
       3
-   )}) translate(${fixed(-centerX)} ${fixed(-centerY)})">${
-      symbol.geometry
-   }</g>`;
+   )}) translate(${fixed(-centerX)} ${fixed(-centerY)})">${symbol.geometry}</g>`;
 };
 
 const makeMarkerSvg = (artifact, profileIndex, symbol) => {
@@ -847,25 +848,15 @@ const copyDracoDecoders = async () => {
    );
 };
 
-const normalizeBaseUrl = () => {
-   const configured = process.env.AR_BASE_URL?.trim() || DEFAULT_BASE_URL;
-   const url = new URL(configured);
-   url.hash = '';
-   url.search = '';
-   if (!url.pathname.endsWith('/')) {
-      url.pathname = `${url.pathname}/`;
-   }
-   return url;
-};
-
 const main = async () => {
+   const baseUrl = normalizeBaseUrl();
+
    await Promise.all(
       [PRINT_DIR, TARGET_DIR, DRACO_DIR].map((directory) =>
          fs.mkdir(directory, { recursive: true })
       )
    );
 
-   const baseUrl = normalizeBaseUrl();
    process.stdout.write(`Generating AR print assets for ${baseUrl.href}\n`);
    process.stdout.write(
       `Medallion print config: ${PRINTED_MEDALLION_DIAMETER_MM} mm diameter on a ${PRINT_CANVAS_SIZE_MM.toFixed(

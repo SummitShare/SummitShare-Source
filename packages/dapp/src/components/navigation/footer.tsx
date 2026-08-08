@@ -3,7 +3,44 @@ import { Github } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '../button/Button';
 
-function Footer() {
+type InternalLinkProps = {
+   href: string;
+   className?: string;
+   plain?: boolean;
+   children: React.ReactNode;
+};
+
+/**
+ * `next/link` cannot do a client transition to a route under a different root
+ * layout — the browser does a full document load either way — but the router
+ * still prefetches the destination's chunks on sight. On `/record` that pulled
+ * 1.2 MB of Web3 and auth bundle onto a static page. Measured: `prefetch={false}`
+ * does not prevent it; only not using `Link` does.
+ */
+function InternalLink({ href, className, plain, children }: InternalLinkProps) {
+   if (plain) {
+      return (
+         <a href={href} className={className}>
+            {children}
+         </a>
+      );
+   }
+   return (
+      <Link href={href} className={className}>
+         {children}
+      </Link>
+   );
+}
+
+type FooterProps = {
+   /**
+    * Set on pages that live outside the `(main)` root layout. Leaves the
+    * `(main)` routes untouched, where prefetching genuinely pays off.
+    */
+   crossDocumentLinks?: boolean;
+};
+
+function Footer({ crossDocumentLinks = false }: FooterProps) {
    return (
       <footer className="w-full bg-neutral-50">
          <div className="w-full px-4 sm:px-6 lg:px-[15%] py-12">
@@ -18,12 +55,12 @@ function Footer() {
                      Click the button below to email support
                   </p>
                   <div className="max-w-md mx-auto sm:mx-0">
-                     <Link
+                     <a
                         href="mailto:support@summitshare.co?subject=Inquiry%20About%20SummitShare&body=Dear%20SummitShare%20Team,%0D%0A%0D%0AI'm%20reaching%20out%20regarding%20[provide%20details%20about%20your%20inquiry].%20Could%20you%20please%20assist%20me%20with%20[add%20specific%20details%20or%20questions]?%0D%0A%0D%0AThank%20you%20for%20your%20support.%20Looking%20forward%20to%20hearing%20from%20you.%0D%0A%0D%0ABest%20regards,%0D%0A[Your%20Name]"
                         target="_blank"
                      >
                         <Button>Email</Button>
-                     </Link>
+                     </a>
                   </div>
                </div>
 
@@ -37,12 +74,13 @@ function Footer() {
                         </h3>
                         <ul className="space-y-2">
                            <li>
-                              <Link
+                              <InternalLink
                                  href="/blog"
+                                 plain={crossDocumentLinks}
                                  className="text-stone-600 hover:text-stone-900 transition-colors"
                               >
                                  Blogs
-                              </Link>
+                              </InternalLink>
                            </li>
                            <li>
                               <a
@@ -55,12 +93,13 @@ function Footer() {
                               </a>
                            </li>
                            <li>
-                              <Link
+                              <InternalLink
                                  href="/partners"
+                                 plain={crossDocumentLinks}
                                  className="text-stone-600 hover:text-stone-900 transition-colors"
                               >
                                  Partners
-                              </Link>
+                              </InternalLink>
                            </li>
                         </ul>
                      </div>
@@ -72,28 +111,31 @@ function Footer() {
                         </h3>
                         <ul className="space-y-2">
                            <li>
-                              <Link
+                              <InternalLink
                                  href="/donate"
+                                 plain={crossDocumentLinks}
                                  className="text-stone-600 hover:text-stone-900 transition-colors"
                               >
                                  Donate
-                              </Link>
+                              </InternalLink>
                            </li>
                            <li>
-                              <Link
+                              <InternalLink
                                  href="/distribution"
+                                 plain={crossDocumentLinks}
                                  className="text-stone-600 hover:text-stone-900 transition-colors"
                               >
                                  Insights
-                              </Link>
+                              </InternalLink>
                            </li>
                            <li>
-                              <Link
+                              <InternalLink
                                  href="/profile"
+                                 plain={crossDocumentLinks}
                                  className="text-stone-600 hover:text-stone-900 transition-colors"
                               >
                                  Profile
-                              </Link>
+                              </InternalLink>
                            </li>
                         </ul>
                      </div>
