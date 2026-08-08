@@ -1,13 +1,9 @@
-'use client';
-import { Inter } from 'next/font/google';
 import '../styles/globals.css';
 import { ApolloWrapper } from './apolloWrapper';
-import { SessionProvider } from 'next-auth/react';
+import SessionBoundary from '@/components/navigation/SessionBoundary';
 import Footer from '@/components/navigation/footer';
-import PrimaryNav from '@/components/navigation/PrimaryNav';
+import AppNav from '@/components/navigation/AppNav';
 import { Web3Provider } from '@/features/Web3Provider';
-
-const inter = Inter({ subsets: ['latin'] });
 
 export default function RootLayout({
    children,
@@ -17,15 +13,15 @@ export default function RootLayout({
    return (
       <html lang="en">
          <body className={`flex flex-col justify-between min-h-screen `}>
-            <SessionProvider>
+            <SessionBoundary>
                <ApolloWrapper>
                   <Web3Provider>
-                     <PrimaryNav />
+                     <AppNav />
                      <div className="">{children} </div>
                      <Footer />
                   </Web3Provider>
                </ApolloWrapper>
-            </SessionProvider>
+            </SessionBoundary>
          </body>
       </html>
    );

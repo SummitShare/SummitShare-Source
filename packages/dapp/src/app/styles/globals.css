@@ -19,6 +19,86 @@ h1 {
    font-size: 2rem;
 }
 
+/* The header wordmark. Carries the h1 treatment without being an h1 — every
+   page has its own h1, and a second one in the header would compete with it. */
+/* One size on every route, so the header does not change between them. */
+.nav-wordmark {
+   display: inline-block;
+   color: #1a0d08;
+   font-family: 'Martel', serif;
+   font-size: 1.5rem;
+   font-weight: 700;
+   line-height: 125%;
+}
+
+.nav-signin {
+   display: inline-flex;
+   padding: 0.5rem 1rem;
+   border: 1px solid rgb(26 13 8 / 0.25);
+   border-radius: 0.375rem;
+   color: #1a0d08;
+   font-size: 0.875rem;
+   font-weight: 600;
+   white-space: nowrap;
+}
+
+.nav-signin:hover {
+   border-color: #1a0d08;
+   background: rgb(26 13 8 / 0.05);
+}
+
+/* The no-JS menu used by StaticNav on routes outside the (main) layout. */
+.nav-menu {
+   position: relative;
+}
+
+.nav-menu summary {
+   display: flex;
+   width: 2.25rem;
+   height: 2.25rem;
+   align-items: center;
+   justify-content: center;
+   border-radius: 0.5rem;
+   color: #1a0d08;
+   cursor: pointer;
+   list-style: none;
+}
+
+.nav-menu summary::-webkit-details-marker {
+   display: none;
+}
+
+.nav-menu[open] summary {
+   background: rgb(26 13 8 / 0.06);
+}
+
+.nav-menu ul {
+   position: absolute;
+   z-index: 30;
+   top: calc(100% + 0.625rem);
+   right: 0;
+   min-width: 12rem;
+   margin: 0;
+   padding: 0.5rem;
+   border: 1px solid rgb(26 13 8 / 0.1);
+   border-radius: 0.75rem;
+   background: #fff;
+   box-shadow: 0 18px 44px rgb(26 13 8 / 0.16);
+   list-style: none;
+}
+
+.nav-menu a {
+   display: block;
+   padding: 0.5625rem 0.75rem;
+   border-radius: 0.5rem;
+   color: #1a0d08;
+   font-size: 0.9375rem;
+}
+
+.nav-menu a:hover {
+   background: rgb(26 13 8 / 0.06);
+}
+
 h2 {
    font-size: 1.75rem;
 }

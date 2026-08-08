@@ -1,13 +1,7 @@
-'use client';
-
-import { Inter } from 'next/font/google';
 import '../styles/globals.css';
-import { SessionProvider } from 'next-auth/react';
-import SecondaryNavBar from '@/components/secondaryNavBar';
-import PrimaryNav from '@/components/navigation/PrimaryNav';
+import SessionBoundary from '@/components/navigation/SessionBoundary';
+import AppNav from '@/components/navigation/AppNav';
 import { Web3Provider } from '@/features/Web3Provider';
-
-const inter = Inter({ subsets: ['latin'] });
 
 export default function RootLayout({
    children,
@@ -19,12 +13,12 @@ export default function RootLayout({
          <body
             className={`flex flex-col lg:justify-between mb-20 mx-10 lg:mx-[15%] `}
          >
-            <SessionProvider>
+            <SessionBoundary>
                <Web3Provider>
-                  <PrimaryNav />
+                  <AppNav />
                   {children}
                </Web3Provider>
-            </SessionProvider>
+            </SessionBoundary>
          </body>
       </html>
    );

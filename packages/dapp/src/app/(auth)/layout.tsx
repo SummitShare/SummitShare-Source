@@ -1,9 +1,5 @@
-'use client';
-import { Inter } from 'next/font/google';
 import '../styles/globals.css';
-import { SessionProvider } from 'next-auth/react';
-
-const inter = Inter({ subsets: ['latin'] });
+import SessionBoundary from '@/components/navigation/SessionBoundary';
 
 export default function RootLayout({
    children,
@@ -13,7 +9,7 @@ export default function RootLayout({
    return (
       <html lang="en">
          <body className=" bg-gradient-to-br from-orange-600 via-orange-500 bg-orange-400 ">
-            <SessionProvider>
+            <SessionBoundary>
                <div className=" fixed bottom-5 left-5 space-y-2 ">
                   <h1 className="text-white">
                      Summit<span className="">share</span>
@@ -25,7 +21,7 @@ export default function RootLayout({
                   </p>
                </div>
                {children}
-            </SessionProvider>
+            </SessionBoundary>
          </body>
       </html>
    );
