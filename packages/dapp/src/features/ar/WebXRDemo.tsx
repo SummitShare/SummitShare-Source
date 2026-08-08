@@ -1,7 +1,9 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import DemoWordmark from './DemoWordmark';
-import type { ARArtifact } from './artifacts';
+import { AR_EXIT_PATH, type ARArtifact } from './artifacts';
 import {
    XRVitrine,
    type UnsupportedReason,
@@ -129,6 +131,10 @@ function StartScreen({
                            <p className="mt-3 text-xs !text-amber-100/50">
                               Your camera is used only for this live AR view.
                            </p>
+                           <p className="mt-2 text-xs !text-amber-100/50">
+                              Best supported on Android. iOS support is
+                              experimental.
+                           </p>
                         </>
                      )}
                   </>
@@ -140,7 +146,64 @@ function StartScreen({
    );
 }
 
-export default function WebXRDemo({ artifact }: { artifact: ARArtifact }) {
+/**
+ * Reasons that mean this device can never run our WebXR path, so the marker
+ * should be served by MindAR instead.
+ *
+ * `navigator.xr.isSessionSupported('immersive-ar')` cannot tell us whether the
+ * required features — `local-floor`, `hit-test`, `dom-overlay` — are actually
+ * available; that only surfaces once `requestSession` is attempted. Without a
+ * fallback such a device reaches a retry button that can never succeed, and
+ * before marker routing existed it would have had a working MindAR viewer.
+ *
+ * Deliberately excluded: `permission-denied` and `insecure-context` (MindAR
+ * needs the camera and a secure context too, so falling back changes nothing),
+ * `session-ended` (a normal exit), and `entry-failed` (often transient — the
+ * retry is genuine there).
+ */
+const MINDAR_FALLBACK_REASONS = new Set<UnsupportedReason['kind']>([
+   'missing-webxr',
+   'immersive-ar-unsupported',
+   'capability-check-failed',
+   'entry-not-supported',
+   'dom-overlay-unavailable',
+   'hit-test-unavailable',
+]);
+
+/**
+ * Renders nothing. `renderUnsupported` is called during XRVitrine's render, so
+ * both escalations have to happen in an effect rather than inline.
+ *
+ * `session-ended` is the WebXR counterpart of MindAR's "End AR" button — the
+ * visitor has left the immersive session, so they go to the same place.
+ */
+function UnsupportedEscalation({
+   reason,
+   onFallback,
+}: Readonly<{
+   reason: UnsupportedReason;
+   onFallback?: () => void;
+}>) {
+   const router = useRouter();
+
+   useEffect(() => {
+      if (reason.kind === 'session-ended') {
+         router.push(AR_EXIT_PATH);
+         return;
+      }
+      if (onFallback && MINDAR_FALLBACK_REASONS.has(reason.kind)) onFallback();
+   }, [reason.kind, onFallback, router]);
+
+   return null;
+}
+
+export default function WebXRDemo({
+   artifact,
+   onUnavailable,
+}: {
+   artifact: ARArtifact;
+   onUnavailable?: () => void;
+}) {
    const xrArtifact: XRVitrineArtifact = {
       slug: artifact.slug,
       name: artifact.name,
@@ -157,11 +220,17 @@ export default function WebXRDemo({ artifact }: { artifact: ARArtifact }) {
             options={{ nudge: artifact.webxr.nudge }}
             resolveAssetUrl={resolveNextAssetUrl}
             renderUnsupported={(reason) => (
-               <StartScreen
-                  artifact={artifact}
-                  reason={reason}
-                  onStart={reason.retry}
-               />
+               <>
+                  <UnsupportedEscalation
+                     reason={reason}
+                     onFallback={onUnavailable}
+                  />
+                  <StartScreen
+                     artifact={artifact}
+                     reason={reason}
+                     onStart={reason.retry}
+                  />
+               </>
             )}
             renderStart={(start) => (
                <StartScreen artifact={artifact} onStart={start} />

@@ -1,9 +1,10 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { Material, Object3D, Texture } from 'three';
 import type { MindARThree } from 'mind-ar/dist/mindar-image-three.prod.js';
-import type { ARArtifact } from './artifacts';
+import { AR_EXIT_PATH, type ARArtifact } from './artifacts';
 
 type ARPhase =
    | 'idle'
@@ -32,6 +33,8 @@ interface ActiveSession {
    disposeModel: (() => void) | null;
    disposeDraco: (() => void) | null;
    injectedStyles: HTMLStyleElement[];
+   /** Guards the renderer teardown, which is not itself idempotent. */
+   cleaned: boolean;
 }
 
 const ERROR_COPY: Record<ARErrorKind, Omit<ARErrorState, 'kind'>> = {
@@ -197,13 +200,19 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
    const sessionRef = useRef<ActiveSession | null>(null);
    const attemptRef = useRef(0);
    const mountedRef = useRef(true);
+   const router = useRouter();
    const [phase, setPhase] = useState<ARPhase>('idle');
    const [error, setError] = useState<ARErrorState | null>(null);
    const [modelProgress, setModelProgress] = useState<number | null>(null);
 
-   const cleanupSession = useCallback((explicit?: ActiveSession | null) => {
-      const session = explicit === undefined ? sessionRef.current : explicit;
-      if (!session) return;
+   /**
+    * Tears down one specific session. Safe to call twice on the same session,
+    * and safe to call on a session that is no longer the current one — a start
+    * attempt that loses a race must not tear down the attempt that replaced it.
+    */
+   const cleanupKnownSession = useCallback((session: ActiveSession | null) => {
+      if (!session || session.cleaned) return;
+      session.cleaned = true;
       if (sessionRef.current === session) sessionRef.current = null;
 
       session.mindAR.renderer.setAnimationLoop(null);
@@ -213,12 +222,8 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
          // The camera may have failed before MindAR finished creating a controller.
       }
 
-      const disposeModel = session.disposeModel;
-      const disposeDraco = session.disposeDraco;
-      session.disposeModel = null;
-      session.disposeDraco = null;
-      disposeModel?.();
-      disposeDraco?.();
+      session.disposeModel?.();
+      session.disposeDraco?.();
       session.mindAR.renderer.dispose();
       session.mindAR.renderer.forceContextLoss();
       session.mindAR.renderer.domElement.remove();
@@ -235,6 +240,12 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
       });
    }, []);
 
+   /** Tears down whichever session is currently mounted, if any. */
+   const cleanupSession = useCallback(
+      () => cleanupKnownSession(sessionRef.current),
+      [cleanupKnownSession]
+   );
+
    useEffect(() => {
       mountedRef.current = true;
       return () => {
@@ -250,7 +261,11 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
       setError(null);
       setModelProgress(null);
       setPhase('idle');
-   }, [cleanupSession]);
+      // Tear down first, then leave. The camera and GL context are released
+      // synchronously above, so the visitor never carries a live MediaStream
+      // across the navigation.
+      router.push(AR_EXIT_PATH);
+   }, [cleanupSession, router]);
 
    const startAR = useCallback(async () => {
       const container = containerRef.current;
@@ -338,6 +353,7 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
             disposeModel: null,
             disposeDraco: null,
             injectedStyles,
+            cleaned: false,
          };
          createdSession = session;
          sessionRef.current = session;
@@ -370,7 +386,7 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
 
          await mindAR.start();
          if (!mountedRef.current || attemptRef.current !== attempt) {
-            cleanupSession(session);
+            cleanupKnownSession(session);
             return;
          }
 
@@ -400,6 +416,12 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
          });
 
          const model = gltf.scene;
+         // Hand the disposer to the session before any normalisation runs. The
+         // bounds check below throws on a malformed model, and until the session
+         // owns this the catch has nothing to release — the geometry and every
+         // texture the GLTF just downloaded would leak.
+         session.disposeModel = disposeObject(model, THREE.Texture);
+
          model.updateMatrixWorld(true);
          const bounds = new THREE.Box3().setFromObject(model);
          const size = bounds.getSize(new THREE.Vector3());
@@ -436,17 +458,14 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
          verticalMedallionMount.add(uprightArtifact);
          anchor.group.add(verticalMedallionMount);
 
-         const disposeModel = disposeObject(model, THREE.Texture);
          if (!mountedRef.current || attemptRef.current !== attempt) {
-            disposeModel();
-            cleanupSession(session);
+            cleanupKnownSession(session);
             return;
          }
-         session.disposeModel = disposeModel;
          setModelProgress(100);
          setPhase(anchor.visible ? 'tracking' : 'scanning');
       } catch (loadError) {
-         cleanupSession(createdSession);
+         cleanupKnownSession(createdSession);
          if (!mountedRef.current || attemptRef.current !== attempt) return;
          setError(
             loadingStage === 'model'
@@ -460,7 +479,7 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
          );
          setPhase('error');
       }
-   }, [artifact, cleanupSession]);
+   }, [artifact, cleanupSession, cleanupKnownSession]);
 
    const isRunning =
       phase === 'starting' ||
@@ -536,6 +555,9 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
                   </button>
                   <p className="mt-3 text-xs !text-amber-100/50">
                      Your camera is used only for this live view.
+                  </p>
+                  <p className="mt-2 text-xs !text-amber-100/50">
+                     Best supported on Android. iOS support is experimental.
                   </p>
                </section>
             )}
