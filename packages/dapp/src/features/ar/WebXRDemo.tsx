@@ -238,6 +238,13 @@ export default function WebXRDemo({
             renderOverlay={(state) => (
                <div className="pointer-events-none fixed inset-0 z-20">
                   <DemoWordmark />
+                  {/*
+                   * Deliberately echoes the MindAR fallback's scanning prompt
+                   * ("Aim at the medallion on the stand", VitrineAR.tsx) so a
+                   * visitor is told the same thing whichever viewer their phone
+                   * lands in. The medallion is orientation only — this path is
+                   * still tap-to-place hit-test, and nothing reads the marker.
+                   */}
                   {state.placementKind === 'unplaced' && (
                      <p
                         className="fixed inset-x-0 bottom-0 mx-auto mb-5 w-fit max-w-[calc(100vw-2rem)] rounded-full border border-white/15 bg-black/55 px-5 py-2.5 text-center text-xs font-medium !text-amber-50 backdrop-blur-md"
@@ -246,7 +253,7 @@ export default function WebXRDemo({
                               'max(1.25rem, calc(env(safe-area-inset-bottom) + 0.75rem))',
                         }}
                      >
-                        Point at a flat surface, then tap to place
+                        Aim at the medallion on the stand, then tap to place
                      </p>
                   )}
                </div>
