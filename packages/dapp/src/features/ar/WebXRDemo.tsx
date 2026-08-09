@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import ARStartCard from './ARStartCard';
 import DemoWordmark from './DemoWordmark';
 import { AR_EXIT_PATH, type ARArtifact } from './artifacts';
 import {
@@ -93,44 +94,11 @@ function StartScreen({
       <>
          <div className="absolute inset-0 z-10 flex items-center justify-center px-5">
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgba(245,158,11,0.2),transparent_38%),radial-gradient(circle_at_80%_85%,rgba(180,83,9,0.18),transparent_42%),linear-gradient(145deg,#17110b,#0f0c09_55%,#090706)]" />
-            <section className="pointer-events-auto relative w-full max-w-md rounded-3xl border border-white/10 bg-[#14100c]/95 p-6 text-center shadow-2xl backdrop-blur-xl sm:p-8">
-               {checking ? (
-                  <>
-                     <div className="mx-auto h-9 w-9 animate-spin rounded-full border-2 border-amber-300 border-t-transparent" />
-                     <p className="mt-4 text-sm font-medium !text-amber-50">
-                        Checking augmented reality support…
-                     </p>
-                  </>
-               ) : (
-                  <>
-                     {failure && (
-                        <div className="mb-6 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                           <p className="text-sm font-semibold !text-amber-50">
-                              {failure.title}
-                           </p>
-                           <p className="mt-1 text-xs leading-5 !text-amber-100/65">
-                              {failure.detail}
-                           </p>
-                        </div>
-                     )}
-                     {onStart && (
-                        <>
-                           <button
-                              type="button"
-                              onClick={onStart}
-                              className="w-full rounded-full bg-amber-300 px-6 py-3.5 text-sm font-semibold text-[#24160a] shadow-[0_12px_40px_-12px_rgba(252,211,77,0.75)] transition hover:bg-amber-200 focus:outline-none focus:ring-2 focus:ring-amber-100 focus:ring-offset-2 focus:ring-offset-[#14100c]"
-                           >
-                              Start AR
-                           </button>
-                           <p className="mt-3 text-xs !text-amber-100/50">
-                              Best supported on Android. iOS support is
-                              experimental.
-                           </p>
-                        </>
-                     )}
-                  </>
-               )}
-            </section>
+            <ARStartCard
+               onStart={onStart}
+               failure={failure}
+               checking={checking}
+            />
          </div>
          <DemoWordmark />
       </>

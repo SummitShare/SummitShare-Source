@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { Material, Object3D, Texture } from 'three';
 import type { MindARThree } from 'mind-ar/dist/mindar-image-three.prod.js';
+import ARStartCard from './ARStartCard';
 import { AR_EXIT_PATH, type ARArtifact } from './artifacts';
 
 type ARPhase =
@@ -528,20 +529,7 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
             className="absolute inset-0 z-10 flex items-center justify-center px-5"
             aria-live="polite"
          >
-            {phase === 'idle' && (
-               <section className="pointer-events-auto w-full max-w-md rounded-3xl border border-white/10 bg-[#14100c]/95 p-6 text-center shadow-2xl backdrop-blur-xl sm:p-8">
-                  <button
-                     type="button"
-                     onClick={startAR}
-                     className="w-full rounded-full bg-amber-300 px-6 py-3.5 text-sm font-semibold text-[#24160a] shadow-[0_12px_40px_-12px_rgba(252,211,77,0.75)] transition hover:bg-amber-200 focus:outline-none focus:ring-2 focus:ring-amber-100 focus:ring-offset-2 focus:ring-offset-[#14100c]"
-                  >
-                     Start AR
-                  </button>
-                  <p className="mt-3 text-xs !text-amber-100/50">
-                     Best supported on Android. iOS support is experimental.
-                  </p>
-               </section>
-            )}
+            {phase === 'idle' && <ARStartCard onStart={startAR} />}
 
             {(phase === 'starting' || phase === 'loading-model') && (
                <section className="rounded-3xl border border-white/10 bg-black/60 px-7 py-6 text-center shadow-2xl backdrop-blur-lg">

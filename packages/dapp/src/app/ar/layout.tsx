@@ -1,5 +1,26 @@
 import type { Metadata, Viewport } from 'next';
+import { Cormorant_Garamond, Martel } from 'next/font/google';
 import '../styles/globals.css';
+
+// Same two faces, same weights and styles as /record's layout. The AR entry is
+// the exhibition's title card on a phone, so it should be set in the
+// exhibition's type rather than the app's. Kept as a deliberate duplicate
+// because /ar is its own root layout — there is no shared ancestor to hold the
+// variables, and next/font dedupes the underlying files anyway.
+const display = Martel({
+   subsets: ['latin'],
+   weight: '700',
+   display: 'swap',
+   variable: '--record-font-display',
+});
+
+const question = Cormorant_Garamond({
+   subsets: ['latin'],
+   weight: '500',
+   style: 'italic',
+   display: 'swap',
+   variable: '--record-font-question',
+});
 
 export const metadata: Metadata = {
    title: 'AR | SummitShare',
@@ -20,7 +41,9 @@ export default function ARRootLayout({
 }>) {
    return (
       <html lang="en">
-         <body className="m-0 h-[100dvh] overflow-hidden bg-[#0f0c09]">
+         <body
+            className={`${display.variable} ${question.variable} m-0 h-[100dvh] overflow-hidden bg-[#0f0c09]`}
+         >
             {children}
          </body>
       </html>
