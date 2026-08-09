@@ -530,33 +530,14 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
          >
             {phase === 'idle' && (
                <section className="pointer-events-auto w-full max-w-md rounded-3xl border border-white/10 bg-[#14100c]/95 p-6 text-center shadow-2xl backdrop-blur-xl sm:p-8">
-                  <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full border border-amber-200/30 bg-amber-300/10">
-                     <span className="text-2xl text-amber-200" aria-hidden="true">
-                        ◈
-                     </span>
-                  </div>
-                  <p className="text-xs uppercase tracking-[0.32em] !text-amber-200/65">
-                     {artifact.associatedHistory}
-                  </p>
-                  <h1 className="mt-3 text-3xl !text-amber-50">
-                     {artifact.name}
-                  </h1>
-                  <p className="mt-4 text-sm leading-6 !text-amber-100/75">
-                     The QR opened this exhibit. Next, allow camera access and
-                     point your phone at the circular tracking medallion mounted
-                     upright on the stand inside the bell jar.
-                  </p>
                   <button
                      type="button"
                      onClick={startAR}
-                     className="mt-7 w-full rounded-full bg-amber-300 px-6 py-3.5 text-sm font-semibold text-[#24160a] shadow-[0_12px_40px_-12px_rgba(252,211,77,0.75)] transition hover:bg-amber-200 focus:outline-none focus:ring-2 focus:ring-amber-100 focus:ring-offset-2 focus:ring-offset-[#14100c]"
+                     className="w-full rounded-full bg-amber-300 px-6 py-3.5 text-sm font-semibold text-[#24160a] shadow-[0_12px_40px_-12px_rgba(252,211,77,0.75)] transition hover:bg-amber-200 focus:outline-none focus:ring-2 focus:ring-amber-100 focus:ring-offset-2 focus:ring-offset-[#14100c]"
                   >
                      Start AR
                   </button>
                   <p className="mt-3 text-xs !text-amber-100/50">
-                     Your camera is used only for this live view.
-                  </p>
-                  <p className="mt-2 text-xs !text-amber-100/50">
                      Best supported on Android. iOS support is experimental.
                   </p>
                </section>
@@ -625,9 +606,14 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
                            : 'animate-pulse bg-amber-300'
                      }`}
                   />
+                  {/*
+                   * The counterpart to WebXRDemo's placement prompt, and
+                   * deliberately different: this path tracks the marker, so the
+                   * marker must stay in frame and there is nothing to tap.
+                   */}
                   {phase === 'tracking'
                      ? 'Artifact locked to the vitrine'
-                     : 'Aim at the medallion on the stand'}
+                     : 'Point at the marker and scan'}
                </div>
             </div>
          )}

@@ -103,14 +103,8 @@ function StartScreen({
                   </>
                ) : (
                   <>
-                     <p className="text-xs uppercase tracking-[0.32em] !text-amber-200/65">
-                        {artifact.associatedHistory}
-                     </p>
-                     <h1 className="mt-3 text-3xl !text-amber-50">
-                        {artifact.name}
-                     </h1>
                      {failure && (
-                        <div className="mt-5 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                        <div className="mb-6 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
                            <p className="text-sm font-semibold !text-amber-50">
                               {failure.title}
                            </p>
@@ -124,14 +118,11 @@ function StartScreen({
                            <button
                               type="button"
                               onClick={onStart}
-                              className="mt-7 w-full rounded-full bg-amber-300 px-6 py-3.5 text-sm font-semibold text-[#24160a] shadow-[0_12px_40px_-12px_rgba(252,211,77,0.75)] transition hover:bg-amber-200 focus:outline-none focus:ring-2 focus:ring-amber-100 focus:ring-offset-2 focus:ring-offset-[#14100c]"
+                              className="w-full rounded-full bg-amber-300 px-6 py-3.5 text-sm font-semibold text-[#24160a] shadow-[0_12px_40px_-12px_rgba(252,211,77,0.75)] transition hover:bg-amber-200 focus:outline-none focus:ring-2 focus:ring-amber-100 focus:ring-offset-2 focus:ring-offset-[#14100c]"
                            >
                               Start AR
                            </button>
                            <p className="mt-3 text-xs !text-amber-100/50">
-                              Your camera is used only for this live AR view.
-                           </p>
-                           <p className="mt-2 text-xs !text-amber-100/50">
                               Best supported on Android. iOS support is
                               experimental.
                            </p>
@@ -239,11 +230,12 @@ export default function WebXRDemo({
                <div className="pointer-events-none fixed inset-0 z-20">
                   <DemoWordmark />
                   {/*
-                   * Deliberately echoes the MindAR fallback's scanning prompt
-                   * ("Aim at the medallion on the stand", VitrineAR.tsx) so a
-                   * visitor is told the same thing whichever viewer their phone
-                   * lands in. The medallion is orientation only — this path is
-                   * still tap-to-place hit-test, and nothing reads the marker.
+                   * All the guidance lives here rather than on the start
+                   * screen, which is a bare button: an instruction read before
+                   * the camera opens is an instruction forgotten by the time it
+                   * matters. Keep it to one line — it shares the screen with
+                   * the room. The MindAR fallback carries its own counterpart
+                   * in VitrineAR.tsx; the two should change together.
                    */}
                   {state.placementKind === 'unplaced' && (
                      <p
@@ -253,7 +245,7 @@ export default function WebXRDemo({
                               'max(1.25rem, calc(env(safe-area-inset-bottom) + 0.75rem))',
                         }}
                      >
-                        Aim at the medallion on the stand, then tap to place
+                        Point at the stand and tap
                      </p>
                   )}
                </div>
