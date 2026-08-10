@@ -209,7 +209,9 @@ body {
       --y: 42%;
       --r: -7deg;
       --a: 0.72;
-      background-image: url('/ar/print/mask-tracking-marker.svg');
+      /* The mask artifact became `likishi`; this is the same decorative role,
+         and the class name still refers to /record's own mask section. */
+      background-image: url('/ar/print/likishi-tracking-marker.svg');
    }
 
    .record-marker-drum {
