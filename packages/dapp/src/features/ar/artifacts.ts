@@ -93,15 +93,16 @@ export const AR_ARTIFACTS = {
          nudge: { x: 0, y: 0, z: 0, yaw: 0 },
       },
    },
-   mask: {
-      slug: 'mask',
+   likishi: {
+      slug: 'likishi',
       name: 'Likishi lya Mwana Pwewo',
       associatedHistory: 'Loongo',
-      // A different object from the mask in /exhibit, not a better scan of it:
-      // its own file, so `models/mask.glb` stays with the gallery component
-      // that destructures Hair/Mask/Wire out of it.
+      // A different object from the mask in /exhibit, not a better scan of it,
+      // so it replaces that entry rather than sharing its assets. Note
+      // `models/mask.glb` still exists for the gallery component, which
+      // destructures Hair/Mask/Wire out of it.
       modelUrl: '/models/likishi.glb',
-      targetUrl: '/ar/targets/mask.mind',
+      targetUrl: '/ar/targets/likishi.mind',
       // Both heights are placeholders inherited from the previous mask and are
       // wrong for this object — the WebXR figure would render it at 11.8 cm.
       // Measure both on a device with devrig before exhibiting.
@@ -146,7 +147,10 @@ export const AR_ARTIFACT_SLUGS = Object.keys(AR_ARTIFACTS) as ARArtifactSlug[];
  * `/ar/[slug]`. Keeping it explicit means "what is exhibited" is stated rather
  * than inferred from which markers happened to get printed.
  */
-export const AR_EXHIBITED_SLUGS = ['drum', 'mask'] as const satisfies readonly ARArtifactSlug[];
+export const AR_EXHIBITED_SLUGS = [
+   'drum',
+   'likishi',
+] as const satisfies readonly ARArtifactSlug[];
 
 export const isARArtifactSlug = (slug: string): slug is ARArtifactSlug =>
    Object.prototype.hasOwnProperty.call(AR_ARTIFACTS, slug);

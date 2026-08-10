@@ -125,8 +125,8 @@ const artifacts = [
       name: 'Headrest',
    },
    {
-      slug: 'mask',
-      name: 'Luvale Mask',
+      slug: 'likishi',
+      name: 'Likishi lya Mwana Pwewo',
    },
    {
       slug: 'snuff',
