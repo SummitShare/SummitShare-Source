@@ -95,13 +95,18 @@ export const AR_ARTIFACTS = {
    },
    mask: {
       slug: 'mask',
-      name: 'Luvale Mask',
+      name: 'Likishi lya Mwana Pwewo',
       associatedHistory: 'Loongo',
-      modelUrl: '/models/mask.glb',
+      // A different object from the mask in /exhibit, not a better scan of it:
+      // its own file, so `models/mask.glb` stays with the gallery component
+      // that destructures Hair/Mask/Wire out of it.
+      modelUrl: '/models/likishi.glb',
       targetUrl: '/ar/targets/mask.mind',
+      // Both heights are placeholders inherited from the previous mask and are
+      // wrong for this object — the WebXR figure would render it at 11.8 cm.
+      // Measure both on a device with devrig before exhibiting.
       displayHeight: 0.98,
       rotationY: -0.08,
-      // Uncalibrated: carried over from the MindAR value at 120 mm/unit.
       webxr: {
          calibrated: false,
          heightMetres: 0.118,
@@ -131,6 +136,17 @@ export type ARArtifactSlug = keyof typeof AR_ARTIFACTS;
 export type ARArtifact = (typeof AR_ARTIFACTS)[ARArtifactSlug];
 
 export const AR_ARTIFACT_SLUGS = Object.keys(AR_ARTIFACTS) as ARArtifactSlug[];
+
+/**
+ * The artifacts physically in the show, in the order their vitrines are met.
+ *
+ * Every artifact keeps a route so a marker can be printed and tested, but only
+ * these have a plinth and a printed medallion. `/ar` uses this to offer a
+ * choice; the QR beside each vitrine skips it entirely by going straight to
+ * `/ar/[slug]`. Keeping it explicit means "what is exhibited" is stated rather
+ * than inferred from which markers happened to get printed.
+ */
+export const AR_EXHIBITED_SLUGS = ['drum', 'mask'] as const satisfies readonly ARArtifactSlug[];
 
 export const isARArtifactSlug = (slug: string): slug is ARArtifactSlug =>
    Object.prototype.hasOwnProperty.call(AR_ARTIFACTS, slug);

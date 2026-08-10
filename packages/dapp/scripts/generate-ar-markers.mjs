@@ -1,6 +1,7 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import jsQR from 'jsqr';
 import QRCode from 'qrcode';
 import sharp from 'sharp';
 import { OfflineCompiler } from 'mind-ar/src/image-target/offline-compiler.js';
@@ -30,6 +31,11 @@ const DEFAULT_PRINTED_MEDALLION_DIAMETER_MM = 90;
 const MEDALLION_CENTER = TARGET_SIZE / 2;
 const MEDALLION_RADIUS = 384;
 const MEDALLION_DETAIL_RADIUS = MEDALLION_RADIUS - 18;
+const QR_FIELD_FRACTION = 0.36;
+const QR_QUIET_MODULES = 4;
+const MINIMUM_QR_MODULE_MM = 0.85;
+const MINIMUM_ART_ANNULUS_MM = 12;
+const QR_DECODE_SIZES = [1024, 512, 384, 256];
 const ASYMMETRY_ROTATIONS = [45, 90, 135, 180];
 const MINIMUM_ASYMMETRY_PERCENT = 16;
 // Procedural dominant forms span roughly 200-270 marker units. Normalizing a
@@ -199,11 +205,29 @@ const pointOnCircle = (radius, angle) => ({
    y: MEDALLION_CENTER + Math.sin(angle) * radius,
 });
 
-const makeReliefPatches = (random) =>
+const annulusDistance = (draw, exponent, innerRadius) =>
+   innerRadius +
+   Math.pow(draw, exponent) * (MEDALLION_DETAIL_RADIUS - innerRadius);
+
+const constrainToArtAnnulus = (x, y, innerRadius) => {
+   const dx = x - MEDALLION_CENTER;
+   const dy = y - MEDALLION_CENTER;
+   const distance = Math.hypot(dx, dy);
+   const constrainedDistance = Math.min(
+      MEDALLION_DETAIL_RADIUS,
+      Math.max(innerRadius, distance)
+   );
+   const scale = constrainedDistance / distance;
+   return {
+      x: MEDALLION_CENTER + dx * scale,
+      y: MEDALLION_CENTER + dy * scale,
+   };
+};
+
+const makeReliefPatches = (random, artInnerRadius) =>
    Array.from({ length: 11 }, (_, index) => {
       const angle = random() * Math.PI * 2;
-      const distance =
-         (0.16 + Math.pow(random(), 0.7) * 0.72) * MEDALLION_DETAIL_RADIUS;
+      const distance = annulusDistance(random(), 0.7, artInnerRadius);
       const x = MEDALLION_CENTER + Math.cos(angle) * distance;
       const y = MEDALLION_CENTER + Math.sin(angle) * distance;
       const width = 38 + random() * 118;
@@ -218,7 +242,7 @@ const makeReliefPatches = (random) =>
       }" opacity="${index % 4 === 0 ? '0.21' : '0.11'}"/>`;
    }).join('');
 
-const makeHatchField = (random, profile) => {
+const makeHatchField = (random, profile, artInnerRadius) => {
    const hatches = [];
    const dominantAngle = random() * Math.PI;
    const denseSide = random() * Math.PI * 2;
@@ -228,8 +252,7 @@ const makeHatchField = (random, profile) => {
          cluster < 4
             ? denseSide + (random() - 0.5) * 1.25
             : random() * Math.PI * 2;
-      const distance =
-         (0.12 + Math.pow(random(), 0.75) * 0.72) * MEDALLION_DETAIL_RADIUS;
+      const distance = annulusDistance(random(), 0.75, artInnerRadius);
       const centerX = MEDALLION_CENTER + Math.cos(clusterAngle) * distance;
       const centerY = MEDALLION_CENTER + Math.sin(clusterAngle) * distance;
       const hatchAngle =
@@ -243,8 +266,12 @@ const makeHatchField = (random, profile) => {
       for (let index = 0; index < count; index += 1) {
          const spreadX = (random() + random() - 1) * (52 + random() * 54);
          const spreadY = (random() + random() - 1) * (45 + random() * 48);
-         const x = centerX + spreadX;
-         const y = centerY + spreadY;
+         const point = constrainToArtAnnulus(
+            centerX + spreadX,
+            centerY + spreadY,
+            artInnerRadius
+         );
+         const { x, y } = point;
          const length = 22 + random() * 88;
          const angle = hatchAngle + (random() - 0.5) * 0.14;
          const dx = Math.cos(angle) * length * 0.5;
@@ -263,14 +290,13 @@ const makeHatchField = (random, profile) => {
    return hatches.join('');
 };
 
-const makeMicroMarks = (random) => {
+const makeMicroMarks = (random, artInnerRadius) => {
    const marks = [];
    const clusters = Array.from(
       { length: 4 + Math.floor(random() * 3) },
       (_, index) => {
          const angle = random() * Math.PI * 2;
-         const distance =
-            (0.16 + Math.pow(random(), 0.8) * 0.58) * MEDALLION_DETAIL_RADIUS;
+         const distance = annulusDistance(random(), 0.8, artInnerRadius);
          return {
             x: MEDALLION_CENTER + Math.cos(angle) * distance,
             y: MEDALLION_CENTER + Math.sin(angle) * distance,
@@ -286,11 +312,15 @@ const makeMicroMarks = (random) => {
       const angle = random() * Math.PI * 2;
       const distance = clustered
          ? Math.sqrt(random()) * cluster.spread
-         : Math.sqrt(random()) * (MEDALLION_DETAIL_RADIUS - 20);
-      const x =
-         (clustered ? cluster.x : MEDALLION_CENTER) + Math.cos(angle) * distance;
-      const y =
-         (clustered ? cluster.y : MEDALLION_CENTER) + Math.sin(angle) * distance;
+         : annulusDistance(random(), 0.5, artInnerRadius);
+      const originX = clustered ? cluster.x : MEDALLION_CENTER;
+      const originY = clustered ? cluster.y : MEDALLION_CENTER;
+      const point = constrainToArtAnnulus(
+         originX + Math.cos(angle) * distance,
+         originY + Math.sin(angle) * distance,
+         artInnerRadius
+      );
+      const { x, y } = point;
       const markAngle = random() * Math.PI * 2;
       const length = 5 + random() * 16;
       const dx = Math.cos(markAngle) * length;
@@ -401,10 +431,17 @@ const makeBrokenRim = (random) => {
    return pieces.join('');
 };
 
-const makeAbstractComposition = (random, profile) => {
+const remapDominantDistance = (profileDistance, artInnerRadius) => {
+   const annulusWidth = MEDALLION_DETAIL_RADIUS - artInnerRadius;
+   return artInnerRadius + annulusWidth * (0.36 + (profileDistance / 190) * 0.18);
+};
+
+const makeAbstractComposition = (random, profile, artInnerRadius) => {
    const angle = random() * 300 - 150;
    const direction = random() * Math.PI * 2;
-   const distance = profile.dominantDistance + (random() - 0.5) * 10;
+   const distance =
+      remapDominantDistance(profile.dominantDistance, artInnerRadius) +
+      (random() - 0.5) * 10;
    const x = MEDALLION_CENTER + Math.cos(direction) * distance;
    const y = MEDALLION_CENTER + Math.sin(direction) * distance;
    const scale = profile.dominantScale + (random() - 0.5) * 0.06;
@@ -498,12 +535,14 @@ const makeAbstractComposition = (random, profile) => {
    )}) scale(${scale.toFixed(3)})">${form}</g>`;
 };
 
-const makeSymbolComposition = (random, profile, symbol) => {
+const makeSymbolComposition = (random, profile, symbol, artInnerRadius) => {
    // Consume the old arbitrary-rotation draw so the established deterministic
    // direction, distance, and scale draws retain exactly the same positions.
    random();
    const direction = random() * Math.PI * 2;
-   const distance = profile.dominantDistance + (random() - 0.5) * 10;
+   const distance =
+      remapDominantDistance(profile.dominantDistance, artInnerRadius) +
+      (random() - 0.5) * 10;
    const x = MEDALLION_CENTER + Math.cos(direction) * distance;
    const y = MEDALLION_CENTER + Math.sin(direction) * distance;
    const profileScale = profile.dominantScale + (random() - 0.5) * 0.06;
@@ -518,18 +557,36 @@ const makeSymbolComposition = (random, profile, symbol) => {
    )}) translate(${fixed(-centerX)} ${fixed(-centerY)})">${symbol.geometry}</g>`;
 };
 
-const makeMarkerSvg = (artifact, profileIndex, symbol) => {
+const makeMarkerSvg = (artifact, profileIndex, symbol, qrGeometry) => {
    const seed = hashSlug(artifact.slug);
    const random = randomFromSeed(seed);
    const profile = ABSTRACT_PROFILES[profileIndex];
    const clipId = `medallion-${artifact.slug}`;
-   const reliefPatches = makeReliefPatches(random);
-   const hatchField = makeHatchField(random, profile);
-   const microMarks = makeMicroMarks(random);
+   const qrClipId = `qr-matrix-${artifact.slug}`;
+   const reliefPatches = makeReliefPatches(random, qrGeometry.fieldCornerRadius);
+   const hatchField = makeHatchField(
+      random,
+      profile,
+      qrGeometry.fieldCornerRadius
+   );
+   const microMarks = makeMicroMarks(random, qrGeometry.fieldCornerRadius);
    const brokenRim = makeBrokenRim(random);
    const dominantComposition = symbol
-      ? makeSymbolComposition(random, profile, symbol)
-      : makeAbstractComposition(random, profile);
+      ? makeSymbolComposition(
+           random,
+           profile,
+           symbol,
+           qrGeometry.fieldCornerRadius
+        )
+      : makeAbstractComposition(random, profile, qrGeometry.fieldCornerRadius);
+   const { modules, finder } = makeQrMatrixElements({
+      qr: qrGeometry.qr,
+      matrixOrigin: qrGeometry.matrixOrigin,
+      cell: qrGeometry.moduleSize,
+      darkColor: '#101317',
+      lightColor: '#f8f7f2',
+      moduleRadiusFraction: 0.58,
+   });
 
    return `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="${PRINT_CANVAS_SIZE_MM.toFixed(
@@ -544,6 +601,15 @@ const makeMarkerSvg = (artifact, profileIndex, symbol) => {
     <clipPath id="${clipId}">
       <circle cx="${MEDALLION_CENTER}" cy="${MEDALLION_CENTER}" r="${MEDALLION_RADIUS}"/>
     </clipPath>
+    <clipPath id="${qrClipId}">
+      <rect x="${qrGeometry.matrixOrigin.toFixed(
+         2
+      )}" y="${qrGeometry.matrixOrigin.toFixed(
+         2
+      )}" width="${qrGeometry.qrSide.toFixed(
+         2
+      )}" height="${qrGeometry.qrSide.toFixed(2)}"/>
+    </clipPath>
   </defs>
   <rect width="${TARGET_SIZE}" height="${TARGET_SIZE}" fill="#f8f7f2"/>
   <circle cx="${MEDALLION_CENTER}" cy="${MEDALLION_CENTER}" r="${MEDALLION_RADIUS}" fill="#101317"/>
@@ -554,6 +620,17 @@ const makeMarkerSvg = (artifact, profileIndex, symbol) => {
     ${brokenRim}
     ${dominantComposition}
   </g>
+  <rect x="${qrGeometry.fieldOrigin.toFixed(
+     2
+  )}" y="${qrGeometry.fieldOrigin.toFixed(
+     2
+  )}" width="${qrGeometry.fieldSide.toFixed(
+     2
+  )}" height="${qrGeometry.fieldSide.toFixed(2)}" fill="#f8f7f2"/>
+  <g clip-path="url(#${qrClipId})">${modules}</g>
+  ${finder(0, 0)}
+  ${finder(qrGeometry.moduleCount - 7, 0)}
+  ${finder(0, qrGeometry.moduleCount - 7)}
   <circle cx="${MEDALLION_CENTER}" cy="${MEDALLION_CENTER}" r="${MEDALLION_RADIUS}" fill="none" stroke="#101317" stroke-width="9"/>
 </svg>`;
 };
@@ -563,22 +640,46 @@ const isFinderCell = (row, column, size) =>
    (row < 7 && column >= size - 7) ||
    (row >= size - 7 && column < 7);
 
-const makeQrSvg = (artifact, url) => {
+const makeQrGeometry = (url) => {
    const qr = QRCode.create(url, { errorCorrectionLevel: 'H' });
    const moduleCount = qr.modules.size;
-   const fieldSize = 860;
-   const cell = fieldSize / (moduleCount + 8);
-   const fieldOrigin = (1200 - fieldSize) / 2;
-   const matrixOrigin = fieldOrigin + cell * 4;
+   const qrSide = QR_FIELD_FRACTION * MEDALLION_RADIUS * 2;
+   const moduleSize = qrSide / moduleCount;
+   const fieldSide = qrSide + 2 * QR_QUIET_MODULES * moduleSize;
+   const fieldOrigin = MEDALLION_CENTER - fieldSide / 2;
+   return {
+      qr,
+      moduleCount,
+      qrSide,
+      moduleSize,
+      fieldSide,
+      fieldOrigin,
+      matrixOrigin: fieldOrigin + QR_QUIET_MODULES * moduleSize,
+      fieldCornerRadius: fieldSide / Math.SQRT2,
+   };
+};
+
+const makeQrMatrixElements = ({
+   qr,
+   matrixOrigin,
+   cell,
+   darkColor,
+   lightColor,
+   moduleRadiusFraction = 0.39,
+   centerClearance = null,
+}) => {
+   const moduleCount = qr.modules.size;
    const center = (moduleCount - 1) / 2;
-   const centerClearance = 3.4;
    const modules = [];
 
    for (let row = 0; row < moduleCount; row += 1) {
       for (let column = 0; column < moduleCount; column += 1) {
          if (!qr.modules.get(row, column)) continue;
          if (isFinderCell(row, column, moduleCount)) continue;
-         if (Math.hypot(row - center, column - center) < centerClearance) {
+         if (
+            centerClearance !== null &&
+            Math.hypot(row - center, column - center) < centerClearance
+         ) {
             continue;
          }
 
@@ -586,8 +687,8 @@ const makeQrSvg = (artifact, url) => {
          const cy = matrixOrigin + (row + 0.5) * cell;
          modules.push(
             `<circle cx="${cx.toFixed(2)}" cy="${cy.toFixed(2)}" r="${(
-               cell * 0.39
-            ).toFixed(2)}" fill="#20140e"/>`
+               cell * moduleRadiusFraction
+            ).toFixed(2)}" fill="${darkColor}"/>`
          );
       }
    }
@@ -601,19 +702,39 @@ const makeQrSvg = (artifact, url) => {
      2
   )}" height="${side.toFixed(2)}" rx="${(cell * 1.55).toFixed(
      2
-  )}" fill="#20140e"/>
+  )}" fill="${darkColor}"/>
   <rect x="${(x + cell).toFixed(2)}" y="${(y + cell).toFixed(2)}" width="${(
      cell * 5
   ).toFixed(2)}" height="${(cell * 5).toFixed(2)}" rx="${(cell * 0.9).toFixed(
      2
-  )}" fill="#fffdf7"/>
+  )}" fill="${lightColor}"/>
   <rect x="${(x + cell * 2).toFixed(2)}" y="${(y + cell * 2).toFixed(
      2
   )}" width="${(cell * 3).toFixed(2)}" height="${(cell * 3).toFixed(2)}" rx="${(
      cell * 0.8
-  ).toFixed(2)}" fill="#20140e"/>
+  ).toFixed(2)}" fill="${darkColor}"/>
 </g>`;
    };
+
+   return { modules: modules.join(''), finder };
+};
+
+const makeQrSvg = (artifact, url) => {
+   const qr = QRCode.create(url, { errorCorrectionLevel: 'H' });
+   const moduleCount = qr.modules.size;
+   const fieldSize = 860;
+   const cell = fieldSize / (moduleCount + 8);
+   const fieldOrigin = (1200 - fieldSize) / 2;
+   const matrixOrigin = fieldOrigin + cell * 4;
+   const centerClearance = 3.4;
+   const { modules, finder } = makeQrMatrixElements({
+      qr,
+      matrixOrigin,
+      cell,
+      darkColor: '#20140e',
+      lightColor: '#fffdf7',
+      centerClearance,
+   });
 
    const logoRadius = cell * 3.25;
    return `<?xml version="1.0" encoding="UTF-8"?>
@@ -623,7 +744,7 @@ const makeQrSvg = (artifact, url) => {
   <rect width="1200" height="1200" fill="#fffdf7"/>
   <circle cx="600" cy="600" r="566" fill="#fffdf7" stroke="#2f1c12" stroke-width="18"/>
   <circle cx="600" cy="600" r="542" fill="none" stroke="#c28335" stroke-width="5" stroke-dasharray="3 15" stroke-linecap="round"/>
-  ${modules.join('')}
+  ${modules}
   ${finder(0, 0)}
   ${finder(moduleCount - 7, 0)}
   ${finder(0, moduleCount - 7)}
@@ -657,6 +778,101 @@ const renderTargetPixels = async (artifact, markerSvg) => {
       throw new Error(`Expected RGBA marker data for ${artifact.slug}`);
    }
    return raster;
+};
+
+const printedMillimetresPerMarkerUnit =
+   PRINTED_MEDALLION_DIAMETER_MM / (MEDALLION_RADIUS * 2);
+
+const verifyQrGeometry = (artifact, qrGeometry) => {
+   const moduleSizeMm = qrGeometry.moduleSize * printedMillimetresPerMarkerUnit;
+   const annulusMm =
+      (MEDALLION_DETAIL_RADIUS - qrGeometry.fieldCornerRadius) *
+      printedMillimetresPerMarkerUnit;
+
+   process.stdout.write(
+      `  ${artifact.slug} QR geometry: ${moduleSizeMm.toFixed(
+         2
+      )} mm/module, ${annulusMm.toFixed(2)} mm art annulus at field corner.\n`
+   );
+
+   if (moduleSizeMm < MINIMUM_QR_MODULE_MM) {
+      throw new Error(
+         `${artifact.slug} QR modules are ${moduleSizeMm.toFixed(
+            2
+         )} mm, below the ${MINIMUM_QR_MODULE_MM.toFixed(2)} mm minimum.`
+      );
+   }
+   if (annulusMm < MINIMUM_ART_ANNULUS_MM) {
+      throw new Error(
+         `${artifact.slug} art annulus is ${annulusMm.toFixed(
+            2
+         )} mm at the QR field corner, below the ${MINIMUM_ART_ANNULUS_MM.toFixed(
+            2
+         )} mm minimum.`
+      );
+   }
+
+   return { moduleSizeMm, annulusMm };
+};
+
+const rasterizeMarker = (markerSvg, size) =>
+   sharp(Buffer.from(markerSvg), {
+      density: (size * 25.4) / PRINT_CANVAS_SIZE_MM,
+   })
+      .resize(size, size, { fit: 'fill' })
+      .ensureAlpha()
+      .raw()
+      .toBuffer({ resolveWithObject: true });
+
+const verifyQrDecodes = async (artifact, markerSvg, expectedUrl) => {
+   const results = [];
+
+   for (const size of QR_DECODE_SIZES) {
+      const raster = await rasterizeMarker(markerSvg, size);
+      const decoded = jsQR(
+         new Uint8ClampedArray(
+            raster.data.buffer,
+            raster.data.byteOffset,
+            raster.data.byteLength
+         ),
+         raster.info.width,
+         raster.info.height,
+         { inversionAttempts: 'dontInvert' }
+      );
+      results.push({
+         size,
+         decodedPayload: decoded?.data ?? null,
+         passed: decoded?.data === expectedUrl,
+      });
+   }
+
+   const passingSizes = results
+      .filter((result) => result.passed)
+      .map((result) => result.size);
+   const smallestPassingSize = passingSizes.length
+      ? Math.min(...passingSizes)
+      : null;
+   process.stdout.write(
+      `  ${artifact.slug} QR decode: ${results
+         .map((result) => `${result.size}px ${result.passed ? 'pass' : 'fail'}`)
+         .join(', ')}; smallest passing size ${
+         smallestPassingSize === null ? 'none' : `${smallestPassingSize}px`
+      }.\n`
+   );
+
+   const requiredFailure = results.find(
+      (result) => result.size >= 512 && !result.passed
+   );
+   if (requiredFailure) {
+      const decodedDetail = requiredFailure.decodedPayload
+         ? ` decoded "${requiredFailure.decodedPayload}" instead`
+         : ' did not decode';
+      throw new Error(
+         `${artifact.slug} QR at ${requiredFailure.size}px${decodedDetail}; expected exactly "${expectedUrl}".`
+      );
+   }
+
+   return { results, smallestPassingSize };
 };
 
 const compileTarget = async (artifact, raster) => {
@@ -866,14 +1082,24 @@ const main = async () => {
    process.stdout.write(
       `Rotational asymmetry minimum: ${MINIMUM_ASYMMETRY_PERCENT}% RGB MAD over the disc.\n`
    );
+   process.stdout.write(
+      `QR geometry minimums: ${MINIMUM_QR_MODULE_MM.toFixed(
+         2
+      )} mm/module and ${MINIMUM_ART_ANNULUS_MM.toFixed(
+         2
+      )} mm art annulus at the field corner.\n`
+   );
 
    const generatedRasters = [];
 
    for (const [profileIndex, artifact] of artifacts.entries()) {
       const symbol = await loadArtifactSymbol(artifact);
-      const markerSvg = makeMarkerSvg(artifact, profileIndex, symbol);
       const routeUrl = new URL(`ar/${artifact.slug}`, baseUrl).href;
+      const qrGeometry = makeQrGeometry(routeUrl);
+      const markerSvg = makeMarkerSvg(artifact, profileIndex, symbol, qrGeometry);
       const qrSvg = makeQrSvg(artifact, routeUrl);
+      verifyQrGeometry(artifact, qrGeometry);
+      await verifyQrDecodes(artifact, markerSvg, routeUrl);
       const raster = await renderTargetPixels(artifact, markerSvg);
       const asymmetry = measureRotationalAsymmetry(raster);
       verifyAsymmetry(artifact, asymmetry);
