@@ -213,7 +213,7 @@ export default function WebXRDemo({
                               'max(1.25rem, calc(env(safe-area-inset-bottom) + 0.75rem))',
                         }}
                      >
-                        Point at the stand and tap
+                        Point at the marker in the vitrine and tap
                      </p>
                   )}
                </div>

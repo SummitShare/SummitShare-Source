@@ -93,15 +93,21 @@ export const AR_ARTIFACTS = {
          nudge: { x: 0, y: 0, z: 0, yaw: 0 },
       },
    },
-   mask: {
-      slug: 'mask',
-      name: 'Luvale Mask',
+   likishi: {
+      slug: 'likishi',
+      name: 'Likishi lya Mwana Pwewo',
       associatedHistory: 'Loongo',
-      modelUrl: '/models/mask.glb',
-      targetUrl: '/ar/targets/mask.mind',
+      // A different object from the mask in /exhibit, not a better scan of it,
+      // so it replaces that entry rather than sharing its assets. Note
+      // `models/mask.glb` still exists for the gallery component, which
+      // destructures Hair/Mask/Wire out of it.
+      modelUrl: '/models/likishi.glb',
+      targetUrl: '/ar/targets/likishi.mind',
+      // Both heights are placeholders inherited from the previous mask and are
+      // wrong for this object — the WebXR figure would render it at 11.8 cm.
+      // Measure both on a device with devrig before exhibiting.
       displayHeight: 0.98,
       rotationY: -0.08,
-      // Uncalibrated: carried over from the MindAR value at 120 mm/unit.
       webxr: {
          calibrated: false,
          heightMetres: 0.118,
@@ -131,6 +137,20 @@ export type ARArtifactSlug = keyof typeof AR_ARTIFACTS;
 export type ARArtifact = (typeof AR_ARTIFACTS)[ARArtifactSlug];
 
 export const AR_ARTIFACT_SLUGS = Object.keys(AR_ARTIFACTS) as ARArtifactSlug[];
+
+/**
+ * The artifacts physically in the show, in the order their vitrines are met.
+ *
+ * Every artifact keeps a route so a marker can be printed and tested, but only
+ * these have a plinth and a printed medallion. `/ar` uses this to offer a
+ * choice; the QR beside each vitrine skips it entirely by going straight to
+ * `/ar/[slug]`. Keeping it explicit means "what is exhibited" is stated rather
+ * than inferred from which markers happened to get printed.
+ */
+export const AR_EXHIBITED_SLUGS = [
+   'drum',
+   'likishi',
+] as const satisfies readonly ARArtifactSlug[];
 
 export const isARArtifactSlug = (slug: string): slug is ARArtifactSlug =>
    Object.prototype.hasOwnProperty.call(AR_ARTIFACTS, slug);
