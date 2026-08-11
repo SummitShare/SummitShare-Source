@@ -1,9 +1,15 @@
-import { existsSync, statSync } from 'node:fs';
+import { existsSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { SECTIONS } from './sections';
 
-const RECORD_ASSETS = path.resolve(__dirname, '../../../public/record');
+const PUBLIC_DIR = path.resolve(__dirname, '../../../public');
+const RECORD_ASSETS = path.join(PUBLIC_DIR, 'record');
+
+const styleSheetUrls = () => {
+   const css = readFileSync(path.join(__dirname, 'record.css'), 'utf8');
+   return [...css.matchAll(/url\(\s*'([^']+)'\s*\)/g)].map(([, url]) => url);
+};
 
 describe('record sections', () => {
    it('ships the graphics and icons every section references', () => {
@@ -57,6 +63,35 @@ describe('record sections', () => {
                0
             )} KB`
          ).toBeLessThan(140 * 1024);
+      }
+   });
+});
+
+/**
+ * Both halves of this have already gone wrong once. Renaming the mask artifact
+ * to likishi left the stylesheet pointing at a deleted marker — a 404 and a
+ * missing medallion, because CSS is not a call site a rename walks past. Then
+ * merging the QR into the printed disc changed this page's artwork as a side
+ * effect, since it was borrowing the live print markers as decoration.
+ */
+describe('record stylesheet assets', () => {
+   it('references only files that ship', () => {
+      const urls = styleSheetUrls();
+      expect(urls.length).toBeGreaterThan(0);
+      for (const url of urls) {
+         expect(
+            existsSync(path.join(PUBLIC_DIR, url.replace(/^\//, ''))),
+            `record.css references missing asset ${url}`
+         ).toBe(true);
+      }
+   });
+
+   it('keeps its decoration independent of the printed AR markers', () => {
+      for (const url of styleSheetUrls()) {
+         expect(
+            url.startsWith('/ar/'),
+            `record.css borrows the live AR asset ${url}; copy it under /record instead`
+         ).toBe(false);
       }
    });
 });

@@ -182,7 +182,14 @@ body {
       );
    }
 
-   /* The medallion occupies 768 of the marker's 1024 viewBox, so scaling the
+   /* These are /record's own frozen copies of the medallion art, not the live
+      print markers. They pointed at /ar/print/ once, and merging the QR into
+      the printed disc silently replaced the centre of every medallion here
+      with a scannable code — the page reads as an invitation to scan, which is
+      the one thing Mbusa's vitrine text refuses. Decoration and print are now
+      separate assets: regenerating markers cannot change this page again.
+
+      The medallion occupies 768 of the art's 1024 viewBox, so scaling the
       background to 1/0.75 crops the square print canvas away and leaves the
       disc filling its circular frame. */
    .record-marker {
@@ -209,7 +216,7 @@ body {
       --y: 42%;
       --r: -7deg;
       --a: 0.72;
-      background-image: url('/ar/print/mask-tracking-marker.svg');
+      background-image: url('/record/medallions/mask.svg');
    }
 
    .record-marker-drum {
@@ -218,7 +225,7 @@ body {
       --y: 63%;
       --r: 9deg;
       --a: 0.54;
-      background-image: url('/ar/print/drum-tracking-marker.svg');
+      background-image: url('/record/medallions/drum.svg');
    }
 
    .record-marker-calabash {
@@ -227,7 +234,7 @@ body {
       --y: 74%;
       --r: 13deg;
       --a: 0.42;
-      background-image: url('/ar/print/calabash-tracking-marker.svg');
+      background-image: url('/record/medallions/calabash.svg');
    }
 
    /* Held back until there is room for a fourth without crowding. */
@@ -277,7 +284,7 @@ body {
       --y: 70%;
       --r: -14deg;
       --a: 0.48;
-      background-image: url('/ar/print/cowry-tracking-marker.svg');
+      background-image: url('/record/medallions/cowry.svg');
    }
 }
 
