@@ -1,5 +1,7 @@
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
+import jsQR from 'jsqr';
+import sharp from 'sharp';
 import { describe, expect, it } from 'vitest';
 import {
    AR_ARTIFACTS,
@@ -96,5 +98,80 @@ describe('AR artifact registry', () => {
             path.resolve(__dirname, '../../app', `.${AR_EXIT_PATH}`, 'page.tsx')
          )
       ).toBe(true);
+   });
+});
+
+/**
+ * The medallion for the artifact that is sacred and is not displayed. It is a
+ * blank on the same plate as the rest of the set, and its emptiness is the
+ * content — so what is guarded here is what it must NOT acquire.
+ */
+describe('absent medallion', () => {
+   const PRINT_DIR = path.join(PUBLIC_DIR, 'ar', 'print');
+   const absentPath = path.join(PRINT_DIR, 'absent-medallion.svg');
+
+   it('ships alongside the printed set', () => {
+      expect(existsSync(absentPath)).toBe(true);
+   });
+
+   /**
+    * Deriving the geometry from a real marker rather than restating it: the
+    * blank has to print as one of the set, and the disc and code box are the
+    * only things a visitor can use to see that it is the same object emptied.
+    */
+   /**
+    * The code box is the widest rect centred on the disc — picked that way
+    * because a real marker also contains the narrower QR matrix clip and three
+    * finder squares, and the blank contains neither.
+    */
+   const codeBox = (svg: string) =>
+      [...svg.matchAll(/<rect x="([\d.]+)" y="([\d.]+)" width="([\d.]+)"/g)]
+         .map(([, x, y, width]) => ({
+            x: Number(x),
+            y: Number(y),
+            width: Number(width),
+         }))
+         .filter((rect) => Math.abs(rect.x + rect.width / 2 - 512) < 0.01)
+         .sort((a, b) => b.width - a.width)[0];
+
+   const disc = (svg: string) =>
+      svg.match(/<circle cx="(\d+)" cy="(\d+)" r="(\d+)"/)?.slice(1);
+
+   it('is cut on the same plate as the real markers', () => {
+      const blank = readFileSync(absentPath, 'utf8');
+      const marker = readFileSync(
+         path.join(PRINT_DIR, 'drum-tracking-marker.svg'),
+         'utf8'
+      );
+      expect(disc(blank)).toEqual(disc(marker));
+      expect(codeBox(blank)).toEqual(codeBox(marker));
+      expect(blank).toContain('viewBox="0 0 1024 1024"');
+      expect(blank).toContain('width="120.00mm"');
+   });
+
+   /**
+    * The one that matters. A geometry check still passes if someone "finishes"
+    * the blank by putting a code in the empty box; only a failed decode proves
+    * there is nothing to scan. There is nothing to route to.
+    */
+   it('carries no scannable code', async () => {
+      const { data, info } = await sharp(absentPath)
+         .resize(1024, 1024)
+         .ensureAlpha()
+         .raw()
+         .toBuffer({ resolveWithObject: true });
+      const decoded = jsQR(
+         new Uint8ClampedArray(data),
+         info.width,
+         info.height
+      );
+      expect(decoded?.data ?? null).toBeNull();
+   });
+
+   it('has no tracking target and no registry entry', () => {
+      expect(existsSync(path.join(PUBLIC_DIR, 'ar', 'targets', 'absent.mind'))).toBe(
+         false
+      );
+      expect(isARArtifactSlug('absent')).toBe(false);
    });
 });

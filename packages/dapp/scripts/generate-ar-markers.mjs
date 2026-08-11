@@ -635,6 +635,41 @@ const makeMarkerSvg = (artifact, profileIndex, symbol, qrGeometry) => {
 </svg>`;
 };
 
+/**
+ * The medallion for an artifact that is sacred and is not displayed.
+ *
+ * Same plate as the rest of the set — same 1024 canvas, same disc radius, and
+ * the QR field box taken from the geometry the real markers were cut with, so
+ * it prints as one of them rather than as a near-miss. What is missing is the
+ * point: no generative art, no code, no symbol. The engraving survives and
+ * everything it held has been scratched off.
+ *
+ * It is deliberately inert. There is no slug in AR_ARTIFACTS, no QR payload to
+ * decode and no .mind target, because there is nothing to route to and nothing
+ * to track. Do not "finish" it by giving it any of those.
+ */
+const makeAbsentMedallionSvg = (qrGeometry) => `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="${PRINT_CANVAS_SIZE_MM.toFixed(
+   2
+)}mm" height="${PRINT_CANVAS_SIZE_MM.toFixed(
+   2
+)}mm" viewBox="0 0 ${TARGET_SIZE} ${TARGET_SIZE}">
+  <metadata data-printed-medallion-diameter-mm="${PRINTED_MEDALLION_DIAMETER_MM}" data-square-canvas-mm="${PRINT_CANVAS_SIZE_MM.toFixed(
+     2
+  )}" data-inert="true"/>
+  <rect width="${TARGET_SIZE}" height="${TARGET_SIZE}" fill="#f8f7f2"/>
+  <rect x="${qrGeometry.fieldOrigin.toFixed(
+     2
+  )}" y="${qrGeometry.fieldOrigin.toFixed(
+     2
+  )}" width="${qrGeometry.fieldSide.toFixed(
+     2
+  )}" height="${qrGeometry.fieldSide.toFixed(
+     2
+  )}" fill="none" stroke="#101317" stroke-width="9"/>
+  <circle cx="${MEDALLION_CENTER}" cy="${MEDALLION_CENTER}" r="${MEDALLION_RADIUS}" fill="none" stroke="#101317" stroke-width="9"/>
+</svg>`;
+
 const isFinderCell = (row, column, size) =>
    (row < 7 && column < 7) ||
    (row < 7 && column >= size - 7) ||
@@ -1091,11 +1126,13 @@ const main = async () => {
    );
 
    const generatedRasters = [];
+   let sharedQrGeometry = null;
 
    for (const [profileIndex, artifact] of artifacts.entries()) {
       const symbol = await loadArtifactSymbol(artifact);
       const routeUrl = new URL(`ar/${artifact.slug}`, baseUrl).href;
       const qrGeometry = makeQrGeometry(routeUrl);
+      sharedQrGeometry ??= qrGeometry;
       const markerSvg = makeMarkerSvg(artifact, profileIndex, symbol, qrGeometry);
       const qrSvg = makeQrSvg(artifact, routeUrl);
       verifyQrGeometry(artifact, qrGeometry);
@@ -1128,6 +1165,19 @@ const main = async () => {
       await fs.writeFile(targetPath, target);
       await verifyMindTarget(artifact, targetPath);
    }
+
+   const absentSvg = makeAbsentMedallionSvg(sharedQrGeometry);
+   await Promise.all([
+      fs.writeFile(path.join(PRINT_DIR, 'absent-medallion.svg'), absentSvg),
+      sharp(Buffer.from(absentSvg))
+         .resize(PRINT_SIZE, PRINT_SIZE, { fit: 'fill' })
+         .withMetadata({ density: PRINT_DENSITY_DPI })
+         .png({ compressionLevel: 9 })
+         .toFile(path.join(PRINT_DIR, 'absent-medallion.png')),
+   ]);
+   process.stdout.write(
+      `  absent medallion: inert blank, no QR and no .mind by design\n`
+   );
 
    reportCrossDesignDifference(generatedRasters);
    await copyDracoDecoders();
