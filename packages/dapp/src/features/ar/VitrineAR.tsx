@@ -86,9 +86,24 @@ const ERROR_COPY: Record<ARErrorKind, Omit<ARErrorState, 'kind'>> = {
 // The 768 px medallion occupies 75% of its square MindAR target canvas.
 const VERTICAL_MEDALLION_LOWER_EDGE_Y = -0.375;
 
-// These jump limits are initial values and are unvalidated on device.
+// Jump limits: past these, an accepted pose is snapped to rather than
+// interpolated toward, because inside `missTolerance` MindAR can swap in a
+// displaced pose with no lost/found event and smoothing would drag the artifact
+// across the room.
+//
+// Both are unvalidated on device, and both MUST stay in step with the
+// workbench harness's SHARED_DEFAULTS. They diverged once already — 25 here
+// against 45 there — which would have made a calibration session in the harness
+// unusable as evidence for what production does.
+//
+// The tuning tension, for whoever measures them: these are absolute, not
+// per-second. At an 8-12 Hz pose rate on a weak Android, 100 ms separates
+// samples, so 45 degrees is 450 deg/s while 25 would be 250 deg/s — reachable
+// by an ordinary wrist flick, which would snap when it should smooth. Too high
+// instead means a real re-acquisition gets smoothed through as a slide. The
+// harness counts jump snaps; read that counter before changing either number.
 const POSE_TRANSLATION_JUMP_LIMIT = 0.5;
-const POSE_ROTATION_JUMP_LIMIT_DEGREES = 25;
+const POSE_ROTATION_JUMP_LIMIT_DEGREES = 45;
 
 const POSE_RELAY_PARAMETERS: MindARPoseParameters = {
    poseFilterMinCutOff: 1.5,
