@@ -8,8 +8,7 @@ import { AR_ARTIFACTS, AR_EXHIBITED_SLUGS } from '@/features/ar/artifacts';
  * page is not on the visitor's path — it exists for someone who typed the URL
  * or followed a link, where the slug is the one thing we cannot know. It used
  * to hardcode the drum, which silently showed the wrong object to everyone
- * standing at the other vitrine, and passed `preferWebXR` unconditionally,
- * bypassing the calibration gate that `/ar/[slug]` applies.
+ * standing at the other vitrine.
  *
  * Set in the exhibition's type, matching /record and the AR start card.
  */

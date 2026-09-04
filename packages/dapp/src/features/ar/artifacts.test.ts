@@ -6,19 +6,43 @@ import { describe, expect, it } from 'vitest';
 import {
    AR_ARTIFACTS,
    AR_ARTIFACT_SLUGS,
+   AR_EXHIBITED_SLUGS,
    AR_EXIT_PATH,
    isARArtifactSlug,
 } from './artifacts';
+import type { WebXRHeightSource } from './artifacts';
 
 const PUBLIC_DIR = path.resolve(__dirname, '../../../public');
 const ARTIFACTS = Object.values(AR_ARTIFACTS);
 
 /**
  * The unit MindAR's `displayHeight` is expressed in — one square target width.
- * Multiplying by it converts a marker-relative height into metres, which is how
- * the uncalibrated WebXR values were produced. It is not a measurement.
+ * It is the bridge between the two coordinate systems: multiplying by it turns a
+ * marker-relative height into the metres WebXR renders in.
+ *
+ * Which direction it was applied is the whole point of `heightSource`. For a
+ * 'placeholder' the metres were derived from the units and mean nothing. For an
+ * 'exhibition' entry the units were derived from a chosen height in metres, and
+ * the agreement is the thing worth guarding — that is what stops the two paths
+ * drifting into rendering the same object at two different physical sizes.
  */
 const MINDAR_TARGET_WIDTH_METRES = 0.12;
+
+/** Both paths must agree on physical size to within a millimetre. */
+const AGREEMENT_TOLERANCE_METRES = 1e-3;
+
+const mechanicalHeight = (artifact: (typeof ARTIFACTS)[number]) =>
+   artifact.displayHeight * MINDAR_TARGET_WIDTH_METRES;
+
+/**
+ * Widened on purpose. `AR_ARTIFACTS` is `as const`, so the inferred type is only
+ * the sources currently in use — which makes a guard for any *unused* source
+ * unreachable code that TypeScript rejects outright. The guards have to keep
+ * compiling before an artifact of that kind exists; being there first is the
+ * entire point of them.
+ */
+const sourceOf = (artifact: (typeof ARTIFACTS)[number]): WebXRHeightSource =>
+   artifact.webxr.heightSource;
 
 describe('AR artifact registry', () => {
    it('keys every artifact by its own slug', () => {
@@ -45,49 +69,97 @@ describe('AR artifact registry', () => {
       }
    });
 
-   it('carries a WebXR calibration block for every artifact', () => {
+   it('carries a WebXR block with a declared provenance for every artifact', () => {
       for (const artifact of ARTIFACTS) {
-         expect(typeof artifact.webxr.calibrated).toBe('boolean');
+         expect(['measured', 'exhibition', 'placeholder']).toContain(
+            artifact.webxr.heightSource
+         );
          expect(artifact.webxr.heightMetres).toBeGreaterThan(0);
          expect(Number.isFinite(artifact.webxr.rotationY)).toBe(true);
       }
    });
 
    /**
-    * The guard that makes the `calibrated` flag mean something. A mechanically
-    * derived height is exactly `displayHeight * 0.12` — if a flag is flipped to
-    * true while the number still matches that product, nobody measured it, and
-    * the artifact would ship at marker scale rather than its real size.
+    * A measured height has no reason to land on `displayHeight * 0.12`. If it
+    * does, nobody measured anything — someone relabelled the mechanical
+    * conversion, and the artifact ships at marker scale rather than its real
+    * size. 'exhibition' is deliberately exempt: there the units are derived
+    * *from* the metres, so agreement is correct by construction and is asserted
+    * in the other direction below.
     */
-   it('marks an artifact calibrated only if its height was actually measured', () => {
+   it('does not let a mechanical conversion be relabelled as measured', () => {
       for (const artifact of ARTIFACTS) {
-         if (!artifact.webxr.calibrated) continue;
-         const mechanical = artifact.displayHeight * MINDAR_TARGET_WIDTH_METRES;
+         if (sourceOf(artifact) !== 'measured') continue;
+         const mechanical = mechanicalHeight(artifact);
          expect(
             Math.abs(artifact.webxr.heightMetres - mechanical),
-            `${
-               artifact.slug
-            } is flagged calibrated but its height is still the mechanical ${mechanical.toFixed(
-               4
-            )} m conversion`
+            `${artifact.slug} claims 'measured' but its height is still the ` +
+               `mechanical ${mechanical.toFixed(4)} m conversion`
          ).toBeGreaterThan(1e-6);
       }
    });
 
-   it('keeps uncalibrated artifacts off the WebXR path', () => {
-      const uncalibrated = ARTIFACTS.filter((a) => !a.webxr.calibrated);
-      // Not an assertion about how many are uncalibrated — only that the flag
-      // is what decides, so `/ar/[slug]` cannot route one of them to WebXR.
-      for (const artifact of uncalibrated) {
-         expect(artifact.webxr.calibrated).toBe(false);
+   /**
+    * The 156 mm drum, pinned. That shipped because one field fed both paths and
+    * the two read it in different units. They are separate fields now, which
+    * removes the coupling but not the risk: nothing stops someone editing the
+    * metres for the vitrine and leaving the MindAR units behind, so the same
+    * object would render at two sizes depending on the visitor's phone.
+    */
+   it('keeps both paths at one physical size for exhibition artifacts', () => {
+      for (const artifact of ARTIFACTS) {
+         if (sourceOf(artifact) !== 'exhibition') continue;
+         expect(
+            Math.abs(artifact.webxr.heightMetres - mechanicalHeight(artifact)),
+            `${artifact.slug}: WebXR renders it at ${artifact.webxr.heightMetres} m ` +
+               `but MindAR at ${mechanicalHeight(artifact).toFixed(4)} m ` +
+               `(displayHeight ${artifact.displayHeight}). Derive the units from ` +
+               `the metres: displayHeight = heightMetres / ${MINDAR_TARGET_WIDTH_METRES}.`
+         ).toBeLessThan(AGREEMENT_TOLERANCE_METRES);
       }
    });
 
-   it('holds every calibrated artifact to a plausible physical size', () => {
+   /**
+    * A placeholder must actually be one. The label is what tells the next person
+    * the number is marker-relative and unmeasured; a real height hiding behind it
+    * would be lost work, and an arbitrary number would be a lie.
+    */
+   it('keeps placeholders honestly mechanical', () => {
       for (const artifact of ARTIFACTS) {
-         if (!artifact.webxr.calibrated) continue;
-         expect(artifact.webxr.heightMetres).toBeGreaterThan(0.05);
+         if (sourceOf(artifact) !== 'placeholder') continue;
+         expect(
+            Math.abs(artifact.webxr.heightMetres - mechanicalHeight(artifact)),
+            `${artifact.slug} is labelled a placeholder but its height is not ` +
+               `the mechanical conversion — relabel it 'measured' or 'exhibition'`
+         ).toBeLessThan(1e-9);
+      }
+   });
+
+   /**
+    * Every artifact now reaches WebXR on a device that supports it, so a bad
+    * height is rendered rather than routed around. This is the only thing left
+    * standing between a typo and a 50 m mask in the room.
+    */
+   it('holds every artifact to a plausible physical size', () => {
+      for (const artifact of ARTIFACTS) {
+         expect(
+            artifact.webxr.heightMetres,
+            `${artifact.slug} renders at ${artifact.webxr.heightMetres} m`
+         ).toBeGreaterThan(0.05);
          expect(artifact.webxr.heightMetres).toBeLessThan(2.5);
+      }
+   });
+
+   /**
+    * The exhibited objects are the ones a visitor actually meets, and a
+    * placeholder height on one of them is the failure that reaches the public.
+    */
+   it('leaves no exhibited artifact on a placeholder height', () => {
+      for (const slug of AR_EXHIBITED_SLUGS) {
+         expect(
+            AR_ARTIFACTS[slug].webxr.heightSource,
+            `${slug} is on a plinth but its height was never chosen`
+         ).not.toBe('placeholder');
       }
    });
 
