@@ -2,10 +2,18 @@
 
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { Material, Object3D, Texture } from 'three';
-import type { MindARThree } from 'mind-ar/dist/mindar-image-three.prod.js';
+import type { Group, Material, Object3D, Texture } from 'three';
+import type {
+   MindARAnchor,
+   MindARThree,
+} from 'mind-ar/dist/mindar-image-three.prod.js';
 import ARStartCard from './ARStartCard';
 import { AR_EXIT_PATH, type ARArtifact } from './artifacts';
+import {
+   createMindARPoseRelay,
+   type MindARPoseParameters,
+   type MindARPoseRelay,
+} from './mindarPose';
 
 type ARPhase =
    | 'idle'
@@ -31,6 +39,10 @@ interface ARErrorState {
 
 interface ActiveSession {
    mindAR: MindARThree;
+   anchor: MindARAnchor;
+   poseGroup: Group;
+   targetUnitGroup: Group;
+   poseRelay: MindARPoseRelay;
    disposeModel: (() => void) | null;
    disposeDraco: (() => void) | null;
    injectedStyles: HTMLStyleElement[];
@@ -73,6 +85,18 @@ const ERROR_COPY: Record<ARErrorKind, Omit<ARErrorState, 'kind'>> = {
 
 // The 768 px medallion occupies 75% of its square MindAR target canvas.
 const VERTICAL_MEDALLION_LOWER_EDGE_Y = -0.375;
+
+// These jump limits are initial values and are unvalidated on device.
+const POSE_TRANSLATION_JUMP_LIMIT = 0.5;
+const POSE_ROTATION_JUMP_LIMIT_DEGREES = 25;
+
+const POSE_RELAY_PARAMETERS: MindARPoseParameters = {
+   poseFilterMinCutOff: 1.5,
+   poseFilterBeta: 0,
+   poseRotationFilterBeta: 0.05,
+   poseTranslationJumpLimit: POSE_TRANSLATION_JUMP_LIMIT,
+   poseRotationJumpLimitDegrees: POSE_ROTATION_JUMP_LIMIT_DEGREES,
+};
 
 const createError = (kind: ARErrorKind): ARErrorState => ({
    kind,
@@ -217,6 +241,10 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
       if (sessionRef.current === session) sessionRef.current = null;
 
       session.mindAR.renderer.setAnimationLoop(null);
+      session.anchor.onTargetFound = null;
+      session.anchor.onTargetLost = null;
+      session.anchor.onTargetUpdate = null;
+      session.poseRelay.reset();
       try {
          session.mindAR.stop();
       } catch {
@@ -225,6 +253,8 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
 
       session.disposeModel?.();
       session.disposeDraco?.();
+      session.targetUnitGroup.removeFromParent();
+      session.poseGroup.removeFromParent();
       session.mindAR.renderer.dispose();
       session.mindAR.renderer.forceContextLoss();
       session.mindAR.renderer.domElement.remove();
@@ -339,7 +369,9 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
             uiLoading: 'no',
             uiScanning: 'no',
             uiError: 'no',
-            warmupTolerance: 5,
+            filterMinCF: 1,
+            filterBeta: 0,
+            warmupTolerance: 8,
             missTolerance: 12,
          });
          const injectedStyles = Array.from(
@@ -349,8 +381,23 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
                style instanceof HTMLStyleElement && !stylesBefore.has(style)
          );
 
+         const anchor = mindAR.addAnchor(0);
+         const poseGroup = new THREE.Group();
+         poseGroup.matrixAutoUpdate = false;
+         poseGroup.visible = false;
+         mindAR.scene.add(poseGroup);
+
+         const targetUnitGroup = new THREE.Group();
+         poseGroup.add(targetUnitGroup);
+
+         const poseRelay = createMindARPoseRelay();
+
          const session: ActiveSession = {
             mindAR,
+            anchor,
+            poseGroup,
+            targetUnitGroup,
+            poseRelay,
             disposeModel: null,
             disposeDraco: null,
             injectedStyles,
@@ -359,22 +406,49 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
          createdSession = session;
          sessionRef.current = session;
 
+         let poseUpdatePending = false;
+         let poseUpdatePendingAt = 0;
+         let relayPoseVisible = false;
+         let modelReady = false;
+
+         const applyRelayVisibility = (poseVisible: boolean) => {
+            poseGroup.visible = poseVisible;
+            if (relayPoseVisible === poseVisible) return;
+            relayPoseVisible = poseVisible;
+            if (
+               modelReady &&
+               mountedRef.current &&
+               attemptRef.current === attempt
+            ) {
+               setPhase(poseVisible ? 'tracking' : 'scanning');
+            }
+         };
+
          mindAR.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
          mindAR.renderer.setClearColor(0x000000, 0);
          mindAR.renderer.domElement.style.zIndex = '1';
          mindAR.cssRenderer.domElement.style.zIndex = '2';
          mindAR.cssRenderer.domElement.style.pointerEvents = 'none';
 
-         const anchor = mindAR.addAnchor(0);
          anchor.onTargetFound = () => {
-            if (mountedRef.current && attemptRef.current === attempt) {
-               setPhase('tracking');
+            if (
+               modelReady &&
+               !relayPoseVisible &&
+               mountedRef.current &&
+               attemptRef.current === attempt
+            ) {
+               setPhase('scanning');
             }
          };
          anchor.onTargetLost = () => {
-            if (mountedRef.current && attemptRef.current === attempt) {
-               setPhase('scanning');
-            }
+            poseUpdatePending = false;
+            poseRelay.reset();
+            applyRelayVisibility(false);
+         };
+         anchor.onTargetUpdate = () => {
+            if (!mountedRef.current || attemptRef.current !== attempt) return;
+            poseUpdatePending = true;
+            poseUpdatePendingAt = performance.now();
          };
 
          mindAR.scene.add(new THREE.HemisphereLight(0xfff2da, 0x2a1609, 2.2));
@@ -395,6 +469,35 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
             mindAR.video.style.zIndex = '0';
          }
          mindAR.renderer.setAnimationLoop(() => {
+            if (session.cleaned) return;
+
+            const pendingPoseSampledAt = poseUpdatePendingAt;
+            const hasPendingPose = poseUpdatePending;
+            poseUpdatePending = false;
+            if (hasPendingPose) {
+               if (anchor.visible) {
+                  anchor.group.updateWorldMatrix(true, false);
+               }
+               const poseUpdate = poseRelay.update({
+                  anchorVisible: anchor.visible,
+                  matrix: anchor.group.matrixWorld,
+                  sampledAt: pendingPoseSampledAt,
+                  parameters: POSE_RELAY_PARAMETERS,
+               });
+               if (
+                  poseUpdate.accepted &&
+                  poseUpdate.filteredPose !== null &&
+                  poseUpdate.targetUnitScale !== null
+               ) {
+                  poseGroup.matrix.copy(poseUpdate.filteredPose.matrix);
+                  targetUnitGroup.scale.setScalar(
+                     poseUpdate.targetUnitScale
+                  );
+               }
+            }
+
+            const poseFrame = poseRelay.advanceFrame(anchor.visible);
+            applyRelayVisibility(poseFrame.poseVisible);
             mindAR.renderer.render(mindAR.scene, mindAR.camera);
          });
 
@@ -457,14 +560,15 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
             0
          );
          verticalMedallionMount.add(uprightArtifact);
-         anchor.group.add(verticalMedallionMount);
+         targetUnitGroup.add(verticalMedallionMount);
 
          if (!mountedRef.current || attemptRef.current !== attempt) {
             cleanupKnownSession(session);
             return;
          }
          setModelProgress(100);
-         setPhase(anchor.visible ? 'tracking' : 'scanning');
+         modelReady = true;
+         setPhase(relayPoseVisible ? 'tracking' : 'scanning');
       } catch (loadError) {
          cleanupKnownSession(createdSession);
          if (!mountedRef.current || attemptRef.current !== attempt) return;
