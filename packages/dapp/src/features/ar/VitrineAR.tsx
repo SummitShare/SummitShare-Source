@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import type { PointerEvent as ReactPointerEvent } from 'react';
 import type { Group, Material, Object3D, Texture } from 'three';
 import type {
    MindARAnchor,
@@ -42,12 +43,24 @@ interface ActiveSession {
    anchor: MindARAnchor;
    poseGroup: Group;
    targetUnitGroup: Group;
+   uprightArtifact: Group | null;
    poseRelay: MindARPoseRelay;
    disposeModel: (() => void) | null;
    disposeDraco: (() => void) | null;
    injectedStyles: HTMLStyleElement[];
    /** Guards the renderer teardown, which is not itself idempotent. */
    cleaned: boolean;
+}
+
+interface RotationClamp {
+   min: number;
+   max: number;
+}
+
+interface DragState {
+   pointerId: number;
+   lastClientX: number;
+   viewportWidth: number;
 }
 
 const ERROR_COPY: Record<ARErrorKind, Omit<ARErrorState, 'kind'>> = {
@@ -83,8 +96,33 @@ const ERROR_COPY: Record<ARErrorKind, Omit<ARErrorState, 'kind'>> = {
    },
 };
 
-// The 768 px medallion occupies 75% of its square MindAR target canvas.
-const VERTICAL_MEDALLION_LOWER_EDGE_Y = -0.375;
+const INTERACTIVE_ELEMENT_SELECTOR =
+   'a, button, input, select, textarea, audio[controls], video[controls], details, [role="button"], [role="link"], [contenteditable]:not([contenteditable="false"]), [tabindex]:not([tabindex="-1"])';
+
+/**
+ * Maps one horizontal pointer sample to an absolute, hard-clamped yaw.
+ * `radiansPerViewportFraction` is the sensitivity: one unit of horizontal
+ * travel is one full viewport width.
+ */
+const mapHorizontalDragToRotation = (
+   currentRotation: number,
+   horizontalDelta: number,
+   viewportWidth: number,
+   radiansPerViewportFraction: number,
+   clamp: RotationClamp
+) =>
+   Math.min(
+      clamp.max,
+      Math.max(
+         clamp.min,
+         currentRotation +
+            (horizontalDelta / viewportWidth) * radiansPerViewportFraction
+      )
+   );
+
+const isInteractiveTarget = (target: EventTarget | null) =>
+   target instanceof Element &&
+   target.closest(INTERACTIVE_ELEMENT_SELECTOR) !== null;
 
 // Jump limits: past these, an accepted pose is snapped to rather than
 // interpolated toward, because inside `missTolerance` MindAR can swap in a
@@ -238,12 +276,21 @@ interface VitrineARProps {
 export default function VitrineAR({ artifact }: VitrineARProps) {
    const containerRef = useRef<HTMLDivElement>(null);
    const sessionRef = useRef<ActiveSession | null>(null);
+   const dragRef = useRef<DragState | null>(null);
+   const rotationHintDismissedRef = useRef(false);
    const attemptRef = useRef(0);
    const mountedRef = useRef(true);
    const router = useRouter();
    const [phase, setPhase] = useState<ARPhase>('idle');
    const [error, setError] = useState<ARErrorState | null>(null);
    const [modelProgress, setModelProgress] = useState<number | null>(null);
+   const [rotationHintDismissed, setRotationHintDismissed] = useState(false);
+
+   // Starting value: one full-width sweep covers this artifact's entire clamp
+   // range. It is expressed in radians per fraction of viewport width and needs
+   // feel-testing on a phone before treating the sensitivity as calibrated.
+   const dragSensitivityRadiansPerViewportFraction =
+      artifact.rotationClamp.max - artifact.rotationClamp.min;
 
    /**
     * Tears down one specific session. Safe to call twice on the same session,
@@ -254,6 +301,7 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
       if (!session || session.cleaned) return;
       session.cleaned = true;
       if (sessionRef.current === session) sessionRef.current = null;
+      dragRef.current = null;
 
       session.mindAR.renderer.setAnimationLoop(null);
       session.anchor.onTargetFound = null;
@@ -322,6 +370,8 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
       cleanupSession();
       setError(null);
       setModelProgress(null);
+      rotationHintDismissedRef.current = false;
+      setRotationHintDismissed(false);
 
       if (!window.isSecureContext) {
          setError(createError('insecure'));
@@ -412,6 +462,7 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
             anchor,
             poseGroup,
             targetUnitGroup,
+            uprightArtifact: null,
             poseRelay,
             disposeModel: null,
             disposeDraco: null,
@@ -567,13 +618,13 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
          const uprightArtifact = new THREE.Group();
          uprightArtifact.rotation.y = artifact.rotationY;
          uprightArtifact.add(model);
+         session.uprightArtifact = uprightArtifact;
 
          const verticalMedallionMount = new THREE.Group();
-         verticalMedallionMount.position.set(
-            0,
-            VERTICAL_MEDALLION_LOWER_EDGE_Y,
-            0
-         );
+         // The 768 px medallion occupies 75% of its square target canvas.
+         // `mountY` is the per-artifact offset measured in those target units,
+         // so this mount must remain inside `targetUnitGroup`.
+         verticalMedallionMount.position.set(0, artifact.mountY, 0);
          verticalMedallionMount.add(uprightArtifact);
          targetUnitGroup.add(verticalMedallionMount);
 
@@ -601,6 +652,83 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
       }
    }, [artifact, cleanupSession, cleanupKnownSession]);
 
+   const handlePointerDown = useCallback(
+      (event: ReactPointerEvent<HTMLElement>) => {
+         const session = sessionRef.current;
+         if (
+            !event.isPrimary ||
+            event.button !== 0 ||
+            isInteractiveTarget(event.target) ||
+            !session?.uprightArtifact ||
+            !session.poseGroup.visible
+         ) {
+            return;
+         }
+
+         dragRef.current = {
+            pointerId: event.pointerId,
+            lastClientX: event.clientX,
+            viewportWidth: Math.max(event.currentTarget.clientWidth, 1),
+         };
+         event.currentTarget.setPointerCapture(event.pointerId);
+         event.preventDefault();
+      },
+      []
+   );
+
+   const handlePointerMove = useCallback(
+      (event: ReactPointerEvent<HTMLElement>) => {
+         const drag = dragRef.current;
+         const uprightArtifact = sessionRef.current?.uprightArtifact;
+         if (!drag || drag.pointerId !== event.pointerId || !uprightArtifact) {
+            return;
+         }
+
+         const horizontalDelta = event.clientX - drag.lastClientX;
+         if (horizontalDelta === 0) return;
+
+         uprightArtifact.rotation.y = mapHorizontalDragToRotation(
+            uprightArtifact.rotation.y,
+            horizontalDelta,
+            drag.viewportWidth,
+            dragSensitivityRadiansPerViewportFraction,
+            artifact.rotationClamp
+         );
+
+         // Rebase on every sample, including samples clamped at an endpoint.
+         // This throws away overshoot so a reversal moves immediately: the hard
+         // stop feels like a physical limit, not a control that has gone dead.
+         drag.lastClientX = event.clientX;
+
+         if (!rotationHintDismissedRef.current) {
+            rotationHintDismissedRef.current = true;
+            setRotationHintDismissed(true);
+         }
+         event.preventDefault();
+      },
+      [artifact.rotationClamp, dragSensitivityRadiansPerViewportFraction]
+   );
+
+   const handlePointerEnd = useCallback(
+      (event: ReactPointerEvent<HTMLElement>) => {
+         if (dragRef.current?.pointerId !== event.pointerId) return;
+         dragRef.current = null;
+         if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+            event.currentTarget.releasePointerCapture(event.pointerId);
+         }
+      },
+      []
+   );
+
+   const handleLostPointerCapture = useCallback(
+      (event: ReactPointerEvent<HTMLElement>) => {
+         if (dragRef.current?.pointerId === event.pointerId) {
+            dragRef.current = null;
+         }
+      },
+      []
+   );
+
    const isRunning =
       phase === 'starting' ||
       phase === 'loading-model' ||
@@ -608,7 +736,14 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
       phase === 'tracking';
 
    return (
-      <main className="fixed inset-0 isolate h-[100dvh] min-h-[100svh] w-screen overflow-hidden bg-[#0f0c09] text-amber-50">
+      <main
+         className="fixed inset-0 isolate h-[100dvh] min-h-[100svh] w-screen touch-none overflow-hidden bg-[#0f0c09] text-amber-50"
+         onPointerDown={handlePointerDown}
+         onPointerMove={handlePointerMove}
+         onPointerUp={handlePointerEnd}
+         onPointerCancel={handlePointerEnd}
+         onLostPointerCapture={handleLostPointerCapture}
+      >
          <div
             ref={containerRef}
             className="absolute inset-0 overflow-hidden"
@@ -688,6 +823,43 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
                </section>
             )}
          </div>
+
+         {phase === 'tracking' && (
+            <div
+               className={`pointer-events-none absolute left-1/2 top-[56%] z-20 -translate-x-1/2 text-amber-50/45 transition-opacity duration-500 motion-reduce:transition-none ${
+                  rotationHintDismissed ? 'opacity-0' : 'opacity-100'
+               }`}
+               aria-hidden="true"
+            >
+               <svg
+                  viewBox="0 0 160 88"
+                  className="h-[5.5rem] w-40"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+               >
+                  <path
+                     d="M22.5 68.5C28.8 18.7 124.6 17.2 136 65.1"
+                     stroke="currentColor"
+                     strokeWidth="1.35"
+                     strokeLinecap="round"
+                  />
+                  <path
+                     d="M24.1 69.4C31.5 20.3 122.8 19 134.8 65.8"
+                     stroke="currentColor"
+                     strokeWidth="0.75"
+                     strokeLinecap="round"
+                     opacity="0.42"
+                  />
+                  <path
+                     d="M126.8 59.5L136.2 66.1L138.3 54.9"
+                     stroke="currentColor"
+                     strokeWidth="1.35"
+                     strokeLinecap="round"
+                     strokeLinejoin="round"
+                  />
+               </svg>
+            </div>
+         )}
 
          {(phase === 'scanning' || phase === 'tracking') && (
             <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex flex-col items-center px-5 text-center">
