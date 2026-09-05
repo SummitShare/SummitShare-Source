@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { ScanLine } from 'lucide-react';
 import { useEffect } from 'react';
 import ARStartCard from './ARStartCard';
 import DemoWordmark from './DemoWordmark';
@@ -93,11 +94,12 @@ function StartScreen({
    return (
       <>
          <div className="absolute inset-0 z-10 flex items-center justify-center px-5">
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgba(245,158,11,0.2),transparent_38%),radial-gradient(circle_at_80%_85%,rgba(180,83,9,0.18),transparent_42%),linear-gradient(145deg,#17110b,#0f0c09_55%,#090706)]" />
+            <div className="ar-camera-backdrop" />
             <ARStartCard
                onStart={onStart}
                failure={failure}
                checking={checking}
+               marker={artifact.slug === 'drum' ? 'drum' : 'mask'}
             />
          </div>
          <DemoWordmark />
@@ -173,7 +175,7 @@ export default function WebXRDemo({
    };
 
    return (
-      <main className="fixed inset-0 isolate h-[100dvh] min-h-[100svh] w-screen overflow-hidden bg-[#0f0c09] text-amber-50">
+      <main className="ar-shell ar-camera-shell">
          <XRVitrine
             artifact={xrArtifact}
             options={{ nudge: artifact.webxr.nudge }}
@@ -207,13 +209,14 @@ export default function WebXRDemo({
                    */}
                   {state.placementKind === 'unplaced' && (
                      <p
-                        className="fixed inset-x-0 bottom-0 mx-auto mb-5 w-fit max-w-[calc(100vw-2rem)] rounded-full border border-white/15 bg-black/55 px-5 py-2.5 text-center text-xs font-medium !text-amber-50 backdrop-blur-md"
+                        className="ar-status-pill fixed inset-x-0 bottom-0 mx-auto mb-5 w-fit"
                         style={{
                            marginBottom:
                               'max(1.25rem, calc(env(safe-area-inset-bottom) + 0.75rem))',
                         }}
                      >
-                        Point at the marker in the vitrine and tap
+                        <ScanLine aria-hidden="true" />
+                        <span>Point at the marker in the vitrine and tap</span>
                      </p>
                   )}
                </div>

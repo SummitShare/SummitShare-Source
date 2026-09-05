@@ -28,9 +28,7 @@ export default function DemoWordmark() {
             className="block h-8 w-8"
             style={{ filter: 'drop-shadow(0 1px 2px rgb(0 0 0 / 0.55))' }}
          />
-         <span className="mt-1 block text-[10px] font-normal lowercase tracking-[0.22em] !text-amber-50/45">
-            demo
-         </span>
+         <span className="ar-demo-label">demo</span>
       </div>
    );
 }

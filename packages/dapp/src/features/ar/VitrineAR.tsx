@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { AlertTriangle, RotateCcw, X } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { PointerEvent as ReactPointerEvent } from 'react';
 import type { Group, Material, Object3D, Texture } from 'three';
@@ -775,7 +776,7 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
 
    return (
       <main
-         className="fixed inset-0 isolate h-[100dvh] min-h-[100svh] w-screen touch-none overflow-hidden bg-[#0f0c09] text-amber-50"
+         className="ar-shell ar-camera-shell touch-none"
          onPointerDown={handlePointerDown}
          onPointerMove={handlePointerMove}
          onPointerUp={handlePointerEnd}
@@ -789,7 +790,7 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
          />
 
          {(phase === 'idle' || phase === 'error') && (
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgba(245,158,11,0.2),transparent_38%),radial-gradient(circle_at_80%_85%,rgba(180,83,9,0.18),transparent_42%),linear-gradient(145deg,#17110b,#0f0c09_55%,#090706)]" />
+            <div className="ar-camera-backdrop" />
          )}
 
          <header
@@ -798,21 +799,18 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
                paddingTop: 'max(1rem, env(safe-area-inset-top))',
             }}
          >
-            <div className="max-w-[70vw] rounded-2xl border border-white/10 bg-black/45 px-4 py-3 backdrop-blur-md">
-               <p className="text-[10px] uppercase tracking-[0.35em] !text-amber-200/70">
-                  SummitShare · AR
-               </p>
-               <p className="mt-1 truncate text-sm font-semibold !text-amber-50 sm:text-base">
-                  {artifact.name}
-               </p>
+            <div className="ar-session-badge">
+               <p className="ar-session-kicker">Live artifact</p>
+               <p className="ar-session-title">{artifact.name}</p>
             </div>
             {isRunning && (
                <button
                   type="button"
                   onClick={endAR}
-                  className="pointer-events-auto rounded-full border border-white/20 bg-black/45 px-4 py-2 text-xs font-medium !text-amber-100 backdrop-blur-md transition hover:border-amber-200/60 focus:outline-none focus:ring-2 focus:ring-amber-300"
+                  className="ar-overlay-button"
                >
-                  End AR
+                  <X aria-hidden="true" />
+                  <span>End AR</span>
                </button>
             )}
          </header>
@@ -821,20 +819,25 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
             className="absolute inset-0 z-10 flex items-center justify-center px-5"
             aria-live="polite"
          >
-            {phase === 'idle' && <ARStartCard onStart={startAR} />}
+            {phase === 'idle' && (
+               <ARStartCard
+                  onStart={startAR}
+                  marker={artifact.slug === 'drum' ? 'drum' : 'mask'}
+               />
+            )}
 
             {(phase === 'starting' || phase === 'loading-model') && (
-               <section className="rounded-3xl border border-white/10 bg-black/60 px-7 py-6 text-center shadow-2xl backdrop-blur-lg">
-                  <div className="mx-auto h-9 w-9 animate-spin rounded-full border-2 border-amber-300 border-t-transparent" />
-                  <p className="mt-4 text-sm font-medium !text-amber-50">
+               <section className="ar-loading-panel">
+                  <div className="ar-spinner" />
+                  <p className="ar-loading-text">
                      {phase === 'starting'
                         ? 'Starting camera and tracker…'
                         : `Loading ${artifact.name}…`}
                   </p>
                   {phase === 'loading-model' && modelProgress !== null && (
-                     <div className="mt-4 h-1.5 w-56 overflow-hidden rounded-full bg-white/15">
+                     <div className="ar-progress">
                         <div
-                           className="h-full rounded-full bg-amber-300 transition-[width]"
+                           className="ar-progress-bar"
                            style={{ width: `${modelProgress}%` }}
                         />
                      </div>
@@ -843,20 +846,19 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
             )}
 
             {phase === 'error' && error && (
-               <section className="pointer-events-auto w-full max-w-md rounded-3xl border border-red-200/20 bg-[#17100d]/95 p-6 text-center shadow-2xl backdrop-blur-xl sm:p-8">
-                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border border-red-200/25 bg-red-300/10 text-xl text-red-100">
-                     !
+               <section className="ar-error-card pointer-events-auto">
+                  <div className="ar-error-mark">
+                     <AlertTriangle aria-hidden="true" />
                   </div>
-                  <h1 className="mt-5 text-2xl !text-amber-50">{error.title}</h1>
-                  <p className="mt-3 text-sm leading-6 !text-amber-100/70">
-                     {error.detail}
-                  </p>
+                  <h1 className="ar-error-title">{error.title}</h1>
+                  <p className="ar-error-detail">{error.detail}</p>
                   <button
                      type="button"
                      onClick={startAR}
-                     className="mt-6 w-full rounded-full border border-amber-200/40 bg-amber-300/10 px-6 py-3 text-sm font-semibold !text-amber-100 transition hover:bg-amber-300/20 focus:outline-none focus:ring-2 focus:ring-amber-300"
+                     className="ar-button-secondary mt-6 w-full"
                   >
-                     Try again
+                     <RotateCcw aria-hidden="true" />
+                     <span>Try again</span>
                   </button>
                </section>
             )}
@@ -864,7 +866,7 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
 
          {phase === 'tracking' && (
             <div
-               className={`pointer-events-none absolute left-1/2 top-[56%] z-20 -translate-x-1/2 text-amber-50/45 transition-opacity duration-500 motion-reduce:transition-none ${
+               className={`ar-rotation-hint pointer-events-none absolute left-1/2 top-[56%] z-20 -translate-x-1/2 transition-opacity duration-500 motion-reduce:transition-none ${
                   rotationHintDismissed ? 'opacity-0' : 'opacity-100'
                }`}
                aria-hidden="true"
@@ -902,25 +904,25 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
          {(phase === 'scanning' || phase === 'tracking') && (
             <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex flex-col items-center px-5 text-center">
                {phase === 'scanning' && (
-                  <div className="relative mb-5 h-36 w-36 rounded-2xl border border-amber-200/25">
-                     <span className="absolute -left-px -top-px h-8 w-8 rounded-tl-2xl border-l-2 border-t-2 border-amber-200" />
-                     <span className="absolute -right-px -top-px h-8 w-8 rounded-tr-2xl border-r-2 border-t-2 border-amber-200" />
-                     <span className="absolute -bottom-px -left-px h-8 w-8 rounded-bl-2xl border-b-2 border-l-2 border-amber-200" />
-                     <span className="absolute -bottom-px -right-px h-8 w-8 rounded-br-2xl border-b-2 border-r-2 border-amber-200" />
+                  <div className="ar-scan-frame">
+                     <span />
+                     <span />
+                     <span />
+                     <span />
                   </div>
                )}
                <div
-                  className="mb-4 rounded-full border border-white/15 bg-black/55 px-5 py-2.5 text-xs font-medium !text-amber-50 backdrop-blur-md"
+                  className="ar-status-pill mb-4"
                   style={{
                      marginBottom:
                         'max(1rem, calc(env(safe-area-inset-bottom) + 0.5rem))',
                   }}
                >
                   <span
-                     className={`mr-2 inline-block h-2 w-2 rounded-full ${
+                     className={`ar-status-dot ${
                         phase === 'tracking'
-                           ? 'bg-emerald-300'
-                           : 'animate-pulse bg-amber-300'
+                           ? 'ar-status-dot--tracking'
+                           : 'ar-status-dot--scanning'
                      }`}
                   />
                   {/*

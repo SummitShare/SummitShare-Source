@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 import { AR_ARTIFACTS, AR_EXHIBITED_SLUGS } from '@/features/ar/artifacts';
 
 /**
@@ -20,43 +21,43 @@ const QUESTION_FONT =
 
 export default function ARIndexPage() {
    return (
-      <main className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden bg-[#0f0c09] px-5 py-10 text-amber-50">
-         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgba(245,158,11,0.2),transparent_38%),radial-gradient(circle_at_80%_85%,rgba(180,83,9,0.18),transparent_42%),linear-gradient(145deg,#17110b,#0f0c09_55%,#090706)]" />
-         <section className="relative w-full max-w-md rounded-3xl border border-white/10 bg-[#14100c]/95 p-6 text-center shadow-2xl backdrop-blur-xl sm:p-8">
-            <h1
-               className="text-3xl leading-tight !text-amber-50"
-               style={{ fontFamily: DISPLAY_FONT }}
-            >
-               What the Record Forgot
-            </h1>
-            <p
-               className="mt-2 text-xl italic !text-amber-200/85"
-               style={{ fontFamily: QUESTION_FONT }}
-            >
-               What would you ask?
-            </p>
+      <main className="ar-shell ar-entry-shell">
+         <div className="ar-entry-frame">
+            <section className="ar-entry-panel">
+               <h1 className="ar-title" style={{ fontFamily: DISPLAY_FONT }}>
+                  What the Record Forgot
+               </h1>
+               <p className="ar-question" style={{ fontFamily: QUESTION_FONT }}>
+                  What would you ask?
+               </p>
 
-            <p className="mt-6 text-sm !text-amber-100/65">
-               Choose the artifact in front of you, or scan the code on its stand.
-            </p>
+               <p className="ar-body-copy">
+                  Choose the artifact in front of you, or scan the code on its
+                  stand.
+               </p>
 
-            <ul className="mt-5 space-y-2.5">
-               {AR_EXHIBITED_SLUGS.map((slug) => (
-                  <li key={slug}>
-                     <Link
-                        href={`/ar/${slug}`}
-                        className="block w-full rounded-full bg-amber-300 px-6 py-3.5 text-sm font-semibold text-[#24160a] shadow-[0_12px_40px_-12px_rgba(252,211,77,0.75)] transition hover:bg-amber-200"
-                     >
-                        {AR_ARTIFACTS[slug].name}
-                     </Link>
-                  </li>
-               ))}
-            </ul>
+               <ul className="ar-entry-actions">
+                  {AR_EXHIBITED_SLUGS.map((slug) => (
+                     <li key={slug}>
+                        <Link href={`/ar/${slug}`} className="ar-artifact-option">
+                           <span>{AR_ARTIFACTS[slug].name}</span>
+                           <ArrowRight aria-hidden="true" />
+                        </Link>
+                     </li>
+                  ))}
+               </ul>
 
-            <p className="mt-4 text-xs !text-amber-100/50">
-               Best supported on Android. iOS support is experimental.
-            </p>
-         </section>
+               <p className="ar-support-note">
+                  Best supported on Android. iOS support is experimental.
+               </p>
+            </section>
+
+            <div className="ar-entry-art" aria-hidden="true">
+               <span className="ar-medallion ar-medallion--mask" />
+               <span className="ar-medallion ar-medallion--drum" />
+               <span className="ar-medallion ar-medallion--calabash" />
+            </div>
+         </div>
       </main>
    );
 }

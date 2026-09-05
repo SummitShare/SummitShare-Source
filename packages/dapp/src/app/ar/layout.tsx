@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Cormorant_Garamond, Martel } from 'next/font/google';
 import '../styles/globals.css';
+import './ar.css';
 
 // Same two faces, same weights and styles as /record's layout. The AR entry is
 // the exhibition's title card on a phone, so it should be set in the
@@ -31,7 +32,7 @@ export const viewport: Viewport = {
    width: 'device-width',
    initialScale: 1,
    viewportFit: 'cover',
-   themeColor: '#0f0c09',
+   themeColor: '#1b1410',
 };
 
 export default function ARRootLayout({
@@ -42,7 +43,7 @@ export default function ARRootLayout({
    return (
       <html lang="en">
          <body
-            className={`${display.variable} ${question.variable} m-0 h-[100dvh] overflow-hidden bg-[#0f0c09]`}
+            className={`${display.variable} ${question.variable} ar-route-body h-[100dvh] overflow-hidden`}
          >
             {children}
          </body>
