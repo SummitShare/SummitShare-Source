@@ -794,15 +794,11 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
          )}
 
          <header
-            className="pointer-events-none absolute inset-x-0 top-0 z-20 flex items-start justify-between gap-4 px-4 sm:px-6"
+            className="pointer-events-none absolute inset-x-0 top-0 z-20 flex items-start justify-end px-4 sm:px-6"
             style={{
                paddingTop: 'max(1rem, env(safe-area-inset-top))',
             }}
          >
-            <div className="ar-session-badge">
-               <p className="ar-session-kicker">Live artifact</p>
-               <p className="ar-session-title">{artifact.name}</p>
-            </div>
             {isRunning && (
                <button
                   type="button"
@@ -821,8 +817,8 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
          >
             {phase === 'idle' && (
                <ARStartCard
+                  artifactName={artifact.name}
                   onStart={startAR}
-                  marker={artifact.slug === 'drum' ? 'drum' : 'mask'}
                />
             )}
 

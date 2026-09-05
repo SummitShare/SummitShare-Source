@@ -96,10 +96,10 @@ function StartScreen({
          <div className="absolute inset-0 z-10 flex items-center justify-center px-5">
             <div className="ar-camera-backdrop" />
             <ARStartCard
+               artifactName={artifact.name}
                onStart={onStart}
                failure={failure}
                checking={checking}
-               marker={artifact.slug === 'drum' ? 'drum' : 'mask'}
             />
          </div>
          <DemoWordmark />

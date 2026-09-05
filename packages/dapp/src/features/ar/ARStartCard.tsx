@@ -2,8 +2,6 @@
 
 import { ScanLine } from 'lucide-react';
 
-type ARStartMarker = 'drum' | 'mask';
-
 /**
  * The card both AR viewers show before the camera opens.
  *
@@ -24,22 +22,18 @@ const QUESTION_FONT =
    'var(--record-font-question), "Palatino Linotype", Palatino, Georgia, serif';
 
 export default function ARStartCard({
+   artifactName,
    onStart,
    failure,
    checking = false,
-   marker = 'mask',
 }: Readonly<{
+   artifactName?: string;
    onStart?: () => void;
    failure?: { title: string; detail: string } | null;
    checking?: boolean;
-   marker?: ARStartMarker;
 }>) {
    return (
       <section className="ar-start-card ar-start-card--center">
-         <span
-            className={`ar-start-medallion ar-start-medallion--${marker}`}
-            aria-hidden="true"
-         />
          {checking ? (
             <div className="ar-checking">
                <div className="ar-spinner" />
@@ -52,6 +46,9 @@ export default function ARStartCard({
                      <p className="ar-alert-title">{failure.title}</p>
                      <p className="ar-alert-detail">{failure.detail}</p>
                   </div>
+               )}
+               {artifactName && (
+                  <p className="ar-start-artifact">{artifactName}</p>
                )}
                <h1 className="ar-title" style={{ fontFamily: DISPLAY_FONT }}>
                   What the Record Forgot
