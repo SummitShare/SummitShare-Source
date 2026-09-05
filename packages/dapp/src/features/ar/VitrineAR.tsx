@@ -899,14 +899,6 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
 
          {(phase === 'scanning' || phase === 'tracking') && (
             <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex flex-col items-center px-5 text-center">
-               {phase === 'scanning' && (
-                  <div className="ar-scan-frame">
-                     <span />
-                     <span />
-                     <span />
-                     <span />
-                  </div>
-               )}
                <div
                   className="ar-status-pill mb-4"
                   style={{
@@ -924,11 +916,11 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
                   {/*
                    * The counterpart to WebXRDemo's placement prompt, and
                    * deliberately different: this path tracks the marker, so the
-                   * marker must stay in frame and there is nothing to tap.
+                   * marker must stay in frame and there is nothing to tap. Kept
+                   * to a few words — the visitor is looking at the vitrine, not
+                   * at the phone, and the dot already carries the state.
                    */}
-                  {phase === 'tracking'
-                     ? 'Artifact locked to the vitrine'
-                     : 'Point at the marker and scan'}
+                  {phase === 'tracking' ? 'Locked' : 'Point at the marker'}
                </div>
             </div>
          )}

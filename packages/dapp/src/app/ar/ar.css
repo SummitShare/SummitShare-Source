@@ -164,14 +164,6 @@
    z-index: 1;
 }
 
-.ar-kicker {
-   margin: 0 0 14px;
-   color: rgb(255 243 226 / 0.62);
-   font-size: 11px;
-   font-weight: 700;
-   line-height: 1.2;
-   text-transform: uppercase;
-}
 
 .ar-title {
    margin: 0;
@@ -504,66 +496,18 @@
    line-height: 1.6;
 }
 
-.ar-scan-frame {
-   position: relative;
-   width: 144px;
-   height: 144px;
-   margin-bottom: 20px;
-   border: 1px solid rgb(255 243 226 / 0.28);
-   border-radius: 8px;
-   background: rgb(16 19 23 / 0.16);
-}
-
-.ar-scan-frame span {
-   position: absolute;
-   width: 32px;
-   height: 32px;
-   border-style: solid;
-   border-color: var(--ar-ochre);
-}
-
-.ar-scan-frame span:nth-child(1) {
-   top: -1px;
-   left: -1px;
-   border-top-width: 2px;
-   border-left-width: 2px;
-   border-top-left-radius: 8px;
-}
-
-.ar-scan-frame span:nth-child(2) {
-   top: -1px;
-   right: -1px;
-   border-top-width: 2px;
-   border-right-width: 2px;
-   border-top-right-radius: 8px;
-}
-
-.ar-scan-frame span:nth-child(3) {
-   bottom: -1px;
-   left: -1px;
-   border-bottom-width: 2px;
-   border-left-width: 2px;
-   border-bottom-left-radius: 8px;
-}
-
-.ar-scan-frame span:nth-child(4) {
-   right: -1px;
-   bottom: -1px;
-   border-right-width: 2px;
-   border-bottom-width: 2px;
-   border-bottom-right-radius: 8px;
-}
-
 .ar-status-pill {
    display: inline-flex;
    max-width: calc(100vw - 2rem);
    align-items: center;
    gap: 9px;
-   border: 1px solid rgb(245 237 224 / 0.2);
-   border-left: 4px solid var(--ar-ochre);
-   border-radius: 6px;
-   background: rgb(16 19 23 / 0.72);
-   padding: 10px 14px;
+   border: 1px solid rgb(245 237 224 / 0.18);
+   /* A true pill, and translucent enough to sit lightly over the camera. 0.62
+      is the floor: below it the text drops under AA against a blown-out white
+      frame, which is the one background we cannot control. */
+   border-radius: 999px;
+   background: rgb(16 19 23 / 0.62);
+   padding: 9px 16px;
    color: var(--ar-raised-cream);
    font-size: 12px;
    font-weight: 700;
