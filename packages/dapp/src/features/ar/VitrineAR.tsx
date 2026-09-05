@@ -10,6 +10,7 @@ import type {
 } from 'mind-ar/dist/mindar-image-three.prod.js';
 import ARStartCard from './ARStartCard';
 import { AR_EXIT_PATH, type ARArtifact } from './artifacts';
+import { applyArtifactModelOpacity } from './loadArtifactModel';
 import {
    createMindARPoseRelay,
    type MindARPoseParameters,
@@ -149,6 +150,16 @@ const POSE_RELAY_PARAMETERS: MindARPoseParameters = {
    poseRotationFilterBeta: 0.05,
    poseTranslationJumpLimit: POSE_TRANSLATION_JUMP_LIMIT,
    poseRotationJumpLimitDegrees: POSE_ROTATION_JUMP_LIMIT_DEGREES,
+   warmupUpdates: 3,
+   warmupFadeMs: 200,
+   warmupTimeoutMs: 600,
+   staleFadeUpdates: 4,
+   staleFadeMs: 150,
+   holdTranslationTargetUnits: 0.0025,
+   holdRotationDegrees: 0.45,
+   holdEngageUpdates: 6,
+   depthFilterMinCutOff: 0.5,
+   depthRangeTargetUnits: null,
 };
 
 const createError = (kind: ARErrorKind): ARErrorState => ({
@@ -476,6 +487,7 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
          let poseUpdatePendingAt = 0;
          let relayPoseVisible = false;
          let modelReady = false;
+         let recommendedOpacity = 0;
 
          const applyRelayVisibility = (poseVisible: boolean) => {
             poseGroup.visible = poseVisible;
@@ -497,6 +509,12 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
          mindAR.cssRenderer.domElement.style.pointerEvents = 'none';
 
          anchor.onTargetFound = () => {
+            poseUpdatePending = false;
+            poseRelay.reset();
+            recommendedOpacity = 0;
+            if (session.uprightArtifact) {
+               applyArtifactModelOpacity(session.uprightArtifact, 0);
+            }
             if (
                modelReady &&
                !relayPoseVisible &&
@@ -509,6 +527,10 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
          anchor.onTargetLost = () => {
             poseUpdatePending = false;
             poseRelay.reset();
+            recommendedOpacity = 0;
+            if (session.uprightArtifact) {
+               applyArtifactModelOpacity(session.uprightArtifact, 0);
+            }
             applyRelayVisibility(false);
          };
          anchor.onTargetUpdate = () => {
@@ -542,23 +564,38 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
             poseUpdatePending = false;
             if (hasPendingPose) {
                if (anchor.visible) {
-                  anchor.group.updateWorldMatrix(true, false);
+                  // MindAR assigns anchor.group.matrix itself every frame, as
+                  // worldMatrix * postMatrix — and that postMatrix is where the
+                  // target's pixel width lives as uniform scale, which is the
+                  // unit every displayHeight is expressed in. anchor.group is a
+                  // direct child of the scene, so matrixWorld adds nothing; but
+                  // updateWorldMatrix() calls updateMatrix() whenever
+                  // matrixAutoUpdate is left on, recomposing the matrix from the
+                  // group's own untouched position/quaternion/scale and throwing
+                  // MindAR's assignment away. The scale collapses to 1, the
+                  // artifact renders ~1000x too small, and nothing reports an
+                  // error. Read the matrix MindAR actually wrote.
                }
                const poseUpdate = poseRelay.update({
                   anchorVisible: anchor.visible,
-                  matrix: anchor.group.matrixWorld,
+                  matrix: anchor.group.matrix,
                   sampledAt: pendingPoseSampledAt,
                   parameters: POSE_RELAY_PARAMETERS,
                });
+               recommendedOpacity = poseUpdate.recommendedOpacity;
+               if (session.uprightArtifact) {
+                  applyArtifactModelOpacity(
+                     session.uprightArtifact,
+                     recommendedOpacity
+                  );
+               }
                if (
                   poseUpdate.accepted &&
                   poseUpdate.filteredPose !== null &&
                   poseUpdate.targetUnitScale !== null
                ) {
                   poseGroup.matrix.copy(poseUpdate.filteredPose.matrix);
-                  targetUnitGroup.scale.setScalar(
-                     poseUpdate.targetUnitScale
-                  );
+                  targetUnitGroup.scale.setScalar(poseUpdate.targetUnitScale);
                }
             }
 
@@ -619,6 +656,7 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
          uprightArtifact.rotation.y = artifact.rotationY;
          uprightArtifact.add(model);
          session.uprightArtifact = uprightArtifact;
+         applyArtifactModelOpacity(uprightArtifact, recommendedOpacity);
 
          const verticalMedallionMount = new THREE.Group();
          // The 768 px medallion occupies 75% of its square target canvas.

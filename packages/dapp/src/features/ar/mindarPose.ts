@@ -16,6 +16,24 @@ export interface MindARPoseParameters {
   poseTranslationJumpLimit: number
   /** Maximum filtered-to-raw rotation before snapping, in degrees. */
   poseRotationJumpLimitDegrees: number
+  warmupUpdates: number
+  warmupFadeMs: number
+  /**
+   * Hard ceiling on the acquisition warmup, in milliseconds. The warmup hides
+   * the artifact until refined poses arrive, and resets on every target
+   * re-acquisition. Under marginal tracking the target is found and lost faster
+   * than the warmup completes, so without this the artifact stays invisible
+   * forever while the pose reads accepted. Showing a slightly wrong pose beats
+   * showing nothing.
+   */
+  warmupTimeoutMs: number
+  staleFadeUpdates: number
+  staleFadeMs: number
+  holdTranslationTargetUnits: number
+  holdRotationDegrees: number
+  holdEngageUpdates: number
+  depthFilterMinCutOff: number
+  depthRangeTargetUnits: { min: number; max: number } | null
 }
 
 // Pose objects in update results are read-only views owned and reused by the
@@ -42,6 +60,12 @@ export interface MindARPoseUpdate {
   readonly snapReason: MindARPoseSnapReason | null
   readonly translationJumpTargetUnits: number | null
   readonly rotationJumpDegrees: number | null
+  readonly staleRunLength: number
+  readonly warming: boolean
+  readonly held: boolean
+  readonly holdRunLength: number
+  readonly depthClamped: boolean
+  readonly recommendedOpacity: number
 }
 
 export interface MindARPoseRelayUpdate {
@@ -74,6 +98,8 @@ const MIN_POSE_NORMALIZED_VOLUME = 0.5
 const MIN_REFERENCE_SCALE_RATIO = 0.5
 const MAX_REFERENCE_SCALE_RATIO = 2
 const RADIANS_TO_DEGREES = 180 / Math.PI
+const MIN_OPACITY = 0
+const MAX_OPACITY = 1
 
 // Never let the cutoff reach zero. A zero cutoff makes alpha zero, which freezes
 // the pose at its first sample — the artifact stops following the marker
@@ -86,6 +112,9 @@ const oneEuroAlpha = (cutOff: number, deltaSeconds: number) => {
   const timeConstant = 1 / (2 * Math.PI * safeCutOff)
   return 1 / (1 + timeConstant / deltaSeconds)
 }
+
+const clampUnitInterval = (value: number) =>
+  Math.min(MAX_OPACITY, Math.max(MIN_OPACITY, value))
 
 const rigidifyDecomposedPose = (
   quaternion: Quaternion,
@@ -205,6 +234,11 @@ const createIdleUpdate = (
   status: 'invisible' | 'unchanged',
   filteredPose: MindARFilteredPose | null,
   targetUnitScale: number | null,
+  staleRunLength: number,
+  warming: boolean,
+  held: boolean,
+  holdRunLength: number,
+  recommendedOpacity: number,
 ): MindARPoseUpdate => ({
   status,
   accepted: false,
@@ -217,6 +251,12 @@ const createIdleUpdate = (
   snapReason: null,
   translationJumpTargetUnits: null,
   rotationJumpDegrees: null,
+  staleRunLength,
+  warming,
+  held,
+  holdRunLength,
+  depthClamped: false,
+  recommendedOpacity,
 })
 
 export const createMindARPoseRelay = (): MindARPoseRelay => {
@@ -227,6 +267,24 @@ export const createMindARPoseRelay = (): MindARPoseRelay => {
     scale: new Vector3(),
   }
   const filteredPose: MindARFilteredPose = {
+    position: new Vector3(),
+    quaternion: new Quaternion(),
+    scale: new Vector3(1, 1, 1),
+    matrix: new Matrix4(),
+  }
+  const depthDampedPose: MindARFilteredPose = {
+    position: new Vector3(),
+    quaternion: new Quaternion(),
+    scale: new Vector3(1, 1, 1),
+    matrix: new Matrix4(),
+  }
+  const heldPose: MindARFilteredPose = {
+    position: new Vector3(),
+    quaternion: new Quaternion(),
+    scale: new Vector3(1, 1, 1),
+    matrix: new Matrix4(),
+  }
+  const emittedPose: MindARFilteredPose = {
     position: new Vector3(),
     quaternion: new Quaternion(),
     scale: new Vector3(1, 1, 1),
@@ -249,6 +307,30 @@ export const createMindARPoseRelay = (): MindARPoseRelay => {
   let targetUnitScale: number | null = null
   let holdingRejectedPose = false
   let rejectionHoldFrames = 0
+  let acceptedWarmupUpdates = 0
+  // Deliberately NOT cleared by resetStablePose: reset() runs on every target
+  // re-acquisition, so an acquisition-scoped clock restarts faster than it can
+  // expire and the timeout never fires. Anchoring it to the first accepted pose
+  // of the whole session is what makes the ceiling a real guarantee — the relay
+  // is constructed per AR session, so this is session-scoped by construction.
+  let sessionWarmupStartedAt: number | null = null
+  // Session-scoped for the same reason as sessionWarmupStartedAt. Clearing the
+  // fade anchor on re-acquisition makes the artifact re-fade from zero every
+  // time the marker is momentarily lost, which under marginal tracking is a
+  // flicker rather than a fade. The per-acquisition update count still hides
+  // the unrefined pose; only the ramp is anchored to the session.
+  let warmupFadeStartedAt: number | null = null
+  let staleRunLength = 0
+  let staleOpacityFrom = 1
+  let staleOpacityTarget = 1
+  let staleOpacityStartedAt = 0
+  let staleOpacityDurationMs = 0
+  let depthFilterInitialized = false
+  let depthSampledAt: number | null = null
+  let depthFilteredZ = 0
+  let heldPoseInitialized = false
+  let held = false
+  let holdRunLength = 0
 
   const resetStablePose = () => {
     initialized = false
@@ -258,6 +340,18 @@ export const createMindARPoseRelay = (): MindARPoseRelay => {
     filteredRotationDerivative = 0
     holdingRejectedPose = false
     rejectionHoldFrames = 0
+    acceptedWarmupUpdates = 0
+    staleRunLength = 0
+    staleOpacityFrom = 1
+    staleOpacityTarget = 1
+    staleOpacityStartedAt = 0
+    staleOpacityDurationMs = 0
+    depthFilterInitialized = false
+    depthSampledAt = null
+    depthFilteredZ = 0
+    heldPoseInitialized = false
+    held = false
+    holdRunLength = 0
   }
 
   const composeFilteredPose = () => {
@@ -268,6 +362,89 @@ export const createMindARPoseRelay = (): MindARPoseRelay => {
       filteredPose.scale,
     )
   }
+
+  const copyFilteredPose = (
+    target: MindARFilteredPose,
+    source: MindARFilteredPose,
+  ) => {
+    target.position.copy(source.position)
+    target.quaternion.copy(source.quaternion)
+    target.scale.copy(source.scale)
+    target.matrix.copy(source.matrix)
+  }
+
+  const sampleStaleOpacity = (sampledAt: number) => {
+    if (staleOpacityDurationMs <= 0) return staleOpacityTarget
+    const progress = clampUnitInterval(
+      (sampledAt - staleOpacityStartedAt) / staleOpacityDurationMs,
+    )
+    return (
+      staleOpacityFrom +
+      (staleOpacityTarget - staleOpacityFrom) * progress
+    )
+  }
+
+  const setStaleOpacityTarget = (
+    nextTarget: number,
+    sampledAt: number,
+    durationMs: number,
+  ) => {
+    if (nextTarget === staleOpacityTarget) return
+    staleOpacityFrom = sampleStaleOpacity(sampledAt)
+    staleOpacityTarget = nextTarget
+    staleOpacityStartedAt = sampledAt
+    staleOpacityDurationMs = Math.max(0, durationMs)
+  }
+
+  const hasWarmupTimedOut = (
+    parameters: MindARPoseParameters,
+    sampledAt: number,
+  ) =>
+    parameters.warmupTimeoutMs > 0 &&
+    sessionWarmupStartedAt !== null &&
+    sampledAt - sessionWarmupStartedAt >= parameters.warmupTimeoutMs
+
+  // Two thresholds, deliberately one update apart. warmupUpdates counts the
+  // updates that are HIDDEN, so the Nth update is still warming and the fade
+  // may only start once it has passed; anchoring the ramp on the Nth rather
+  // than the (N+1)th is what keeps the artifact from costing an extra update
+  // of blankness before it begins to appear.
+  const isWarmupSatisfied = (
+    parameters: MindARPoseParameters,
+    sampledAt: number,
+  ) =>
+    acceptedWarmupUpdates >
+      Math.max(0, Math.floor(parameters.warmupUpdates)) ||
+    hasWarmupTimedOut(parameters, sampledAt)
+
+  const getWarmupOpacity = (
+    parameters: MindARPoseParameters,
+    sampledAt: number,
+  ) => {
+    if (
+      !initialized ||
+      !isWarmupSatisfied(parameters, sampledAt) ||
+      warmupFadeStartedAt === null
+    ) {
+      return 0
+    }
+    if (parameters.warmupFadeMs <= 0) return 1
+    return clampUnitInterval(
+      (sampledAt - warmupFadeStartedAt) / parameters.warmupFadeMs,
+    )
+  }
+
+  const getRecommendedOpacity = (
+    parameters: MindARPoseParameters,
+    sampledAt: number,
+    warming = false,
+  ) =>
+    warming
+      ? 0
+      : clampUnitInterval(
+          getWarmupOpacity(parameters, sampledAt) *
+            sampleStaleOpacity(sampledAt),
+        )
 
   const snapToRawPose = () => {
     filteredPose.position.copy(rawPose.position)
@@ -379,6 +556,99 @@ export const createMindARPoseRelay = (): MindARPoseRelay => {
     }
   }
 
+  const updateDepthDampedPose = (
+    parameters: MindARPoseParameters,
+    sampledAt: number,
+    snapped: boolean,
+  ) => {
+    const deltaSeconds = Math.max(
+      depthSampledAt === null
+        ? MIN_POSE_DELTA_SECONDS
+        : (sampledAt - depthSampledAt) / 1000,
+      MIN_POSE_DELTA_SECONDS,
+    )
+    depthSampledAt = sampledAt
+
+    if (!depthFilterInitialized || snapped) {
+      depthFilteredZ = filteredPose.position.z
+      depthFilterInitialized = true
+    } else {
+      depthFilteredZ +=
+        oneEuroAlpha(parameters.depthFilterMinCutOff, deltaSeconds) *
+        (filteredPose.position.z - depthFilteredZ)
+    }
+
+    let depthClamped = false
+    if (
+      parameters.depthRangeTargetUnits !== null &&
+      targetUnitScale !== null
+    ) {
+      const minimum =
+        parameters.depthRangeTargetUnits.min * targetUnitScale
+      const maximum =
+        parameters.depthRangeTargetUnits.max * targetUnitScale
+      const clampedZ = Math.min(maximum, Math.max(minimum, depthFilteredZ))
+      depthClamped = clampedZ !== depthFilteredZ
+      depthFilteredZ = clampedZ
+    }
+
+    depthDampedPose.position.copy(filteredPose.position)
+    depthDampedPose.position.z = depthFilteredZ
+    depthDampedPose.quaternion.copy(filteredPose.quaternion)
+    depthDampedPose.scale.setScalar(1)
+    depthDampedPose.matrix.compose(
+      depthDampedPose.position,
+      depthDampedPose.quaternion,
+      depthDampedPose.scale,
+    )
+    return depthClamped
+  }
+
+  const updateDeadbandPose = (
+    parameters: MindARPoseParameters,
+    snapped: boolean,
+  ) => {
+    if (!heldPoseInitialized || snapped) {
+      heldPoseInitialized = true
+      held = false
+      holdRunLength = 0
+      copyFilteredPose(heldPose, depthDampedPose)
+      copyFilteredPose(emittedPose, depthDampedPose)
+      return
+    }
+
+    const translationTargetUnits =
+      depthDampedPose.position.distanceTo(heldPose.position) /
+      (targetUnitScale ?? 1)
+    const rotationDegrees =
+      depthDampedPose.quaternion.angleTo(heldPose.quaternion) *
+      RADIANS_TO_DEGREES
+    const inTolerance =
+      translationTargetUnits <= parameters.holdTranslationTargetUnits &&
+      rotationDegrees <= parameters.holdRotationDegrees
+
+    if (!inTolerance) {
+      held = false
+      holdRunLength = 0
+      copyFilteredPose(heldPose, depthDampedPose)
+      copyFilteredPose(emittedPose, depthDampedPose)
+      return
+    }
+
+    holdRunLength += 1
+    const engageUpdates = Math.max(
+      1,
+      Math.floor(parameters.holdEngageUpdates),
+    )
+    if (held || holdRunLength >= engageUpdates) {
+      held = true
+      copyFilteredPose(emittedPose, heldPose)
+      return
+    }
+
+    copyFilteredPose(emittedPose, depthDampedPose)
+  }
+
   return {
     get initialized() {
       return initialized
@@ -393,18 +663,39 @@ export const createMindARPoseRelay = (): MindARPoseRelay => {
       parameters,
     }: MindARPoseRelayUpdate): MindARPoseUpdate {
       if (!anchorVisible) {
+        const warming = !isWarmupSatisfied(parameters, sampledAt)
         return createIdleUpdate(
           'invisible',
-          initialized ? filteredPose : null,
+          initialized ? emittedPose : null,
           targetUnitScale,
+          staleRunLength,
+          warming,
+          held,
+          holdRunLength,
+          getRecommendedOpacity(parameters, sampledAt),
         )
       }
 
       if (!hasNewPoseMeasurement(previousMatrix, hasPreviousMatrix, matrix)) {
+        staleRunLength += 1
+        setStaleOpacityTarget(
+          staleRunLength >
+            Math.max(0, Math.floor(parameters.staleFadeUpdates))
+            ? 0
+            : 1,
+          sampledAt,
+          parameters.staleFadeMs,
+        )
+        const warming = !isWarmupSatisfied(parameters, sampledAt)
         return createIdleUpdate(
           'unchanged',
-          initialized ? filteredPose : null,
+          initialized ? emittedPose : null,
           targetUnitScale,
+          staleRunLength,
+          warming,
+          held,
+          holdRunLength,
+          getRecommendedOpacity(parameters, sampledAt),
         )
       }
       hasPreviousMatrix = true
@@ -418,12 +709,21 @@ export const createMindARPoseRelay = (): MindARPoseRelay => {
           rejected: true,
           rejectionReason,
           rawPose: null,
-          filteredPose: initialized ? filteredPose : null,
+          filteredPose: initialized ? emittedPose : null,
           targetUnitScale,
           snapped: false,
           snapReason: null,
           translationJumpTargetUnits: null,
           rotationJumpDegrees: null,
+          staleRunLength,
+          warming: !isWarmupSatisfied(parameters, sampledAt),
+          held,
+          holdRunLength,
+          depthClamped: false,
+          recommendedOpacity: getRecommendedOpacity(
+            parameters,
+            sampledAt,
+          ),
         }
       }
 
@@ -434,6 +734,26 @@ export const createMindARPoseRelay = (): MindARPoseRelay => {
       )
       rigidifyDecomposedPose(rawPose.quaternion, rawPose.scale)
       const stableUpdate = updateStablePose(parameters, sampledAt)
+      const depthClamped = updateDepthDampedPose(
+        parameters,
+        sampledAt,
+        stableUpdate.snapped,
+      )
+      updateDeadbandPose(parameters, stableUpdate.snapped)
+
+      staleRunLength = 0
+      setStaleOpacityTarget(1, sampledAt, parameters.staleFadeMs)
+      if (sessionWarmupStartedAt === null) sessionWarmupStartedAt = sampledAt
+      acceptedWarmupUpdates += 1
+      const warming = !isWarmupSatisfied(parameters, sampledAt)
+      if (
+        warmupFadeStartedAt === null &&
+        (acceptedWarmupUpdates >=
+          Math.max(0, Math.floor(parameters.warmupUpdates)) ||
+          hasWarmupTimedOut(parameters, sampledAt))
+      ) {
+        warmupFadeStartedAt = sampledAt
+      }
       holdingRejectedPose = false
       rejectionHoldFrames = 0
 
@@ -443,9 +763,19 @@ export const createMindARPoseRelay = (): MindARPoseRelay => {
         rejected: false,
         rejectionReason: null,
         rawPose,
-        filteredPose,
+        filteredPose: emittedPose,
         targetUnitScale,
         ...stableUpdate,
+        staleRunLength,
+        warming,
+        held,
+        holdRunLength,
+        depthClamped,
+        recommendedOpacity: getRecommendedOpacity(
+          parameters,
+          sampledAt,
+          warming,
+        ),
       }
     },
     advanceFrame(anchorVisible: boolean) {
