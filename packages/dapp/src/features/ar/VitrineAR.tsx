@@ -160,7 +160,6 @@ const POSE_RELAY_PARAMETERS: MindARPoseParameters = {
    holdRotationDegrees: 0.45,
    holdEngageUpdates: 6,
    depthFilterMinCutOff: 0.5,
-   depthRangeTargetUnits: null,
 };
 
 const createError = (kind: ARErrorKind): ARErrorState => ({

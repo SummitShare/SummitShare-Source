@@ -33,7 +33,6 @@ export interface MindARPoseParameters {
   holdRotationDegrees: number
   holdEngageUpdates: number
   depthFilterMinCutOff: number
-  depthRangeTargetUnits: { min: number; max: number } | null
 }
 
 // Pose objects in update results are read-only views owned and reused by the
@@ -64,7 +63,6 @@ export interface MindARPoseUpdate {
   readonly warming: boolean
   readonly held: boolean
   readonly holdRunLength: number
-  readonly depthClamped: boolean
   readonly recommendedOpacity: number
 }
 
@@ -270,7 +268,6 @@ const createIdleUpdate = (
   warming,
   held,
   holdRunLength,
-  depthClamped: false,
   recommendedOpacity,
 })
 
@@ -603,30 +600,6 @@ export const createMindARPoseRelay = (): MindARPoseRelay => {
         (filteredPose.position.z - depthFilteredZ)
     }
 
-    let depthClamped = false
-    if (
-      parameters.depthRangeTargetUnits !== null &&
-      targetUnitScale !== null
-    ) {
-      // The range is a DISTANCE from the marker, so it is clamped on magnitude
-      // and the sign is restored. MindAR's pose puts the target in front of the
-      // camera, which is negative z: clamping the signed value against positive
-      // bounds does not limit the distance, it teleports the artifact to the
-      // other side of the camera.
-      const minimum = Math.abs(
-        parameters.depthRangeTargetUnits.min * targetUnitScale,
-      )
-      const maximum = Math.abs(
-        parameters.depthRangeTargetUnits.max * targetUnitScale,
-      )
-      const magnitude = Math.abs(depthFilteredZ)
-      const clampedMagnitude = Math.min(maximum, Math.max(minimum, magnitude))
-      depthClamped = clampedMagnitude !== magnitude
-      if (depthClamped) {
-        depthFilteredZ = depthFilteredZ < 0 ? -clampedMagnitude : clampedMagnitude
-      }
-    }
-
     depthDampedPose.position.copy(filteredPose.position)
     depthDampedPose.position.z = depthFilteredZ
     depthDampedPose.quaternion.copy(filteredPose.quaternion)
@@ -636,7 +609,6 @@ export const createMindARPoseRelay = (): MindARPoseRelay => {
       depthDampedPose.quaternion,
       depthDampedPose.scale,
     )
-    return depthClamped
   }
 
   const updateDeadbandPose = (
@@ -755,8 +727,7 @@ export const createMindARPoseRelay = (): MindARPoseRelay => {
           warming: !isWarmupSatisfied(parameters, sampledAt),
           held,
           holdRunLength,
-          depthClamped: false,
-          recommendedOpacity: getRecommendedOpacity(
+                  recommendedOpacity: getRecommendedOpacity(
             parameters,
             sampledAt,
           ),
@@ -770,7 +741,7 @@ export const createMindARPoseRelay = (): MindARPoseRelay => {
       )
       rigidifyDecomposedPose(rawPose.quaternion, rawPose.scale)
       const stableUpdate = updateStablePose(parameters, sampledAt)
-      const depthClamped = updateDepthDampedPose(
+      updateDepthDampedPose(
         parameters,
         sampledAt,
         stableUpdate.snapped,
@@ -806,7 +777,6 @@ export const createMindARPoseRelay = (): MindARPoseRelay => {
         warming,
         held,
         holdRunLength,
-        depthClamped,
         recommendedOpacity: getRecommendedOpacity(
           parameters,
           sampledAt,

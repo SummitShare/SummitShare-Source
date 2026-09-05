@@ -21,7 +21,6 @@ const PARAMETERS: MindARPoseParameters = {
    holdRotationDegrees: 0.45,
    holdEngageUpdates: 6,
    depthFilterMinCutOff: 0.5,
-   depthRangeTargetUnits: null,
 };
 
 const poseMatrix = (
@@ -229,25 +228,6 @@ describe('createMindARPoseRelay stabilisation', () => {
       expect(snapped.holdRunLength).toBe(0);
    });
 
-   it('clamps depth in target units and reports the clamp', () => {
-      // A realistic target-unit scale: MindAR's postMatrix scale is the
-      // compiled target's pixel width, so it is in the hundreds. The relay
-      // refuses to latch anything smaller, because latching a degenerate 1 is
-      // unrecoverable for the session and renders the artifact invisibly small.
-      const targetUnitScale = 1024;
-      const relay = createMindARPoseRelay();
-      const clamped = updateRelay(
-         relay,
-         poseMatrix(0, 5 * targetUnitScale, 0, targetUnitScale),
-         0,
-         { ...PARAMETERS, depthRangeTargetUnits: { min: 0, max: 1 } }
-      );
-
-      expect(clamped.depthClamped).toBe(true);
-      expect(clamped.targetUnitScale).toBe(targetUnitScale);
-      expect(acceptedPose(clamped).position.z).toBe(targetUnitScale);
-   });
-
    it('refuses to latch a degenerate target-unit scale, and retries', () => {
       const relay = createMindARPoseRelay();
 
@@ -263,38 +243,6 @@ describe('createMindARPoseRelay stabilisation', () => {
          updateRelay(relay, poseMatrix(0, 3 * 1024, 0, 1024), 100)
             .targetUnitScale
       ).toBe(1024);
-   });
-
-   it('clamps the distance, not the signed depth', () => {
-      // MindAR puts the target in front of the camera, which is negative z.
-      // Clamping the signed value against positive bounds does not limit the
-      // distance — it teleports the artifact to the other side of the camera.
-      // This shipped once and made the model phase in and out on device.
-      const targetUnitScale = 1024;
-      const relay = createMindARPoseRelay();
-      const clamped = updateRelay(
-         relay,
-         poseMatrix(0, -5 * targetUnitScale, 0, targetUnitScale),
-         0,
-         { ...PARAMETERS, depthRangeTargetUnits: { min: 0.5, max: 3 } }
-      );
-
-      expect(clamped.depthClamped).toBe(true);
-      expect(acceptedPose(clamped).position.z).toBe(-3 * targetUnitScale);
-   });
-
-   it('leaves a depth inside the range untouched', () => {
-      const targetUnitScale = 1024;
-      const relay = createMindARPoseRelay();
-      const inRange = updateRelay(
-         relay,
-         poseMatrix(0, -2 * targetUnitScale, 0, targetUnitScale),
-         0,
-         { ...PARAMETERS, depthRangeTargetUnits: { min: 0.5, max: 12 } }
-      );
-
-      expect(inRange.depthClamped).toBe(false);
-      expect(acceptedPose(inRange).position.z).toBe(-2 * targetUnitScale);
    });
 
    it('damps depth independently below the main position cutoff', () => {
