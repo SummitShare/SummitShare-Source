@@ -484,13 +484,18 @@ export const createMindARPoseRelay = (): MindARPoseRelay => {
     )
     poseSampledAt = sampledAt
 
+    // Latched once, but attempted on every accepted pose until it succeeds.
+    // Keeping this inside the !initialized branch would make one degenerate
+    // first sample permanent: the guard would skip it and nothing would ever
+    // retry, trading a wrong scale for a null one.
+    if (
+      targetUnitScale === null &&
+      rawPose.scale.x >= MIN_PLAUSIBLE_TARGET_UNIT_SCALE
+    ) {
+      targetUnitScale = rawPose.scale.x
+    }
+
     if (!initialized) {
-      if (
-        targetUnitScale === null &&
-        rawPose.scale.x >= MIN_PLAUSIBLE_TARGET_UNIT_SCALE
-      ) {
-        targetUnitScale = rawPose.scale.x
-      }
       snapToRawPose()
       composeFilteredPose()
       return {

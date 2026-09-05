@@ -230,15 +230,39 @@ describe('createMindARPoseRelay stabilisation', () => {
    });
 
    it('clamps depth in target units and reports the clamp', () => {
+      // A realistic target-unit scale: MindAR's postMatrix scale is the
+      // compiled target's pixel width, so it is in the hundreds. The relay
+      // refuses to latch anything smaller, because latching a degenerate 1 is
+      // unrecoverable for the session and renders the artifact invisibly small.
+      const targetUnitScale = 1024;
       const relay = createMindARPoseRelay();
-      const clamped = updateRelay(relay, poseMatrix(0, 5, 0, 2), 0, {
-         ...PARAMETERS,
-         depthRangeTargetUnits: { min: -1, max: 1 },
-      });
+      const clamped = updateRelay(
+         relay,
+         poseMatrix(0, 5 * targetUnitScale, 0, targetUnitScale),
+         0,
+         { ...PARAMETERS, depthRangeTargetUnits: { min: -1, max: 1 } }
+      );
 
       expect(clamped.depthClamped).toBe(true);
-      expect(clamped.targetUnitScale).toBe(2);
-      expect(acceptedPose(clamped).position.z).toBe(2);
+      expect(clamped.targetUnitScale).toBe(targetUnitScale);
+      expect(acceptedPose(clamped).position.z).toBe(targetUnitScale);
+   });
+
+   it('refuses to latch a degenerate target-unit scale, and retries', () => {
+      const relay = createMindARPoseRelay();
+
+      // Latching 1 is unrecoverable for the session — every displayHeight is
+      // expressed against this number, so a wrong latch renders the artifact
+      // about a thousand times too small with every diagnostic still green.
+      expect(updateRelay(relay, poseMatrix(0, 3, 0, 1), 0).targetUnitScale)
+         .toBeNull();
+
+      // The latch is one-shot but must keep being attempted, otherwise a single
+      // degenerate first sample trades a wrong scale for a permanently null one.
+      expect(
+         updateRelay(relay, poseMatrix(0, 3 * 1024, 0, 1024), 100)
+            .targetUnitScale
+      ).toBe(1024);
    });
 
    it('damps depth independently below the main position cutoff', () => {
