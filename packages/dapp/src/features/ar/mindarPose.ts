@@ -100,6 +100,14 @@ const POSE_REFERENCE_SAMPLE_COUNT = 5
 // flicker. Tying the budget to measurements makes it ~300-400 ms at real pose
 // cadence and independent of display rate.
 const MAX_REJECTED_POSE_SAMPLES = 3
+
+// The target-unit scale is MindAR's postMatrix scale, which is the compiled
+// target's width in pixels — always in the hundreds. It is latched once and
+// every displayHeight is expressed against it, so latching a wrong value is
+// unrecoverable for the session: a scale of 1 renders the artifact about a
+// thousand times too small while every other diagnostic stays green. Refuse
+// implausible values and latch on a later pose instead.
+const MIN_PLAUSIBLE_TARGET_UNIT_SCALE = 8
 const MIN_POSE_AXIS_RATIO = 0.5
 const MIN_POSE_NORMALIZED_VOLUME = 0.5
 const MIN_REFERENCE_SCALE_RATIO = 0.5
@@ -477,7 +485,12 @@ export const createMindARPoseRelay = (): MindARPoseRelay => {
     poseSampledAt = sampledAt
 
     if (!initialized) {
-      if (targetUnitScale === null) targetUnitScale = rawPose.scale.x
+      if (
+        targetUnitScale === null &&
+        rawPose.scale.x >= MIN_PLAUSIBLE_TARGET_UNIT_SCALE
+      ) {
+        targetUnitScale = rawPose.scale.x
+      }
       snapToRawPose()
       composeFilteredPose()
       return {
