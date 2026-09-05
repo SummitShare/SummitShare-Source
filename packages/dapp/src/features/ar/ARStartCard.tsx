@@ -1,5 +1,7 @@
 'use client';
 
+import { ScanLine } from 'lucide-react';
+
 /**
  * The card both AR viewers show before the camera opens.
  *
@@ -20,45 +22,38 @@ const QUESTION_FONT =
    'var(--record-font-question), "Palatino Linotype", Palatino, Georgia, serif';
 
 export default function ARStartCard({
+   artifactName,
    onStart,
    failure,
    checking = false,
 }: Readonly<{
+   artifactName?: string;
    onStart?: () => void;
    failure?: { title: string; detail: string } | null;
    checking?: boolean;
 }>) {
    return (
-      <section className="pointer-events-auto relative w-full max-w-md rounded-3xl border border-white/10 bg-[#14100c]/95 p-6 text-center shadow-2xl backdrop-blur-xl sm:p-8">
+      <section className="ar-start-card ar-start-card--center">
          {checking ? (
-            <>
-               <div className="mx-auto h-9 w-9 animate-spin rounded-full border-2 border-amber-300 border-t-transparent" />
-               <p className="mt-4 text-sm font-medium !text-amber-50">
-                  Checking augmented reality support…
-               </p>
-            </>
+            <div className="ar-checking">
+               <div className="ar-spinner" />
+               <p>Checking augmented reality support…</p>
+            </div>
          ) : (
             <>
                {failure && (
-                  <div className="mb-6 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                     <p className="text-sm font-semibold !text-amber-50">
-                        {failure.title}
-                     </p>
-                     <p className="mt-1 text-xs leading-5 !text-amber-100/65">
-                        {failure.detail}
-                     </p>
+                  <div className="ar-alert">
+                     <p className="ar-alert-title">{failure.title}</p>
+                     <p className="ar-alert-detail">{failure.detail}</p>
                   </div>
                )}
-               <h1
-                  className="text-3xl leading-tight !text-amber-50"
-                  style={{ fontFamily: DISPLAY_FONT }}
-               >
+               {artifactName && (
+                  <p className="ar-start-artifact">{artifactName}</p>
+               )}
+               <h1 className="ar-title" style={{ fontFamily: DISPLAY_FONT }}>
                   What the Record Forgot
                </h1>
-               <p
-                  className="mt-2 text-xl italic !text-amber-200/85"
-                  style={{ fontFamily: QUESTION_FONT }}
-               >
+               <p className="ar-question" style={{ fontFamily: QUESTION_FONT }}>
                   What would you ask?
                </p>
                {onStart && (
@@ -66,11 +61,12 @@ export default function ARStartCard({
                      <button
                         type="button"
                         onClick={onStart}
-                        className="mt-8 w-full rounded-full bg-amber-300 px-6 py-3.5 text-sm font-semibold text-[#24160a] shadow-[0_12px_40px_-12px_rgba(252,211,77,0.75)] transition hover:bg-amber-200 focus:outline-none focus:ring-2 focus:ring-amber-100 focus:ring-offset-2 focus:ring-offset-[#14100c]"
+                        className="ar-button-primary mt-7"
                      >
-                        View artifact
+                        <ScanLine aria-hidden="true" />
+                        <span>View artifact</span>
                      </button>
-                     <p className="mt-3 text-xs !text-amber-100/50">
+                     <p className="ar-support-note">
                         Best supported on Android. iOS support is experimental.
                      </p>
                   </>

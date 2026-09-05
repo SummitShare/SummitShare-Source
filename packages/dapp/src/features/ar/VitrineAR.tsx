@@ -1,11 +1,22 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { AlertTriangle, RotateCcw, X } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { Material, Object3D, Texture } from 'three';
-import type { MindARThree } from 'mind-ar/dist/mindar-image-three.prod.js';
+import type { PointerEvent as ReactPointerEvent } from 'react';
+import type { Group, Material, Object3D, Texture } from 'three';
+import type {
+   MindARAnchor,
+   MindARThree,
+} from 'mind-ar/dist/mindar-image-three.prod.js';
 import ARStartCard from './ARStartCard';
 import { AR_EXIT_PATH, type ARArtifact } from './artifacts';
+import { applyArtifactModelOpacity } from './loadArtifactModel';
+import {
+   createMindARPoseRelay,
+   type MindARPoseParameters,
+   type MindARPoseRelay,
+} from './mindarPose';
 
 type ARPhase =
    | 'idle'
@@ -31,11 +42,27 @@ interface ARErrorState {
 
 interface ActiveSession {
    mindAR: MindARThree;
+   anchor: MindARAnchor;
+   poseGroup: Group;
+   targetUnitGroup: Group;
+   uprightArtifact: Group | null;
+   poseRelay: MindARPoseRelay;
    disposeModel: (() => void) | null;
    disposeDraco: (() => void) | null;
    injectedStyles: HTMLStyleElement[];
    /** Guards the renderer teardown, which is not itself idempotent. */
    cleaned: boolean;
+}
+
+interface RotationClamp {
+   min: number;
+   max: number;
+}
+
+interface DragState {
+   pointerId: number;
+   lastClientX: number;
+   viewportWidth: number;
 }
 
 const ERROR_COPY: Record<ARErrorKind, Omit<ARErrorState, 'kind'>> = {
@@ -71,8 +98,69 @@ const ERROR_COPY: Record<ARErrorKind, Omit<ARErrorState, 'kind'>> = {
    },
 };
 
-// The 768 px medallion occupies 75% of its square MindAR target canvas.
-const VERTICAL_MEDALLION_LOWER_EDGE_Y = -0.375;
+const INTERACTIVE_ELEMENT_SELECTOR =
+   'a, button, input, select, textarea, audio[controls], video[controls], details, [role="button"], [role="link"], [contenteditable]:not([contenteditable="false"]), [tabindex]:not([tabindex="-1"])';
+
+/**
+ * Maps one horizontal pointer sample to an absolute, hard-clamped yaw.
+ * `radiansPerViewportFraction` is the sensitivity: one unit of horizontal
+ * travel is one full viewport width.
+ */
+const mapHorizontalDragToRotation = (
+   currentRotation: number,
+   horizontalDelta: number,
+   viewportWidth: number,
+   radiansPerViewportFraction: number,
+   clamp: RotationClamp
+) =>
+   Math.min(
+      clamp.max,
+      Math.max(
+         clamp.min,
+         currentRotation +
+            (horizontalDelta / viewportWidth) * radiansPerViewportFraction
+      )
+   );
+
+const isInteractiveTarget = (target: EventTarget | null) =>
+   target instanceof Element &&
+   target.closest(INTERACTIVE_ELEMENT_SELECTOR) !== null;
+
+// Jump limits: past these, an accepted pose is snapped to rather than
+// interpolated toward, because inside `missTolerance` MindAR can swap in a
+// displaced pose with no lost/found event and smoothing would drag the artifact
+// across the room.
+//
+// Both are unvalidated on device, and both MUST stay in step with the
+// workbench harness's SHARED_DEFAULTS. They diverged once already — 25 here
+// against 45 there — which would have made a calibration session in the harness
+// unusable as evidence for what production does.
+//
+// The tuning tension, for whoever measures them: these are absolute, not
+// per-second. At an 8-12 Hz pose rate on a weak Android, 100 ms separates
+// samples, so 45 degrees is 450 deg/s while 25 would be 250 deg/s — reachable
+// by an ordinary wrist flick, which would snap when it should smooth. Too high
+// instead means a real re-acquisition gets smoothed through as a slide. The
+// harness counts jump snaps; read that counter before changing either number.
+const POSE_TRANSLATION_JUMP_LIMIT = 0.5;
+const POSE_ROTATION_JUMP_LIMIT_DEGREES = 45;
+
+const POSE_RELAY_PARAMETERS: MindARPoseParameters = {
+   poseFilterMinCutOff: 1.5,
+   poseFilterBeta: 0,
+   poseRotationFilterBeta: 0.05,
+   poseTranslationJumpLimit: POSE_TRANSLATION_JUMP_LIMIT,
+   poseRotationJumpLimitDegrees: POSE_ROTATION_JUMP_LIMIT_DEGREES,
+   warmupUpdates: 3,
+   warmupFadeMs: 200,
+   warmupTimeoutMs: 600,
+   staleFadeUpdates: 10,
+   staleFadeMs: 150,
+   holdTranslationTargetUnits: 0.0025,
+   holdRotationDegrees: 0.45,
+   holdEngageUpdates: 6,
+   depthFilterMinCutOff: 0.5,
+};
 
 const createError = (kind: ARErrorKind): ARErrorState => ({
    kind,
@@ -199,12 +287,21 @@ interface VitrineARProps {
 export default function VitrineAR({ artifact }: VitrineARProps) {
    const containerRef = useRef<HTMLDivElement>(null);
    const sessionRef = useRef<ActiveSession | null>(null);
+   const dragRef = useRef<DragState | null>(null);
+   const rotationHintDismissedRef = useRef(false);
    const attemptRef = useRef(0);
    const mountedRef = useRef(true);
    const router = useRouter();
    const [phase, setPhase] = useState<ARPhase>('idle');
    const [error, setError] = useState<ARErrorState | null>(null);
    const [modelProgress, setModelProgress] = useState<number | null>(null);
+   const [rotationHintDismissed, setRotationHintDismissed] = useState(false);
+
+   // Starting value: one full-width sweep covers this artifact's entire clamp
+   // range. It is expressed in radians per fraction of viewport width and needs
+   // feel-testing on a phone before treating the sensitivity as calibrated.
+   const dragSensitivityRadiansPerViewportFraction =
+      artifact.rotationClamp.max - artifact.rotationClamp.min;
 
    /**
     * Tears down one specific session. Safe to call twice on the same session,
@@ -215,8 +312,13 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
       if (!session || session.cleaned) return;
       session.cleaned = true;
       if (sessionRef.current === session) sessionRef.current = null;
+      dragRef.current = null;
 
       session.mindAR.renderer.setAnimationLoop(null);
+      session.anchor.onTargetFound = null;
+      session.anchor.onTargetLost = null;
+      session.anchor.onTargetUpdate = null;
+      session.poseRelay.reset();
       try {
          session.mindAR.stop();
       } catch {
@@ -225,6 +327,8 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
 
       session.disposeModel?.();
       session.disposeDraco?.();
+      session.targetUnitGroup.removeFromParent();
+      session.poseGroup.removeFromParent();
       session.mindAR.renderer.dispose();
       session.mindAR.renderer.forceContextLoss();
       session.mindAR.renderer.domElement.remove();
@@ -277,6 +381,8 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
       cleanupSession();
       setError(null);
       setModelProgress(null);
+      rotationHintDismissedRef.current = false;
+      setRotationHintDismissed(false);
 
       if (!window.isSecureContext) {
          setError(createError('insecure'));
@@ -339,7 +445,9 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
             uiLoading: 'no',
             uiScanning: 'no',
             uiError: 'no',
-            warmupTolerance: 5,
+            filterMinCF: 1,
+            filterBeta: 0,
+            warmupTolerance: 8,
             missTolerance: 12,
          });
          const injectedStyles = Array.from(
@@ -349,8 +457,24 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
                style instanceof HTMLStyleElement && !stylesBefore.has(style)
          );
 
+         const anchor = mindAR.addAnchor(0);
+         const poseGroup = new THREE.Group();
+         poseGroup.matrixAutoUpdate = false;
+         poseGroup.visible = false;
+         mindAR.scene.add(poseGroup);
+
+         const targetUnitGroup = new THREE.Group();
+         poseGroup.add(targetUnitGroup);
+
+         const poseRelay = createMindARPoseRelay();
+
          const session: ActiveSession = {
             mindAR,
+            anchor,
+            poseGroup,
+            targetUnitGroup,
+            uprightArtifact: null,
+            poseRelay,
             disposeModel: null,
             disposeDraco: null,
             injectedStyles,
@@ -359,22 +483,60 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
          createdSession = session;
          sessionRef.current = session;
 
+         let poseUpdatePending = false;
+         let poseUpdatePendingAt = 0;
+         let relayPoseVisible = false;
+         let modelReady = false;
+         let recommendedOpacity = 0;
+
+         const applyRelayVisibility = (poseVisible: boolean) => {
+            poseGroup.visible = poseVisible;
+            if (relayPoseVisible === poseVisible) return;
+            relayPoseVisible = poseVisible;
+            if (
+               modelReady &&
+               mountedRef.current &&
+               attemptRef.current === attempt
+            ) {
+               setPhase(poseVisible ? 'tracking' : 'scanning');
+            }
+         };
+
          mindAR.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
          mindAR.renderer.setClearColor(0x000000, 0);
          mindAR.renderer.domElement.style.zIndex = '1';
          mindAR.cssRenderer.domElement.style.zIndex = '2';
          mindAR.cssRenderer.domElement.style.pointerEvents = 'none';
 
-         const anchor = mindAR.addAnchor(0);
          anchor.onTargetFound = () => {
-            if (mountedRef.current && attemptRef.current === attempt) {
-               setPhase('tracking');
+            poseUpdatePending = false;
+            poseRelay.reset();
+            recommendedOpacity = 0;
+            if (session.uprightArtifact) {
+               applyArtifactModelOpacity(session.uprightArtifact, 0);
+            }
+            if (
+               modelReady &&
+               !relayPoseVisible &&
+               mountedRef.current &&
+               attemptRef.current === attempt
+            ) {
+               setPhase('scanning');
             }
          };
          anchor.onTargetLost = () => {
-            if (mountedRef.current && attemptRef.current === attempt) {
-               setPhase('scanning');
+            poseUpdatePending = false;
+            poseRelay.reset();
+            recommendedOpacity = 0;
+            if (session.uprightArtifact) {
+               applyArtifactModelOpacity(session.uprightArtifact, 0);
             }
+            applyRelayVisibility(false);
+         };
+         anchor.onTargetUpdate = () => {
+            if (!mountedRef.current || attemptRef.current !== attempt) return;
+            poseUpdatePending = true;
+            poseUpdatePendingAt = performance.now();
          };
 
          mindAR.scene.add(new THREE.HemisphereLight(0xfff2da, 0x2a1609, 2.2));
@@ -395,6 +557,50 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
             mindAR.video.style.zIndex = '0';
          }
          mindAR.renderer.setAnimationLoop(() => {
+            if (session.cleaned) return;
+
+            const pendingPoseSampledAt = poseUpdatePendingAt;
+            const hasPendingPose = poseUpdatePending;
+            poseUpdatePending = false;
+            if (hasPendingPose) {
+               if (anchor.visible) {
+                  // MindAR assigns anchor.group.matrix itself every frame, as
+                  // worldMatrix * postMatrix — and that postMatrix is where the
+                  // target's pixel width lives as uniform scale, which is the
+                  // unit every displayHeight is expressed in. anchor.group is a
+                  // direct child of the scene, so matrixWorld adds nothing; but
+                  // updateWorldMatrix() calls updateMatrix() whenever
+                  // matrixAutoUpdate is left on, recomposing the matrix from the
+                  // group's own untouched position/quaternion/scale and throwing
+                  // MindAR's assignment away. The scale collapses to 1, the
+                  // artifact renders ~1000x too small, and nothing reports an
+                  // error. Read the matrix MindAR actually wrote.
+               }
+               const poseUpdate = poseRelay.update({
+                  anchorVisible: anchor.visible,
+                  matrix: anchor.group.matrix,
+                  sampledAt: pendingPoseSampledAt,
+                  parameters: POSE_RELAY_PARAMETERS,
+               });
+               recommendedOpacity = poseUpdate.recommendedOpacity;
+               if (session.uprightArtifact) {
+                  applyArtifactModelOpacity(
+                     session.uprightArtifact,
+                     recommendedOpacity
+                  );
+               }
+               if (
+                  poseUpdate.accepted &&
+                  poseUpdate.filteredPose !== null &&
+                  poseUpdate.targetUnitScale !== null
+               ) {
+                  poseGroup.matrix.copy(poseUpdate.filteredPose.matrix);
+                  targetUnitGroup.scale.setScalar(poseUpdate.targetUnitScale);
+               }
+            }
+
+            const poseFrame = poseRelay.advanceFrame(anchor.visible);
+            applyRelayVisibility(poseFrame.poseVisible);
             mindAR.renderer.render(mindAR.scene, mindAR.camera);
          });
 
@@ -449,22 +655,24 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
          const uprightArtifact = new THREE.Group();
          uprightArtifact.rotation.y = artifact.rotationY;
          uprightArtifact.add(model);
+         session.uprightArtifact = uprightArtifact;
+         applyArtifactModelOpacity(uprightArtifact, recommendedOpacity);
 
          const verticalMedallionMount = new THREE.Group();
-         verticalMedallionMount.position.set(
-            0,
-            VERTICAL_MEDALLION_LOWER_EDGE_Y,
-            0
-         );
+         // The 768 px medallion occupies 75% of its square target canvas.
+         // `mountY` is the per-artifact offset measured in those target units,
+         // so this mount must remain inside `targetUnitGroup`.
+         verticalMedallionMount.position.set(0, artifact.mountY, 0);
          verticalMedallionMount.add(uprightArtifact);
-         anchor.group.add(verticalMedallionMount);
+         targetUnitGroup.add(verticalMedallionMount);
 
          if (!mountedRef.current || attemptRef.current !== attempt) {
             cleanupKnownSession(session);
             return;
          }
          setModelProgress(100);
-         setPhase(anchor.visible ? 'tracking' : 'scanning');
+         modelReady = true;
+         setPhase(relayPoseVisible ? 'tracking' : 'scanning');
       } catch (loadError) {
          cleanupKnownSession(createdSession);
          if (!mountedRef.current || attemptRef.current !== attempt) return;
@@ -482,6 +690,83 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
       }
    }, [artifact, cleanupSession, cleanupKnownSession]);
 
+   const handlePointerDown = useCallback(
+      (event: ReactPointerEvent<HTMLElement>) => {
+         const session = sessionRef.current;
+         if (
+            !event.isPrimary ||
+            event.button !== 0 ||
+            isInteractiveTarget(event.target) ||
+            !session?.uprightArtifact ||
+            !session.poseGroup.visible
+         ) {
+            return;
+         }
+
+         dragRef.current = {
+            pointerId: event.pointerId,
+            lastClientX: event.clientX,
+            viewportWidth: Math.max(event.currentTarget.clientWidth, 1),
+         };
+         event.currentTarget.setPointerCapture(event.pointerId);
+         event.preventDefault();
+      },
+      []
+   );
+
+   const handlePointerMove = useCallback(
+      (event: ReactPointerEvent<HTMLElement>) => {
+         const drag = dragRef.current;
+         const uprightArtifact = sessionRef.current?.uprightArtifact;
+         if (!drag || drag.pointerId !== event.pointerId || !uprightArtifact) {
+            return;
+         }
+
+         const horizontalDelta = event.clientX - drag.lastClientX;
+         if (horizontalDelta === 0) return;
+
+         uprightArtifact.rotation.y = mapHorizontalDragToRotation(
+            uprightArtifact.rotation.y,
+            horizontalDelta,
+            drag.viewportWidth,
+            dragSensitivityRadiansPerViewportFraction,
+            artifact.rotationClamp
+         );
+
+         // Rebase on every sample, including samples clamped at an endpoint.
+         // This throws away overshoot so a reversal moves immediately: the hard
+         // stop feels like a physical limit, not a control that has gone dead.
+         drag.lastClientX = event.clientX;
+
+         if (!rotationHintDismissedRef.current) {
+            rotationHintDismissedRef.current = true;
+            setRotationHintDismissed(true);
+         }
+         event.preventDefault();
+      },
+      [artifact.rotationClamp, dragSensitivityRadiansPerViewportFraction]
+   );
+
+   const handlePointerEnd = useCallback(
+      (event: ReactPointerEvent<HTMLElement>) => {
+         if (dragRef.current?.pointerId !== event.pointerId) return;
+         dragRef.current = null;
+         if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+            event.currentTarget.releasePointerCapture(event.pointerId);
+         }
+      },
+      []
+   );
+
+   const handleLostPointerCapture = useCallback(
+      (event: ReactPointerEvent<HTMLElement>) => {
+         if (dragRef.current?.pointerId === event.pointerId) {
+            dragRef.current = null;
+         }
+      },
+      []
+   );
+
    const isRunning =
       phase === 'starting' ||
       phase === 'loading-model' ||
@@ -489,7 +774,14 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
       phase === 'tracking';
 
    return (
-      <main className="fixed inset-0 isolate h-[100dvh] min-h-[100svh] w-screen overflow-hidden bg-[#0f0c09] text-amber-50">
+      <main
+         className="ar-shell ar-camera-shell touch-none"
+         onPointerDown={handlePointerDown}
+         onPointerMove={handlePointerMove}
+         onPointerUp={handlePointerEnd}
+         onPointerCancel={handlePointerEnd}
+         onLostPointerCapture={handleLostPointerCapture}
+      >
          <div
             ref={containerRef}
             className="absolute inset-0 overflow-hidden"
@@ -497,30 +789,23 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
          />
 
          {(phase === 'idle' || phase === 'error') && (
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgba(245,158,11,0.2),transparent_38%),radial-gradient(circle_at_80%_85%,rgba(180,83,9,0.18),transparent_42%),linear-gradient(145deg,#17110b,#0f0c09_55%,#090706)]" />
+            <div className="ar-camera-backdrop" />
          )}
 
          <header
-            className="pointer-events-none absolute inset-x-0 top-0 z-20 flex items-start justify-between gap-4 px-4 sm:px-6"
+            className="pointer-events-none absolute inset-x-0 top-0 z-20 flex items-start justify-end px-4 sm:px-6"
             style={{
                paddingTop: 'max(1rem, env(safe-area-inset-top))',
             }}
          >
-            <div className="max-w-[70vw] rounded-2xl border border-white/10 bg-black/45 px-4 py-3 backdrop-blur-md">
-               <p className="text-[10px] uppercase tracking-[0.35em] !text-amber-200/70">
-                  SummitShare · AR
-               </p>
-               <p className="mt-1 truncate text-sm font-semibold !text-amber-50 sm:text-base">
-                  {artifact.name}
-               </p>
-            </div>
             {isRunning && (
                <button
                   type="button"
                   onClick={endAR}
-                  className="pointer-events-auto rounded-full border border-white/20 bg-black/45 px-4 py-2 text-xs font-medium !text-amber-100 backdrop-blur-md transition hover:border-amber-200/60 focus:outline-none focus:ring-2 focus:ring-amber-300"
+                  className="ar-overlay-button"
                >
-                  End AR
+                  <X aria-hidden="true" />
+                  <span>End AR</span>
                </button>
             )}
          </header>
@@ -529,20 +814,25 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
             className="absolute inset-0 z-10 flex items-center justify-center px-5"
             aria-live="polite"
          >
-            {phase === 'idle' && <ARStartCard onStart={startAR} />}
+            {phase === 'idle' && (
+               <ARStartCard
+                  artifactName={artifact.name}
+                  onStart={startAR}
+               />
+            )}
 
             {(phase === 'starting' || phase === 'loading-model') && (
-               <section className="rounded-3xl border border-white/10 bg-black/60 px-7 py-6 text-center shadow-2xl backdrop-blur-lg">
-                  <div className="mx-auto h-9 w-9 animate-spin rounded-full border-2 border-amber-300 border-t-transparent" />
-                  <p className="mt-4 text-sm font-medium !text-amber-50">
+               <section className="ar-loading-panel">
+                  <div className="ar-spinner" />
+                  <p className="ar-loading-text">
                      {phase === 'starting'
                         ? 'Starting camera and tracker…'
                         : `Loading ${artifact.name}…`}
                   </p>
                   {phase === 'loading-model' && modelProgress !== null && (
-                     <div className="mt-4 h-1.5 w-56 overflow-hidden rounded-full bg-white/15">
+                     <div className="ar-progress">
                         <div
-                           className="h-full rounded-full bg-amber-300 transition-[width]"
+                           className="ar-progress-bar"
                            style={{ width: `${modelProgress}%` }}
                         />
                      </div>
@@ -551,57 +841,85 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
             )}
 
             {phase === 'error' && error && (
-               <section className="pointer-events-auto w-full max-w-md rounded-3xl border border-red-200/20 bg-[#17100d]/95 p-6 text-center shadow-2xl backdrop-blur-xl sm:p-8">
-                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border border-red-200/25 bg-red-300/10 text-xl text-red-100">
-                     !
+               <section className="ar-error-card pointer-events-auto">
+                  <div className="ar-error-mark">
+                     <AlertTriangle aria-hidden="true" />
                   </div>
-                  <h1 className="mt-5 text-2xl !text-amber-50">{error.title}</h1>
-                  <p className="mt-3 text-sm leading-6 !text-amber-100/70">
-                     {error.detail}
-                  </p>
+                  <h1 className="ar-error-title">{error.title}</h1>
+                  <p className="ar-error-detail">{error.detail}</p>
                   <button
                      type="button"
                      onClick={startAR}
-                     className="mt-6 w-full rounded-full border border-amber-200/40 bg-amber-300/10 px-6 py-3 text-sm font-semibold !text-amber-100 transition hover:bg-amber-300/20 focus:outline-none focus:ring-2 focus:ring-amber-300"
+                     className="ar-button-secondary mt-6 w-full"
                   >
-                     Try again
+                     <RotateCcw aria-hidden="true" />
+                     <span>Try again</span>
                   </button>
                </section>
             )}
          </div>
 
+         {phase === 'tracking' && (
+            <div
+               className={`ar-rotation-hint pointer-events-none absolute left-1/2 top-[56%] z-20 -translate-x-1/2 transition-opacity duration-500 motion-reduce:transition-none ${
+                  rotationHintDismissed ? 'opacity-0' : 'opacity-100'
+               }`}
+               aria-hidden="true"
+            >
+               <svg
+                  viewBox="0 0 160 88"
+                  className="h-[5.5rem] w-40"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+               >
+                  <path
+                     d="M22.5 68.5C28.8 18.7 124.6 17.2 136 65.1"
+                     stroke="currentColor"
+                     strokeWidth="1.35"
+                     strokeLinecap="round"
+                  />
+                  <path
+                     d="M24.1 69.4C31.5 20.3 122.8 19 134.8 65.8"
+                     stroke="currentColor"
+                     strokeWidth="0.75"
+                     strokeLinecap="round"
+                     opacity="0.42"
+                  />
+                  <path
+                     d="M126.8 59.5L136.2 66.1L138.3 54.9"
+                     stroke="currentColor"
+                     strokeWidth="1.35"
+                     strokeLinecap="round"
+                     strokeLinejoin="round"
+                  />
+               </svg>
+            </div>
+         )}
+
          {(phase === 'scanning' || phase === 'tracking') && (
             <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex flex-col items-center px-5 text-center">
-               {phase === 'scanning' && (
-                  <div className="relative mb-5 h-36 w-36 rounded-2xl border border-amber-200/25">
-                     <span className="absolute -left-px -top-px h-8 w-8 rounded-tl-2xl border-l-2 border-t-2 border-amber-200" />
-                     <span className="absolute -right-px -top-px h-8 w-8 rounded-tr-2xl border-r-2 border-t-2 border-amber-200" />
-                     <span className="absolute -bottom-px -left-px h-8 w-8 rounded-bl-2xl border-b-2 border-l-2 border-amber-200" />
-                     <span className="absolute -bottom-px -right-px h-8 w-8 rounded-br-2xl border-b-2 border-r-2 border-amber-200" />
-                  </div>
-               )}
                <div
-                  className="mb-4 rounded-full border border-white/15 bg-black/55 px-5 py-2.5 text-xs font-medium !text-amber-50 backdrop-blur-md"
+                  className="ar-status-pill mb-4"
                   style={{
                      marginBottom:
                         'max(1rem, calc(env(safe-area-inset-bottom) + 0.5rem))',
                   }}
                >
                   <span
-                     className={`mr-2 inline-block h-2 w-2 rounded-full ${
+                     className={`ar-status-dot ${
                         phase === 'tracking'
-                           ? 'bg-emerald-300'
-                           : 'animate-pulse bg-amber-300'
+                           ? 'ar-status-dot--tracking'
+                           : 'ar-status-dot--scanning'
                      }`}
                   />
                   {/*
                    * The counterpart to WebXRDemo's placement prompt, and
                    * deliberately different: this path tracks the marker, so the
-                   * marker must stay in frame and there is nothing to tap.
+                   * marker must stay in frame and there is nothing to tap. Kept
+                   * to a few words — the visitor is looking at the vitrine, not
+                   * at the phone, and the dot already carries the state.
                    */}
-                  {phase === 'tracking'
-                     ? 'Artifact locked to the vitrine'
-                     : 'Point at the marker and scan'}
+                  {phase === 'tracking' ? 'Locked' : 'Point at the marker'}
                </div>
             </div>
          )}

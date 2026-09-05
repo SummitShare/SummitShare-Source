@@ -18,14 +18,64 @@ export const AR_EXIT_PATH = '/record';
  * it to a printed medallion, WebXR to a hit-test surface — so one number cannot
  * serve both. They were shared once and the WebXR drum shipped at 156 mm.
  *
- * `webxr.calibrated` gates the routing decision in `/ar/[slug]`: only an
- * artifact whose WebXR numbers were measured on a device takes the WebXR path.
- * The rest stay on MindAR, which is pinned to a printed marker and therefore
- * correct by construction. A mechanically-derived height is not a calibration —
- * it converts a marker-relative unit into metres and has no relationship to the
- * object's real size, so shipping it would render, say, an 11.8 cm mask. Flip
- * the flag per artifact as each one is measured; nothing else needs to change.
+ * `webxr.heightSource` records where `heightMetres` came from. It is
+ * documentation and a test hook — it does NOT decide which viewer runs.
+ * Routing is a capability question, answered in `ARClient`.
+ *
+ * It used to gate routing, and that was a mistake worth remembering. The
+ * reasoning was that an unmeasured height would render, say, an 11.8 cm mask,
+ * so such artifacts should stay on MindAR. But a mechanical height is exactly
+ * `displayHeight * 0.12`, which is the same physical size MindAR renders
+ * against its 120 mm marker — so the gate was withholding WebXR to avoid a size
+ * error that the fallback reproduced anyway. Meanwhile it silently pushed every
+ * Android visitor onto the marker-relative path for any artifact nobody had
+ * measured yet, which is the degraded experience, not the safe one. A data
+ * problem was being solved with a routing switch. Fix heights as heights.
+ *
+ *   'measured'    — read off a device against the physical object.
+ *   'exhibition'  — a display size the exhibition stands behind, with both
+ *                   paths in agreement. Either the metres were chosen and the
+ *                   units derived, or — as for drum and likishi — the size was
+ *                   measured on a device against the 120 mm printed square and
+ *                   the metres follow at 0.12 m per unit. Agreement is exact
+ *                   either way, and the test asserts it still holds.
+ *                   Not 'measured': that is reserved for a height read
+ *                   independently on the WebXR path, against a hit-test surface
+ *                   rather than a marker, which is a different measurement.
+ *   'placeholder' — `displayHeight * 0.12`. Marker-relative, unrelated to the
+ *                   object's real size. Replace before exhibiting.
  */
+export type WebXRHeightSource = 'measured' | 'exhibition' | 'placeholder';
+
+interface ARArtifactShape {
+   slug: string;
+   name: string;
+   associatedHistory: string;
+   modelUrl: string;
+   targetUrl: string;
+   displayHeight: number;
+   rotationY: number;
+   /**
+    * Where the artifact sits above the medallion, in target units, MindAR only.
+    * Was one shared -0.375 for every object; device measurement showed the two
+    * exhibited pieces want different mounts, so it is per-artifact now.
+    */
+   mountY: number;
+   /**
+    * How far the visitor may swing the object with the drag gesture, in radians.
+    * MindAR is marker-relative and cannot be walked around, so this range IS the
+    * viewing experience. Clamped per object because the far side of a mask is
+    * hollow and must not be reachable.
+    */
+   rotationClamp: { min: number; max: number };
+   webxr: {
+      heightSource: WebXRHeightSource;
+      heightMetres: number;
+      rotationY: number;
+      nudge: { x: number; y: number; z: number; yaw: number };
+   };
+}
+
 export const AR_ARTIFACTS = {
    calabash: {
       slug: 'calabash',
@@ -35,9 +85,12 @@ export const AR_ARTIFACTS = {
       targetUrl: '/ar/targets/calabash.mind',
       displayHeight: 0.95,
       rotationY: -0.2,
+      // Unexhibited: the previous shared mount, unmeasured.
+      mountY: -0.375,
+      rotationClamp: { min: -Math.PI, max: Math.PI },
       // Uncalibrated: carried over from the MindAR value at 120 mm/unit.
       webxr: {
-         calibrated: false,
+         heightSource: 'placeholder',
          heightMetres: 0.114,
          rotationY: -0.2,
          nudge: { x: 0, y: 0, z: 0, yaw: 0 },
@@ -51,10 +104,13 @@ export const AR_ARTIFACTS = {
       targetUrl: '/ar/targets/cowry.mind',
       displayHeight: 0.62,
       rotationY: 0.08,
+      // Unexhibited: the previous shared mount, unmeasured.
+      mountY: -0.375,
+      rotationClamp: { min: -Math.PI, max: Math.PI },
       // Uncalibrated: carried over from the MindAR value at 120 mm/unit.
       webxr: {
-         calibrated: false,
-         heightMetres: 0.074,
+         heightSource: 'placeholder',
+         heightMetres: 0.0744,
          rotationY: 0.08,
          nudge: { x: 0, y: 0, z: 0, yaw: 0 },
       },
@@ -65,14 +121,21 @@ export const AR_ARTIFACTS = {
       associatedHistory: 'Mwenya Mukulu',
       modelUrl: '/models/drum.glb',
       targetUrl: '/ar/targets/drum.mind',
-      // Device-calibrated 2026-08-07 (Samsung S20 + iPhone 11 Pro) against a
-      // printed 90 mm medallion. 1.3 target units x 120 mm = 156 mm rendered.
-      displayHeight: 1.3,
+      // Device-measured 2026-09-04 against a 120 mm printed square at the
+      // optimal ~775 mm viewing distance: 204 mm tall, mount -79 mm. Supersedes
+      // the 0.5 m exhibition guess, which measurement showed was far too big.
+      displayHeight: 1.7,
       rotationY: 0.62,
-      // Device-calibrated 2026-08-08 on a Samsung S20.
+      mountY: -0.6583,
+      // A drum is closed all round, so the full useful arc is available.
+      rotationClamp: { min: -Math.PI, max: Math.PI },
+      // Height is the exhibition figure below. `rotationY` and `nudge` are still
+      // the 2026-08-08 Samsung S20 measurements and are unaffected by it: both
+      // are orientation and metric offset from the tapped point, neither scales
+      // with the object.
       webxr: {
-         calibrated: true,
-         heightMetres: 0.24,
+         heightSource: 'exhibition',
+         heightMetres: 0.204,
          rotationY: 0.8684,
          nudge: { x: 0.02, y: 0.02, z: -0.03, yaw: 0 },
       },
@@ -85,10 +148,13 @@ export const AR_ARTIFACTS = {
       targetUrl: '/ar/targets/headrest.mind',
       displayHeight: 0.66,
       rotationY: 0.15,
+      // Unexhibited: the previous shared mount, unmeasured.
+      mountY: -0.375,
+      rotationClamp: { min: -Math.PI, max: Math.PI },
       // Uncalibrated: carried over from the MindAR value at 120 mm/unit.
       webxr: {
-         calibrated: false,
-         heightMetres: 0.079,
+         heightSource: 'placeholder',
+         heightMetres: 0.0792,
          rotationY: 0.15,
          nudge: { x: 0, y: 0, z: 0, yaw: 0 },
       },
@@ -103,15 +169,21 @@ export const AR_ARTIFACTS = {
       // destructures Hair/Mask/Wire out of it.
       modelUrl: '/models/likishi.glb',
       targetUrl: '/ar/targets/likishi.mind',
-      // Both heights are placeholders inherited from the previous mask and are
-      // wrong for this object — the WebXR figure would render it at 11.8 cm.
-      // Measure both on a device with devrig before exhibiting.
-      displayHeight: 0.98,
+      // Device-measured 2026-09-04 against a 120 mm printed square at the
+      // optimal ~775 mm viewing distance: 174 mm tall, mount -95 mm. Supersedes
+      // the 0.5 m exhibition guess, which measurement showed was far too big.
+      displayHeight: 1.45,
       rotationY: -0.08,
+      mountY: -0.7917,
+      // The far side of a Pwo mask is a hollow shell. This arc is the measured
+      // limit before the inside comes into view; do not widen it.
+      rotationClamp: { min: -1.7013, max: 0.8872 },
       webxr: {
-         calibrated: false,
-         heightMetres: 0.118,
+         heightSource: 'exhibition',
+         heightMetres: 0.174,
          rotationY: -0.08,
+         // No downward drop: a mask is worn, so reading as hoisted above the
+         // plinth is right. Do not "fix" it to stand on the surface.
          nudge: { x: 0, y: 0, z: 0, yaw: 0 },
       },
    },
@@ -123,15 +195,18 @@ export const AR_ARTIFACTS = {
       targetUrl: '/ar/targets/snuff.mind',
       displayHeight: 0.7,
       rotationY: 0.18,
+      // Unexhibited: the previous shared mount, unmeasured.
+      mountY: -0.375,
+      rotationClamp: { min: -Math.PI, max: Math.PI },
       // Uncalibrated: carried over from the MindAR value at 120 mm/unit.
       webxr: {
-         calibrated: false,
+         heightSource: 'placeholder',
          heightMetres: 0.084,
          rotationY: 0.18,
          nudge: { x: 0, y: 0, z: 0, yaw: 0 },
       },
    },
-} as const;
+} as const satisfies Record<string, ARArtifactShape>;
 
 export type ARArtifactSlug = keyof typeof AR_ARTIFACTS;
 export type ARArtifact = (typeof AR_ARTIFACTS)[ARArtifactSlug];

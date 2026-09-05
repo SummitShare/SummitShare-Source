@@ -22,7 +22,5 @@ export default async function ARPage({ params }: ARPageProps) {
 
    const artifact = AR_ARTIFACTS[slug];
 
-   return (
-      <ARClient artifact={artifact} preferWebXR={artifact.webxr.calibrated} />
-   );
+   return <ARClient artifact={artifact} />;
 }

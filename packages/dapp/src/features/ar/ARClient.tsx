@@ -6,8 +6,8 @@ import type { ARArtifact } from './artifacts';
 
 function ARLoadingState() {
    return (
-      <main className="fixed inset-0 flex h-[100dvh] w-screen items-center justify-center overflow-hidden bg-[#0f0c09] text-amber-100">
-         <div className="h-8 w-8 animate-spin rounded-full border-2 border-amber-300 border-t-transparent" />
+      <main className="ar-shell ar-camera-shell flex items-center justify-center">
+         <div className="ar-spinner ar-spinner--light" />
          <span className="sr-only">Loading augmented reality viewer</span>
       </main>
    );
@@ -25,18 +25,27 @@ const VitrineAR = dynamic(() => import('./VitrineAR'), {
 
 interface ARClientProps {
    artifact: ARArtifact;
-   preferWebXR?: boolean;
 }
 
 type Viewer = 'resolving' | 'webxr' | 'mindar';
 
-export default function ARClient({
-   artifact,
-   preferWebXR = false,
-}: ARClientProps) {
-   const [viewer, setViewer] = useState<Viewer>(
-      preferWebXR ? 'resolving' : 'mindar'
-   );
+/**
+ * Which viewer runs is a question about the device, and only about the device.
+ *
+ * WebXR is the real experience: ARCore holds the artifact on an `XRAnchor` and
+ * the visitor walks around it. MindAR re-derives pose from pixels every frame
+ * and only holds while the marker is in view — it exists because iOS Safari has
+ * no `immersive-ar`, and every iOS browser is WebKit, so there is no way around
+ * it on an iPhone. It is the fallback, not an alternative.
+ *
+ * So the probe runs unconditionally. This used to be gated on a per-artifact
+ * `calibrated` flag, which meant an Android phone scanning an artifact nobody
+ * had measured yet was handed the degraded path without anything saying so —
+ * a Galaxy Tab S9 ran MindAR for exactly this reason. Artifact data must never
+ * decide this again; if a height is wrong, fix the height.
+ */
+export default function ARClient({ artifact }: ARClientProps) {
+   const [viewer, setViewer] = useState<Viewer>('resolving');
 
    // `isSessionSupported` only answers for the mode, not for the features the
    // session actually requires, so WebXR can still turn out to be unusable
@@ -45,11 +54,6 @@ export default function ARClient({
    const fallBackToMindAR = useCallback(() => setViewer('mindar'), []);
 
    useEffect(() => {
-      if (!preferWebXR) {
-         setViewer('mindar');
-         return;
-      }
-
       let active = true;
       const selectViewer = async () => {
          try {
@@ -65,7 +69,7 @@ export default function ARClient({
       return () => {
          active = false;
       };
-   }, [preferWebXR]);
+   }, []);
 
    if (viewer === 'resolving') return <ARLoadingState />;
    if (viewer === 'webxr') {

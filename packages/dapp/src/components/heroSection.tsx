@@ -50,7 +50,7 @@ function HeroSection() {
                <div className="w-full md:max-w-3xl">
                   <div className="space-y-8">
                      <div className="space-y-5">
-                        <p className="text-[11px] uppercase tracking-[0.4em] text-amber-200/80">
+                        <p className="text-[11px] uppercase tracking-[0.4em] text-orange-500">
                            Digital Exhibit
                         </p>
                         <h1
@@ -71,7 +71,7 @@ function HeroSection() {
                      <div className="flex flex-wrap gap-3">
                         <Link href="/exhibit">
                            <Button
-                              className="bg-amber-300 text-neutral-900 border-amber-300 hover:bg-amber-200 hover:border-amber-200"
+                              className="bg-orange-500 text-white border-orange-500 hover:bg-orange-600 hover:border-orange-600 focus:ring-orange-500"
                               size="medium"
                            >
                               View Exhibit

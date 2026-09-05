@@ -1,0 +1,618 @@
+:root {
+   --ar-cream: #f5ede0;
+   --ar-raised-cream: #fff3e2;
+   --ar-ochre: #fb923c;
+   --ar-clay: #a8482a;
+   --ar-umber: #1b1410;
+   --ar-deep-umber: #0f0c09;
+   --ar-ink: #101317;
+   --ar-teal: #1f4f4f;
+   --ar-blue: #2e4257;
+   --ar-body: #403b3a;
+   --ar-rule: rgb(245 237 224 / 0.18);
+   --ar-dark-rule: rgb(27 20 16 / 0.16);
+}
+
+.ar-route-body {
+   min-width: 320px;
+   margin: 0;
+   background: var(--ar-umber);
+   color: var(--ar-cream);
+}
+
+.ar-shell {
+   color: var(--ar-cream);
+   font-family: system-ui, 'Inter', sans-serif;
+}
+
+.ar-shell p,
+.ar-shell a,
+.ar-shell li {
+   color: inherit;
+}
+
+.ar-entry-shell {
+   position: relative;
+   isolation: isolate;
+   display: flex;
+   min-height: 100dvh;
+   align-items: center;
+   justify-content: center;
+   overflow: hidden;
+   padding: 40px 20px;
+   background: linear-gradient(180deg, rgb(255 243 226 / 0.055), transparent 34%),
+      linear-gradient(135deg, #201712 0%, var(--ar-umber) 48%, #101317 100%);
+}
+
+.ar-entry-shell::before,
+.ar-camera-backdrop {
+   position: absolute;
+   inset: 0;
+   pointer-events: none;
+   background: linear-gradient(180deg, rgb(255 243 226 / 0.055), transparent 34%),
+      linear-gradient(135deg, #201712 0%, var(--ar-umber) 48%, #101317 100%);
+}
+
+.ar-entry-shell::before {
+   content: '';
+   z-index: -2;
+}
+
+.ar-entry-shell::after {
+   content: '';
+   position: absolute;
+   inset: 0;
+   z-index: -1;
+   pointer-events: none;
+   background: linear-gradient(180deg, transparent 0 76%, var(--ar-umber) 100%),
+      linear-gradient(
+         90deg,
+         var(--ar-umber) 0,
+         rgb(27 20 16 / 0.72) 44%,
+         transparent 72%
+      );
+}
+
+.ar-entry-frame {
+   position: relative;
+   display: grid;
+   width: 100%;
+   max-width: 980px;
+   gap: 28px;
+}
+
+.ar-entry-panel,
+.ar-start-card,
+.ar-loading-panel,
+.ar-error-card {
+   position: relative;
+   overflow: hidden;
+   border: 0;
+   border-radius: 8px;
+   background: linear-gradient(
+         145deg,
+         rgb(255 243 226 / 0.16) 0%,
+         rgb(255 243 226 / 0.075) 42%,
+         rgb(16 19 23 / 0.36) 100%
+      ),
+      rgb(27 20 16 / 0.58);
+   box-shadow:
+      0 28px 80px rgb(0 0 0 / 0.3),
+      0 8px 28px rgb(16 19 23 / 0.22);
+   color: var(--ar-cream);
+   -webkit-backdrop-filter: blur(22px) saturate(130%);
+   backdrop-filter: blur(22px) saturate(130%);
+}
+
+.ar-entry-panel::before,
+.ar-start-card::before,
+.ar-loading-panel::before,
+.ar-error-card::before {
+   content: none;
+   position: absolute;
+   inset: 0;
+   pointer-events: none;
+   background: linear-gradient(120deg, rgb(255 243 226 / 0.2), transparent 34%),
+      linear-gradient(180deg, rgb(255 255 255 / 0.08), transparent 28%);
+   opacity: 0.72;
+}
+
+.ar-entry-panel {
+   z-index: 1;
+   padding: 28px;
+}
+
+.ar-start-card {
+   pointer-events: auto;
+   position: relative;
+   width: 100%;
+   max-width: 448px;
+   padding: 28px;
+   text-align: left;
+}
+
+/* Which object the visitor is standing at. Without it every /ar/[slug] page is
+   identical, and nothing confirms the right medallion was scanned. 66% cream is
+   7.3:1 on this ground — the AA failure recorded for this eyebrow is on the
+   terracotta ground, not umber. */
+.ar-start-artifact {
+   margin: 0 0 10px;
+   color: rgb(245 237 224 / 0.66);
+   font-size: 11px;
+   font-weight: 700;
+   letter-spacing: 0.16em;
+   line-height: 1.2;
+   text-transform: uppercase;
+}
+
+.ar-start-card--center {
+   text-align: center;
+}
+
+.ar-entry-panel,
+.ar-start-card {
+   overflow: visible;
+   border: 0;
+   background: transparent;
+   box-shadow: none;
+   -webkit-backdrop-filter: none;
+   backdrop-filter: none;
+}
+
+.ar-start-card > * {
+   position: relative;
+   z-index: 1;
+}
+
+
+.ar-title {
+   margin: 0;
+   color: var(--ar-raised-cream);
+   font-family: var(--record-font-display), 'Palatino Linotype', Palatino, Georgia,
+      serif;
+   font-size: 34px;
+   font-weight: 700;
+   line-height: 1.14;
+}
+
+.ar-question {
+   margin: 8px 0 0;
+   color: var(--ar-ochre);
+   font-family: var(--record-font-question), 'Palatino Linotype', Palatino,
+      Georgia, serif;
+   font-size: 24px;
+   font-style: italic;
+   font-weight: 500;
+   line-height: 1.28;
+}
+
+.ar-body-copy {
+   margin: 24px 0 0;
+   color: rgb(245 237 224 / 0.76);
+   font-size: 14px;
+   line-height: 1.65;
+}
+
+.ar-support-note {
+   margin: 14px 0 0;
+   color: rgb(245 237 224 / 0.58);
+   font-size: 12px;
+   line-height: 1.5;
+}
+
+.ar-entry-actions {
+   display: grid;
+   gap: 10px;
+   margin-top: 20px;
+   padding: 0;
+   list-style: none;
+}
+
+.ar-button-primary,
+.ar-button-secondary,
+.ar-artifact-option,
+.ar-overlay-button {
+   display: inline-flex;
+   min-height: 46px;
+   align-items: center;
+   justify-content: center;
+   gap: 10px;
+   border-radius: 6px;
+   font-size: 14px;
+   font-weight: 700;
+   line-height: 1.2;
+   text-decoration: none;
+   transition:
+      background-color 160ms ease,
+      border-color 160ms ease,
+      color 160ms ease,
+      transform 160ms ease;
+}
+
+.ar-button-primary {
+   width: 100%;
+   border: 1px solid transparent;
+   background: var(--ar-cream);
+   color: var(--ar-umber);
+   padding: 0 18px;
+}
+
+.ar-button-primary:hover {
+   background: var(--ar-raised-cream);
+}
+
+.ar-button-secondary,
+.ar-artifact-option {
+   border: 1px solid rgb(245 237 224 / 0.18);
+   background: rgb(255 243 226 / 0.08);
+   color: var(--ar-raised-cream);
+   -webkit-backdrop-filter: blur(12px);
+   backdrop-filter: blur(12px);
+}
+
+.ar-button-secondary {
+   padding: 0 18px;
+}
+
+.ar-button-secondary:hover,
+.ar-artifact-option:hover {
+   border-color: rgb(251 146 60 / 0.64);
+   background: rgb(251 146 60 / 0.14);
+}
+
+.ar-button-primary:active,
+.ar-button-secondary:active,
+.ar-artifact-option:active,
+.ar-overlay-button:active {
+   transform: translateY(1px);
+}
+
+.ar-button-primary:focus-visible,
+.ar-button-secondary:focus-visible,
+.ar-artifact-option:focus-visible,
+.ar-overlay-button:focus-visible {
+   outline: 2px solid var(--ar-ochre);
+   outline-offset: 3px;
+}
+
+.ar-button-primary svg,
+.ar-button-secondary svg,
+.ar-artifact-option svg,
+.ar-overlay-button svg {
+   width: 17px;
+   height: 17px;
+   flex: 0 0 auto;
+}
+
+.ar-artifact-option {
+   justify-content: space-between;
+   padding: 15px 16px;
+   text-align: left;
+}
+
+.ar-artifact-option span {
+   min-width: 0;
+   overflow-wrap: anywhere;
+}
+
+.ar-entry-art {
+   position: absolute;
+   inset: -96px -70px -88px -78px;
+   z-index: 0;
+   display: block;
+   min-height: 0;
+   pointer-events: none;
+}
+
+.ar-entry-art::before {
+   content: none;
+}
+
+.ar-medallion {
+   position: absolute;
+   aspect-ratio: 1;
+   border-radius: 50%;
+   background-color: var(--ar-ink);
+   background-position: center;
+   background-repeat: no-repeat;
+   background-size: 133.334% 133.334%;
+   box-shadow:
+      0 0 0 1px rgb(245 237 224 / 0.08),
+      0 26px 70px rgb(0 0 0 / 0.32);
+}
+
+.ar-medallion--mask {
+   top: 1%;
+   right: -4%;
+   width: min(108vw, 430px);
+   background-image: url('/record/medallions/mask.svg');
+   opacity: 0.54;
+}
+
+.ar-medallion--drum {
+   top: 45%;
+   right: 22%;
+   width: min(62vw, 270px);
+   background-image: url('/record/medallions/drum.svg');
+   opacity: 0.28;
+}
+
+.ar-medallion--calabash {
+   right: -2%;
+   bottom: 2%;
+   width: min(46vw, 190px);
+   background-image: url('/record/medallions/calabash.svg');
+   opacity: 0.24;
+}
+
+.ar-alert {
+   margin-bottom: 22px;
+   border-left: 4px solid var(--ar-ochre);
+   background: rgb(16 19 23 / 0.3);
+   padding: 14px 16px;
+   color: var(--ar-cream);
+}
+
+.ar-alert-title {
+   margin: 0;
+   color: var(--ar-raised-cream);
+   font-size: 14px;
+   font-weight: 700;
+   line-height: 1.35;
+}
+
+.ar-alert-detail {
+   margin: 4px 0 0;
+   color: rgb(245 237 224 / 0.68);
+   font-size: 12px;
+   line-height: 1.5;
+}
+
+.ar-spinner {
+   width: 36px;
+   height: 36px;
+   border: 2px solid rgb(245 237 224 / 0.2);
+   border-top-color: var(--ar-ochre);
+   border-radius: 999px;
+   animation: ar-spin 900ms linear infinite;
+}
+
+.ar-spinner--light {
+   border-color: rgb(245 237 224 / 0.24);
+   border-top-color: var(--ar-ochre);
+}
+
+.ar-checking {
+   display: grid;
+   justify-items: center;
+   text-align: center;
+}
+
+.ar-checking p {
+   margin: 16px 0 0;
+   color: var(--ar-raised-cream);
+   font-size: 14px;
+   font-weight: 700;
+}
+
+.ar-camera-shell {
+   position: fixed;
+   inset: 0;
+   isolation: isolate;
+   width: 100vw;
+   height: 100dvh;
+   min-height: 100svh;
+   overflow: hidden;
+   background: var(--ar-deep-umber);
+}
+
+.ar-camera-backdrop {
+   background: linear-gradient(180deg, rgb(255 243 226 / 0.05), transparent 38%),
+      linear-gradient(135deg, #201712 0%, var(--ar-umber) 52%, #101317 100%),
+      linear-gradient(90deg, rgb(46 66 87 / 0.3) 0 18%, transparent 18%);
+}
+
+.ar-overlay-button {
+   pointer-events: auto;
+   min-height: 40px;
+   border: 1px solid rgb(245 237 224 / 0.28);
+   background: rgb(16 19 23 / 0.68);
+   color: var(--ar-raised-cream);
+   padding: 0 13px;
+   backdrop-filter: blur(10px);
+}
+
+.ar-overlay-button:hover {
+   border-color: var(--ar-ochre);
+   background: rgb(27 20 16 / 0.82);
+}
+
+.ar-loading-panel,
+.ar-error-card {
+   width: min(100%, 420px);
+   padding: 28px;
+   text-align: center;
+}
+
+.ar-loading-panel {
+   display: grid;
+   justify-items: center;
+}
+
+.ar-loading-text {
+   margin: 16px 0 0;
+   color: var(--ar-raised-cream);
+   font-size: 14px;
+   font-weight: 700;
+}
+
+.ar-progress {
+   width: 224px;
+   height: 6px;
+   margin-top: 18px;
+   overflow: hidden;
+   border-radius: 999px;
+   background: rgb(245 237 224 / 0.16);
+}
+
+.ar-progress-bar {
+   height: 100%;
+   border-radius: inherit;
+   background: var(--ar-ochre);
+   transition: width 180ms ease;
+}
+
+.ar-error-mark {
+   display: inline-flex;
+   width: 48px;
+   height: 48px;
+   align-items: center;
+   justify-content: center;
+   border: 1px solid rgb(168 72 42 / 0.3);
+   border-radius: 6px;
+   background: rgb(168 72 42 / 0.08);
+   color: var(--ar-clay);
+}
+
+.ar-error-mark svg {
+   width: 22px;
+   height: 22px;
+}
+
+.ar-error-title {
+   margin: 18px 0 0;
+   color: var(--ar-raised-cream);
+   font-family: var(--record-font-display), 'Palatino Linotype', Palatino, Georgia,
+      serif;
+   font-size: 24px;
+   font-weight: 700;
+   line-height: 1.2;
+}
+
+.ar-error-detail {
+   margin: 12px 0 0;
+   color: rgb(245 237 224 / 0.72);
+   font-size: 14px;
+   line-height: 1.6;
+}
+
+.ar-status-pill {
+   display: inline-flex;
+   max-width: calc(100vw - 2rem);
+   align-items: center;
+   gap: 9px;
+   border: 1px solid rgb(245 237 224 / 0.18);
+   /* A true pill, and translucent enough to sit lightly over the camera. 0.62
+      is the floor: below it the text drops under AA against a blown-out white
+      frame, which is the one background we cannot control. */
+   border-radius: 999px;
+   background: rgb(16 19 23 / 0.62);
+   padding: 9px 16px;
+   color: var(--ar-raised-cream);
+   font-size: 12px;
+   font-weight: 700;
+   line-height: 1.35;
+   text-align: center;
+   backdrop-filter: blur(10px);
+}
+
+.ar-status-dot {
+   display: inline-block;
+   width: 8px;
+   height: 8px;
+   flex: 0 0 auto;
+   border-radius: 999px;
+   background: var(--ar-ochre);
+}
+
+.ar-status-dot--tracking {
+   background: #6fb08d;
+}
+
+.ar-status-dot--scanning {
+   animation: ar-pulse 900ms ease-in-out infinite;
+}
+
+.ar-status-pill svg {
+   width: 16px;
+   height: 16px;
+   flex: 0 0 auto;
+}
+
+.ar-rotation-hint {
+   color: rgb(255 243 226 / 0.5);
+}
+
+.ar-demo-label {
+   margin-top: 4px;
+   display: block;
+   color: rgb(255 243 226 / 0.54);
+   font-size: 10px;
+   font-weight: 500;
+   line-height: 1;
+   text-transform: lowercase;
+}
+
+@keyframes ar-spin {
+   to {
+      transform: rotate(360deg);
+   }
+}
+
+@keyframes ar-pulse {
+   50% {
+      opacity: 0.42;
+   }
+}
+
+@media (min-width: 760px) {
+   .ar-entry-frame {
+      grid-template-columns: minmax(0, 1fr) minmax(290px, 0.82fr);
+      align-items: center;
+      gap: 44px;
+   }
+
+   .ar-entry-panel {
+      padding: 36px;
+   }
+
+   .ar-entry-art {
+      display: block;
+   }
+
+   .ar-title {
+      font-size: 42px;
+   }
+}
+
+@media (max-width: 480px) {
+   .ar-entry-panel,
+   .ar-start-card,
+   .ar-loading-panel,
+   .ar-error-card {
+      padding: 24px;
+   }
+
+   .ar-title {
+      font-size: 30px;
+   }
+
+   .ar-question {
+      font-size: 22px;
+   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+   .ar-spinner,
+   .ar-status-dot--scanning {
+      animation: none;
+   }
+
+   .ar-button-primary,
+   .ar-button-secondary,
+   .ar-artifact-option,
+   .ar-overlay-button,
+   .ar-progress-bar {
+      transition: none;
+   }
+}

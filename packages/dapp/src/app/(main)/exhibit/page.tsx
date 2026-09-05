@@ -102,7 +102,7 @@ export default function Home(): JSX.Element {
 
             <div className="relative px-6 md:px-[12%] pt-28 md:pt-32 pb-16">
                <div className="max-w-3xl space-y-6">
-                  <p className="text-[11px] uppercase tracking-[0.4em] text-amber-200/70">
+                  <p className="text-[11px] uppercase tracking-[0.4em] text-orange-500">
                      Exhibit
                   </p>
                   <h1
@@ -123,7 +123,7 @@ export default function Home(): JSX.Element {
                         rel="noopener noreferrer"
                      >
                         <Button
-                           className="bg-amber-300 text-neutral-900 border-amber-300 hover:bg-amber-200"
+                           className="bg-orange-500 text-white border-orange-500 hover:bg-orange-600 hover:border-orange-600 focus:ring-orange-500"
                            size="medium"
                         >
                            Enter Exhibit
