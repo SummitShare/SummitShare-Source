@@ -92,7 +92,14 @@ const MIN_POSE_DELTA_SECONDS = 0.001
 const MIN_POSE_CUTOFF_HZ = 0.1
 const POSE_DERIVATIVE_CUTOFF_HZ = 1
 const POSE_REFERENCE_SAMPLE_COUNT = 5
-const MAX_REJECTED_POSE_HOLD_FRAMES = 3
+// Counted in POSE SAMPLES, not render frames. advanceFrame() runs once per
+// renderer frame (~60 Hz) while MindAR only emits poses at 8-12 Hz on the
+// devices this fallback exists for, so counting frames expired the hold in
+// ~67 ms — before the next measurement could possibly arrive. One isolated bad
+// sample then hid the artifact and reinitialised the filter, which reads as a
+// flicker. Tying the budget to measurements makes it ~300-400 ms at real pose
+// cadence and independent of display rate.
+const MAX_REJECTED_POSE_SAMPLES = 3
 const MIN_POSE_AXIS_RATIO = 0.5
 const MIN_POSE_NORMALIZED_VOLUME = 0.5
 const MIN_REFERENCE_SCALE_RATIO = 0.5
@@ -306,7 +313,7 @@ export const createMindARPoseRelay = (): MindARPoseRelay => {
   let filteredRotationDerivative = 0
   let targetUnitScale: number | null = null
   let holdingRejectedPose = false
-  let rejectionHoldFrames = 0
+  let rejectedPoseSamples = 0
   let acceptedWarmupUpdates = 0
   // Deliberately NOT cleared by resetStablePose: reset() runs on every target
   // re-acquisition, so an acquisition-scoped clock restarts faster than it can
@@ -339,7 +346,7 @@ export const createMindARPoseRelay = (): MindARPoseRelay => {
     filteredPositionDerivative = 0
     filteredRotationDerivative = 0
     holdingRejectedPose = false
-    rejectionHoldFrames = 0
+    rejectedPoseSamples = 0
     acceptedWarmupUpdates = 0
     staleRunLength = 0
     staleOpacityFrom = 1
@@ -703,6 +710,7 @@ export const createMindARPoseRelay = (): MindARPoseRelay => {
       const rejectionReason = getPoseRejectionReason(validationState, matrix)
       if (rejectionReason !== null) {
         holdingRejectedPose = true
+        rejectedPoseSamples += 1
         return {
           status: 'rejected',
           accepted: false,
@@ -755,7 +763,7 @@ export const createMindARPoseRelay = (): MindARPoseRelay => {
         warmupFadeStartedAt = sampledAt
       }
       holdingRejectedPose = false
-      rejectionHoldFrames = 0
+      rejectedPoseSamples = 0
 
       return {
         status: 'accepted',
@@ -786,10 +794,9 @@ export const createMindARPoseRelay = (): MindARPoseRelay => {
         return { poseVisible: initialized, rejectionHoldExpired: false }
       }
 
-      rejectionHoldFrames += 1
       if (
         !initialized ||
-        rejectionHoldFrames > MAX_REJECTED_POSE_HOLD_FRAMES
+        rejectedPoseSamples > MAX_REJECTED_POSE_SAMPLES
       ) {
         resetStablePose()
         return { poseVisible: false, rejectionHoldExpired: true }

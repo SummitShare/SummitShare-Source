@@ -350,3 +350,47 @@ describe('acquisition warmup fail-safe', () => {
       expect(afterReset.recommendedOpacity).toBe(1);
    });
 });
+
+describe('rejected-pose hold budget', () => {
+   // Codex review on PR #155. advanceFrame() runs once per renderer frame
+   // (~60 Hz) but MindAR emits poses at 8-12 Hz, so a budget counted in frames
+   // expired in ~67 ms — before the next measurement could arrive. One isolated
+   // bad sample hid the artifact and reinitialised the filter. The budget must
+   // therefore be spent by measurements, never by display frames.
+   // Each one must differ: identical matrices are short-circuited as
+   // 'unchanged' before the rejection check ever runs, so a repeated matrix
+   // would count once no matter how many times it is fed.
+   const rejectingMatrix = (nudge = 0) => {
+      const matrix = poseMatrix(0, 0);
+      matrix.elements[13] = nudge;
+      matrix.elements[12] = Number.NaN;
+      return matrix;
+   };
+
+   it('survives a second of render frames after one rejected sample', () => {
+      const relay = createMindARPoseRelay();
+      updateRelay(relay, poseMatrix(0), 1000, PARAMETERS);
+      updateRelay(relay, rejectingMatrix(1), 1100, PARAMETERS);
+
+      let frame = relay.advanceFrame(true);
+      for (let index = 0; index < 60; index += 1) {
+         frame = relay.advanceFrame(true);
+      }
+
+      expect(frame.rejectionHoldExpired).toBe(false);
+      expect(frame.poseVisible).toBe(true);
+   });
+
+   it('still expires once enough measurements are rejected', () => {
+      const relay = createMindARPoseRelay();
+      updateRelay(relay, poseMatrix(0), 1000, PARAMETERS);
+
+      let sampledAt = 1100;
+      for (let index = 0; index < 4; index += 1) {
+         updateRelay(relay, rejectingMatrix(index + 1), sampledAt, PARAMETERS);
+         sampledAt += 100;
+      }
+
+      expect(relay.advanceFrame(true).rejectionHoldExpired).toBe(true);
+   });
+});
