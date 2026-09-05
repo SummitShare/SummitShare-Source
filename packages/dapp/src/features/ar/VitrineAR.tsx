@@ -154,7 +154,7 @@ const POSE_RELAY_PARAMETERS: MindARPoseParameters = {
    warmupUpdates: 3,
    warmupFadeMs: 200,
    warmupTimeoutMs: 600,
-   staleFadeUpdates: 4,
+   staleFadeUpdates: 10,
    staleFadeMs: 150,
    holdTranslationTargetUnits: 0.0025,
    holdRotationDegrees: 0.45,
