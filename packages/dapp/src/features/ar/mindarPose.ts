@@ -35,6 +35,39 @@ export interface MindARPoseParameters {
   depthFilterMinCutOff: number
 }
 
+// Device-validated 2026-08-08 on an iPhone against the drum medallion.
+// poseFilterBeta is zero deliberately. The speed term that drives it is
+// contaminated by estimator noise, not just real motion: "still" captures
+// reported up to 5578 units/s (~5.4 target-widths/s) with the phone braced.
+// Any meaningful beta therefore opens the cutoff in response to noise and
+// re-admits the jitter the filter exists to remove — a normalised beta of 1.0
+// measured ~52% of raw noise passed, against ~19% at beta 0.
+export const DEFAULT_MINDAR_POSE_PARAMETERS = Object.freeze({
+  poseFilterMinCutOff: 1.5,
+  poseFilterBeta: 0,
+  poseRotationFilterBeta: 0.05,
+  poseTranslationJumpLimit: 0.5,
+  poseRotationJumpLimitDegrees: 45,
+  warmupUpdates: 3,
+  warmupFadeMs: 200,
+  warmupTimeoutMs: 600,
+  // MIRRORS PRODUCTION. SummitShare ships 10 (VitrineAR.tsx), so the harness
+  // must too — a rig running different parameters cannot be used as evidence
+  // for what production does, which is the whole reason it exists.
+  //
+  // 10 is measurably tight: the fade arms at staleRunLength 11, the first
+  // visibly dimmed update is 12, and MindAR pulls the target at miss 13
+  // (trackMiss > missTolerance), leaving ONE dimmed frame. 8 would give three
+  // and still never fade the routine 5-7 stale runs — verified at 8, 10 and
+  // 12 Hz. Change it in SummitShare first, then mirror it here.
+  staleFadeUpdates: 10,
+  staleFadeMs: 150,
+  holdTranslationTargetUnits: 0.0025,
+  holdRotationDegrees: 0.45,
+  holdEngageUpdates: 6,
+  depthFilterMinCutOff: 0.5,
+} satisfies MindARPoseParameters)
+
 // Pose objects in update results are read-only views owned and reused by the
 // relay. Copy their values if they need to outlive the current update.
 export interface MindARDecomposedPose {

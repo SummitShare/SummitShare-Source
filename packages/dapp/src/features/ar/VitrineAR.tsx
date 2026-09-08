@@ -13,10 +13,12 @@ import ARStartCard from './ARStartCard';
 import { AR_EXIT_PATH, type ARArtifact } from './artifacts';
 import { applyArtifactModelOpacity } from './loadArtifactModel';
 import {
+   DEFAULT_MINDAR_POSE_PARAMETERS,
    createMindARPoseRelay,
-   type MindARPoseParameters,
    type MindARPoseRelay,
 } from './mindarPose';
+import { createMindARPosePresentation } from './mindarPresentation';
+import { attachMindARViewport } from './mindarViewport';
 
 type ARPhase =
    | 'idle'
@@ -47,6 +49,8 @@ interface ActiveSession {
    targetUnitGroup: Group;
    uprightArtifact: Group | null;
    poseRelay: MindARPoseRelay;
+   posePresentation: ReturnType<typeof createMindARPosePresentation>;
+   disposeViewport: () => void;
    disposeModel: (() => void) | null;
    disposeDraco: (() => void) | null;
    injectedStyles: HTMLStyleElement[];
@@ -126,41 +130,16 @@ const isInteractiveTarget = (target: EventTarget | null) =>
    target instanceof Element &&
    target.closest(INTERACTIVE_ELEMENT_SELECTOR) !== null;
 
-// Jump limits: past these, an accepted pose is snapped to rather than
-// interpolated toward, because inside `missTolerance` MindAR can swap in a
-// displaced pose with no lost/found event and smoothing would drag the artifact
-// across the room.
-//
-// Both are unvalidated on device, and both MUST stay in step with the
-// workbench harness's SHARED_DEFAULTS. They diverged once already — 25 here
-// against 45 there — which would have made a calibration session in the harness
-// unusable as evidence for what production does.
-//
-// The tuning tension, for whoever measures them: these are absolute, not
-// per-second. At an 8-12 Hz pose rate on a weak Android, 100 ms separates
-// samples, so 45 degrees is 450 deg/s while 25 would be 250 deg/s — reachable
-// by an ordinary wrist flick, which would snap when it should smooth. Too high
-// instead means a real re-acquisition gets smoothed through as a slide. The
-// harness counts jump snaps; read that counter before changing either number.
-const POSE_TRANSLATION_JUMP_LIMIT = 0.5;
-const POSE_ROTATION_JUMP_LIMIT_DEGREES = 45;
-
-const POSE_RELAY_PARAMETERS: MindARPoseParameters = {
-   poseFilterMinCutOff: 1.5,
-   poseFilterBeta: 0,
-   poseRotationFilterBeta: 0.05,
-   poseTranslationJumpLimit: POSE_TRANSLATION_JUMP_LIMIT,
-   poseRotationJumpLimitDegrees: POSE_ROTATION_JUMP_LIMIT_DEGREES,
-   warmupUpdates: 3,
-   warmupFadeMs: 200,
-   warmupTimeoutMs: 600,
-   staleFadeUpdates: 10,
-   staleFadeMs: 150,
-   holdTranslationTargetUnits: 0.0025,
-   holdRotationDegrees: 0.45,
-   holdEngageUpdates: 6,
-   depthFilterMinCutOff: 0.5,
-};
+// Phone-validated presentation settings; no diagnostic mode switch in production.
+const POSE_RESPONSE_MS = 100;
+const JUMP_GUARD = Object.freeze({
+   translationThresholdTargetUnits:
+      DEFAULT_MINDAR_POSE_PARAMETERS.poseTranslationJumpLimit,
+   rotationThresholdDegrees:
+      DEFAULT_MINDAR_POSE_PARAMETERS.poseRotationJumpLimitDegrees,
+   confirmationMs: 120,
+   maxWaitMs: 250,
+});
 
 const createError = (kind: ARErrorKind): ARErrorState => ({
    kind,
@@ -309,7 +288,25 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
     * attempt that loses a race must not tear down the attempt that replaced it.
     */
    const cleanupKnownSession = useCallback((session: ActiveSession | null) => {
-      if (!session || session.cleaned) return;
+      if (!session) return;
+      session.disposeViewport();
+      // Async startup/download can finish after the renderer was already torn down.
+      // Always release newly arrived resources; only renderer teardown is one-shot.
+      try {
+         session.mindAR.stop();
+      } catch {
+         // Startup may have failed before the controller was created.
+      }
+      const video = session.mindAR.video;
+      const stream = video?.srcObject;
+      if (stream instanceof MediaStream)
+         stream.getTracks().forEach((track) => track.stop());
+      video?.remove();
+      session.disposeModel?.();
+      session.disposeModel = null;
+      session.disposeDraco?.();
+      session.disposeDraco = null;
+      if (session.cleaned) return;
       session.cleaned = true;
       if (sessionRef.current === session) sessionRef.current = null;
       dragRef.current = null;
@@ -319,14 +316,7 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
       session.anchor.onTargetLost = null;
       session.anchor.onTargetUpdate = null;
       session.poseRelay.reset();
-      try {
-         session.mindAR.stop();
-      } catch {
-         // The camera may have failed before MindAR finished creating a controller.
-      }
-
-      session.disposeModel?.();
-      session.disposeDraco?.();
+      session.posePresentation.reset();
       session.targetUnitGroup.removeFromParent();
       session.poseGroup.removeFromParent();
       session.mindAR.renderer.dispose();
@@ -334,15 +324,6 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
       session.mindAR.renderer.domElement.remove();
       session.mindAR.cssRenderer.domElement.remove();
       session.injectedStyles.forEach((style) => style.remove());
-
-      const videos = containerRef.current?.querySelectorAll('video') ?? [];
-      videos.forEach((video) => {
-         const stream = video.srcObject;
-         if (stream instanceof MediaStream) {
-            stream.getTracks().forEach((track) => track.stop());
-         }
-         video.remove();
-      });
    }, []);
 
    /** Tears down whichever session is currently mounted, if any. */
@@ -467,6 +448,7 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
          poseGroup.add(targetUnitGroup);
 
          const poseRelay = createMindARPoseRelay();
+         const posePresentation = createMindARPosePresentation();
 
          const session: ActiveSession = {
             mindAR,
@@ -475,6 +457,8 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
             targetUnitGroup,
             uprightArtifact: null,
             poseRelay,
+            posePresentation,
+            disposeViewport: attachMindARViewport(mindAR),
             disposeModel: null,
             disposeDraco: null,
             injectedStyles,
@@ -511,6 +495,7 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
          anchor.onTargetFound = () => {
             poseUpdatePending = false;
             poseRelay.reset();
+            posePresentation.reset();
             recommendedOpacity = 0;
             if (session.uprightArtifact) {
                applyArtifactModelOpacity(session.uprightArtifact, 0);
@@ -527,6 +512,7 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
          anchor.onTargetLost = () => {
             poseUpdatePending = false;
             poseRelay.reset();
+            posePresentation.reset();
             recommendedOpacity = 0;
             if (session.uprightArtifact) {
                applyArtifactModelOpacity(session.uprightArtifact, 0);
@@ -558,29 +544,18 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
          }
          mindAR.renderer.setAnimationLoop(() => {
             if (session.cleaned) return;
+            const now = performance.now();
 
             const pendingPoseSampledAt = poseUpdatePendingAt;
             const hasPendingPose = poseUpdatePending;
             poseUpdatePending = false;
             if (hasPendingPose) {
-               if (anchor.visible) {
-                  // MindAR assigns anchor.group.matrix itself every frame, as
-                  // worldMatrix * postMatrix — and that postMatrix is where the
-                  // target's pixel width lives as uniform scale, which is the
-                  // unit every displayHeight is expressed in. anchor.group is a
-                  // direct child of the scene, so matrixWorld adds nothing; but
-                  // updateWorldMatrix() calls updateMatrix() whenever
-                  // matrixAutoUpdate is left on, recomposing the matrix from the
-                  // group's own untouched position/quaternion/scale and throwing
-                  // MindAR's assignment away. The scale collapses to 1, the
-                  // artifact renders ~1000x too small, and nothing reports an
-                  // error. Read the matrix MindAR actually wrote.
-               }
+               // MindAR owns this local matrix, including the target pixel scale.
                const poseUpdate = poseRelay.update({
                   anchorVisible: anchor.visible,
                   matrix: anchor.group.matrix,
                   sampledAt: pendingPoseSampledAt,
-                  parameters: POSE_RELAY_PARAMETERS,
+                  parameters: DEFAULT_MINDAR_POSE_PARAMETERS,
                });
                recommendedOpacity = poseUpdate.recommendedOpacity;
                if (session.uprightArtifact) {
@@ -594,12 +569,24 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
                   poseUpdate.filteredPose !== null &&
                   poseUpdate.targetUnitScale !== null
                ) {
-                  poseGroup.matrix.copy(poseUpdate.filteredPose.matrix);
+                  posePresentation.setTarget(
+                     poseUpdate.filteredPose,
+                     now,
+                     POSE_RESPONSE_MS,
+                     poseUpdate.snapReason,
+                     {
+                        ...JUMP_GUARD,
+                        targetUnitScale: poseUpdate.targetUnitScale,
+                     }
+                  );
                   targetUnitGroup.scale.setScalar(poseUpdate.targetUnitScale);
                }
             }
 
             const poseFrame = poseRelay.advanceFrame(anchor.visible);
+            if (poseFrame.rejectionHoldExpired) posePresentation.reset();
+            const displayedPose = posePresentation.sample(now, POSE_RESPONSE_MS);
+            if (displayedPose) poseGroup.matrix.copy(displayedPose.matrix);
             applyRelayVisibility(poseFrame.poseVisible);
             mindAR.renderer.render(mindAR.scene, mindAR.camera);
          });
@@ -815,10 +802,7 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
             aria-live="polite"
          >
             {phase === 'idle' && (
-               <ARStartCard
-                  artifactName={artifact.name}
-                  onStart={startAR}
-               />
+               <ARStartCard artifactName={artifact.name} onStart={startAR} />
             )}
 
             {(phase === 'starting' || phase === 'loading-model') && (

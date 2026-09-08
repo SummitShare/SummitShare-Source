@@ -23,6 +23,9 @@ declare module 'mind-ar/dist/mindar-image-three.prod.js' {
    }
 
    export class MindARThree {
+      container: HTMLElement;
+      resize: () => void;
+      _resizeHandler?: (() => void) | null;
       constructor(options: MindARThreeOptions);
       scene: Scene;
       renderer: WebGLRenderer;
