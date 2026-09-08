@@ -27,6 +27,10 @@ declare module 'mind-ar/dist/mindar-image-three.prod.js' {
       scene: Scene;
       renderer: WebGLRenderer;
       camera: PerspectiveCamera;
+      container: HTMLElement;
+      controller?: unknown;
+      resize(): void;
+      _resizeHandler?: (() => void) | null;
       video?: HTMLVideoElement;
       cssRenderer: {
          domElement: HTMLElement;

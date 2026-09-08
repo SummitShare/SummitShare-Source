@@ -13,10 +13,11 @@ import ARStartCard from './ARStartCard';
 import { AR_EXIT_PATH, type ARArtifact } from './artifacts';
 import { applyArtifactModelOpacity } from './loadArtifactModel';
 import {
+   DEFAULT_MINDAR_POSE_PARAMETERS,
    createMindARPoseRelay,
-   type MindARPoseParameters,
    type MindARPoseRelay,
 } from './mindarPose';
+import { attachMindARViewport } from './mindarViewport';
 
 type ARPhase =
    | 'idle'
@@ -42,6 +43,7 @@ interface ARErrorState {
 
 interface ActiveSession {
    mindAR: MindARThree;
+   disposeViewport: () => void;
    anchor: MindARAnchor;
    poseGroup: Group;
    targetUnitGroup: Group;
@@ -131,8 +133,8 @@ const isInteractiveTarget = (target: EventTarget | null) =>
 // displaced pose with no lost/found event and smoothing would drag the artifact
 // across the room.
 //
-// Both are unvalidated on device, and both MUST stay in step with the
-// workbench harness's SHARED_DEFAULTS. They diverged once already — 25 here
+// Both are unvalidated on device, and both MUST stay in step with the shared
+// relay defaults. They diverged once already — 25 here
 // against 45 there — which would have made a calibration session in the harness
 // unusable as evidence for what production does.
 //
@@ -142,25 +144,7 @@ const isInteractiveTarget = (target: EventTarget | null) =>
 // by an ordinary wrist flick, which would snap when it should smooth. Too high
 // instead means a real re-acquisition gets smoothed through as a slide. The
 // harness counts jump snaps; read that counter before changing either number.
-const POSE_TRANSLATION_JUMP_LIMIT = 0.5;
-const POSE_ROTATION_JUMP_LIMIT_DEGREES = 45;
-
-const POSE_RELAY_PARAMETERS: MindARPoseParameters = {
-   poseFilterMinCutOff: 1.5,
-   poseFilterBeta: 0,
-   poseRotationFilterBeta: 0.05,
-   poseTranslationJumpLimit: POSE_TRANSLATION_JUMP_LIMIT,
-   poseRotationJumpLimitDegrees: POSE_ROTATION_JUMP_LIMIT_DEGREES,
-   warmupUpdates: 3,
-   warmupFadeMs: 200,
-   warmupTimeoutMs: 600,
-   staleFadeUpdates: 10,
-   staleFadeMs: 150,
-   holdTranslationTargetUnits: 0.0025,
-   holdRotationDegrees: 0.45,
-   holdEngageUpdates: 6,
-   depthFilterMinCutOff: 0.5,
-};
+const POSE_RELAY_PARAMETERS = DEFAULT_MINDAR_POSE_PARAMETERS;
 
 const createError = (kind: ARErrorKind): ARErrorState => ({
    kind,
@@ -309,7 +293,9 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
     * attempt that loses a race must not tear down the attempt that replaced it.
     */
    const cleanupKnownSession = useCallback((session: ActiveSession | null) => {
-      if (!session || session.cleaned) return;
+      if (!session) return;
+      session.disposeViewport();
+      if (session.cleaned) return;
       session.cleaned = true;
       if (sessionRef.current === session) sessionRef.current = null;
       dragRef.current = null;
@@ -450,6 +436,7 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
             warmupTolerance: 8,
             missTolerance: 12,
          });
+         const disposeViewport = attachMindARViewport(mindAR);
          const injectedStyles = Array.from(
             document.head.querySelectorAll('style')
          ).filter(
@@ -470,6 +457,7 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
 
          const session: ActiveSession = {
             mindAR,
+            disposeViewport,
             anchor,
             poseGroup,
             targetUnitGroup,
@@ -563,19 +551,9 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
             const hasPendingPose = poseUpdatePending;
             poseUpdatePending = false;
             if (hasPendingPose) {
-               if (anchor.visible) {
-                  // MindAR assigns anchor.group.matrix itself every frame, as
-                  // worldMatrix * postMatrix — and that postMatrix is where the
-                  // target's pixel width lives as uniform scale, which is the
-                  // unit every displayHeight is expressed in. anchor.group is a
-                  // direct child of the scene, so matrixWorld adds nothing; but
-                  // updateWorldMatrix() calls updateMatrix() whenever
-                  // matrixAutoUpdate is left on, recomposing the matrix from the
-                  // group's own untouched position/quaternion/scale and throwing
-                  // MindAR's assignment away. The scale collapses to 1, the
-                  // artifact renders ~1000x too small, and nothing reports an
-                  // error. Read the matrix MindAR actually wrote.
-               }
+               // Read the matrix MindAR wrote, not matrixWorld. The group has
+               // matrixAutoUpdate = false; why the two were once observed to
+               // differ is not understood.
                const poseUpdate = poseRelay.update({
                   anchorVisible: anchor.visible,
                   matrix: anchor.group.matrix,

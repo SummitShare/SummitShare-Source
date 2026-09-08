@@ -1,26 +1,20 @@
 import { Matrix4, Quaternion, Vector3 } from 'three';
 import { describe, expect, it } from 'vitest';
 import {
+   DEFAULT_MINDAR_POSE_PARAMETERS,
    createMindARPoseRelay,
    type MindARPoseParameters,
    type MindARPoseUpdate,
 } from './mindarPose';
 
 const PARAMETERS: MindARPoseParameters = {
-   poseFilterMinCutOff: 1.5,
-   poseFilterBeta: 0,
-   poseRotationFilterBeta: 0.05,
+   ...DEFAULT_MINDAR_POSE_PARAMETERS,
    poseTranslationJumpLimit: 10,
    poseRotationJumpLimitDegrees: 180,
    warmupUpdates: 0,
    warmupFadeMs: 0,
    warmupTimeoutMs: 0,
    staleFadeUpdates: 4,
-   staleFadeMs: 150,
-   holdTranslationTargetUnits: 0.0025,
-   holdRotationDegrees: 0.45,
-   holdEngageUpdates: 6,
-   depthFilterMinCutOff: 0.5,
 };
 
 const poseMatrix = (

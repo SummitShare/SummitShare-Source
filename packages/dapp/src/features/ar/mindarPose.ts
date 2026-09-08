@@ -35,6 +35,32 @@ export interface MindARPoseParameters {
   depthFilterMinCutOff: number
 }
 
+// Device-validated 2026-08-08 on an iPhone against the drum medallion.
+// poseFilterBeta is zero deliberately. The speed term that drives it is
+// contaminated by estimator noise, not just real motion: "still" captures
+// reported up to 5578 units/s (~5.4 target-widths/s) with the phone braced.
+// Any meaningful beta therefore opens the cutoff in response to noise and
+// re-admits the jitter the filter exists to remove — a normalised beta of 1.0
+// measured ~52% of raw noise passed, against ~19% at beta 0.
+export const DEFAULT_MINDAR_POSE_PARAMETERS = Object.freeze({
+  poseFilterMinCutOff: 1.5,
+  poseFilterBeta: 0,
+  poseRotationFilterBeta: 0.05,
+  poseTranslationJumpLimit: 0.5,
+  poseRotationJumpLimitDegrees: 45,
+  warmupUpdates: 3,
+  warmupFadeMs: 200,
+  warmupTimeoutMs: 600,
+  // Routine stale runs are 5-7 updates, so 8 still never fades them. At 10 Hz,
+  // fading gets 3 usable updates instead of 1 before miss 13 pulls the target.
+  staleFadeUpdates: 8,
+  staleFadeMs: 150,
+  holdTranslationTargetUnits: 0.0025,
+  holdRotationDegrees: 0.45,
+  holdEngageUpdates: 6,
+  depthFilterMinCutOff: 0.5,
+} satisfies MindARPoseParameters)
+
 // Pose objects in update results are read-only views owned and reused by the
 // relay. Copy their values if they need to outlive the current update.
 export interface MindARDecomposedPose {
