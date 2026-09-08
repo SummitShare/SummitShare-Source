@@ -202,6 +202,11 @@ function FpsProbe({ onFps }: Readonly<{ onFps: (fps: VitrineFps) => void }>) {
    return null;
 }
 
+interface LoadedArtifactModel {
+   readonly key: string;
+   readonly object: Object3D;
+}
+
 function ArtifactModel({
    artifact,
    resolveAssetUrl,
@@ -215,7 +220,16 @@ function ArtifactModel({
    onProgress: (progress: number | null) => void;
    onError: (message: string | null) => void;
 }>) {
-   const [model, setModel] = useState<Object3D | null>(null);
+   // Tagged with the artifact it belongs to. Holding a bare Object3D meant that
+   // switching artifacts kept rendering the PREVIOUS one for the whole load —
+   // seconds for a multi-megabyte Draco GLB on a phone — so opening the drum,
+   // going back and opening the mask showed the drum until the mask landed, and
+   // kept showing it after the cleanup below had already disposed its GPU
+   // resources. Comparing the tag at render time fixes that without clearing
+   // state inside the effect, which would cascade a render
+   // (react-hooks/set-state-in-effect).
+   const [loaded, setLoaded] = useState<LoadedArtifactModel | null>(null);
+   const modelKey = `${artifact.slug}|${artifact.modelUrl}`;
 
    useEffect(() => {
       let active = true;
@@ -238,7 +252,7 @@ function ArtifactModel({
             }
             dispose = loaded.dispose;
             lifecycleRefs.disposeModelRef.current = loaded.dispose;
-            setModel(loaded.model);
+            setLoaded({ key: modelKey, object: loaded.model });
             onProgress(100);
          })
          .catch((error: unknown) => {
@@ -257,12 +271,14 @@ function ArtifactModel({
       artifact.modelUrl,
       artifact.slug,
       lifecycleRefs,
+      modelKey,
       onError,
       onProgress,
       resolveAssetUrl,
    ]);
 
-   return model ? <primitive object={model} /> : null;
+   // Render only a model that belongs to the artifact currently being shown.
+   return loaded?.key === modelKey ? <primitive object={loaded.object} /> : null;
 }
 
 function PlacementContents({
@@ -525,7 +541,7 @@ function HitTestPlacement({
             <mesh rotation={[-Math.PI / 2, 0, 0]}>
                <ringGeometry args={[0.055, 0.07, 48]} />
                <meshBasicMaterial
-                  color="#fcd34d"
+                  color="#fb923c"
                   transparent
                   opacity={0.92}
                   depthTest={false}
@@ -693,7 +709,7 @@ function XRVitrineInstance({
    const placementPolicyRef = useRef(placementPolicy);
    const placementRequestedRef = useRef(false);
    const [placementMessage, setPlacementMessage] = useState(
-      'Tap an upward-facing surface to place.'
+      'Point at a flat surface until the circle appears, then tap.'
    );
    const [anchorLocatable, setAnchorLocatable] = useState<boolean | null>(null);
    const [anchorUnlocatableFrames, setAnchorUnlocatableFrames] = useState(0);
@@ -958,7 +974,9 @@ function XRVitrineInstance({
 
          hitTestSourceRef.current = hitTestSource;
          setResources({ session, hitTestSource, localFloorSpace });
-         setPlacementMessage('Tap an upward-facing surface to place.');
+         setPlacementMessage(
+            'Point at a flat surface until the circle appears, then tap.'
+         );
 
          const requestPlacement = () => {
             if (acceptingRef.current) placementRequestedRef.current = true;

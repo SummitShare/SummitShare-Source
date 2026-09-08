@@ -71,7 +71,7 @@ function HeroSection() {
                      <div className="flex flex-wrap gap-3">
                         <Link href="/exhibit">
                            <Button
-                              className="bg-orange-500 text-white border-orange-500 hover:bg-orange-600 hover:border-orange-600 focus:ring-orange-500"
+                              className="bg-orange-500 text-neutral-900 border-orange-500 hover:bg-orange-600 hover:border-orange-600 focus:ring-orange-500"
                               size="medium"
                            >
                               View Exhibit
@@ -98,10 +98,10 @@ function HeroSection() {
                               key={stat.label}
                               className="rounded-xl bg-white/10 px-4 py-3 backdrop-blur-sm border border-white/10"
                            >
-                              <p className="text-lg font-semibold text-amber-100">
+                              <p className="text-lg font-semibold text-orange-200">
                                  {stat.value}
                               </p>
-                              <p className="text-[10px] uppercase tracking-[0.3em] text-amber-200/70">
+                              <p className="text-[10px] uppercase tracking-[0.3em] text-orange-200/70">
                                  {stat.label}
                               </p>
                            </div>

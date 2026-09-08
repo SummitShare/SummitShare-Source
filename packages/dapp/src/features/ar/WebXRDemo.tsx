@@ -216,7 +216,19 @@ export default function WebXRDemo({
                         }}
                      >
                         <ScanLine aria-hidden="true" />
-                        <span>Point at the marker in the vitrine and tap</span>
+                        {/*
+                         * Two states, because the hit-test only qualifies
+                         * UPWARD-facing surfaces (xrVitrine's
+                         * MIN_SURFACE_UP_DOT). The old copy said "point at the
+                         * marker", but the marker is mounted upright — a
+                         * vertical plane that gate rejects — so the ring could
+                         * never appear and there was nothing to tap.
+                         */}
+                        <span>
+                           {state.reticleVisible
+                              ? 'Tap to place'
+                              : 'Point at a flat surface until the circle appears'}
+                        </span>
                      </p>
                   )}
                </div>
