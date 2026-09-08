@@ -10,7 +10,8 @@
       "test:watch": "vitest",
       "lint": "eslint . --ext .ts,.tsx",
       "format": "prettier --write .",
-      "generate:ar": "node scripts/generate-ar-markers.mjs"
+      "generate:ar": "node scripts/generate-ar-markers.mjs",
+      "generate:record-crops": "node scripts/generate-record-crops.mjs"
    },
    "dependencies": {
       "@apollo/client": "^3.11.10",
