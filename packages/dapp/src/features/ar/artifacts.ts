@@ -42,10 +42,26 @@ export const AR_EXIT_PATH = '/record';
  *                   Not 'measured': that is reserved for a height read
  *                   independently on the WebXR path, against a hit-test surface
  *                   rather than a marker, which is a different measurement.
+ *   'vitrine'     — a WebXR-only display size, deliberately LARGER than the
+ *                   marker-relative size MindAR renders. The two paths do not
+ *                   place against the same thing: MindAR is pinned to a 120 mm
+ *                   medallion an arm's length away, while WebXR drops the
+ *                   object into the room, where a true-to-life height reads as
+ *                   small across a vitrine. This is the one source where the
+ *                   paths may disagree, and the disagreement must be declared
+ *                   here rather than discovered — the 156 mm drum shipped
+ *                   because someone edited the metres and left the units
+ *                   behind. A test asserts a 'vitrine' height is strictly
+ *                   greater than `displayHeight * 0.12`, so an accidental edit
+ *                   that merely equals it still fails.
  *   'placeholder' — `displayHeight * 0.12`. Marker-relative, unrelated to the
  *                   object's real size. Replace before exhibiting.
  */
-export type WebXRHeightSource = 'measured' | 'exhibition' | 'placeholder';
+export type WebXRHeightSource =
+   | 'measured'
+   | 'exhibition'
+   | 'vitrine'
+   | 'placeholder';
 
 interface ARArtifactShape {
    slug: string;
@@ -134,9 +150,13 @@ export const AR_ARTIFACTS = {
       // are orientation and metric offset from the tapped point, neither scales
       // with the object.
       webxr: {
-         heightSource: 'exhibition',
-         heightMetres: 0.204,
-         rotationY: 0.8684,
+         // On-site WebXR calibration, 2026-09-08. 204 mm was device-measured
+         // against the printed square and is right for MindAR, but reads small
+         // once the drum is placed in a room. rotationY zeroed in the same pass,
+         // superseding the 2026-08-08 S20 measurement of 0.8684.
+         heightSource: 'vitrine',
+         heightMetres: 0.8,
+         rotationY: 0,
          nudge: { x: 0.02, y: 0.02, z: -0.03, yaw: 0 },
       },
    },
@@ -179,9 +199,10 @@ export const AR_ARTIFACTS = {
       // limit before the inside comes into view; do not widen it.
       rotationClamp: { min: -1.7013, max: 0.8872 },
       webxr: {
-         heightSource: 'exhibition',
-         heightMetres: 0.174,
-         rotationY: -0.08,
+         // On-site WebXR calibration, 2026-09-08; see the drum above.
+         heightSource: 'vitrine',
+         heightMetres: 0.75,
+         rotationY: 0,
          // No downward drop: a mask is worn, so reading as hoisted above the
          // plinth is right. Do not "fix" it to stand on the surface.
          nudge: { x: 0, y: 0, z: 0, yaw: 0 },
