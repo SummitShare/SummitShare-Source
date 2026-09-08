@@ -71,7 +71,7 @@ describe('AR artifact registry', () => {
 
    it('carries a WebXR block with a declared provenance for every artifact', () => {
       for (const artifact of ARTIFACTS) {
-         expect(['measured', 'exhibition', 'placeholder']).toContain(
+         expect(['measured', 'exhibition', 'vitrine', 'placeholder']).toContain(
             artifact.webxr.heightSource
          );
          expect(artifact.webxr.heightMetres).toBeGreaterThan(0);
@@ -116,6 +116,27 @@ describe('AR artifact registry', () => {
                `(displayHeight ${artifact.displayHeight}). Derive the units from ` +
                `the metres: displayHeight = heightMetres / ${MINDAR_TARGET_WIDTH_METRES}.`
          ).toBeLessThan(AGREEMENT_TOLERANCE_METRES);
+      }
+   });
+
+   /**
+    * The counterpart to the guard above, for the one source allowed to diverge.
+    * A 'vitrine' height is a deliberate enlargement for room-scale legibility,
+    * so it must be STRICTLY greater than the marker-relative size. That is what
+    * separates a declared choice from the 156 mm drum: an accidental edit that
+    * leaves the two equal, or shrinks WebXR below MindAR, still fails here.
+    */
+   it('keeps a vitrine height a declared enlargement, not an accident', () => {
+      for (const artifact of ARTIFACTS) {
+         if (sourceOf(artifact) !== 'vitrine') continue;
+         const mechanical = mechanicalHeight(artifact);
+         expect(
+            artifact.webxr.heightMetres,
+            `${artifact.slug} is labelled 'vitrine' but renders at ` +
+               `${artifact.webxr.heightMetres} m, which is not larger than the ` +
+               `${mechanical.toFixed(4)} m MindAR renders. Either enlarge it or ` +
+               `relabel it 'exhibition' and put both paths back in step.`
+         ).toBeGreaterThan(mechanical + AGREEMENT_TOLERANCE_METRES);
       }
    });
 

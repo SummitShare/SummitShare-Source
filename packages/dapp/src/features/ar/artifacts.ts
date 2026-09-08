@@ -42,10 +42,26 @@ export const AR_EXIT_PATH = '/record';
  *                   Not 'measured': that is reserved for a height read
  *                   independently on the WebXR path, against a hit-test surface
  *                   rather than a marker, which is a different measurement.
+ *   'vitrine'     — a WebXR-only display size, deliberately LARGER than the
+ *                   marker-relative size MindAR renders. The two paths do not
+ *                   place against the same thing: MindAR is pinned to a 120 mm
+ *                   medallion an arm's length away, while WebXR drops the
+ *                   object into the room, where a true-to-life height reads as
+ *                   small across a vitrine. This is the one source where the
+ *                   paths are allowed to disagree, and the disagreement must be
+ *                   declared here rather than discovered — the 156 mm drum
+ *                   shipped because someone edited the metres and left the
+ *                   units behind. A test asserts a 'vitrine' height is strictly
+ *                   greater than `displayHeight * 0.12`, so an accidental edit
+ *                   that merely equals it still fails.
  *   'placeholder' — `displayHeight * 0.12`. Marker-relative, unrelated to the
  *                   object's real size. Replace before exhibiting.
  */
-export type WebXRHeightSource = 'measured' | 'exhibition' | 'placeholder';
+export type WebXRHeightSource =
+   | 'measured'
+   | 'exhibition'
+   | 'vitrine'
+   | 'placeholder';
 
 interface ARArtifactShape {
    slug: string;
@@ -121,10 +137,11 @@ export const AR_ARTIFACTS = {
       associatedHistory: 'Mwenya Mukulu',
       modelUrl: '/models/drum.glb',
       targetUrl: '/ar/targets/drum.mind',
-      // Device-measured 2026-09-04 against a 120 mm printed square at the
-      // optimal ~775 mm viewing distance: 204 mm tall, mount -79 mm. Supersedes
-      // the 0.5 m exhibition guess, which measurement showed was far too big.
-      displayHeight: 1.7,
+      // MindAR size, chosen not measured: 2.05 x 120 mm = 246 mm. The device
+      // measurement (2026-09-04, 120 mm printed square at ~775 mm) was 204 mm,
+      // which read too small. WebXR is deliberately larger still — see
+      // webxr.heightSource 'vitrine'. mount -79 mm is still measured.
+      displayHeight: 2.05,
       rotationY: 0.62,
       mountY: -0.6583,
       // A drum is closed all round, so the full useful arc is available.
@@ -134,9 +151,12 @@ export const AR_ARTIFACTS = {
       // are orientation and metric offset from the tapped point, neither scales
       // with the object.
       webxr: {
-         heightSource: 'exhibition',
-         heightMetres: 0.204,
-         rotationY: 0.8684,
+         heightSource: 'vitrine',
+         heightMetres: 0.8,
+         // Set to 0 during on-site WebXR calibration, superseding the
+         // 2026-08-08 S20 measurement of 0.8684. Re-tune with devrig's
+         // rotation slider if the drum reads turned in the vitrine.
+         rotationY: 0,
          nudge: { x: 0.02, y: 0.02, z: -0.03, yaw: 0 },
       },
    },
@@ -169,19 +189,21 @@ export const AR_ARTIFACTS = {
       // destructures Hair/Mask/Wire out of it.
       modelUrl: '/models/likishi.glb',
       targetUrl: '/ar/targets/likishi.mind',
-      // Device-measured 2026-09-04 against a 120 mm printed square at the
-      // optimal ~775 mm viewing distance: 174 mm tall, mount -95 mm. Supersedes
-      // the 0.5 m exhibition guess, which measurement showed was far too big.
-      displayHeight: 1.45,
+      // MindAR size, chosen not measured: 2.05 x 120 mm = 246 mm. The device
+      // measurement (2026-09-04, 120 mm printed square at ~775 mm) was 174 mm,
+      // which read too small. WebXR is deliberately larger still — see
+      // webxr.heightSource 'vitrine'. mount -95 mm is still measured.
+      displayHeight: 2.05,
       rotationY: -0.08,
       mountY: -0.7917,
       // The far side of a Pwo mask is a hollow shell. This arc is the measured
       // limit before the inside comes into view; do not widen it.
       rotationClamp: { min: -1.7013, max: 0.8872 },
       webxr: {
-         heightSource: 'exhibition',
-         heightMetres: 0.174,
-         rotationY: -0.08,
+         heightSource: 'vitrine',
+         heightMetres: 0.75,
+         // Set to 0 during on-site WebXR calibration, superseding -0.08.
+         rotationY: 0,
          // No downward drop: a mask is worn, so reading as hoisted above the
          // plinth is right. Do not "fix" it to stand on the surface.
          nudge: { x: 0, y: 0, z: 0, yaw: 0 },
