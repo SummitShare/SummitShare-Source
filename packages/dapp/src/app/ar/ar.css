@@ -164,7 +164,6 @@
    z-index: 1;
 }
 
-
 .ar-title {
    margin: 0;
    color: var(--ar-raised-cream);
@@ -613,6 +612,61 @@
    .ar-artifact-option,
    .ar-overlay-button,
    .ar-progress-bar {
+      transition: none;
+   }
+}
+
+/* Three lines that fold into a cross. The morph is the whole point of the
+   control: it is what tells the visitor a second press will close AR, so the
+   two bars must travel to the centre rather than cross-fade. */
+.ar-menu-icon {
+   position: relative;
+   width: 17px;
+   height: 14px;
+   flex: 0 0 auto;
+}
+
+.ar-menu-icon span {
+   position: absolute;
+   left: 0;
+   right: 0;
+   height: 2px;
+   border-radius: 2px;
+   background: currentColor;
+   transition:
+      transform 200ms ease,
+      opacity 140ms ease;
+}
+
+.ar-menu-icon span:nth-child(1) {
+   top: 0;
+}
+.ar-menu-icon span:nth-child(2) {
+   top: 6px;
+}
+.ar-menu-icon span:nth-child(3) {
+   top: 12px;
+}
+
+.ar-overlay-button.is-armed .ar-menu-icon span:nth-child(1) {
+   transform: translateY(6px) rotate(45deg);
+}
+.ar-overlay-button.is-armed .ar-menu-icon span:nth-child(2) {
+   opacity: 0;
+}
+.ar-overlay-button.is-armed .ar-menu-icon span:nth-child(3) {
+   transform: translateY(-6px) rotate(-45deg);
+}
+
+/* Armed is a live state, not decoration: it must be legible over a camera feed
+   without relying on the icon alone. */
+.ar-overlay-button.is-armed {
+   border-color: rgb(251 146 60 / 0.64);
+   background: rgb(251 146 60 / 0.16);
+}
+
+@media (prefers-reduced-motion: reduce) {
+   .ar-menu-icon span {
       transition: none;
    }
 }
