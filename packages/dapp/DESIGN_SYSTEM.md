@@ -30,16 +30,16 @@ The exhibition and AR treatments are route-specific themes. They are not a globa
 
 | Area | Source |
 | --- | --- |
-| Application color tokens and Tailwind configuration | [packages/dapp/tailwind.config.ts](packages/dapp/tailwind.config.ts) |
-| Global typography, navigation styles, article styling | [globals.css](packages/dapp/src/app/styles/globals.css) |
-| Exhibition palette, layout, and responsive rules | [record.css](packages/dapp/src/app/record/record.css) |
-| Exhibition font loading | [record/layout.tsx](packages/dapp/src/app/record/layout.tsx) |
-| AR palette, controls, and motion | [ar.css](packages/dapp/src/app/ar/ar.css) |
-| AR font loading | [ar/layout.tsx](packages/dapp/src/app/ar/layout.tsx) |
-| Marketing hero | [heroSection.tsx](packages/dapp/src/components/heroSection.tsx) |
-| Exhibit listing fonts and layout | [exhibit/page.tsx](<packages/dapp/src/app/(main)/exhibit/page.tsx>) |
-| Artifact detail fonts and layout | [exhibit/[slug]/page.tsx](<packages/dapp/src/app/(main)/exhibit/[slug]/page.tsx>) |
-| Wallet modal theme | [customTheme.tsx](packages/dapp/src/features/customTheme.tsx) |
+| Application color tokens and Tailwind configuration | [tailwind.config.ts](tailwind.config.ts) |
+| Global typography, navigation styles, article styling | [globals.css](src/app/styles/globals.css) |
+| Exhibition palette, layout, and responsive rules | [record.css](src/app/record/record.css) |
+| Exhibition font loading | [record/layout.tsx](src/app/record/layout.tsx) |
+| AR palette, controls, and motion | [ar.css](src/app/ar/ar.css) |
+| AR font loading | [ar/layout.tsx](src/app/ar/layout.tsx) |
+| Marketing hero | [heroSection.tsx](src/components/heroSection.tsx) |
+| Exhibit listing fonts and layout | [exhibit/page.tsx](<src/app/(main)/exhibit/page.tsx>) |
+| Artifact detail fonts and layout | [exhibit/[slug]/page.tsx](<src/app/(main)/exhibit/[slug]/page.tsx>) |
+| Wallet modal theme | [customTheme.tsx](src/features/customTheme.tsx) |
 
 Use the dapp's Tailwind configuration for application tokens. The repository-root `tailwind.config.js` does not define the same palette. Read route overrides after global styles when checking the final appearance.
 
@@ -204,7 +204,7 @@ For new work, keep ordinary application surfaces restrained. Use atmospheric gra
 
 ### Buttons and links
 
-Prefer [Button.tsx](packages/dapp/src/components/button/Button.tsx) for new shared actions. It exports `Button` and `buttonVariants`, accepts native button attributes, forwards a ref, and merges `className` overrides.
+Prefer [Button.tsx](src/components/button/Button.tsx) for new shared actions. It exports `Button` and `buttonVariants`, accepts native button attributes, forwards a ref, and merges `className` overrides.
 
 | Variant | Current appearance |
 | --- | --- |
@@ -235,31 +235,31 @@ import { Button, buttonVariants } from '@/components/button/Button';
 </Link>
 ```
 
-[Butons.tsx](packages/dapp/src/components/button/Butons.tsx) is a separate legacy API with `primary`, `secondary`, `tartary`, and `subTartary` styles and 38/48px heights. Its `active` prop changes styling; `disabled` controls native disabled behavior. Avoid extending both button APIs for the same feature.
+[Butons.tsx](src/components/button/Butons.tsx) is a separate legacy API with `primary`, `secondary`, `tartary`, and `subTartary` styles and 38/48px heights. Its `active` prop changes styling; `disabled` controls native disabled behavior. Avoid extending both button APIs for the same feature.
 
 ### Inputs
 
-Prefer [TextInput.tsx](packages/dapp/src/components/inputs/TextInput.tsx) for standard text fields. It supports `default`, `outline`, `error`, and `success` variants; four padding sizes; labels; and optional left/right icons.
+Prefer [TextInput.tsx](src/components/inputs/TextInput.tsx) for standard text fields. It supports `default`, `outline`, `error`, and `success` variants; four padding sizes; labels; and optional left/right icons.
 
 - Supply a unique `id` when using `label`; the component connects `htmlFor` to that ID.
 - Use persistent labels, appropriate native `type` and `autoComplete`, and nearby help text.
 - Pair error styling with an explanation, `aria-invalid`, and `aria-describedby` as appropriate.
 - Interactive trailing controls, such as password visibility, need a keyboard-operable button and an accessible name.
 
-[Inputs.tsx](packages/dapp/src/components/inputs/Inputs.tsx) also contains legacy input, select, textarea, and pill controls. It references missing tokens and has accessibility gaps; do not use it as a complete specification for new controls.
+[Inputs.tsx](src/components/inputs/Inputs.tsx) also contains legacy input, select, textarea, and pill controls. It references missing tokens and has accessibility gaps; do not use it as a complete specification for new controls.
 
 ### Cards, alerts, and tables
 
-- [Container.tsx](packages/dapp/src/components/Container.tsx) is a full-width bordered panel with `12px` padding and an `8px` radius. It does not constrain page width.
-- [card.tsx](packages/dapp/src/components/ui/card.tsx) provides composable card sections with `24px` header/content padding and a small shadow.
-- [alert.tsx](packages/dapp/src/components/ui/alert.tsx) provides a title and description with `role="alert"`. Reserve assertive announcements for messages that require immediate attention.
-- [table.tsx](packages/dapp/src/components/ui/table.tsx) provides a horizontally scrollable wrapper, `14px` text, `40px` header height, and `8px` cell padding. Supply meaningful headings and captions where needed.
+- [Container.tsx](src/components/Container.tsx) is a full-width bordered panel with `12px` padding and an `8px` radius. It does not constrain page width.
+- [card.tsx](src/components/ui/card.tsx) provides composable card sections with `24px` header/content padding and a small shadow.
+- [alert.tsx](src/components/ui/alert.tsx) provides a title and description with `role="alert"`. Reserve assertive announcements for messages that require immediate attention.
+- [table.tsx](src/components/ui/table.tsx) provides a horizontally scrollable wrapper, `14px` text, `40px` header height, and `8px` cell padding. Supply meaningful headings and captions where needed.
 
 The card, alert, and table primitives reference semantic colors that are not configured; provide explicit existing color utilities until those tokens are implemented. See section 9.
 
 ### Navigation and AR controls
 
-- [PrimaryNav.tsx](packages/dapp/src/components/navigation/PrimaryNav.tsx) owns shared header geometry and the wordmark. The wordmark is a span so it does not compete with the page heading.
+- [PrimaryNav.tsx](src/components/navigation/PrimaryNav.tsx) owns shared header geometry and the wordmark. The wordmark is a span so it does not compete with the page heading.
 - `AppNav` adds account and wallet state; `StaticNav` provides links and a native `details` menu without client-side session dependencies.
 - Use plain anchors when following the existing static navigation pattern across separate root layouts.
 - AR controls use a `46px` minimum height, `6px` corners, `14px` bold text, and `17px` icons. Primary controls are cream on umber; focus outlines are ochre with a three-pixel offset.
@@ -270,9 +270,9 @@ Use cultural imagery with specific context and descriptive alternative text when
 
 - Preserve aspect ratios and object details. Use deliberate responsive crops for cover imagery; use `contain` when the full object must remain visible.
 - The marketing hero has separate mobile and desktop source images and dark overlays to protect text readability.
-- Record artwork lives in [public/record](packages/dapp/public/record), with separate portrait mural crops.
+- Record artwork lives in [public/record](public/record), with separate portrait mural crops.
 - Record's decorative medallions live in `public/record/medallions`. Keep them separate from scannable print assets in `public/ar/print`.
-- AR models live in [public/models](packages/dapp/public/models); tracking targets live in `public/ar/targets`.
+- AR models live in [public/models](public/models); tracking targets live in `public/ar/targets`.
 - Keep `/record`'s curatorial experience free of an implied scan action. Its decorative medallions are not AR entry controls.
 
 For new interface copy, use concrete actions such as “View exhibit,” “Save changes,” and “Try again.” Explain what happens next during loading, wallet connection, camera access, and transaction confirmation. Preserve curatorial names and wording when changing layouts.
