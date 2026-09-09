@@ -19,10 +19,15 @@ const nextConfig = {
          { protocol: 'https', hostname: 'optimistic.etherscan.io' },
       ],
    },
-   env: {
-      RPC_URL: process.env.RPC_URL,
-      DEV_PRIVATE_KEY: process.env.DEV_PRIVATE_KEY,
-   },
+   // No `env` block, deliberately. Next inlines every key listed there as a
+   // literal into the client bundle at build time, with no NEXT_PUBLIC_ prefix
+   // required — so it is not a server-config mechanism.
+   //
+   // Server code does not need it: API routes and server components read the
+   // real `process.env` directly. Anything the browser genuinely needs is
+   // named NEXT_PUBLIC_*.
+   //
+   // scripts/lib/clientEnvExposure.test.mjs guards this.
    // Empty turbopack config to silence Next.js 16 warning
    turbopack: {},
    webpack: (config, { isServer }) => {

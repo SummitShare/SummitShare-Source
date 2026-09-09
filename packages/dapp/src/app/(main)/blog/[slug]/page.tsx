@@ -1,6 +1,7 @@
 import ReadingProgress from '@/components/blog/ReadingProgress';
 import ShareButtons from '@/components/blog/ShareButtons';
 import { formatBlogDate } from '@/lib/blogDates';
+import { stripHtmlTags } from '@/lib/blogHeadings';
 import {
    getAdjacentPosts,
    getAllSlugs,
@@ -25,10 +26,9 @@ type BlogPostPageProps = {
 };
 
 const slugify = (text: string) =>
-   text
+   stripHtmlTags(text)
       .toLowerCase()
       .trim()
-      .replace(/<[^>]+>/g, '')
       .replace(/[^a-z0-9\s-]/g, '')
       .replace(/\s+/g, '-')
       .replace(/-+/g, '-')
@@ -38,7 +38,7 @@ const addHeadingAnchors = (html: string) =>
    html.replace(
       /<(h[2-4])>([\s\S]*?)<\/\1>/g,
       (match, tag: string, inner: string) => {
-         const text = inner.replace(/<[^>]+>/g, '');
+         const text = stripHtmlTags(inner);
          const id = slugify(text);
          if (!id) return match;
          return `<${tag} id="${id}"><a class="anchor-link" href="#${id}" aria-label="Link to section">${inner}</a></${tag}>`;

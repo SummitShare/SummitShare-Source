@@ -70,16 +70,35 @@ export default function RecordPage() {
                         aria-labelledby={headingId}
                         key={section.section}
                      >
+                        {/* The mural is authored 2.22:1 and the panel is portrait, so
+                            `object-fit: cover` upscales it ~5.35x and then discards
+                            ~76% — a 10.4 Mpx rasterize per panel, which is the
+                            dominant cost of a swipe. The portrait source is the same
+                            artwork with a square viewBox, so the renderer culls what
+                            was never visible: 4.7 Mpx, measured 1.95x cheaper, same
+                            bytes. Square rather than the panel's own ~0.54 aspect so
+                            the crop stays wider than any panel it is served to and
+                            `cover` still trims width only — see scripts/lib/recordCrops.mjs.
+                            3/4 is the widest viewport where the panel is provably
+                            narrower than the square crop, given the gallery's
+                            `100dvh - 58px` height and 64px control row. */}
                         <div className="record-graphic-band" aria-hidden="true">
-                           <img
-                              src={`/record/${section.graphics}`}
-                              alt=""
-                              aria-hidden="true"
-                              loading="lazy"
-                              decoding="async"
-                              width="1200"
-                              height="540"
-                           />
+                           <picture>
+                              <source
+                                 media="(max-aspect-ratio: 3/4)"
+                                 srcSet={`/record/${section.portraitGraphics}`}
+                                 type="image/svg+xml"
+                              />
+                              <img
+                                 src={`/record/${section.graphics}`}
+                                 alt=""
+                                 aria-hidden="true"
+                                 loading="lazy"
+                                 decoding="async"
+                                 width="1200"
+                                 height="540"
+                              />
+                           </picture>
                         </div>
 
                         {/* The panel itself is `overflow: hidden`; this is what
