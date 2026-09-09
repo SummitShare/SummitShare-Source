@@ -1,5 +1,3 @@
-'use client';
-
 interface InfoCardProps {
    title: string;
    body: string;

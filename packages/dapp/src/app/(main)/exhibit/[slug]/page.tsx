@@ -1,5 +1,5 @@
 'use client';
-import DynamicCanvas from '@/components/3DCanvas/3dCanvas';
+import dynamic from 'next/dynamic';
 import { CanvasErrorBoundary } from '@/components/3DCanvas/CanvasErrorBoundary';
 import { data } from './data';
 import { Button } from '@/components/button/Button';
@@ -7,6 +7,32 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Cormorant_Garamond, Manrope } from 'next/font/google';
+
+const DynamicCanvas = dynamic(() => import('@/components/3DCanvas/3dCanvas'), {
+   ssr: false,
+   loading: () => (
+      <div
+         id="canvas-container"
+         className="relative isolate h-[280px] sm:h-[360px] w-full overflow-hidden rounded-2xl bg-[#0f0c09] shadow-[0_40px_120px_-60px_rgba(0,0,0,0.8)]"
+      >
+         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(245,210,160,0.25),_transparent_50%),radial-gradient(circle_at_bottom,_rgba(255,120,0,0.18),_transparent_55%)]" />
+         <div className="absolute inset-0 z-10 flex items-center justify-center bg-[#0f0c09]/90 rounded-2xl">
+            <div className="flex flex-col items-center gap-3 text-center">
+               <div className="animate-spin rounded-full h-8 w-8 border-2 border-amber-300 border-t-transparent" />
+               <div className="flex flex-col items-center gap-1">
+                  <p className="text-lg text-amber-100">Loading Artifact... 0%</p>
+                  <p className="text-sm text-amber-200/70">
+                     Finding your artifact...
+                  </p>
+               </div>
+            </div>
+         </div>
+         <div className="pointer-events-none absolute bottom-3 left-3 rounded-full bg-black/40 px-3 py-1 text-xs text-amber-100/80 backdrop-blur-sm">
+            Drag to rotate
+         </div>
+      </div>
+   ),
+});
 
 interface PageProps {
    params: Promise<{ slug: string }>;
