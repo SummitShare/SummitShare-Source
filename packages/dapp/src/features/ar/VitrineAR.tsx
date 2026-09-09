@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { AlertTriangle, RotateCcw, X } from 'lucide-react';
+import { AlertTriangle, RotateCcw } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { PointerEvent as ReactPointerEvent } from 'react';
 import type { Group, Material, Object3D, Texture } from 'three';
@@ -10,6 +10,7 @@ import type {
    MindARThree,
 } from 'mind-ar/dist/mindar-image-three.prod.js';
 import ARStartCard from './ARStartCard';
+import ArExitMenuButton from './ArExitMenuButton';
 import { AR_EXIT_PATH, type ARArtifact } from './artifacts';
 import { applyArtifactModelOpacity } from './loadArtifactModel';
 import {
@@ -785,16 +786,7 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
                paddingTop: 'max(1rem, env(safe-area-inset-top))',
             }}
          >
-            {isRunning && (
-               <button
-                  type="button"
-                  onClick={endAR}
-                  className="ar-overlay-button"
-               >
-                  <X aria-hidden="true" />
-                  <span>End AR</span>
-               </button>
-            )}
+            {isRunning && <ArExitMenuButton onExit={endAR} />}
          </header>
 
          <div
