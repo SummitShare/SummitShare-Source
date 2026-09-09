@@ -1,6 +1,12 @@
 'use client';
 import React, { ReactNode, useEffect, useState } from 'react';
-import { ConnectKitButton } from 'connectkit';
+import dynamic from 'next/dynamic';
+import { RequireWeb3 } from '@/features/Web3Boundary';
+
+const ConnectKitButton = dynamic(
+   () => import('connectkit').then((module) => module.ConnectKitButton),
+   { ssr: false }
+);
 
 // Interface for ButtonProps defining the properties that can be passed to the Buttons component
 interface ButtonProps {
@@ -61,7 +67,13 @@ const Buttons: React.FC<ButtonProps> = ({
 
    return (
       <button className={className} {...props}>
-         {isConnectButton && isClient ? <ConnectKitButton /> : children}
+         {isConnectButton && isClient ? (
+            <RequireWeb3 fallback={children}>
+               <ConnectKitButton />
+            </RequireWeb3>
+         ) : (
+            children
+         )}
       </button>
    );
 };
