@@ -14,6 +14,12 @@ import { useCallback, useEffect, useRef, useState } from 'react';
  *
  * Arming lapses on its own, so a stray press cannot leave the control primed
  * for a later one that was meant for the artifact.
+ *
+ * The label stays "End AR" in both states. The icon is decorative, so the label
+ * is the whole of what a screen reader gets, and this is the running view's only
+ * way out — it has to say where the control goes, not what it looks like. Keeping
+ * the text fixed also stops the button resizing between the two presses, so the
+ * second one lands where the first did.
  */
 const DISARM_AFTER_MS = 4000;
 
@@ -43,9 +49,12 @@ export default function ArExitMenuButton({ onExit }: { onExit: () => void }) {
       <button
          type="button"
          onClick={press}
-         // The accessible name always contains the visible label, and says what
-         // the NEXT press does rather than what the control is.
-         aria-label={armed ? 'Exit AR' : 'Menu'}
+         // Prefixed with the visible label, then what the NEXT press does.
+         aria-label={
+            armed
+               ? 'End AR, press again to confirm'
+               : 'End AR, press twice to confirm'
+         }
          className={`ar-overlay-button${armed ? ' is-armed' : ''}`}
       >
          <span className="ar-menu-icon" aria-hidden="true">
@@ -53,7 +62,7 @@ export default function ArExitMenuButton({ onExit }: { onExit: () => void }) {
             <span />
             <span />
          </span>
-         <span>{armed ? 'Exit' : 'Menu'}</span>
+         <span>End AR</span>
       </button>
    );
 }
