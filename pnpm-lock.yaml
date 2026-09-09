@@ -67,7 +67,6 @@ overrides:
   toml@>=3.0.0 <4.2.0: 4.2.0
   undici@>=5.28.4 <6.27.0: 6.27.0
   form-data@<2.5.6: 2.5.6
-  '@react-three/gltfjsx@4.3.4>three': 0.125.0
   tinyglobby@0.2.10>picomatch: 4.0.4
   tinyglobby@0.2.15>picomatch: 4.0.4
   '@ethersproject/providers@5.7.2>ws': 7.5.11
@@ -326,7 +325,7 @@ importers:
         version: 1.4.0
       netlify-cli:
         specifier: ^17.38.1
-        version: 17.38.1(@types/node@22.10.2)(bufferutil@4.0.8)(encoding@0.1.13)(idb-keyval@6.2.1)(picomatch@4.0.5)(rollup@4.62.4)(utf-8-validate@5.0.10)
+        version: 17.38.1(@types/node@22.10.2)(bufferutil@4.0.8)(encoding@0.1.13)(idb-keyval@6.2.1)(picomatch@4.0.4)(rollup@4.62.4)(utf-8-validate@5.0.10)
       postcss:
         specifier: ^8.5.24
         version: 8.5.26
@@ -13508,8 +13507,8 @@ packages:
     peerDependencies:
       three: '>=0.128.0'
 
-  three@0.125.0:
-    resolution: {integrity: sha512-qL36qUGsPQ/Ofo/RZdXwHwM7A8wzUSAIyawtjIebJSPvounUQeneSqxI0aBY2iwKpseGy+RUtj3C5f/z4poyXw==}
+  three@0.122.0:
+    resolution: {integrity: sha512-bgYMo0WdaQhf7DhLE8OSNN/rVFO5J4K1A2VeeKqoV4MjjuHjfCP6xLpg8Xedhns7NlEnN3sZ6VJROq19Qyl6Sg==}
 
   three@0.165.0:
     resolution: {integrity: sha512-cc96IlVYGydeceu0e5xq70H8/yoVT/tXBxV/W8A/U6uOq7DXc4/s1Mkmnu6SqoYGhSRWWYFOhVwvq6V0VtbplA==}
@@ -18232,7 +18231,7 @@ snapshots:
       yaml: 2.6.1
       yargs: 17.7.2
 
-  '@netlify/build@29.58.0(@opentelemetry/api@1.8.0)(@types/node@22.10.2)(encoding@0.1.13)(picomatch@4.0.5)(rollup@4.62.4)':
+  '@netlify/build@29.58.0(@opentelemetry/api@1.8.0)(@types/node@22.10.2)(encoding@0.1.13)(picomatch@4.0.4)(rollup@4.62.4)':
     dependencies:
       '@bugsnag/js': 7.25.0
       '@netlify/blobs': 7.4.0
@@ -18252,7 +18251,7 @@ snapshots:
       chalk: 5.3.0
       clean-stack: 4.2.0
       execa: 6.1.0
-      fdir: 6.5.0(picomatch@4.0.5)
+      fdir: 6.5.0(picomatch@4.0.4)
       figures: 5.0.0
       filter-obj: 5.1.0
       got: 12.6.1
@@ -19910,7 +19909,7 @@ snapshots:
       meow: 7.1.1
       prettier: 2.8.8
       react: 17.0.2
-      three: 0.125.0
+      three: 0.122.0
       use-error-boundary: 2.0.6(react-dom@19.2.4(react@19.2.4))(react@17.0.2)
     transitivePeerDependencies:
       - '@types/react'
@@ -28788,12 +28787,12 @@ snapshots:
 
   nested-error-stacks@2.1.1: {}
 
-  netlify-cli@17.38.1(@types/node@22.10.2)(bufferutil@4.0.8)(encoding@0.1.13)(idb-keyval@6.2.1)(picomatch@4.0.5)(rollup@4.62.4)(utf-8-validate@5.0.10):
+  netlify-cli@17.38.1(@types/node@22.10.2)(bufferutil@4.0.8)(encoding@0.1.13)(idb-keyval@6.2.1)(picomatch@4.0.4)(rollup@4.62.4)(utf-8-validate@5.0.10):
     dependencies:
       '@bugsnag/js': 7.25.0
       '@fastify/static': 10.1.1
       '@netlify/blobs': 8.1.0
-      '@netlify/build': 29.58.0(@opentelemetry/api@1.8.0)(@types/node@22.10.2)(encoding@0.1.13)(picomatch@4.0.5)(rollup@4.62.4)
+      '@netlify/build': 29.58.0(@opentelemetry/api@1.8.0)(@types/node@22.10.2)(encoding@0.1.13)(picomatch@4.0.4)(rollup@4.62.4)
       '@netlify/build-info': 7.17.0
       '@netlify/config': 20.21.0
       '@netlify/edge-bundler': 12.3.1(encoding@0.1.13)(rollup@4.62.4)(supports-color@9.4.0)
@@ -32018,7 +32017,7 @@ snapshots:
       potpack: 1.0.2
       three: 0.170.0
 
-  three@0.125.0: {}
+  three@0.122.0: {}
 
   three@0.165.0: {}
 
