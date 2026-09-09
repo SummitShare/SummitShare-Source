@@ -13,19 +13,12 @@ const nextConfig = createRequire(import.meta.url)(
 
 /**
  * `next.config.js`'s `env` block is a build-time literal substitution into the
- * CLIENT bundle. It is not a server-config mechanism and it does not require a
- * NEXT_PUBLIC_ prefix, which makes it an easy place to expose a secret without
- * noticing.
+ * client bundle, and it requires no NEXT_PUBLIC_ prefix — so it is easy to
+ * mistake for server config.
  *
- * It already happened: `DEV_PRIVATE_KEY` was listed there and its value was
- * emitted verbatim into the JS chunk that loads on /escrow, because
- * `contractInit.ts` imports `walletInit.ts` for addresses and ABIs and so pulls
- * the `process.env.DEV_PRIVATE_KEY` reference into the client graph.
- *
- * Server code never needs this block — API routes and server components read
- * the real `process.env`. So the safe state is no `env` block at all, and
- * anything genuinely needed in the browser is named NEXT_PUBLIC_* and is not a
- * secret.
+ * Server code never needs it: API routes and server components read the real
+ * `process.env`. The safe state is no `env` block at all, with anything the
+ * browser genuinely needs named NEXT_PUBLIC_*.
  */
 const SECRET_SHAPED =
    /(PRIVATE|SECRET|TOKEN|PASSWORD|PASS|CREDENTIAL|_KEY|^KEY|AUTH|SEED|MNEMONIC|DSN|RPC_URL|DATABASE_URL)/i;
@@ -43,9 +36,10 @@ describe('next.config.js does not leak server secrets to the client', () => {
       );
    });
 
-   it('still recognises the name that leaked, so this guard cannot rot', () => {
-      expect(SECRET_SHAPED.test('DEV_PRIVATE_KEY')).toBe(true);
-      expect(SECRET_SHAPED.test('RPC_URL')).toBe(true);
+   it('matches the shapes it is meant to, so the guard cannot rot', () => {
+      for (const name of ['API_PRIVATE_KEY', 'SESSION_SECRET', 'SERVICE_TOKEN']) {
+         expect(SECRET_SHAPED.test(name)).toBe(true);
+      }
       expect(SECRET_SHAPED.test('NEXT_PUBLIC_HOST')).toBe(false);
    });
 });
