@@ -1,9 +1,8 @@
 import '../styles/globals.css';
-import { ApolloWrapper } from './apolloWrapper';
 import SessionBoundary from '@/components/navigation/SessionBoundary';
 import Footer from '@/components/navigation/footer';
 import AppNav from '@/components/navigation/AppNav';
-import { Web3Provider } from '@/features/Web3Provider';
+import Web3Boundary from '@/features/Web3Boundary';
 
 export default function RootLayout({
    children,
@@ -14,13 +13,11 @@ export default function RootLayout({
       <html lang="en">
          <body className={`flex flex-col justify-between min-h-screen `}>
             <SessionBoundary>
-               <ApolloWrapper>
-                  <Web3Provider>
-                     <AppNav />
-                     <div className="">{children} </div>
-                     <Footer />
-                  </Web3Provider>
-               </ApolloWrapper>
+               <Web3Boundary>
+                  <AppNav />
+                  <div className="">{children} </div>
+                  <Footer />
+               </Web3Boundary>
             </SessionBoundary>
          </body>
       </html>
