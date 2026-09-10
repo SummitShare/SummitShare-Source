@@ -137,10 +137,14 @@ export const AR_ARTIFACTS = {
       associatedHistory: 'Mwenya Mukulu',
       modelUrl: '/models/drum.glb',
       targetUrl: '/ar/targets/drum.mind',
-      // Device-measured 2026-09-04 against a 120 mm printed square at the
-      // optimal ~775 mm viewing distance: 204 mm tall, mount -79 mm. Supersedes
-      // the 0.5 m exhibition guess, which measurement showed was far too big.
-      displayHeight: 1.7,
+      // Doubled 2026-09-10 for legibility in the vitrine: 3.4 units renders
+      // 408 mm against the 120 mm printed square. This is a CHOSEN exhibition
+      // size, not a measurement — the device measurement is 1.7 units / 204 mm
+      // tall, taken 2026-09-04 at the optimal ~775 mm viewing distance, and it
+      // is what to return to if the enlargement is ever reconsidered. `mountY`
+      // is untouched: the model is re-origined onto its base before the mount
+      // is applied, so it grows upward and its footing does not move.
+      displayHeight: 3.4,
       rotationY: 0.62,
       mountY: -0.6583,
       // A drum is closed all round, so the full useful arc is available.
@@ -189,10 +193,10 @@ export const AR_ARTIFACTS = {
       // destructures Hair/Mask/Wire out of it.
       modelUrl: '/models/likishi.glb',
       targetUrl: '/ar/targets/likishi.mind',
-      // Device-measured 2026-09-04 against a 120 mm printed square at the
-      // optimal ~775 mm viewing distance: 174 mm tall, mount -95 mm. Supersedes
-      // the 0.5 m exhibition guess, which measurement showed was far too big.
-      displayHeight: 1.45,
+      // Doubled 2026-09-10; see the drum above. 2.9 units renders 348 mm. The
+      // device measurement is 1.45 units / 174 mm, taken 2026-09-04 at the
+      // optimal ~775 mm viewing distance, mount -95 mm.
+      displayHeight: 2.9,
       rotationY: -0.08,
       mountY: -0.7917,
       // The far side of a Pwo mask is a hollow shell. This arc is the measured
