@@ -137,12 +137,20 @@ export const AR_ARTIFACTS = {
       associatedHistory: 'Mwenya Mukulu',
       modelUrl: '/models/drum.glb',
       targetUrl: '/ar/targets/drum.mind',
-      // Device-measured 2026-09-04 against a 120 mm printed square at the
-      // optimal ~775 mm viewing distance: 204 mm tall, mount -79 mm. Supersedes
-      // the 0.5 m exhibition guess, which measurement showed was far too big.
-      displayHeight: 1.7,
+      // Doubled 2026-09-10 for legibility in the vitrine: 3.4 units renders
+      // 408 mm against the 120 mm printed square. This is a CHOSEN exhibition
+      // size, not a measurement — the device measurement is 1.7 units / 204 mm
+      // tall, taken 2026-09-04 at the optimal ~775 mm viewing distance, and it
+      // is what to return to if the enlargement is ever reconsidered.
+      displayHeight: 3.4,
       rotationY: 0.62,
-      mountY: -0.6583,
+      // MOUNT SCALES WITH HEIGHT. Re-measured on the rig 2026-09-10 at -158 mm,
+      // exactly twice the -79 mm that went with the half-size model. Reasoning
+      // from the code says it should not move — the model is re-origined onto
+      // its base before this offset applies, so it grows upward from a fixed
+      // footing — but on the device that reads as sitting far too high. Scale
+      // this with `displayHeight`; do not leave it behind again.
+      mountY: -1.3167,
       // A drum is closed all round, so the full useful arc is available.
       rotationClamp: { min: -Math.PI, max: Math.PI },
       // Height is the exhibition figure below. `rotationY` and `nudge` are still
@@ -189,12 +197,21 @@ export const AR_ARTIFACTS = {
       // destructures Hair/Mask/Wire out of it.
       modelUrl: '/models/likishi.glb',
       targetUrl: '/ar/targets/likishi.mind',
-      // Device-measured 2026-09-04 against a 120 mm printed square at the
-      // optimal ~775 mm viewing distance: 174 mm tall, mount -95 mm. Supersedes
-      // the 0.5 m exhibition guess, which measurement showed was far too big.
-      displayHeight: 1.45,
+      // Set on the rig in passthrough, 2026-09-10, and confirmed there: doubled
+      // from the measurement, then taken up a further 20 mm. 3.0667 units
+      // renders 368 mm against the 120 mm printed square. The mount below drops
+      // by the same 20 mm, because the two work against each other — a taller
+      // model rides up out of the vitrine unless the mount follows it down.
+      // The earlier device measurement of the object itself is 1.45 units /
+      // 174 mm, taken 2026-09-04 at the optimal ~775 mm viewing distance,
+      // mount -95 mm; this is a chosen exhibition size, not that.
+      displayHeight: 3.0667,
       rotationY: -0.08,
-      mountY: -0.7917,
+      // Confirmed in passthrough alongside the height above, not derived from the
+      // drum — an earlier revision of this line said derived and was wrong.
+      // -210 mm: the mount tracks height, less the 20 mm the model gained, so
+      // the mask holds its place as it grew. See the drum on scaling this.
+      mountY: -1.75,
       // The far side of a Pwo mask is a hollow shell. This arc is the measured
       // limit before the inside comes into view; do not widen it.
       rotationClamp: { min: -1.7013, max: 0.8872 },
