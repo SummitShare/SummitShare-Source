@@ -758,3 +758,117 @@ body {
       transition: none;
    }
 }
+
+/* AR entry
+   ------------------------------------------------------------------------- */
+
+.record-ar-entry {
+   --reticle-inset: 0px;
+   display: inline-flex;
+   align-items: center;
+   gap: 13px;
+   margin-top: 34px;
+   padding: 13px 20px 13px 16px;
+   /* Not the shared --record-rule hairline: that is for rules between text,
+      where 1.4.11 does not apply. This edge is what makes the control read as a
+      button, so it carries its own value at 3.23:1 against the umber. */
+   border: 1px solid rgb(245 237 224 / 0.38);
+   border-radius: 3px;
+   color: var(--record-cream);
+   font-size: 13px;
+   font-weight: 600;
+   letter-spacing: 0.13em;
+   text-transform: uppercase;
+   text-decoration: none;
+   transition:
+      border-color 220ms ease,
+      background-color 220ms ease,
+      color 220ms ease;
+}
+
+.record-ar-entry:hover,
+.record-ar-entry:focus-visible {
+   --reticle-inset: 2px;
+   border-color: var(--record-ochre);
+   background-color: rgb(251 146 60 / 0.09);
+   color: var(--record-raised-cream);
+}
+
+.record-ar-entry:focus-visible {
+   outline: 2px solid var(--record-ochre);
+   outline-offset: 3px;
+}
+
+/* Four corner brackets, drawn from eight gradients so the mark needs no asset
+   and inherits the link's colour. The inset is what makes it read as focusing:
+   on hover the corners step inwards, the way a viewfinder closes on a subject. */
+.record-ar-reticle {
+   --arm: 7px;
+   --rule: 1.5px;
+   position: relative;
+   display: block;
+   width: 22px;
+   height: 22px;
+   flex: 0 0 auto;
+   color: var(--record-ochre);
+   background:
+      linear-gradient(currentColor 0 0) var(--reticle-inset) var(--reticle-inset) /
+         var(--arm) var(--rule) no-repeat,
+      linear-gradient(currentColor 0 0) var(--reticle-inset) var(--reticle-inset) /
+         var(--rule) var(--arm) no-repeat,
+      linear-gradient(currentColor 0 0) calc(100% - var(--reticle-inset))
+         var(--reticle-inset) / var(--arm) var(--rule) no-repeat,
+      linear-gradient(currentColor 0 0) calc(100% - var(--reticle-inset))
+         var(--reticle-inset) / var(--rule) var(--arm) no-repeat,
+      linear-gradient(currentColor 0 0) var(--reticle-inset)
+         calc(100% - var(--reticle-inset)) / var(--arm) var(--rule) no-repeat,
+      linear-gradient(currentColor 0 0) var(--reticle-inset)
+         calc(100% - var(--reticle-inset)) / var(--rule) var(--arm) no-repeat,
+      linear-gradient(currentColor 0 0) calc(100% - var(--reticle-inset))
+         calc(100% - var(--reticle-inset)) / var(--arm) var(--rule) no-repeat,
+      linear-gradient(currentColor 0 0) calc(100% - var(--reticle-inset))
+         calc(100% - var(--reticle-inset)) / var(--rule) var(--arm) no-repeat;
+   transition: background-position 220ms ease;
+}
+
+/* The scan line only runs on hover, so the hero is still at rest when read. */
+.record-ar-reticle::after {
+   content: '';
+   position: absolute;
+   inset: 3px 2px auto;
+   height: 1px;
+   background: currentColor;
+   opacity: 0;
+}
+
+.record-ar-entry:hover .record-ar-reticle::after,
+.record-ar-entry:focus-visible .record-ar-reticle::after {
+   animation: record-ar-scan 1900ms ease-in-out infinite;
+}
+
+@keyframes record-ar-scan {
+   0%,
+   100% {
+      transform: translateY(0);
+      opacity: 0;
+   }
+   18%,
+   82% {
+      opacity: 0.75;
+   }
+   50% {
+      transform: translateY(13px);
+   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+   .record-ar-reticle,
+   .record-ar-entry {
+      transition: none;
+   }
+
+   .record-ar-entry:hover .record-ar-reticle::after,
+   .record-ar-entry:focus-visible .record-ar-reticle::after {
+      animation: none;
+   }
+}
