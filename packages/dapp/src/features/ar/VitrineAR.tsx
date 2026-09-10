@@ -780,13 +780,13 @@ export default function VitrineAR({ artifact }: VitrineARProps) {
             <div className="ar-camera-backdrop" />
          )}
 
-         <header
-            className="pointer-events-none absolute inset-x-0 top-0 z-20 flex items-start justify-end px-4 sm:px-6"
-            style={{
-               paddingTop: 'max(1rem, env(safe-area-inset-top))',
-            }}
-         >
-            {isRunning && <ArExitMenuButton onExit={endAR} />}
+         <header className="ar-exit-slot">
+            {/* Only a running session has anything to tear down; before that the
+                button is bare and just leaves. */}
+            <ArExitMenuButton
+               onExit={isRunning ? endAR : undefined}
+               label={isRunning ? 'End AR' : undefined}
+            />
          </header>
 
          <div

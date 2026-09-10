@@ -3,10 +3,16 @@
 import dynamic from 'next/dynamic';
 import { useCallback, useEffect, useState } from 'react';
 import type { ARArtifact } from './artifacts';
+import ArExitMenuButton from './ArExitMenuButton';
 
 function ARLoadingState() {
    return (
       <main className="ar-shell ar-camera-shell flex items-center justify-center">
+         {/* The capability probe is a network-free await, but it is still an
+             await: leaving has to stay possible if it never settles. */}
+         <header className="ar-exit-slot">
+            <ArExitMenuButton />
+         </header>
          <div className="ar-spinner ar-spinner--light" />
          <span className="sr-only">Loading augmented reality viewer</span>
       </main>
