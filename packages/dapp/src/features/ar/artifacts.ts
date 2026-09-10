@@ -141,12 +141,16 @@ export const AR_ARTIFACTS = {
       // 408 mm against the 120 mm printed square. This is a CHOSEN exhibition
       // size, not a measurement — the device measurement is 1.7 units / 204 mm
       // tall, taken 2026-09-04 at the optimal ~775 mm viewing distance, and it
-      // is what to return to if the enlargement is ever reconsidered. `mountY`
-      // is untouched: the model is re-origined onto its base before the mount
-      // is applied, so it grows upward and its footing does not move.
+      // is what to return to if the enlargement is ever reconsidered.
       displayHeight: 3.4,
       rotationY: 0.62,
-      mountY: -0.6583,
+      // MOUNT SCALES WITH HEIGHT. Re-measured on the rig 2026-09-10 at -158 mm,
+      // exactly twice the -79 mm that went with the half-size model. Reasoning
+      // from the code says it should not move — the model is re-origined onto
+      // its base before this offset applies, so it grows upward from a fixed
+      // footing — but on the device that reads as sitting far too high. Scale
+      // this with `displayHeight`; do not leave it behind again.
+      mountY: -1.3167,
       // A drum is closed all round, so the full useful arc is available.
       rotationClamp: { min: -Math.PI, max: Math.PI },
       // Height is the exhibition figure below. `rotationY` and `nudge` are still
@@ -198,7 +202,9 @@ export const AR_ARTIFACTS = {
       // optimal ~775 mm viewing distance, mount -95 mm.
       displayHeight: 2.9,
       rotationY: -0.08,
-      mountY: -0.7917,
+      // Derived, NOT measured: -95 mm doubled to -190 mm by the proportionality
+      // the drum established above. Confirm on the rig before it is trusted.
+      mountY: -1.5833,
       // The far side of a Pwo mask is a hollow shell. This arc is the measured
       // limit before the inside comes into view; do not widen it.
       rotationClamp: { min: -1.7013, max: 0.8872 },
