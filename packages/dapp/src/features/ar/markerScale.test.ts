@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { AR_ARTIFACTS } from './artifacts';
+import { AR_ARTIFACTS, MINDAR_TARGET_WIDTH_METRES } from './artifacts';
 
 /**
  * Ties the MindAR scale constant to the markers actually shipped for print.
@@ -23,8 +23,12 @@ import { AR_ARTIFACTS } from './artifacts';
  * 160 mm sheet. That is a different 120 mm — a disc, not a sheet — and adopting
  * it would mean a 0.16 m target and every `displayHeight` divided by 4/3 to hold
  * physical sizes still. This test is what will catch that day.
+ *
+ * The scale is IMPORTED rather than restated. A private copy here would only
+ * check itself: move the conversion to 0.16, adjust `displayHeight` to match,
+ * leave the 120 mm plates in place, and both suites would pass while the app
+ * and the paper disagreed.
  */
-const MINDAR_TARGET_WIDTH_METRES = 0.12;
 const PRINT_DIR = path.join(process.cwd(), 'public/ar/print');
 const DISC_TO_SHEET_RATIO = 0.75;
 
@@ -53,13 +57,40 @@ const plates: Plate[] = readdirSync(PRINT_DIR)
       };
    });
 
+const plateSlugs = new Set(
+   plates.map((plate) => plate.file.replace('-tracking-marker.svg', ''))
+);
+// Widened to string: these are compared against slugs parsed out of filenames,
+// which the union type knows nothing about.
+const trackedSlugs: string[] = Object.values(AR_ARTIFACTS)
+   .filter((artifact) => artifact.targetUrl)
+   .map((artifact) => artifact.slug);
+
 describe('printed marker scale', () => {
-   it('finds a plate for every artifact that has a target', () => {
+   it('has a printable plate for every artifact with a target', () => {
       expect(plates.length).toBeGreaterThan(0);
-      const slugs = Object.values(AR_ARTIFACTS)
-         .filter((artifact) => artifact.targetUrl)
-         .map((artifact) => artifact.slug);
-      expect(slugs.length).toBeGreaterThan(0);
+      expect(trackedSlugs.length).toBeGreaterThan(0);
+
+      // Comparing the two SETS is the point. Counting them, or checking only
+      // the files that happen to exist, passes happily while a plate is
+      // deleted, misnamed, or never made for a newly added artifact — and the
+      // parameterised tests below would go on validating whatever remained.
+      const missing = trackedSlugs.filter((slug) => !plateSlugs.has(slug));
+      expect(
+         missing,
+         `no printable plate for: ${missing.join(', ')} — an artifact that ` +
+            `ships a .mind target with no marker to print is unscannable`
+      ).toEqual([]);
+   });
+
+   it('has no plate left behind by an artifact that no longer tracks', () => {
+      const orphans = [...plateSlugs].filter(
+         (slug) => !trackedSlugs.includes(slug)
+      );
+      expect(
+         orphans,
+         `plates with no tracked artifact: ${orphans.join(', ')}`
+      ).toEqual([]);
    });
 
    it.each(plates.map((p) => [p.file, p] as const))(

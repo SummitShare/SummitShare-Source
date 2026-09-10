@@ -6,6 +6,20 @@
 export const AR_EXIT_PATH = '/record';
 
 /**
+ * The unit MindAR's `displayHeight` is expressed in: one printed target width,
+ * which is the SQUARE SHEET the medallion is printed on, not the 90 mm disc
+ * drawn three quarters of the way across it. Multiplying by it turns a
+ * marker-relative height into the metres WebXR renders in.
+ *
+ * It lives here, exported, so there is exactly one of it. When this was a
+ * private copy in each test file the two could disagree in silence: a move to a
+ * 0.16 m sheet with `displayHeight` adjusted to match would leave the other copy
+ * validating the old plates and both suites green.
+ * `markerScale.test.ts` ties this to the artwork actually shipped for print.
+ */
+export const MINDAR_TARGET_WIDTH_METRES = 0.12;
+
+/**
  * Two calibrations per artifact, deliberately not shared.
  *
  * `displayHeight` / `rotationY` are the **MindAR** values: the upright model

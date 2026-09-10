@@ -9,16 +9,17 @@ import {
    AR_EXHIBITED_SLUGS,
    AR_EXIT_PATH,
    isARArtifactSlug,
+   MINDAR_TARGET_WIDTH_METRES,
 } from './artifacts';
 import type { WebXRHeightSource } from './artifacts';
 
 const PUBLIC_DIR = path.resolve(__dirname, '../../../public');
 const ARTIFACTS = Object.values(AR_ARTIFACTS);
 
-/**
- * The unit MindAR's `displayHeight` is expressed in — one square target width.
- * It is the bridge between the two coordinate systems: multiplying by it turns a
- * marker-relative height into the metres WebXR renders in.
+/*
+ * `MINDAR_TARGET_WIDTH_METRES` is imported, not redeclared: it is the bridge
+ * between the two coordinate systems, and a second copy of it here could drift
+ * from the printed plates without either suite noticing.
  *
  * Which direction it was applied is the whole point of `heightSource`. For a
  * 'placeholder' the metres were derived from the units and mean nothing. For an
@@ -26,7 +27,6 @@ const ARTIFACTS = Object.values(AR_ARTIFACTS);
  * the agreement is the thing worth guarding — that is what stops the two paths
  * drifting into rendering the same object at two different physical sizes.
  */
-const MINDAR_TARGET_WIDTH_METRES = 0.12;
 
 /** Both paths must agree on physical size to within a millimetre. */
 const AGREEMENT_TOLERANCE_METRES = 1e-3;
