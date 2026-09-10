@@ -661,3 +661,100 @@ body {
       transition: none;
    }
 }
+
+/* Exhibition partners
+   ------------------------------------------------------------------------- */
+
+.record-partners {
+   display: grid;
+   justify-items: center;
+   gap: clamp(22px, 4vw, 34px);
+   padding: clamp(44px, 8vw, 88px) clamp(22px, 7vw, 104px) clamp(56px, 9vw, 104px);
+   background: var(--record-umber);
+   border-top: 1px solid var(--record-rule);
+}
+
+.record-partners-heading {
+   margin: 0;
+   color: var(--record-cream);
+   font-family: inherit;
+   font-size: clamp(11px, 1.5vw, 13px);
+   font-weight: 600;
+   letter-spacing: 0.18em;
+   text-transform: uppercase;
+   opacity: 0.72;
+}
+
+.record-partners-row {
+   display: flex;
+   flex-wrap: wrap;
+   align-items: center;
+   justify-content: center;
+   gap: clamp(28px, 6vw, 72px);
+   margin: 0;
+   padding: 0;
+   list-style: none;
+}
+
+.record-partner {
+   display: block;
+   padding: 8px;
+   border-radius: 4px;
+}
+
+.record-partner:focus-visible {
+   outline: 2px solid var(--record-ochre);
+   outline-offset: 4px;
+}
+
+/* The mark is a mask, not an image: the three logos ship in three different
+   inks (one of them black on opaque white), and filling a mask with one colour
+   is what lets them share a row without recolouring anyone's artwork by hand. */
+.record-partner-mark {
+   display: block;
+   background-color: var(--record-cream);
+   mask-repeat: no-repeat;
+   mask-position: center;
+   mask-size: contain;
+   -webkit-mask-repeat: no-repeat;
+   -webkit-mask-position: center;
+   -webkit-mask-size: contain;
+   opacity: 0.86;
+   transition:
+      opacity 200ms ease,
+      background-color 200ms ease;
+}
+
+.record-partner:hover .record-partner-mark,
+.record-partner:focus-visible .record-partner-mark {
+   background-color: var(--record-ochre);
+   opacity: 1;
+}
+
+/* Reveal. The row ships visible and script arms the hidden state, so the credit
+   survives a page with no JavaScript. */
+.record-partners[data-reveal] {
+   transition:
+      opacity 620ms ease,
+      transform 620ms ease;
+}
+
+.record-partners[data-reveal='armed'] {
+   opacity: 0;
+   transform: translateY(18px);
+}
+
+.record-partners[data-reveal='in'] {
+   opacity: 1;
+   transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+   .record-partners[data-reveal] {
+      transition: none;
+   }
+
+   .record-partner-mark {
+      transition: none;
+   }
+}
