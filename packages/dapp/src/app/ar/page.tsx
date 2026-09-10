@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { AR_ARTIFACTS, AR_EXHIBITED_SLUGS } from '@/features/ar/artifacts';
+import ArExitMenuButton from '@/features/ar/ArExitMenuButton';
 
 /**
  * The entry for anyone who arrives without a vitrine.
@@ -22,6 +23,10 @@ const QUESTION_FONT =
 export default function ARIndexPage() {
    return (
       <main className="ar-shell ar-entry-shell">
+         <header className="ar-exit-slot">
+            <ArExitMenuButton />
+         </header>
+
          <div className="ar-entry-frame">
             <section className="ar-entry-panel">
                <h1 className="ar-title" style={{ fontFamily: DISPLAY_FONT }}>

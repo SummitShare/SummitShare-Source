@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import ARStartCard from './ARStartCard';
 import DemoWordmark from './DemoWordmark';
 import { AR_EXIT_PATH, type ARArtifact } from './artifacts';
+import ArExitMenuButton from './ArExitMenuButton';
 import {
    XRVitrine,
    type UnsupportedReason,
@@ -176,6 +177,12 @@ export default function WebXRDemo({
 
    return (
       <main className="ar-shell ar-camera-shell">
+         {/* The immersive session is composited over the page, so this is the
+             start and unsupported screens' exit. Ending the session itself stays
+             with the browser's XR UI, which navigates on `session-ended`. */}
+         <header className="ar-exit-slot">
+            <ArExitMenuButton />
+         </header>
          <XRVitrine
             artifact={xrArtifact}
             options={{ nudge: artifact.webxr.nudge }}

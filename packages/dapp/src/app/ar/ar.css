@@ -665,6 +665,33 @@
    background: rgb(251 146 60 / 0.16);
 }
 
+/* One slot, every AR surface: the entry page, both start screens and the running
+   scanner. The exit sits in the same place on all of them, so leaving is one
+   learned gesture rather than four. Above the wordmark and status pills (z-30). */
+.ar-exit-slot {
+   position: absolute;
+   inset-inline: 0;
+   top: 0;
+   z-index: 30;
+   display: flex;
+   justify-content: flex-end;
+   padding: max(1rem, env(safe-area-inset-top))
+      max(16px, env(safe-area-inset-right)) 0 16px;
+   pointer-events: none;
+}
+
+@media (min-width: 640px) {
+   .ar-exit-slot {
+      padding-right: max(24px, env(safe-area-inset-right));
+   }
+}
+
+/* Bare icon: square, so it reads as an icon rather than a clipped label. */
+.ar-overlay-button--iconic {
+   width: 40px;
+   padding: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
    .ar-menu-icon span {
       transition: none;

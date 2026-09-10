@@ -2,6 +2,8 @@
 import GalleryObserver from './GalleryObserver';
 import { galleryControlState } from './galleryControls';
 import { SECTIONS } from './sections';
+import { PARTNERS } from './partners';
+import PartnersReveal from './PartnersReveal';
 
 const CURATORIAL_STATEMENT = [
    'This exhibition begins with absence. Three empty vitrines mark the place of cultural objects separated from the living systems that once gave them meaning.',
@@ -15,6 +17,7 @@ const GALLERY_LABELS = {
 } as const;
 
 const GALLERY_ROOT_ID = 'record-gallery';
+const PARTNERS_ID = 'record-partners';
 
 const GALLERY_LINKS = SECTIONS.map(({ section }) => ({
    id: `record-panel-${section}`,
@@ -35,6 +38,15 @@ export default function RecordPage() {
                {CURATORIAL_STATEMENT.map((paragraph) => (
                   <p key={paragraph}>{paragraph}</p>
                ))}
+
+               {/* A viewfinder, not a picture of an artifact: the mark stands
+                   for the act of looking, which is what the AR route offers,
+                   and this page's argument is about what reproduction cannot
+                   return. A full navigation, since /ar has its own layout. */}
+               <a className="record-ar-entry" href="/ar">
+                  <span className="record-ar-reticle" aria-hidden="true" />
+                  <span>Enter AR</span>
+               </a>
             </div>
 
             {/* Decorative. These are the printed AR medallions, shown cropped,
@@ -199,6 +211,51 @@ export default function RecordPage() {
                </a>
             </nav>
          </div>
+
+         {/* Credits close the page, after the murals. Marks are drawn as masks
+             filled with the exhibition's cream: the three arrive in different
+             inks — one of them black on opaque white — and a single ink is the
+             only way they read as one row on an umber ground. */}
+         <section
+            className="record-partners"
+            id={PARTNERS_ID}
+            aria-labelledby="record-partners-heading"
+         >
+            <h2 className="record-partners-heading" id="record-partners-heading">
+               Our exhibition partners
+            </h2>
+
+            <ul className="record-partners-row">
+               {PARTNERS.map((partner) => (
+                  <li key={partner.href}>
+                     <a
+                        className="record-partner"
+                        href={partner.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                     >
+                        <span
+                           className="record-partner-mark"
+                           aria-hidden="true"
+                           style={{
+                              width: `${Math.round(
+                                 partner.height * partner.aspect
+                              )}px`,
+                              height: `${partner.height}px`,
+                              maskImage: `url(${partner.asset})`,
+                              WebkitMaskImage: `url(${partner.asset})`,
+                           }}
+                        />
+                        <span className="record-visually-hidden">
+                           {partner.name} (opens in a new tab)
+                        </span>
+                     </a>
+                  </li>
+               ))}
+            </ul>
+         </section>
+
+         <PartnersReveal targetId={PARTNERS_ID} />
       </main>
    );
 }
