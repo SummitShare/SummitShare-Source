@@ -45,7 +45,7 @@ export default function RecordPage() {
                    return. A full navigation, since /ar has its own layout. */}
                <a className="record-ar-entry" href="/ar">
                   <span className="record-ar-reticle" aria-hidden="true" />
-                  <span>Enter the AR vitrine</span>
+                  <span>Enter AR</span>
                </a>
             </div>
 

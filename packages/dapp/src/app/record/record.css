@@ -766,14 +766,14 @@ body {
    --reticle-inset: 0px;
    display: inline-flex;
    align-items: center;
-   gap: 13px;
+   gap: 15px;
    margin-top: 34px;
-   padding: 13px 20px 13px 16px;
+   padding: 15px 52px 15px 42px;
    /* Not the shared --record-rule hairline: that is for rules between text,
       where 1.4.11 does not apply. This edge is what makes the control read as a
       button, so it carries its own value at 3.23:1 against the umber. */
    border: 1px solid rgb(245 237 224 / 0.38);
-   border-radius: 3px;
+   border-radius: 999px;
    color: var(--record-cream);
    font-size: 13px;
    font-weight: 600;
