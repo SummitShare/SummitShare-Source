@@ -197,14 +197,17 @@ export const AR_ARTIFACTS = {
       // destructures Hair/Mask/Wire out of it.
       modelUrl: '/models/likishi.glb',
       targetUrl: '/ar/targets/likishi.mind',
-      // Doubled 2026-09-10; see the drum above. 2.9 units renders 348 mm. The
-      // device measurement is 1.45 units / 174 mm, taken 2026-09-04 at the
-      // optimal ~775 mm viewing distance, mount -95 mm.
-      displayHeight: 2.9,
+      // Doubled 2026-09-10, then taken up a further 20 mm on the rig the same
+      // day: 3.0667 units renders 368 mm. The mount below drops by the same
+      // 20 mm, because the two work against each other — a taller model rides
+      // up out of the vitrine unless the mount follows it down. The device
+      // measurement is 1.45 units / 174 mm, taken 2026-09-04 at the optimal
+      // ~775 mm viewing distance, mount -95 mm.
+      displayHeight: 3.0667,
       rotationY: -0.08,
-      // Derived, NOT measured: -95 mm doubled to -190 mm by the proportionality
-      // the drum established above. Confirm on the rig before it is trusted.
-      mountY: -1.5833,
+      // -190 mm (the drum's doubling applied here) less the 20 mm that the model
+      // gained above, so the mask holds its place as it grew.
+      mountY: -1.75,
       // The far side of a Pwo mask is a hollow shell. This arc is the measured
       // limit before the inside comes into view; do not widen it.
       rotationClamp: { min: -1.7013, max: 0.8872 },
