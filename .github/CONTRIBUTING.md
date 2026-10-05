@@ -2,6 +2,10 @@
 
 We're thrilled that you're interested in contributing to the SummitShare project! This guide outlines how you can offer suggestions, document your code, and submit your contributions to help improve the platform. - note this is a work in progress so if you do have suggestions on how to go about contributions we are open to your suggestions.
 
+## Code of Conduct
+
+Please read and follow the [SummitShare Code of Conduct](../CODE_OF_CONDUCT.md) in all project interactions. To report a concern, follow its [reporting guidance](../CODE_OF_CONDUCT.md#reporting-a-concern).
+
 ## 🚀 Getting Started
 
 1. **Explore Current Issues**: Begin by browsing the [current issues](https://github.com/bicos-io01/Revenue-Sharing-Source/issues) on our GitHub repository. If you find an unassigned issue you're interested in solving, you can start working on it.

@@ -9,6 +9,10 @@
 - [FrontEnd Application](https://github.com/SummitShare/SummitShare-Client)
 - [Smart Contracts](https://github.com/SummitShare/SummitShare-Contracts)
 
+## Community standards
+
+Everyone participating in SummitShare is expected to follow our [Code of Conduct](CODE_OF_CONDUCT.md), which covers respectful collaboration, cultural heritage, reporting concerns, and enforcement.
+
 ## Introduction
 
 **SummitShare** stands as a pioneering digital platform dedicated to the repatriation of African cultural artifacts. Bridging the past and present, it serves as a beacon of hope and a testament to the resilience of African heritage, utilizing the power of blockchain technology to reclaim, celebrate, and share the rich tapestry of Africa's history with the world.
