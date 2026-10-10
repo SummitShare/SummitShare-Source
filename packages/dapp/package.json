@@ -11,13 +11,17 @@
       "lint": "eslint . --ext .ts,.tsx",
       "format": "prettier --write .",
       "generate:ar": "node scripts/generate-ar-markers.mjs",
-      "generate:record-crops": "node scripts/generate-record-crops.mjs"
+      "generate:record-crops": "node scripts/generate-record-crops.mjs",
+      "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+      "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+      "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
    },
    "dependencies": {
       "@apollo/client": "^3.11.10",
       "@apollo/experimental-nextjs-app-support": "^0.11.6",
       "@aws-sdk/client-s3": "^3.1039.0",
       "@aws-sdk/s3-request-presigner": "^3.1039.0",
+      "@opennextjs/cloudflare": "^1.20.10",
       "@prisma/adapter-libsql": "^7.8.0",
       "@prisma/client": "^7.8.0",
       "@react-three/drei": "10.7.7",
@@ -73,7 +77,8 @@
       "sharp": "0.35.4",
       "tailwindcss": "^3.4.17",
       "typescript": "^5.6.3",
-      "vitest": "^3.2.7"
+      "vitest": "^3.2.7",
+      "wrangler": "^4.149.0"
    },
    "overrides": {
       "three": "0.154.0"

@@ -37,3 +37,7 @@ yarn-error.log*
 next-env.d.ts
 
 .DS_Store
+# Cloudflare / OpenNext
+.open-next
+.dev.vars
+.wrangler
